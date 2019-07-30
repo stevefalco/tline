@@ -81,7 +81,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	int m_radioBox1NChoices = sizeof( m_radioBox1Choices ) / sizeof( wxString );
 	m_radioBox1 = new wxRadioBox( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_radioBox1NChoices, m_radioBox1Choices, 1, wxRA_SPECIFY_COLS );
 	m_radioBox1->SetSelection( 0 );
-	bSizer4->Add( m_radioBox1, 0, wxALL, 5 );
+	bSizer4->Add( m_radioBox1, 0, 0, 5 );
 
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxVERTICAL );
@@ -100,15 +100,22 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_staticText4->Wrap( -1 );
 	bSizer6->Add( m_staticText4, 0, wxALL, 5 );
 
-	m_staticText41 = new wxStaticText( this, wxID_ANY, wxT("Feet"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText41->Wrap( -1 );
-	bSizer6->Add( m_staticText41, 0, wxALL, 5 );
 
-	m_staticText5 = new wxStaticText( this, wxID_ANY, wxT("Lambda"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer6->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_staticText5 = new wxStaticText( this, wxID_ANY, wxT("Lambda:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
 	bSizer6->Add( m_staticText5, 0, wxALL, 5 );
 
-	m_staticText6 = new wxStaticText( this, wxID_ANY, wxT("Frequency"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrl31 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrl31->Enable( false );
+
+	bSizer6->Add( m_textCtrl31, 0, wxALL, 5 );
+
+
+	bSizer6->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_staticText6 = new wxStaticText( this, wxID_ANY, wxT("Frequency:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText6->Wrap( -1 );
 	bSizer6->Add( m_staticText6, 0, wxALL, 5 );
 
@@ -120,17 +127,17 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer6->Add( m_staticText7, 0, wxALL, 5 );
 
 
-	bSizer9->Add( bSizer6, 1, wxEXPAND, 5 );
+	bSizer9->Add( bSizer6, 1, wxEXPAND|wxSHAPED, 5 );
 
 	m_staticText8 = new wxStaticText( this, wxID_ANY, wxT("Use \"w\" suffix for wavelength (for example, 0.25w)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText8->Wrap( -1 );
-	bSizer9->Add( m_staticText8, 0, wxALL, 5 );
+	bSizer9->Add( m_staticText8, 0, 0, 5 );
 
 
-	bSizer4->Add( bSizer9, 1, wxEXPAND, 5 );
+	bSizer4->Add( bSizer9, 1, wxEXPAND|wxSHAPED, 5 );
 
 
-	bSizer3->Add( bSizer4, 1, wxEXPAND, 5 );
+	bSizer3->Add( bSizer4, 1, wxEXPAND|wxSHAPED, 5 );
 
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxHORIZONTAL );
@@ -139,17 +146,18 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_staticText12->Wrap( -1 );
 	bSizer10->Add( m_staticText12, 0, wxALL, 5 );
 
-	m_staticText13 = new wxStaticText( this, wxID_ANY, wxT("Impedance"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText13->Wrap( -1 );
-	bSizer10->Add( m_staticText13, 0, wxALL, 5 );
+	m_textCtrl4 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer10->Add( m_textCtrl4, 0, wxALL, 5 );
+
+
+	bSizer10->Add( 0, 0, 1, 0, 5 );
 
 	m_staticText15 = new wxStaticText( this, wxID_ANY, wxT("Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText15->Wrap( -1 );
 	bSizer10->Add( m_staticText15, 0, wxALL, 5 );
 
-	m_staticText16 = new wxStaticText( this, wxID_ANY, wxT("LineLoss"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText16->Wrap( -1 );
-	bSizer10->Add( m_staticText16, 0, wxALL, 5 );
+	m_textCtrl5 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer10->Add( m_textCtrl5, 0, wxALL, 5 );
 
 
 	bSizer3->Add( bSizer10, 1, wxEXPAND, 5 );
@@ -161,25 +169,22 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_staticText121->Wrap( -1 );
 	bSizer101->Add( m_staticText121, 0, wxALL, 5 );
 
-	m_staticText131 = new wxStaticText( this, wxID_ANY, wxT("VFactor"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText131->Wrap( -1 );
-	bSizer101->Add( m_staticText131, 0, wxALL, 5 );
+	m_textCtrl8 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer101->Add( m_textCtrl8, 0, wxALL, 5 );
 
-	m_staticText151 = new wxStaticText( this, wxID_ANY, wxT("Max Voltage"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText151 = new wxStaticText( this, wxID_ANY, wxT("Max Voltage:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText151->Wrap( -1 );
 	bSizer101->Add( m_staticText151, 0, wxALL, 5 );
 
-	m_staticText161 = new wxStaticText( this, wxID_ANY, wxT("MaxV"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText161->Wrap( -1 );
-	bSizer101->Add( m_staticText161, 0, wxALL, 5 );
+	m_textCtrl6 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer101->Add( m_textCtrl6, 0, wxALL, 5 );
 
 	m_staticText25 = new wxStaticText( this, wxID_ANY, wxT("Total Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText25->Wrap( -1 );
 	bSizer101->Add( m_staticText25, 0, wxALL, 5 );
 
-	m_staticText26 = new wxStaticText( this, wxID_ANY, wxT("LossDB"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText26->Wrap( -1 );
-	bSizer101->Add( m_staticText26, 0, wxALL, 5 );
+	m_textCtrl7 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bSizer101->Add( m_textCtrl7, 0, wxALL, 5 );
 
 
 	bSizer3->Add( bSizer101, 1, wxEXPAND, 5 );

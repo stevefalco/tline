@@ -42,22 +42,22 @@ class tlineUI : public wxFrame
 		wxStaticText* m_staticText2;
 		wxTextCtrl* m_textCtrl1;
 		wxStaticText* m_staticText4;
-		wxStaticText* m_staticText41;
 		wxStaticText* m_staticText5;
+		wxTextCtrl* m_textCtrl31;
 		wxStaticText* m_staticText6;
 		wxTextCtrl* m_textCtrl3;
 		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText8;
 		wxStaticText* m_staticText12;
-		wxStaticText* m_staticText13;
+		wxTextCtrl* m_textCtrl4;
 		wxStaticText* m_staticText15;
-		wxStaticText* m_staticText16;
+		wxTextCtrl* m_textCtrl5;
 		wxStaticText* m_staticText121;
-		wxStaticText* m_staticText131;
+		wxTextCtrl* m_textCtrl8;
 		wxStaticText* m_staticText151;
-		wxStaticText* m_staticText161;
+		wxTextCtrl* m_textCtrl6;
 		wxStaticText* m_staticText25;
-		wxStaticText* m_staticText26;
+		wxTextCtrl* m_textCtrl7;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
