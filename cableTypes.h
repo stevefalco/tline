@@ -4,21 +4,17 @@
 #define USE_FEET		1
 #define USE_METERS		2
 
-class ATTENUATION
-{
-	public:
-		double frequency;
-		double attenuation;
-};
+typedef struct {
+	double frequency;
+	double attenuation;
+} ATTENUATION;
 
-class CABLE_PROPERTIES
-{
-	public:
+typedef struct {
 		const char	*name;
 		ATTENUATION	*attenuation;
 		double		velocityFactor;
 		double		impedance;
-};
+} CABLE_PROPERTIES;
 
 class cableTypes
 {

@@ -36,7 +36,7 @@ class tlineUI : public wxFrame
 		wxMenuBar* m_menubar1;
 		wxMenu* file;
 		wxMenu* help;
-		wxStaticText* m_staticText1;
+		wxStaticText* m_programTitle;
 		wxComboBox* m_comboBox1;
 		wxRadioBox* m_radioBox1;
 		wxStaticText* m_staticText2;
@@ -45,8 +45,8 @@ class tlineUI : public wxFrame
 		wxStaticText* m_staticText41;
 		wxStaticText* m_staticText5;
 		wxStaticText* m_staticText6;
-		wxStaticText* m_staticText7;
 		wxTextCtrl* m_textCtrl3;
+		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText8;
 		wxStaticText* m_staticText12;
 		wxStaticText* m_staticText13;

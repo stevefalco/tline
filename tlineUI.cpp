@@ -25,30 +25,37 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 
-	m_staticText1 = new wxStaticText( this, wxID_ANY, wxT("program title"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText1->Wrap( -1 );
-	bSizer3->Add( m_staticText1, 0, wxALL, 5 );
+	m_programTitle = new wxStaticText( this, wxID_ANY, wxT("program title"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_programTitle->Wrap( -1 );
+	bSizer3->Add( m_programTitle, 0, wxALL, 5 );
 
 	m_comboBox1 = new wxComboBox( this, wxID_ANY, wxT("RG-8U"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
 	m_comboBox1->Append( wxT("RG-6 (Belden 8215)") );
-	m_comboBox1->Append( wxT("RG-8 Type, TMS LMR400") );
-	m_comboBox1->Append( wxT("RG-8 Type, Belden 9913/9086") );
+	m_comboBox1->Append( wxT("RG-8 (TMS LMR400)") );
+	m_comboBox1->Append( wxT("RG-8 (Belden 9913/9086)") );
+	m_comboBox1->Append( wxT("RG-8 (DX Engineering)") );
+	m_comboBox1->Append( wxT("RG-8 (Wireman CQ106)") );
 	m_comboBox1->Append( wxT("RG-8A (Belden 8237)") );
-	m_comboBox1->Append( wxT("RG-8 Type, Wireman CQ106") );
-	m_comboBox1->Append( wxT("RG-8X Type, TMS LMR240") );
 	m_comboBox1->Append( wxT("RG-8X (Belden 9258)") );
+	m_comboBox1->Append( wxT("RG-8X (DX Engineering)") );
+	m_comboBox1->Append( wxT("RG-8X (TMS LMR240)") );
 	m_comboBox1->Append( wxT("RG-11 Foam (Belden 8213)") );
+	m_comboBox1->Append( wxT("RG-11 (DX Engineering)") );
 	m_comboBox1->Append( wxT("RG-11A (Belden 8261)") );
-	m_comboBox1->Append( wxT("RG-58 Type, TMS LMR200") );
+	m_comboBox1->Append( wxT("RG-58 (TMS LMR200)") );
 	m_comboBox1->Append( wxT("RG-58A Foam (Belden 8219)") );
 	m_comboBox1->Append( wxT("RG-58A (Belden 8259)") );
+	m_comboBox1->Append( wxT("RG-58A (DX Engineering)") );
 	m_comboBox1->Append( wxT("RG-59 Foam (Belden 8212)") );
 	m_comboBox1->Append( wxT("RG-59B (Belden 8263)") );
 	m_comboBox1->Append( wxT("RG-62A (Belden 9269)") );
 	m_comboBox1->Append( wxT("RG-142/303 High-Temp. Teflon") );
 	m_comboBox1->Append( wxT("RG-174 (Belden 8216)") );
 	m_comboBox1->Append( wxT("RG-213 (Belden 8267)") );
+	m_comboBox1->Append( wxT("RG-213 (DX Engineering)") );
 	m_comboBox1->Append( wxT("RG-218A (ex RG-17)") );
+	m_comboBox1->Append( wxT("RG-400 (DX Engineering)") );
+	m_comboBox1->Append( wxT("DX Engineering DXE-400MAX") );
 	m_comboBox1->Append( wxT("1/2-inch, LMR500") );
 	m_comboBox1->Append( wxT("0.59-inch, LMR600") );
 	m_comboBox1->Append( wxT("1.2-inch, LMR1200") );
@@ -64,7 +71,6 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_comboBox1->Append( wxT("450-Ohm Window Line, Wireman #554") );
 	m_comboBox1->Append( wxT("600-Ohm Open-Wire Ladder Line, #12 Wire") );
 	m_comboBox1->Append( wxT("User-Defined Transmission Line") );
-	m_comboBox1->Append( wxEmptyString );
 	m_comboBox1->SetSelection( 1 );
 	bSizer3->Add( m_comboBox1, 0, wxALL, 5 );
 
@@ -106,12 +112,12 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_staticText6->Wrap( -1 );
 	bSizer6->Add( m_staticText6, 0, wxALL, 5 );
 
+	m_textCtrl3 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer6->Add( m_textCtrl3, 0, wxALL, 5 );
+
 	m_staticText7 = new wxStaticText( this, wxID_ANY, wxT("MHz"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
 	bSizer6->Add( m_staticText7, 0, wxALL, 5 );
-
-	m_textCtrl3 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer6->Add( m_textCtrl3, 0, wxALL, 5 );
 
 
 	bSizer9->Add( bSizer6, 1, wxEXPAND, 5 );

@@ -152,36 +152,48 @@ ATTENUATION BELDEN_8216[] = {
 };
 
 CABLE_PROPERTIES cableProperties[] = {
-	{ "DXE-400MAX",				DXE_400MAX,	0.84,  50.0 },
-	{ "DXE-213U",				DXE_213U,	0.66,  50.0 },
-	{ "DXE-8U",				DXE_8U,		0.81,  50.0 },
-	{ "DXE-8X",				DXE_8X,		0.82,  50.0 },
-	{ "DXE-58AU",				DXE_58AU,	0.66,  50.0 },
-	{ "DXE-RG400",				DXE_58AU,	0.695, 50.0 },
-	{ "DXE-11U",				DXE_11U,	0.82,  75.0 },
 	{ "RG-6 (Belden 8215)",			BELDEN_8215,	0.66,  75.0 },
-	{ "RG-8 Type, TMS LMR400",		TMS_LMR400,	0.84,  50.0 },
-	{ "RG-8 Type, Belden 9913/9086",	BELDEN_9913,	0.84,  50.0 },
+	{ "RG-8 (TMS LMR400)",			TMS_LMR400,	0.84,  50.0 },
+	{ "RG-8 (Belden 9913/9086)",		BELDEN_9913,	0.84,  50.0 },
+	{ "RG-8 (DX Engineering)",		DXE_8U,		0.81,  50.0 },
 	{ "RG-8A (Belden 8237)",		BELDEN_8237,	0.66,  50.0 },
+	{ "RG-8X (DX Engineering)",		DXE_8X,		0.82,  50.0 },
+	{ "RG-11 (DX Engineering)",		DXE_11U,	0.82,  75.0 },
+	{ "RG-58A (DX Engineering)",		DXE_58AU,	0.66,  50.0 },
 	{ "RG-174 (Belden 8216)",		BELDEN_8216,	0.66,  50.0 },
+	{ "RG-213 (DX Engineering)",		DXE_213U,	0.66,  50.0 },
+	{ "RG-400 (DX Engineering)",		DXE_58AU,	0.695, 50.0 },
+	{ "DX Engineering DXE-400MAX",		DXE_400MAX,	0.84,  50.0 },
 	{ 0, 0, 0 }
 };
 
 #if 0
-RG-8 Type, Wireman CQ106
-RG-8X Type, TMS LMR240
+RG-6 (Belden 8215)		- ok
+RG-8 (TMS LMR400)		- ok
+RG-8 (Belden 9913/9086)		- ok
+RG-8 (DX Engineering)		- ok
+RG-8 (Wireman CQ106)
+RG-8A (Belden 8237)		- ok
 RG-8X (Belden 9258)
+RG-8X (DX Engineering)		- ok
+RG-8X (TMS LMR240)
 RG-11 Foam (Belden 8213)
+RG-11 (DX Engineering)		- ok
 RG-11A (Belden 8261)
-RG-58 Type, TMS LMR200
+RG-58 (TMS LMR200)
 RG-58A Foam (Belden 8219)
 RG-58A (Belden 8259)
+RG-58A (DX Engineering)		- ok
 RG-59 Foam (Belden 8212)
 RG-59B (Belden 8263)
 RG-62A (Belden 9269)
 RG-142/303 High-Temp. Teflon
+RG-174 (Belden 8216)		- ok
 RG-213 (Belden 8267)
+RG-213 (DX Engineering)		- ok
 RG-218A (ex RG-17)
+RG-400 (DX Engineering)		- ok
+DX Engineering DXE-400MAX	- ok
 1/2-inch, LMR500
 0.59-inch, LMR600
 1.2-inch, LMR1200

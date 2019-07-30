@@ -9,6 +9,7 @@
 
 tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 {
+	m_programTitle->SetLabel("Transmission Line Calculator");
 }
 
 void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
