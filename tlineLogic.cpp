@@ -2,7 +2,7 @@
 
 tlineLogic::tlineLogic( wxWindow* parent )
 :
-tline( parent )
+tlineUI( parent )
 {
 
 }

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jul 29 2019)
+// C++ code generated with wxFormBuilder (version Jul 30 2019)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -26,9 +26,9 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class tline
+/// Class tlineUI
 ///////////////////////////////////////////////////////////////////////////////
-class tline : public wxFrame
+class tlineUI : public wxFrame
 {
 	private:
 
@@ -61,9 +61,9 @@ class tline : public wxFrame
 
 	public:
 
-		tline( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 844,604 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 844,604 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
-		~tline();
+		~tlineUI();
 
 };
 
