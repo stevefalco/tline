@@ -18,6 +18,8 @@ class tlineLogic : public tlineUI
 		tlineLogic( wxWindow* parent );
 	//// end generated class members
 
+	private:
+		void onCableTypeSelected( wxCommandEvent& event );
 };
 
 #endif // __tlineLogic__

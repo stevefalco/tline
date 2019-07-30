@@ -59,6 +59,10 @@ class tlineUI : public wxFrame
 		wxStaticText* m_staticText25;
 		wxStaticText* m_staticText26;
 
+		// Virtual event handlers, overide them in your derived class
+		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
+
+
 	public:
 
 		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 844,604 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );

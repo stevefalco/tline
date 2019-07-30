@@ -183,8 +183,14 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	this->Layout();
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	m_comboBox1->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( tlineUI::onCableTypeSelected ), NULL, this );
 }
 
 tlineUI::~tlineUI()
 {
+	// Disconnect Events
+	m_comboBox1->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( tlineUI::onCableTypeSelected ), NULL, this );
+
 }
