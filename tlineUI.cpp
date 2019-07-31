@@ -82,7 +82,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_cableType->Append( wxT("450-Ohm Window Line, Wireman #554") );
 	m_cableType->Append( wxT("600-Ohm Open-Wire Ladder Line, #12 Wire") );
 	m_cableType->Append( wxT("User-Defined Transmission Line") );
-	m_cableType->SetSelection( 1 );
+	m_cableType->SetSelection( 0 );
 	bMainWindow->Add( m_cableType, 0, wxALL, 5 );
 
 	wxBoxSizer* bPane1;
@@ -110,7 +110,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_cableLengthTag->Wrap( -1 );
 	bPane1RightUpper->Add( m_cableLengthTag, 0, wxALL, 5 );
 
-	m_cableLength = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_cableLength = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("100"), wxDefaultPosition, wxDefaultSize, 0 );
 	bPane1RightUpper->Add( m_cableLength, 0, wxALL, 5 );
 
 	m_lengthUnits = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Feet"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -136,7 +136,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_frequencyTag->Wrap( -1 );
 	bPane1RightUpper->Add( m_frequencyTag, 0, wxALL, 5 );
 
-	m_frequency = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_frequency = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("7.00"), wxDefaultPosition, wxDefaultSize, 0 );
 	bPane1RightUpper->Add( m_frequency, 0, wxALL, 5 );
 
 	m_frequencyUnits = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("MHz"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -167,6 +167,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2Upper->Add( m_characteristicZ0Tag, 0, wxALL, 5 );
 
 	m_characteristicZ0 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	m_characteristicZ0->SetMinSize( wxSize( 200,-1 ) );
+
 	bPane2Upper->Add( m_characteristicZ0, 0, wxALL, 5 );
 
 
@@ -434,11 +436,17 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	// Connect Events
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileExit ), this, m_fileMenuExit->GetId());
 	m_cableType->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( tlineUI::onCableTypeSelected ), NULL, this );
+	m_unitsRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );
+	m_cableLength->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onLengthSelected ), NULL, this );
+	m_frequency->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onFrequencySelected ), NULL, this );
 }
 
 tlineUI::~tlineUI()
 {
 	// Disconnect Events
 	m_cableType->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( tlineUI::onCableTypeSelected ), NULL, this );
+	m_unitsRadioButtons->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );
+	m_cableLength->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onLengthSelected ), NULL, this );
+	m_frequency->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onFrequencySelected ), NULL, this );
 
 }

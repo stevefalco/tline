@@ -100,6 +100,9 @@ class tlineUI : public wxFrame
 		// Virtual event handlers, overide them in your derived class
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onUnitsSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onLengthSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onFrequencySelected( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
