@@ -241,7 +241,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxString m_sourceRadioButtonsChoices[] = { wxT("Normal"), wxT("Autec"), wxT("Noise Bridge") };
 	int m_sourceRadioButtonsNChoices = sizeof( m_sourceRadioButtonsChoices ) / sizeof( wxString );
 	m_sourceRadioButtons = new wxRadioBox( this, wxID_ANY, wxT("Source"), wxDefaultPosition, wxDefaultSize, m_sourceRadioButtonsNChoices, m_sourceRadioButtonsChoices, 1, wxRA_SPECIFY_COLS );
-	m_sourceRadioButtons->SetSelection( 1 );
+	m_sourceRadioButtons->SetSelection( 0 );
 	bPane3Left->Add( m_sourceRadioButtons, 0, wxALL, 5 );
 
 

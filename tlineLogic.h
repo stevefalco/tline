@@ -57,6 +57,7 @@ class tlineLogic : public tlineUI
 		double			m_phase;
 		double			m_cableResistivePart;
 		double			m_cableReactivePart;
+		double			m_wavelength;
 
 		std::complex<double>	m_lossCoef;
 		std::complex<double>	m_zCable;

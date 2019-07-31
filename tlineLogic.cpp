@@ -47,7 +47,7 @@ void tlineLogic::onFrequencySelected( wxCommandEvent& event )
 
 void tlineLogic::onLengthSelected( wxCommandEvent& event )
 {
-	wxString m_lengthStr = event.GetString();
+	m_lengthStr = event.GetString();
 
 	recalculate();
 }
@@ -80,6 +80,7 @@ void tlineLogic::recalculate()
 		m_units = USE_FEET;
 		wxLogMessage("Unkown Units %s", m_unitsStr);
 	}
+	m_lengthUnits->SetLabel(m_unitsStr);
 
 	// Convert the frequency string.
 	m_frequency = atof(m_frequencyStr) * 1.0E6;
@@ -95,11 +96,14 @@ void tlineLogic::recalculate()
 		m_cp = m_c->findCable("RG-6 (Belden 8215)");
 	}
 
+	//Calculate the wavelength.  We need the velocity factor here.
+	m_wavelength = wavelength();
+	
 	// Look up the attenuation in nepers per unit length.
 	m_atten = m_c->findAtten(m_units, m_cp, m_frequency);
 
 	// Calculate the phase angle per unit length at the chosen frequency.
-	m_phase = (2.0 * PI) / wavelength();
+	m_phase = (2.0 * PI) / m_wavelength;
 
 	// Combine attenuation and phase angle to get the loss coefficient.
 	m_lossCoef = std::complex<double>(m_atten, m_phase);
@@ -113,4 +117,7 @@ void tlineLogic::recalculate()
 
 	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zCable), imag(m_zCable));
 	m_characteristicZ0->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_length / m_wavelength);
+	m_lambda->ChangeValue(buffer);
 }
