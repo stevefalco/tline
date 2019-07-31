@@ -103,6 +103,8 @@ class tlineUI : public wxFrame
 		virtual void onUnitsSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLengthSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFrequencySelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onResistanceSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onReactanceSelected( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

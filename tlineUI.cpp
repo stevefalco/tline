@@ -274,7 +274,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_resistanceTag->Wrap( -1 );
 	bPane3CenterRightTop->Add( ui_resistanceTag, 0, wxALL, 5 );
 
-	ui_resistance = new wxTextCtrl( sbPane3Center->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	ui_resistance = new wxTextCtrl( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("50"), wxDefaultPosition, wxDefaultSize, 0 );
 	bPane3CenterRightTop->Add( ui_resistance, 0, wxALL, 5 );
 
 	ui_resistanceUnits = new wxStaticText( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -291,7 +291,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_reactanceTag->Wrap( -1 );
 	bPane3CenterRightBottom->Add( ui_reactanceTag, 0, wxALL, 5 );
 
-	ui_reactance = new wxTextCtrl( sbPane3Center->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	ui_reactance = new wxTextCtrl( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0 );
 	bPane3CenterRightBottom->Add( ui_reactance, 0, wxALL, 5 );
 
 	ui_reactanceUnits = new wxStaticText( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -441,6 +441,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_unitsRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );
 	ui_cableLength->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onLengthSelected ), NULL, this );
 	ui_frequency->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onFrequencySelected ), NULL, this );
+	ui_resistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
+	ui_reactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
 }
 
 tlineUI::~tlineUI()
@@ -450,5 +452,7 @@ tlineUI::~tlineUI()
 	ui_unitsRadioButtons->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );
 	ui_cableLength->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onLengthSelected ), NULL, this );
 	ui_frequency->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onFrequencySelected ), NULL, this );
+	ui_resistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
+	ui_reactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
 
 }

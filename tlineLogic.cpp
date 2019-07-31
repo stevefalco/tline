@@ -52,6 +52,20 @@ void tlineLogic::onLengthSelected( wxCommandEvent& event )
 	recalculate();
 }
 
+void tlineLogic::onResistanceSelected( wxCommandEvent& event )
+{
+	m_resistanceStr = event.GetString();
+
+	recalculate();
+}
+
+void tlineLogic::onReactanceSelected( wxCommandEvent& event )
+{
+	m_reactanceStr = event.GetString();
+
+	recalculate();
+}
+
 double tlineLogic::wavelength()
 {
 	double				wavelength;

@@ -30,6 +30,8 @@ class tlineLogic : public tlineUI
 		void onUnitsSelected( wxCommandEvent& event );
 		void onFrequencySelected( wxCommandEvent& event );
 		void onLengthSelected( wxCommandEvent& event );
+		void onResistanceSelected( wxCommandEvent& event );
+		void onReactanceSelected( wxCommandEvent& event );
 
 		double wavelength();
 
@@ -49,6 +51,8 @@ class tlineLogic : public tlineUI
 		wxString		m_unitsStr = _("Feet");
 		wxString		m_frequencyStr = _("7.0");
 		wxString		m_lengthStr = _("100");
+		wxString		m_resistanceStr = _("50");
+		wxString		m_reactanceStr = _("0");
 
 		double			m_units;
 		double			m_attenPer100Feet;
