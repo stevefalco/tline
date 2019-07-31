@@ -100,31 +100,31 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	bPane1->Add( bPane1Left, 0, wxALL, 5 );
 
-	wxBoxSizer* bPane1Right;
-	bPane1Right = new wxBoxSizer( wxVERTICAL );
+	wxStaticBoxSizer* sbPane1Right;
+	sbPane1Right = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxEmptyString ), wxVERTICAL );
 
 	wxBoxSizer* bPane1RightUpper;
 	bPane1RightUpper = new wxBoxSizer( wxHORIZONTAL );
 
-	m_cableLengthTag = new wxStaticText( this, wxID_ANY, wxT("Length:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cableLengthTag = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Length:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_cableLengthTag->Wrap( -1 );
 	bPane1RightUpper->Add( m_cableLengthTag, 0, wxALL, 5 );
 
-	m_cableLength = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_cableLength = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bPane1RightUpper->Add( m_cableLength, 0, wxALL, 5 );
 
-	m_lengthUnits = new wxStaticText( this, wxID_ANY, wxT("Feet"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_lengthUnits = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Feet"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_lengthUnits->Wrap( -1 );
 	bPane1RightUpper->Add( m_lengthUnits, 0, wxALL, 5 );
 
 
 	bPane1RightUpper->Add( 40, 0, 1, wxALL, 5 );
 
-	m_lambdaTag = new wxStaticText( this, wxID_ANY, wxT("Lambda:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_lambdaTag = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Lambda:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_lambdaTag->Wrap( -1 );
 	bPane1RightUpper->Add( m_lambdaTag, 0, wxALL, 5 );
 
-	m_lambda = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_lambda = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_lambda->Enable( false );
 
 	bPane1RightUpper->Add( m_lambda, 0, wxALL, 5 );
@@ -132,29 +132,29 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	bPane1RightUpper->Add( 30, 0, 1, wxALL, 5 );
 
-	m_frequencyTag = new wxStaticText( this, wxID_ANY, wxT("Frequency:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_frequencyTag = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Frequency:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_frequencyTag->Wrap( -1 );
 	bPane1RightUpper->Add( m_frequencyTag, 0, wxALL, 5 );
 
-	m_frequency = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_frequency = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bPane1RightUpper->Add( m_frequency, 0, wxALL, 5 );
 
-	m_frequencyUnits = new wxStaticText( this, wxID_ANY, wxT("MHz"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_frequencyUnits = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("MHz"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_frequencyUnits->Wrap( -1 );
 	bPane1RightUpper->Add( m_frequencyUnits, 0, wxALL, 5 );
 
 
-	bPane1Right->Add( bPane1RightUpper, 1, wxEXPAND|wxSHAPED, 5 );
+	sbPane1Right->Add( bPane1RightUpper, 1, wxEXPAND|wxSHAPED, 5 );
 
-	m_wSuffixNote = new wxStaticText( this, wxID_ANY, wxT("Use \"w\" suffix for wavelength (for example, 0.25w)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_wSuffixNote = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Use \"w\" suffix for wavelength (for example, 0.25w)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_wSuffixNote->Wrap( -1 );
-	bPane1Right->Add( m_wSuffixNote, 0, 0, 5 );
+	sbPane1Right->Add( m_wSuffixNote, 0, 0, 5 );
 
 
-	bPane1->Add( bPane1Right, 1, wxEXPAND|wxSHAPED, 5 );
+	bPane1->Add( sbPane1Right, 1, wxEXPAND, 5 );
 
 
-	bMainWindow->Add( bPane1, 1, wxALL, 5 );
+	bMainWindow->Add( bPane1, 1, wxALL|wxSHAPED, 5 );
 
 	wxBoxSizer* bPane2;
 	bPane2 = new wxBoxSizer( wxVERTICAL );
@@ -239,52 +239,191 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxString m_sourceRadioButtonsChoices[] = { wxT("Normal"), wxT("Autec"), wxT("Noise Bridge") };
 	int m_sourceRadioButtonsNChoices = sizeof( m_sourceRadioButtonsChoices ) / sizeof( wxString );
 	m_sourceRadioButtons = new wxRadioBox( this, wxID_ANY, wxT("Source"), wxDefaultPosition, wxDefaultSize, m_sourceRadioButtonsNChoices, m_sourceRadioButtonsChoices, 1, wxRA_SPECIFY_COLS );
-	m_sourceRadioButtons->SetSelection( 0 );
+	m_sourceRadioButtons->SetSelection( 1 );
 	bPane3Left->Add( m_sourceRadioButtons, 0, wxALL, 5 );
 
 
 	bPane3->Add( bPane3Left, 1, wxEXPAND, 5 );
 
-	wxBoxSizer* bPane3Center;
-	bPane3Center = new wxBoxSizer( wxHORIZONTAL );
+	wxStaticBoxSizer* sbPane3Center;
+	sbPane3Center = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxEmptyString ), wxHORIZONTAL );
+
+	wxBoxSizer* bPane3CenterLeft;
+	bPane3CenterLeft = new wxBoxSizer( wxVERTICAL );
 
 	wxString m_loadInputRadioButtonsChoices[] = { wxT("Load"), wxT("Input") };
 	int m_loadInputRadioButtonsNChoices = sizeof( m_loadInputRadioButtonsChoices ) / sizeof( wxString );
-	m_loadInputRadioButtons = new wxRadioBox( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_loadInputRadioButtonsNChoices, m_loadInputRadioButtonsChoices, 1, wxRA_SPECIFY_COLS );
+	m_loadInputRadioButtons = new wxRadioBox( sbPane3Center->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_loadInputRadioButtonsNChoices, m_loadInputRadioButtonsChoices, 1, wxRA_SPECIFY_COLS );
 	m_loadInputRadioButtons->SetSelection( 0 );
-	bPane3Center->Add( m_loadInputRadioButtons, 0, wxALL, 5 );
-
-	wxBoxSizer* bSizer13;
-	bSizer13 = new wxBoxSizer( wxVERTICAL );
-
-	wxBoxSizer* bSizer14;
-	bSizer14 = new wxBoxSizer( wxHORIZONTAL );
-
-	m_staticText16 = new wxStaticText( this, wxID_ANY, wxT("Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText16->Wrap( -1 );
-	bSizer14->Add( m_staticText16, 0, wxALL, 5 );
+	bPane3CenterLeft->Add( m_loadInputRadioButtons, 0, wxALL, 5 );
 
 
-	bSizer13->Add( bSizer14, 1, wxEXPAND, 5 );
+	sbPane3Center->Add( bPane3CenterLeft, 1, wxEXPAND, 5 );
 
-	wxBoxSizer* bSizer15;
-	bSizer15 = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer* bCenterRight;
+	bCenterRight = new wxBoxSizer( wxVERTICAL );
 
-	m_staticText17 = new wxStaticText( this, wxID_ANY, wxT("Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText17->Wrap( -1 );
-	bSizer15->Add( m_staticText17, 0, wxALL, 5 );
+	wxBoxSizer* bPane3CenterRightTop;
+	bPane3CenterRightTop = new wxBoxSizer( wxHORIZONTAL );
+
+	m_resistanceTag = new wxStaticText( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_resistanceTag->Wrap( -1 );
+	bPane3CenterRightTop->Add( m_resistanceTag, 0, wxALL, 5 );
+
+	m_resistance = new wxTextCtrl( sbPane3Center->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bPane3CenterRightTop->Add( m_resistance, 0, wxALL, 5 );
+
+	m_resistanceUnits = new wxStaticText( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_resistanceUnits->Wrap( -1 );
+	bPane3CenterRightTop->Add( m_resistanceUnits, 0, wxALL, 5 );
 
 
-	bSizer13->Add( bSizer15, 1, wxEXPAND, 5 );
+	bCenterRight->Add( bPane3CenterRightTop, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane3CenterRightBottom;
+	bPane3CenterRightBottom = new wxBoxSizer( wxHORIZONTAL );
+
+	m_reactanceTag = new wxStaticText( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_reactanceTag->Wrap( -1 );
+	bPane3CenterRightBottom->Add( m_reactanceTag, 0, wxALL, 5 );
+
+	m_reactance = new wxTextCtrl( sbPane3Center->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bPane3CenterRightBottom->Add( m_reactance, 0, wxALL, 5 );
+
+	m_reactanceUnits = new wxStaticText( sbPane3Center->GetStaticBox(), wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_reactanceUnits->Wrap( -1 );
+	bPane3CenterRightBottom->Add( m_reactanceUnits, 0, wxALL, 5 );
 
 
-	bPane3Center->Add( bSizer13, 1, wxEXPAND, 5 );
+	bCenterRight->Add( bPane3CenterRightBottom, 1, wxEXPAND, 5 );
 
 
-	bPane3->Add( bPane3Center, 1, wxEXPAND, 5 );
+	sbPane3Center->Add( bCenterRight, 1, wxEXPAND, 5 );
+
+
+	bPane3->Add( sbPane3Center, 1, wxEXPAND, 5 );
+
+
+	bPane3->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	wxStaticBoxSizer* sbPane3Right;
+	sbPane3Right = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Actions") ), wxVERTICAL );
+
+	m_button1 = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Graph V/I"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbPane3Right->Add( m_button1, 0, wxALL, 5 );
+
+	m_button5 = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Graph Z"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbPane3Right->Add( m_button5, 0, wxALL, 5 );
+
+	m_button2 = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Tuner"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbPane3Right->Add( m_button2, 0, wxALL, 5 );
+
+
+	bPane3->Add( sbPane3Right, 1, wxEXPAND, 5 );
 
 
 	bMainWindow->Add( bPane3, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane4;
+	bPane4 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bPane4Line1;
+	bPane4Line1 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_swrInputTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Line Input):"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_swrInputTag->Wrap( -1 );
+	bPane4Line1->Add( m_swrInputTag, 0, wxALL, 5 );
+
+	m_swrInput = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bPane4Line1->Add( m_swrInput, 0, wxALL, 5 );
+
+
+	bPane4Line1->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_swrLoadTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_swrLoadTag->Wrap( -1 );
+	bPane4Line1->Add( m_swrLoadTag, 0, wxALL, 5 );
+
+	m_swrLoad = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bPane4Line1->Add( m_swrLoad, 0, wxALL, 5 );
+
+
+	bPane4Line1->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_rhoLoadTag = new wxStaticText( this, wxID_ANY, wxT("Rho (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rhoLoadTag->Wrap( -1 );
+	bPane4Line1->Add( m_rhoLoadTag, 0, wxALL, 5 );
+
+	m_rhoLoad = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bPane4Line1->Add( m_rhoLoad, 0, wxALL, 5 );
+
+
+	bPane4->Add( bPane4Line1, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane4Line2;
+	bPane4Line2 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_addedLossTag = new wxStaticText( this, wxID_ANY, wxT("Additional Loss Due To SWR:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_addedLossTag->Wrap( -1 );
+	bPane4Line2->Add( m_addedLossTag, 0, wxALL, 5 );
+
+	m_addedLoss = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bPane4Line2->Add( m_addedLoss, 0, wxALL, 5 );
+
+	m_addedLossUnits = new wxStaticText( this, wxID_ANY, wxT("dB"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_addedLossUnits->Wrap( -1 );
+	bPane4Line2->Add( m_addedLossUnits, 0, wxALL, 5 );
+
+
+	bPane4Line2->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_totalLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_totalLossTag->Wrap( -1 );
+	bPane4Line2->Add( m_totalLossTag, 0, wxALL, 5 );
+
+	m_totalLoss = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bPane4Line2->Add( m_totalLoss, 0, wxALL, 5 );
+
+	m_totalLossUnits = new wxStaticText( this, wxID_ANY, wxT("dB"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_totalLossUnits->Wrap( -1 );
+	bPane4Line2->Add( m_totalLossUnits, 0, wxALL, 5 );
+
+
+	bPane4->Add( bPane4Line2, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane4Line3;
+	bPane4Line3 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_impedanceRectangularTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Rea/Imaginary):"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_impedanceRectangularTag->Wrap( -1 );
+	bPane4Line3->Add( m_impedanceRectangularTag, 0, wxALL, 5 );
+
+	m_impedanceRectangular = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bPane4Line3->Add( m_impedanceRectangular, 0, wxALL, 5 );
+
+	m_impedanceRectangularUnits = new wxStaticText( this, wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_impedanceRectangularUnits->Wrap( -1 );
+	bPane4Line3->Add( m_impedanceRectangularUnits, 0, wxALL, 5 );
+
+
+	bPane4Line3->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_impedancePolarTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Polar):"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_impedancePolarTag->Wrap( -1 );
+	bPane4Line3->Add( m_impedancePolarTag, 0, wxALL, 5 );
+
+	m_impedancePolar = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	bPane4Line3->Add( m_impedancePolar, 0, wxALL, 5 );
+
+	m_impedancePolarUnits = new wxStaticText( this, wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_impedancePolarUnits->Wrap( -1 );
+	bPane4Line3->Add( m_impedancePolarUnits, 0, wxALL, 5 );
+
+
+	bPane4->Add( bPane4Line3, 1, wxEXPAND, 5 );
+
+
+	bMainWindow->Add( bPane4, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bMainWindow );

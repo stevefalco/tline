@@ -23,6 +23,8 @@
 #include <wx/radiobox.h>
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
+#include <wx/statbox.h>
+#include <wx/button.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -67,8 +69,33 @@ class tlineUI : public wxFrame
 		wxStaticText* m_totalMatchedLineLossUnits;
 		wxRadioBox* m_sourceRadioButtons;
 		wxRadioBox* m_loadInputRadioButtons;
-		wxStaticText* m_staticText16;
-		wxStaticText* m_staticText17;
+		wxStaticText* m_resistanceTag;
+		wxTextCtrl* m_resistance;
+		wxStaticText* m_resistanceUnits;
+		wxStaticText* m_reactanceTag;
+		wxTextCtrl* m_reactance;
+		wxStaticText* m_reactanceUnits;
+		wxButton* m_button1;
+		wxButton* m_button5;
+		wxButton* m_button2;
+		wxStaticText* m_swrInputTag;
+		wxTextCtrl* m_swrInput;
+		wxStaticText* m_swrLoadTag;
+		wxTextCtrl* m_swrLoad;
+		wxStaticText* m_rhoLoadTag;
+		wxTextCtrl* m_rhoLoad;
+		wxStaticText* m_addedLossTag;
+		wxTextCtrl* m_addedLoss;
+		wxStaticText* m_addedLossUnits;
+		wxStaticText* m_totalLossTag;
+		wxTextCtrl* m_totalLoss;
+		wxStaticText* m_totalLossUnits;
+		wxStaticText* m_impedanceRectangularTag;
+		wxTextCtrl* m_impedanceRectangular;
+		wxStaticText* m_impedanceRectangularUnits;
+		wxStaticText* m_impedancePolarTag;
+		wxTextCtrl* m_impedancePolar;
+		wxStaticText* m_impedancePolarUnits;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }

@@ -9,6 +9,7 @@ SRC :=									\
 	#
 
 OBJ := $(SRC:%.cpp=build/%.o)
+DEP := $(SRC:%.cpp=build/%.d)
 
 all: build $(OBJ) ftline
 
@@ -16,7 +17,9 @@ ftline: $(OBJ)
 	g++ -g -o $@ $^ $(WX_CXX_LIBS)
 
 build/%.o: %.cpp
-	g++ -g $(WX_CXX_FLAGS) -o $@ -c $^
+	g++ -MMD -g $(WX_CXX_FLAGS) -o $@ -c $<
 
 build:
 	mkdir -p build
+
+-include $(DEP)
