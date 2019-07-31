@@ -51,13 +51,18 @@ class tlineLogic : public tlineUI
 		wxString		m_lengthStr = _("100");
 
 		double			m_units;
-		double			m_atten;
+		double			m_attenPer100Feet;
+		double			m_attenPer100Meters;
+		double			m_attenPer100Units;
+		double			m_attenNepersPerUnitLength;
+		double			m_attenDBPerUnitLength;
 		double			m_frequency;
 		double			m_length;
 		double			m_phase;
 		double			m_cableResistivePart;
 		double			m_cableReactivePart;
 		double			m_wavelength;
+		double			m_lambda;
 
 		std::complex<double>	m_lossCoef;
 		std::complex<double>	m_zCable;

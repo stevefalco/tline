@@ -26,7 +26,6 @@ class cableTypes
 				);
 
 		double findAtten(
-				int			units,
 				CABLE_PROPERTIES	*cp,
 				double			frequency
 				);

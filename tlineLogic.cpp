@@ -13,7 +13,7 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
 
 	m_c = new cableTypes;
-	m_programTitle->SetLabel(title);
+	ui_programTitle->SetLabel(title);
 
 	recalculate();
 }
@@ -80,7 +80,7 @@ void tlineLogic::recalculate()
 		m_units = USE_FEET;
 		wxLogMessage("Unkown Units %s", m_unitsStr);
 	}
-	m_lengthUnits->SetLabel(m_unitsStr);
+	ui_lengthUnits->SetLabel(m_unitsStr);
 
 	// Convert the frequency string.
 	m_frequency = atof(m_frequencyStr) * 1.0E6;
@@ -103,7 +103,7 @@ void tlineLogic::recalculate()
 		if(lastChar == 'w' || lastChar == 'W') {
 			m_length = atof(m_lengthStr) * m_wavelength;
 			snprintf(buffer, 512, "%.2f", m_length);
-			m_cableLength->ChangeValue(buffer);
+			ui_cableLength->ChangeValue(buffer);
 		} else {
 			m_length = atof(m_lengthStr);
 		}
@@ -111,25 +111,50 @@ void tlineLogic::recalculate()
 		m_length = atof(m_lengthStr);
 	}
 
-	// Look up the attenuation in nepers per unit length.
-	m_atten = m_c->findAtten(m_units, m_cp, m_frequency);
+	// Calculate the length of the line in wavelength units.
+	m_lambda = m_length / m_wavelength;
+
+	// Look up the attenuation in dB per hundred feet, and convert to the
+	// other formats we will need.
+	m_attenPer100Feet = m_c->findAtten(m_cp, m_frequency);
+	m_attenPer100Meters = m_attenPer100Feet * M_TO_F;
+	if(m_units == USE_FEET) {
+		m_attenPer100Units = m_attenPer100Feet;
+		snprintf(buffer, 512, "dB/100 Feet");
+		ui_matchedLineLossUnits->SetLabel(buffer);
+	} else {
+		m_attenPer100Units = m_attenPer100Meters;
+		snprintf(buffer, 512, "dB/100 Meters");
+		ui_matchedLineLossUnits->SetLabel(buffer);
+	}
+	m_attenDBPerUnitLength = m_attenPer100Units / 100.0;
+	m_attenNepersPerUnitLength = m_attenDBPerUnitLength * DB_TO_NEPERS;
 
 	// Calculate the phase angle per unit length at the chosen frequency.
 	m_phase = (2.0 * PI) / m_wavelength;
 
 	// Combine attenuation and phase angle to get the loss coefficient.
-	m_lossCoef = std::complex<double>(m_atten, m_phase);
+	m_lossCoef = std::complex<double>(m_attenNepersPerUnitLength, m_phase);
 
 	// Find the complex impedance of the coax.  There are several ways to
 	// do this, and they each give different answers.  This seems to be the
 	// best I've found...
-	m_cableResistivePart = sqrt(sq(m_cp->impedance) / (1.0 + sq(m_atten) / sq(m_phase)));
-	m_cableReactivePart = -m_cableResistivePart * (m_atten / m_phase);
+	m_cableResistivePart = sqrt(sq(m_cp->impedance) / (1.0 + sq(m_attenNepersPerUnitLength) / sq(m_phase)));
+	m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
 	m_zCable =  std::complex<double>(m_cableResistivePart, m_cableReactivePart);
 
-	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zCable), imag(m_zCable));
-	m_characteristicZ0->ChangeValue(buffer);
+	snprintf(buffer, 512, "%.2f", m_lambda);
+	ui_lambda->ChangeValue(buffer);
 
-	snprintf(buffer, 512, "%.2f", m_length / m_wavelength);
-	m_lambda->ChangeValue(buffer);
+	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zCable), imag(m_zCable));
+	ui_characteristicZ0->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_attenPer100Units);
+	ui_matchedLineLoss->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
+	ui_velocityFactor->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_attenDBPerUnitLength * m_length);
+	ui_totalMatchedLineLoss->ChangeValue(buffer);
 }

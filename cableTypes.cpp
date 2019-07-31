@@ -232,10 +232,9 @@ cableTypes::findCable(
 	return 0;
 }
 
-// Return attenuation per unit length, in nepers.
+// Return attenuation per hundred feet.
 double
 cableTypes::findAtten(
-		int			units,
 		CABLE_PROPERTIES	*cp,
 		double			frequency
 		)
@@ -258,25 +257,11 @@ cableTypes::findAtten(
 			if(freqLow == 0.0) {
 				// Special case - frequency is below the attenuation chart, so just use
 				// the lower bound.
-				result = attenHigh;
-				if(units == USE_FEET) {
-					return DB_TO_NEPERS * result / 100.0;
-				} else if(units == USE_METERS) {
-					return M_TO_F * DB_TO_NEPERS * result / 100.0;
-				} else {
-					return -1.0;
-				}
+				return attenHigh;
 			}
 
 			// Linear interpolation of attenuation.
-			result = (((frequency - freqLow) / (freqHigh - freqLow)) * (attenHigh - attenLow)) + attenLow;
-			if(units == USE_FEET) {
-				return DB_TO_NEPERS * result / 100.0;
-			} else if(units == USE_METERS) {
-				return M_TO_F * DB_TO_NEPERS * result / 100.0;
-			} else {
-				return -1.0;
-			}
+			return (((frequency - freqLow) / (freqHigh - freqLow)) * (attenHigh - attenLow)) + attenLow;
 		}
 	}
 
