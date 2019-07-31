@@ -4,12 +4,14 @@
 #  include "wx/wx.h"
 #endif
 
+#include "version.h"
 #include "tlineLogic.h"
 #include "cableTypes.h"
 
 tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 {
-	m_programTitle->SetLabel("Transmission Line Calculator");
+	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
+	m_programTitle->SetLabel(title);
 }
 
 void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
