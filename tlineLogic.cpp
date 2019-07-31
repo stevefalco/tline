@@ -85,9 +85,6 @@ void tlineLogic::recalculate()
 	// Convert the frequency string.
 	m_frequency = atof(m_frequencyStr) * 1.0E6;
 
-	// Convert the length string.
-	m_length = atof(m_lengthStr);
-
 	// Look up the cable parameters.
 	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
 
@@ -99,6 +96,21 @@ void tlineLogic::recalculate()
 	//Calculate the wavelength.  We need the velocity factor here.
 	m_wavelength = wavelength();
 	
+	// Convert the length string.  We need the wavelength here.
+	if(!m_lengthStr.empty()) {
+		char lastChar = *m_lengthStr.rbegin();
+
+		if(lastChar == 'w' || lastChar == 'W') {
+			m_length = atof(m_lengthStr) * m_wavelength;
+			snprintf(buffer, 512, "%.2f", m_length);
+			m_cableLength->ChangeValue(buffer);
+		} else {
+			m_length = atof(m_lengthStr);
+		}
+	} else {
+		m_length = atof(m_lengthStr);
+	}
+
 	// Look up the attenuation in nepers per unit length.
 	m_atten = m_c->findAtten(m_units, m_cp, m_frequency);
 
