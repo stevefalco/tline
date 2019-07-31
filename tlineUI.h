@@ -10,6 +10,9 @@
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/string.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
 #include <wx/menu.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
@@ -18,8 +21,8 @@
 #include <wx/stattext.h>
 #include <wx/combobox.h>
 #include <wx/radiobox.h>
-#include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/textctrl.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -33,33 +36,42 @@ class tlineUI : public wxFrame
 	private:
 
 	protected:
-		wxMenuBar* m_menubar1;
-		wxMenu* file;
-		wxMenu* help;
+		wxMenuBar* m_menubar;
+		wxMenu* fileMenu;
+		wxMenuItem* m_fileMenuExit;
+		wxMenu* helpMenu;
 		wxStaticText* m_programTitle;
-		wxComboBox* m_comboBox1;
-		wxRadioBox* m_radioBox1;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textCtrl1;
-		wxStaticText* m_staticText4;
-		wxStaticText* m_staticText5;
-		wxTextCtrl* m_textCtrl31;
-		wxStaticText* m_staticText6;
-		wxTextCtrl* m_textCtrl3;
-		wxStaticText* m_staticText7;
-		wxStaticText* m_staticText8;
-		wxStaticText* m_staticText12;
-		wxTextCtrl* m_textCtrl4;
-		wxStaticText* m_staticText15;
-		wxTextCtrl* m_textCtrl5;
-		wxStaticText* m_staticText121;
-		wxTextCtrl* m_textCtrl8;
-		wxStaticText* m_staticText151;
-		wxTextCtrl* m_textCtrl6;
-		wxStaticText* m_staticText25;
-		wxTextCtrl* m_textCtrl7;
+		wxComboBox* m_cableType;
+		wxRadioBox* m_unitsRadioButtons;
+		wxStaticText* m_cableLengthTag;
+		wxTextCtrl* m_cableLength;
+		wxStaticText* m_lengthUnits;
+		wxStaticText* m_lambdaTag;
+		wxTextCtrl* m_lambda;
+		wxStaticText* m_frequencyTag;
+		wxTextCtrl* m_frequency;
+		wxStaticText* m_frequencyUnits;
+		wxStaticText* m_wSuffixNote;
+		wxStaticText* m_characteristicZ0Tag;
+		wxTextCtrl* m_characteristicZ0;
+		wxStaticText* m_matchedLineLossTag;
+		wxTextCtrl* m_matchedLineLoss;
+		wxStaticText* m_matchedLineLossUnits;
+		wxStaticText* m_velocityFactorTag;
+		wxTextCtrl* m_velocityFactor;
+		wxStaticText* m_maxVoltageTag;
+		wxTextCtrl* m_maxVoltage;
+		wxStaticText* m_maxVoltageUnits;
+		wxStaticText* m_totalMatchedLineLossTag;
+		wxTextCtrl* m_totalMatchedLineLoss;
+		wxStaticText* m_totalMatchedLineLossUnits;
+		wxRadioBox* m_sourceRadioButtons;
+		wxRadioBox* m_loadInputRadioButtons;
+		wxStaticText* m_staticText16;
+		wxStaticText* m_staticText17;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
 
 

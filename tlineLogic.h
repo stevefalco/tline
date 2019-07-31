@@ -20,6 +20,7 @@ class tlineLogic : public tlineUI
 
 	private:
 		void onCableTypeSelected( wxCommandEvent& event );
+		void onFileExit( wxCommandEvent& event );
 };
 
 #endif // __tlineLogic__

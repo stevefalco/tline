@@ -24,3 +24,10 @@ void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 		wxLogMessage("no such cable");
 	}
 }
+
+void tlineLogic::onFileExit( wxCommandEvent& event )
+{
+	//wxLogMessage("got exit event %d", event.GetInt());
+	// Could check for dirty and request save before exiting here.
+	Destroy();
+}
