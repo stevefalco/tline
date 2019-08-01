@@ -327,14 +327,14 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxStaticBoxSizer* sbPane3Right;
 	sbPane3Right = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Actions") ), wxVERTICAL );
 
-	ui_button1 = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Graph V/I"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbPane3Right->Add( ui_button1, 0, wxALL, 5 );
+	ui_graphVI = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Graph V/I"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbPane3Right->Add( ui_graphVI, 0, wxALL, 5 );
 
-	ui_button5 = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Graph Z"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbPane3Right->Add( ui_button5, 0, wxALL, 5 );
+	ui_graphZ = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Graph Z"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbPane3Right->Add( ui_graphZ, 0, wxALL, 5 );
 
-	ui_button2 = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Tuner"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbPane3Right->Add( ui_button2, 0, wxALL, 5 );
+	ui_tuner = new wxButton( sbPane3Right->GetStaticBox(), wxID_ANY, wxT("Tuner"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbPane3Right->Add( ui_tuner, 0, wxALL, 5 );
 
 
 	bPane3->Add( sbPane3Right, 1, wxEXPAND, 5 );
@@ -456,6 +456,9 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_loadInputRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onLoadInputSelected ), NULL, this );
 	ui_resistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
 	ui_reactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
+	ui_graphVI->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onGraphVIClicked ), NULL, this );
+	ui_graphZ->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onGraphZClicked ), NULL, this );
+	ui_tuner->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onTunerClicked ), NULL, this );
 }
 
 tlineUI::~tlineUI()
@@ -468,5 +471,8 @@ tlineUI::~tlineUI()
 	ui_loadInputRadioButtons->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onLoadInputSelected ), NULL, this );
 	ui_resistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
 	ui_reactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
+	ui_graphVI->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onGraphVIClicked ), NULL, this );
+	ui_graphZ->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onGraphZClicked ), NULL, this );
+	ui_tuner->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onTunerClicked ), NULL, this );
 
 }

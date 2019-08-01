@@ -35,6 +35,9 @@ class tlineLogic : public tlineUI
 		void onResistanceSelected( wxCommandEvent& event );
 		void onReactanceSelected( wxCommandEvent& event );
 		void onLoadInputSelected( wxCommandEvent& event );
+		void onGraphVIClicked( wxCommandEvent& event );
+		void onGraphZClicked( wxCommandEvent& event );
+		void onTunerClicked( wxCommandEvent& event );
 
 		double wavelength();
 		std::complex<double> impedanceAtLoad();

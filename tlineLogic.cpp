@@ -215,6 +215,21 @@ void tlineLogic::onLoadInputSelected( wxCommandEvent& event )
 	recalculate();
 }
 
+void tlineLogic::onGraphVIClicked( wxCommandEvent& event )
+{
+	wxLogMessage("VI clicked");
+}
+
+void tlineLogic::onGraphZClicked( wxCommandEvent& event )
+{
+	wxLogMessage("Z clicked");
+}
+
+void tlineLogic::onTunerClicked( wxCommandEvent& event )
+{
+	wxLogMessage("Tuner clicked");
+}
+
 double tlineLogic::wavelength()
 {
 	double				wavelength;
