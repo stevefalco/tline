@@ -75,9 +75,13 @@ class tlineLogic : public tlineUI
 		double			m_lambda;
 		double			m_resistance;
 		double			m_reactance;
-		double			m_rhoMagnitude;
+		double			m_rhoMagnitudeAtLoad;
+		double			m_rhoMagnitudeAtSource;
+		double			m_returnLossAtLoad;
+		double			m_returnLossAtSource;
 		double			m_swrAtLoad;
-		double			m_matchedLineLoss;
+		double			m_swrAtSource;
+		double			m_totalMatchedLineLoss;
 		double			m_totalLoss;
 		double			m_extraSWRloss;
 

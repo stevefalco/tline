@@ -224,6 +224,7 @@ std::complex<double> tlineLogic::impedance()
 void tlineLogic::recalculate()
 {
 	char				buffer[512];
+	double				tmp;
 
 	// Convert the units string.
 	if(m_unitsStr == "Feet") {
@@ -232,7 +233,7 @@ void tlineLogic::recalculate()
 		m_units = USE_METERS;
 	} else {
 		m_units = USE_FEET;
-		wxLogMessage("Unkown Units %s", m_unitsStr);
+		wxLogMessage("Unknown Units %s", m_unitsStr);
 	}
 	ui_lengthUnits->SetLabel(m_unitsStr);
 
@@ -307,21 +308,27 @@ void tlineLogic::recalculate()
 
 	// Calculate the reflection coefficient at the load.
 	m_rho = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
-	m_rhoMagnitude = abs(m_rho);
+	m_rhoMagnitudeAtLoad = abs(m_rho);
+	m_returnLossAtLoad = 20.0 * log10(m_rhoMagnitudeAtLoad);
 
 	// Calculate the SWR at the load.
-	m_swrAtLoad = (1.0 + m_rhoMagnitude) / (1.0 - m_rhoMagnitude);
+	m_swrAtLoad = (1.0 + m_rhoMagnitudeAtLoad) / (1.0 - m_rhoMagnitudeAtLoad);
 
 	// Calculate matched line loss.
-	m_matchedLineLoss = m_attenDBPerUnitLength * m_length;
+	m_totalMatchedLineLoss = m_attenDBPerUnitLength * m_length;
 
 	//Calculate total loss.
-	double a = pow(10.0, 0.1 * m_matchedLineLoss);
-	m_totalLoss = 10.0 * log10((sq(a) - sq(m_rhoMagnitude)) / (a * (1.0 - sq(m_rhoMagnitude))));
+	tmp = pow(10.0, 0.1 * m_totalMatchedLineLoss);
+	m_totalLoss = 10.0 * log10((sq(tmp) - sq(m_rhoMagnitudeAtLoad)) / (tmp * (1.0 - sq(m_rhoMagnitudeAtLoad))));
 	
-	// Calculate extra lost caused by SWR.
-	m_extraSWRloss = m_totalLoss - m_matchedLineLoss;
+	// Calculate extra loss caused by SWR.
+	m_extraSWRloss = m_totalLoss - m_totalMatchedLineLoss;
 
+	// Calculate the SWR at the source.
+	m_returnLossAtSource = m_returnLossAtLoad - 2.0 * m_totalLoss;
+	m_rhoMagnitudeAtSource = pow(10.0, m_returnLossAtSource / 20.0);
+	m_swrAtSource = (1 + m_rhoMagnitudeAtSource) / (1 - m_rhoMagnitudeAtSource);
+	
 	snprintf(buffer, 512, "%.2f", m_lambda);
 	ui_lambda->ChangeValue(buffer);
 
@@ -334,7 +341,7 @@ void tlineLogic::recalculate()
 	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
 	ui_velocityFactor->ChangeValue(buffer);
 
-	snprintf(buffer, 512, "%.2f", m_matchedLineLoss);
+	snprintf(buffer, 512, "%.2f", m_totalMatchedLineLoss);
 	ui_totalMatchedLineLoss->ChangeValue(buffer);
 
 	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zIn), imag(m_zIn));
@@ -343,7 +350,7 @@ void tlineLogic::recalculate()
 	snprintf(buffer, 512, "%.2f, %.2fj Ohms", abs(m_zIn), arg(m_zIn) * RADIANS_TO_DEGREES);
 	ui_impedancePolar->ChangeValue(buffer);
 
-	snprintf(buffer, 512, "%.2f", m_rhoMagnitude);
+	snprintf(buffer, 512, "%.2f", m_rhoMagnitudeAtLoad);
 	ui_rhoLoad->ChangeValue(buffer);
 
 	snprintf(buffer, 512, "%.2f", m_swrAtLoad);
@@ -357,4 +364,7 @@ void tlineLogic::recalculate()
 
 	snprintf(buffer, 512, "%.2f", m_extraSWRloss);
 	ui_addedLoss->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_swrAtSource);
+	ui_swrInput->ChangeValue(buffer);
 }
