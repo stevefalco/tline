@@ -10,4 +10,12 @@
 #define F_TO_M			0.3048
 #define M_TO_F			3.28084
 
+// WARNING: These assigments must match the order in the GUI.
+#define USE_FEET		0
+#define USE_METERS		1
+
+// WARNING: These assigments must match the order in the GUI.
+#define USE_LOAD		0
+#define USE_INPUT		1
+
 #endif // __constants__

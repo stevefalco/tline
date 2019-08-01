@@ -34,9 +34,11 @@ class tlineLogic : public tlineUI
 		void onLengthSelected( wxCommandEvent& event );
 		void onResistanceSelected( wxCommandEvent& event );
 		void onReactanceSelected( wxCommandEvent& event );
+		void onLoadInputSelected( wxCommandEvent& event );
 
 		double wavelength();
-		std::complex<double> impedance();
+		std::complex<double> impedanceAtLoad();
+		std::complex<double> impedanceAtInput();
 
 
 		void recalculate();
@@ -59,6 +61,7 @@ class tlineLogic : public tlineUI
 		wxString		m_lengthStr = _("100");
 		wxString		m_resistanceStr = _("50");
 		wxString		m_reactanceStr = _("0");
+		wxString		m_loadInputStr = _("Load");
 
 		double			m_units;
 		double			m_attenPer100Feet;
@@ -88,7 +91,7 @@ class tlineLogic : public tlineUI
 		std::complex<double>	m_lossCoef;
 		std::complex<double>	m_zCable;
 		std::complex<double>	m_zLoad;
-		std::complex<double>	m_zIn;
+		std::complex<double>	m_zInput;
 		std::complex<double>	m_rho;
 };
 

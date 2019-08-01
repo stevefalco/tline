@@ -1,10 +1,6 @@
 #ifndef __cableTypes__
 #define __cableTypes__
 
-// WARNING: These assigments must match the order in the GUI.
-#define USE_FEET		0
-#define USE_METERS		1
-
 typedef struct {
 	double frequency;
 	double attenuation;

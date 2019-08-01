@@ -97,6 +97,16 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 			m_reactanceStr = p;
 			ui_reactance->ChangeValue(m_reactanceStr);
 		}
+
+		if(strcmp(buffer, "loadInput") == 0) {
+			m_loadInputStr = p;
+			if(strcmp(m_loadInputStr, "Load") == 0) {
+				ui_loadInputRadioButtons->SetSelection(USE_LOAD);
+			}
+			if(strcmp(m_loadInputStr, "Input") == 0) {
+				ui_loadInputRadioButtons->SetSelection(USE_INPUT);
+			}
+		}
 	}
 
 	f->Close();
@@ -131,6 +141,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	fprintf(fp, "length=%s\n",	(const char *)m_lengthStr.mb_str());
 	fprintf(fp, "resistance=%s\n",	(const char *)m_resistanceStr.mb_str());
 	fprintf(fp, "reactance=%s\n",	(const char *)m_reactanceStr.mb_str());
+	fprintf(fp, "loadInput=%s\n",	(const char *)m_loadInputStr.mb_str());
 
 	if(fflush(fp) == EOF) {
 		wxLogError("Cannot flush file '%s'.", saveFileDialog.GetPath());
@@ -196,6 +207,14 @@ void tlineLogic::onReactanceSelected( wxCommandEvent& event )
 	recalculate();
 }
 
+void tlineLogic::onLoadInputSelected( wxCommandEvent& event )
+{
+	m_loadInputStr = event.GetString();
+	m_saved = 0;
+
+	recalculate();
+}
+
 double tlineLogic::wavelength()
 {
 	double				wavelength;
@@ -212,12 +231,22 @@ double tlineLogic::wavelength()
 }
 
 // Return complex impedance at input of cable for a given length and load.
-std::complex<double> tlineLogic::impedance()
+std::complex<double> tlineLogic::impedanceAtLoad()
 {
 	return m_zCable * (
 			(m_zLoad * cosh(m_lossCoef * m_length) + m_zCable * sinh(m_lossCoef * m_length))
 			/
 			(m_zLoad * sinh(m_lossCoef * m_length) + m_zCable * cosh(m_lossCoef * m_length))
+		       );
+}
+
+// Return complex impedance at load of cable for a given length and input.
+std::complex<double> tlineLogic::impedanceAtInput()
+{
+	return -m_zCable * (
+			(m_zInput * cosh(m_lossCoef * m_length) - m_zCable * sinh(m_lossCoef * m_length))
+			/
+			(m_zInput * sinh(m_lossCoef * m_length) - m_zCable * cosh(m_lossCoef * m_length))
 		       );
 }
 
@@ -298,13 +327,28 @@ void tlineLogic::recalculate()
 	m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
 	m_zCable = std::complex<double>(m_cableResistivePart, m_cableReactivePart);
 
-	// Use the provided load impedance.
 	m_resistance = atof(m_resistanceStr);
 	m_reactance = atof(m_reactanceStr);
-	m_zLoad = std::complex<double>(m_resistance, m_reactance);
+	if(m_loadInputStr == "Load") {
+		// Use the provided load impedance.
+		m_zLoad = std::complex<double>(m_resistance, m_reactance);
 
-	// Find the input impedance for the full length of cable.
-	m_zIn = impedance();
+		// Find the input impedance for the full length of cable.
+		m_zInput = impedanceAtLoad();
+
+		ui_impedanceRectangularTag->SetLabel("Impedance at Input (Real/Imaginary):");
+		ui_impedancePolarTag->SetLabel("Impedance at Input (Polar):");
+	} else if(m_loadInputStr == "Input") {
+		// Use the provided input impedance.
+		m_zInput = std::complex<double>(m_resistance, m_reactance);
+
+		// Find the load impedance for the full length of cable.
+		m_zLoad = impedanceAtInput();
+
+		ui_impedanceRectangularTag->SetLabel("Impedance at Load (Real/Imaginary):");
+		ui_impedancePolarTag->SetLabel("Impedance at Load (Polar):");
+	}
+
 
 	// Calculate the reflection coefficient at the load.
 	m_rho = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
@@ -344,10 +388,18 @@ void tlineLogic::recalculate()
 	snprintf(buffer, 512, "%.2f", m_totalMatchedLineLoss);
 	ui_totalMatchedLineLoss->ChangeValue(buffer);
 
-	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zIn), imag(m_zIn));
+	if(m_loadInputStr == "Load") {
+		snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zInput), imag(m_zInput));
+	} else if(m_loadInputStr == "Input") {
+		snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zLoad), imag(m_zLoad));
+	}
 	ui_impedanceRectangular->ChangeValue(buffer);
 
-	snprintf(buffer, 512, "%.2f, %.2fj Ohms", abs(m_zIn), arg(m_zIn) * RADIANS_TO_DEGREES);
+	if(m_loadInputStr == "Load") {
+		snprintf(buffer, 512, "%.2f, %.2fj Ohms", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
+	} else if(m_loadInputStr == "Input") {
+		snprintf(buffer, 512, "%.2f, %.2fj Ohms", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);
+	}
 	ui_impedancePolar->ChangeValue(buffer);
 
 	snprintf(buffer, 512, "%.2f", m_rhoMagnitudeAtLoad);

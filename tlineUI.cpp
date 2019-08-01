@@ -251,11 +251,17 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxString ui_sourceRadioButtonsChoices[] = { wxT("Normal"), wxT("Autec"), wxT("Noise Bridge") };
 	int ui_sourceRadioButtonsNChoices = sizeof( ui_sourceRadioButtonsChoices ) / sizeof( wxString );
 	ui_sourceRadioButtons = new wxRadioBox( this, wxID_ANY, wxT("Source"), wxDefaultPosition, wxDefaultSize, ui_sourceRadioButtonsNChoices, ui_sourceRadioButtonsChoices, 1, wxRA_SPECIFY_COLS );
-	ui_sourceRadioButtons->SetSelection( 0 );
+	ui_sourceRadioButtons->SetSelection( 1 );
+	ui_sourceRadioButtons->Enable( false );
+	ui_sourceRadioButtons->Hide();
+
 	bPane3Left->Add( ui_sourceRadioButtons, 0, wxALL, 5 );
 
 
 	bPane3->Add( bPane3Left, 1, wxEXPAND, 5 );
+
+
+	bPane3->Add( 0, 0, 1, wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbPane3Center;
 	sbPane3Center = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxEmptyString ), wxHORIZONTAL );
@@ -447,6 +453,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_unitsRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );
 	ui_cableLength->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onLengthSelected ), NULL, this );
 	ui_frequency->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onFrequencySelected ), NULL, this );
+	ui_loadInputRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onLoadInputSelected ), NULL, this );
 	ui_resistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
 	ui_reactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
 }
@@ -458,6 +465,7 @@ tlineUI::~tlineUI()
 	ui_unitsRadioButtons->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );
 	ui_cableLength->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onLengthSelected ), NULL, this );
 	ui_frequency->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onFrequencySelected ), NULL, this );
+	ui_loadInputRadioButtons->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onLoadInputSelected ), NULL, this );
 	ui_resistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
 	ui_reactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
 
