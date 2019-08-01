@@ -81,6 +81,16 @@ double tlineLogic::wavelength()
 	return wavelength;
 }
 
+// Return complex impedance at input of cable for a given length and load.
+std::complex<double> tlineLogic::impedance()
+{
+	return m_zCable * (
+			(m_zLoad * cosh(m_lossCoef * m_length) + m_zCable * sinh(m_lossCoef * m_length))
+			/
+			(m_zLoad * sinh(m_lossCoef * m_length) + m_zCable * cosh(m_lossCoef * m_length))
+		       );
+}
+
 void tlineLogic::recalculate()
 {
 	char				buffer[512];
@@ -151,11 +161,26 @@ void tlineLogic::recalculate()
 	m_lossCoef = std::complex<double>(m_attenNepersPerUnitLength, m_phase);
 
 	// Find the complex impedance of the coax.  There are several ways to
-	// do this, and they each give different answers.  This seems to be the
-	// best I've found...
+	// do this, and they each give different answers.  This is the best
+	// method that I've found...
 	m_cableResistivePart = sqrt(sq(m_cp->impedance) / (1.0 + sq(m_attenNepersPerUnitLength) / sq(m_phase)));
 	m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
-	m_zCable =  std::complex<double>(m_cableResistivePart, m_cableReactivePart);
+	m_zCable = std::complex<double>(m_cableResistivePart, m_cableReactivePart);
+
+	// Use the provided load impedance.
+	m_resistance = atof(m_resistanceStr);
+	m_reactance = atof(m_reactanceStr);
+	m_zLoad = std::complex<double>(m_resistance, m_reactance);
+
+	// Find the input impedance for the full length of cable.
+	m_zIn = impedance();
+
+	// Calculate the reflection coeficient at the load.
+	m_rho = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
+	m_rhoMagnitude = abs(m_rho);
+
+	// Calculate the SWR at the load.
+	m_swrAtLoad = (1.0 + m_rhoMagnitude) / (1.0 - m_rhoMagnitude);
 
 	snprintf(buffer, 512, "%.2f", m_lambda);
 	ui_lambda->ChangeValue(buffer);
@@ -171,4 +196,16 @@ void tlineLogic::recalculate()
 
 	snprintf(buffer, 512, "%.2f", m_attenDBPerUnitLength * m_length);
 	ui_totalMatchedLineLoss->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zIn), imag(m_zIn));
+	ui_impedanceRectangular->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f, %.2fj Ohms", abs(m_zIn), arg(m_zIn) * RADIANS_TO_DEGREES);
+	ui_impedancePolar->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_rhoMagnitude);
+	ui_rhoLoad->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_swrAtLoad);
+	ui_swrLoad->ChangeValue(buffer);
 }

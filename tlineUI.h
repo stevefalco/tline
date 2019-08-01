@@ -92,10 +92,8 @@ class tlineUI : public wxFrame
 		wxStaticText* ui_totalLossUnits;
 		wxStaticText* ui_impedanceRectangularTag;
 		wxTextCtrl* ui_impedanceRectangular;
-		wxStaticText* ui_impedanceRectangularUnits;
 		wxStaticText* ui_impedancePolarTag;
 		wxTextCtrl* ui_impedancePolar;
-		wxStaticText* ui_impedancePolarUnits;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }

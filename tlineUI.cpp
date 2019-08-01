@@ -398,16 +398,14 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxBoxSizer* bPane4Line3;
 	bPane4Line3 = new wxBoxSizer( wxHORIZONTAL );
 
-	ui_impedanceRectangularTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Rea/Imaginary):"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_impedanceRectangularTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Real/Imaginary):"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_impedanceRectangularTag->Wrap( -1 );
 	bPane4Line3->Add( ui_impedanceRectangularTag, 0, wxALL, 5 );
 
 	ui_impedanceRectangular = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	bPane4Line3->Add( ui_impedanceRectangular, 0, wxALL, 5 );
+	ui_impedanceRectangular->SetMinSize( wxSize( 150,-1 ) );
 
-	ui_impedanceRectangularUnits = new wxStaticText( this, wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_impedanceRectangularUnits->Wrap( -1 );
-	bPane4Line3->Add( ui_impedanceRectangularUnits, 0, wxALL, 5 );
+	bPane4Line3->Add( ui_impedanceRectangular, 0, wxALL, 5 );
 
 
 	bPane4Line3->Add( 0, 0, 1, wxEXPAND, 5 );
@@ -417,11 +415,9 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane4Line3->Add( ui_impedancePolarTag, 0, wxALL, 5 );
 
 	ui_impedancePolar = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	bPane4Line3->Add( ui_impedancePolar, 0, wxALL, 5 );
+	ui_impedancePolar->SetMinSize( wxSize( 150,-1 ) );
 
-	ui_impedancePolarUnits = new wxStaticText( this, wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_impedancePolarUnits->Wrap( -1 );
-	bPane4Line3->Add( ui_impedancePolarUnits, 0, wxALL, 5 );
+	bPane4Line3->Add( ui_impedancePolar, 0, wxALL, 5 );
 
 
 	bPane4->Add( bPane4Line3, 1, wxEXPAND, 5 );

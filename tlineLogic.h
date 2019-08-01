@@ -34,6 +34,8 @@ class tlineLogic : public tlineUI
 		void onReactanceSelected( wxCommandEvent& event );
 
 		double wavelength();
+		std::complex<double> impedance();
+
 
 		void recalculate();
 
@@ -67,9 +69,16 @@ class tlineLogic : public tlineUI
 		double			m_cableReactivePart;
 		double			m_wavelength;
 		double			m_lambda;
+		double			m_resistance;
+		double			m_reactance;
+		double			m_rhoMagnitude;
+		double			m_swrAtLoad;
 
 		std::complex<double>	m_lossCoef;
 		std::complex<double>	m_zCable;
+		std::complex<double>	m_zLoad;
+		std::complex<double>	m_zIn;
+		std::complex<double>	m_rho;
 };
 
 #endif // __tlineLogic__
