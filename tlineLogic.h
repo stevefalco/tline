@@ -26,6 +26,8 @@ class tlineLogic : public tlineUI
 
 	private:
 		void onCableTypeSelected( wxCommandEvent& event );
+		void onFileLoad( wxCommandEvent& event );
+		void onFileSave( wxCommandEvent& event );
 		void onFileExit( wxCommandEvent& event );
 		void onUnitsSelected( wxCommandEvent& event );
 		void onFrequencySelected( wxCommandEvent& event );
@@ -48,6 +50,8 @@ class tlineLogic : public tlineUI
 
 		cableTypes		*m_c;
 		CABLE_PROPERTIES	*m_cp;
+
+		int			m_saved;
 
 		wxString		m_cableTypeStr = _("RG-6 (Belden 8215)");
 		wxString		m_unitsStr = _("Feet");

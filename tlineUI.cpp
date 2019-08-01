@@ -15,6 +15,14 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_menubar = new wxMenuBar( 0 );
 	fileMenu = new wxMenu();
+	wxMenuItem* m_fileMenuLoad;
+	m_fileMenuLoad = new wxMenuItem( fileMenu, wxID_ANY, wxString( wxT("Load") ) , wxEmptyString, wxITEM_NORMAL );
+	fileMenu->Append( m_fileMenuLoad );
+
+	wxMenuItem* ui_fileMenuSave;
+	ui_fileMenuSave = new wxMenuItem( fileMenu, wxID_ANY, wxString( wxT("Save") ) , wxEmptyString, wxITEM_NORMAL );
+	fileMenu->Append( ui_fileMenuSave );
+
 	ui_fileMenuExit = new wxMenuItem( fileMenu, wxID_ANY, wxString( wxT("Exit") ) , wxEmptyString, wxITEM_NORMAL );
 	fileMenu->Append( ui_fileMenuExit );
 
@@ -432,6 +440,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileLoad ), this, m_fileMenuLoad->GetId());
+	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileSave ), this, ui_fileMenuSave->GetId());
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileExit ), this, ui_fileMenuExit->GetId());
 	ui_cableType->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( tlineUI::onCableTypeSelected ), NULL, this );
 	ui_unitsRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );

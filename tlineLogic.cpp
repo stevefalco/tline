@@ -4,6 +4,10 @@
 #  include "wx/wx.h"
 #endif
 
+#include <wx/textfile.h>
+#include <wx/filedlg.h>
+#include <wx/wfstream.h>
+
 #include "version.h"
 #include "tlineLogic.h"
 #include "constants.h"
@@ -14,6 +18,7 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 
 	m_c = new cableTypes;
 	ui_programTitle->SetLabel(title);
+	m_saved = 0;
 
 	recalculate();
 }
@@ -23,6 +28,50 @@ void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 	m_cableTypeStr = event.GetString();
 
 	recalculate();
+}
+
+void tlineLogic::onFileLoad( wxCommandEvent& event )
+{
+	char *buffer[512];
+	int got;
+
+	if(!m_saved) {
+		if(wxMessageBox(_("Current content has not been saved! Proceed?"), _("Please confirm"), wxICON_QUESTION | wxYES_NO, this) == wxNO) {
+			return;
+		}
+	}
+    
+	wxFileDialog openFileDialog(this, _("Open tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+	if(openFileDialog.ShowModal() == wxID_CANCEL) {
+		return;
+	}
+    
+	wxFileInputStream input_stream(openFileDialog.GetPath());
+	if(!input_stream.IsOk()) {
+		wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+		return;
+	}
+    
+	wxFile *f = input_stream.GetFile();
+
+	got = f->Read(buffer, 512);
+	wxLogMessage("got %d bytes", got);
+}
+
+void tlineLogic::onFileSave( wxCommandEvent& event )
+{
+	wxFileDialog saveFileDialog(this, _("Save XYZ file"), "", "", "XYZ files (*.xyz)|*.xyz", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+		return;
+	}
+    
+	wxFileOutputStream output_stream(saveFileDialog.GetPath());
+	if (!output_stream.IsOk()) {
+		wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
+		return;
+	}
+    
+	wxFile *f = output_stream.GetFile();
 }
 
 void tlineLogic::onFileExit( wxCommandEvent& event )

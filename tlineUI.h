@@ -96,6 +96,8 @@ class tlineUI : public wxFrame
 		wxTextCtrl* ui_impedancePolar;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void onFileLoad( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onFileSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onUnitsSelected( wxCommandEvent& event ) { event.Skip(); }
