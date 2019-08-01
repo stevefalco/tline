@@ -305,12 +305,22 @@ void tlineLogic::recalculate()
 	// Find the input impedance for the full length of cable.
 	m_zIn = impedance();
 
-	// Calculate the reflection coeficient at the load.
+	// Calculate the reflection coefficient at the load.
 	m_rho = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
 	m_rhoMagnitude = abs(m_rho);
 
 	// Calculate the SWR at the load.
 	m_swrAtLoad = (1.0 + m_rhoMagnitude) / (1.0 - m_rhoMagnitude);
+
+	// Calculate matched line loss.
+	m_matchedLineLoss = m_attenDBPerUnitLength * m_length;
+
+	//Calculate total loss.
+	double a = pow(10.0, 0.1 * m_matchedLineLoss);
+	m_totalLoss = 10.0 * log10((sq(a) - sq(m_rhoMagnitude)) / (a * (1.0 - sq(m_rhoMagnitude))));
+	
+	// Calculate extra lost caused by SWR.
+	m_extraSWRloss = m_totalLoss - m_matchedLineLoss;
 
 	snprintf(buffer, 512, "%.2f", m_lambda);
 	ui_lambda->ChangeValue(buffer);
@@ -324,7 +334,7 @@ void tlineLogic::recalculate()
 	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
 	ui_velocityFactor->ChangeValue(buffer);
 
-	snprintf(buffer, 512, "%.2f", m_attenDBPerUnitLength * m_length);
+	snprintf(buffer, 512, "%.2f", m_matchedLineLoss);
 	ui_totalMatchedLineLoss->ChangeValue(buffer);
 
 	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zIn), imag(m_zIn));
@@ -341,4 +351,10 @@ void tlineLogic::recalculate()
 
 	snprintf(buffer, 512, "%.0f", m_cp->maximumVoltage);
 	ui_maxVoltage->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_totalLoss);
+	ui_totalLoss->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.2f", m_extraSWRloss);
+	ui_addedLoss->ChangeValue(buffer);
 }

@@ -77,6 +77,9 @@ class tlineLogic : public tlineUI
 		double			m_reactance;
 		double			m_rhoMagnitude;
 		double			m_swrAtLoad;
+		double			m_matchedLineLoss;
+		double			m_totalLoss;
+		double			m_extraSWRloss;
 
 		std::complex<double>	m_lossCoef;
 		std::complex<double>	m_zCable;
