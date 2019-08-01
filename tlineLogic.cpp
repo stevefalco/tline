@@ -18,22 +18,17 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 
 	m_c = new cableTypes;
 	ui_programTitle->SetLabel(title);
-	m_saved = 0;
 
-	recalculate();
-}
-
-void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
-{
-	m_cableTypeStr = event.GetString();
+	// Once any parameter is changed, this will flip to 0.
+	m_saved = 1;
 
 	recalculate();
 }
 
 void tlineLogic::onFileLoad( wxCommandEvent& event )
 {
-	char *buffer[512];
-	int got;
+	char buffer[512];
+	char *p;
 
 	if(!m_saved) {
 		if(wxMessageBox(_("Current content has not been saved! Proceed?"), _("Please confirm"), wxICON_QUESTION | wxYES_NO, this) == wxNO) {
@@ -53,14 +48,65 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 	}
     
 	wxFile *f = input_stream.GetFile();
+	FILE *fp = fdopen(f->fd(), "r");
 
-	got = f->Read(buffer, 512);
-	wxLogMessage("got %d bytes", got);
+	while(fgets(buffer, 512, fp) != NULL) {
+		*strchrnul(buffer, '\n') = 0;
+
+		if(buffer[0] == '#') {
+			continue;
+		}
+
+		if((p = strchr(buffer, '=')) == NULL) {
+			wxLogError("Missing '=' in %s", buffer);
+			continue;
+		}
+		*p++ = 0;
+
+		if(strcmp(buffer, "cableType") == 0) {
+			m_cableTypeStr = p;
+			ui_cableType->ChangeValue(m_cableTypeStr);
+		}
+
+		if(strcmp(buffer, "units") == 0) {
+			m_unitsStr = p;
+			if(strcmp(m_unitsStr, "Feet") == 0) {
+				ui_unitsRadioButtons->SetSelection(USE_FEET);
+			}
+			if(strcmp(m_unitsStr, "Meters") == 0) {
+				ui_unitsRadioButtons->SetSelection(USE_METERS);
+			}
+		}
+
+		if(strcmp(buffer, "frequency") == 0) {
+			m_frequencyStr = p;
+			ui_frequency->ChangeValue(m_frequencyStr);
+		}
+
+		if(strcmp(buffer, "length") == 0) {
+			m_lengthStr = p;
+			ui_cableLength->ChangeValue(m_lengthStr);
+		}
+
+		if(strcmp(buffer, "resistance") == 0) {
+			m_resistanceStr = p;
+			ui_resistance->ChangeValue(m_resistanceStr);
+		}
+
+		if(strcmp(buffer, "reactance") == 0) {
+			m_reactanceStr = p;
+			ui_reactance->ChangeValue(m_reactanceStr);
+		}
+	}
+
+	f->Close();
+
+	recalculate();
 }
 
 void tlineLogic::onFileSave( wxCommandEvent& event )
 {
-	wxFileDialog saveFileDialog(this, _("Save XYZ file"), "", "", "XYZ files (*.xyz)|*.xyz", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+	wxFileDialog saveFileDialog(this, _("Save tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
 	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
@@ -72,6 +118,28 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	}
     
 	wxFile *f = output_stream.GetFile();
+	FILE *fp = fdopen(f->fd(), "w");
+
+	if(fp == NULL) {
+		wxLogError("Cannot open file '%s' for writing.", saveFileDialog.GetPath());
+		return;
+	}
+
+	fprintf(fp, "cableType=%s\n",	(const char *)m_cableTypeStr.mb_str());
+	fprintf(fp, "units=%s\n",	(const char *)m_unitsStr.mb_str());
+	fprintf(fp, "frequency=%s\n",	(const char *)m_frequencyStr.mb_str());
+	fprintf(fp, "length=%s\n",	(const char *)m_lengthStr.mb_str());
+	fprintf(fp, "resistance=%s\n",	(const char *)m_resistanceStr.mb_str());
+	fprintf(fp, "reactance=%s\n",	(const char *)m_reactanceStr.mb_str());
+
+	if(fflush(fp) == EOF) {
+		wxLogError("Cannot flush file '%s'.", saveFileDialog.GetPath());
+		return;
+	}
+
+	f->Close();
+
+	m_saved = 1;
 }
 
 void tlineLogic::onFileExit( wxCommandEvent& event )
@@ -80,9 +148,18 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 	Destroy();
 }
 
+void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
+{
+	m_cableTypeStr = event.GetString();
+	m_saved = 0;
+
+	recalculate();
+}
+
 void tlineLogic::onUnitsSelected( wxCommandEvent& event )
 {
 	m_unitsStr = event.GetString();
+	m_saved = 0;
 
 	recalculate();
 }
@@ -90,6 +167,7 @@ void tlineLogic::onUnitsSelected( wxCommandEvent& event )
 void tlineLogic::onFrequencySelected( wxCommandEvent& event )
 {
 	m_frequencyStr = event.GetString();
+	m_saved = 0;
 
 	recalculate();
 }
@@ -97,6 +175,7 @@ void tlineLogic::onFrequencySelected( wxCommandEvent& event )
 void tlineLogic::onLengthSelected( wxCommandEvent& event )
 {
 	m_lengthStr = event.GetString();
+	m_saved = 0;
 
 	recalculate();
 }
@@ -104,6 +183,7 @@ void tlineLogic::onLengthSelected( wxCommandEvent& event )
 void tlineLogic::onResistanceSelected( wxCommandEvent& event )
 {
 	m_resistanceStr = event.GetString();
+	m_saved = 0;
 
 	recalculate();
 }
@@ -111,6 +191,7 @@ void tlineLogic::onResistanceSelected( wxCommandEvent& event )
 void tlineLogic::onReactanceSelected( wxCommandEvent& event )
 {
 	m_reactanceStr = event.GetString();
+	m_saved = 0;
 
 	recalculate();
 }
@@ -257,4 +338,7 @@ void tlineLogic::recalculate()
 
 	snprintf(buffer, 512, "%.2f", m_swrAtLoad);
 	ui_swrLoad->ChangeValue(buffer);
+
+	snprintf(buffer, 512, "%.0f", m_cp->maximumVoltage);
+	ui_maxVoltage->ChangeValue(buffer);
 }

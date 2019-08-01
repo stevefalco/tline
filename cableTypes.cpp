@@ -152,18 +152,18 @@ ATTENUATION BELDEN_8216[] = {
 };
 
 CABLE_PROPERTIES cableProperties[] = {
-	{ "RG-6 (Belden 8215)",			BELDEN_8215,	0.66,  75.0 },
-	{ "RG-8 (TMS LMR400)",			TMS_LMR400,	0.84,  50.0 },
-	{ "RG-8 (Belden 9913/9086)",		BELDEN_9913,	0.84,  50.0 },
-	{ "RG-8 (DX Engineering)",		DXE_8U,		0.81,  50.0 },
-	{ "RG-8A (Belden 8237)",		BELDEN_8237,	0.66,  50.0 },
-	{ "RG-8X (DX Engineering)",		DXE_8X,		0.82,  50.0 },
-	{ "RG-11 (DX Engineering)",		DXE_11U,	0.82,  75.0 },
-	{ "RG-58A (DX Engineering)",		DXE_58AU,	0.66,  50.0 },
-	{ "RG-174 (Belden 8216)",		BELDEN_8216,	0.66,  50.0 },
-	{ "RG-213 (DX Engineering)",		DXE_213U,	0.66,  50.0 },
-	{ "RG-400 (DX Engineering)",		DXE_58AU,	0.695, 50.0 },
-	{ "DX Engineering DXE-400MAX",		DXE_400MAX,	0.84,  50.0 },
+	{ "RG-6 (Belden 8215)",			BELDEN_8215,	0.66,    75.0,   2700.0 },
+	{ "RG-8 (TMS LMR400)",			TMS_LMR400,	0.84,    50.0,    600.0 },
+	{ "RG-8 (Belden 9913/9086)",		BELDEN_9913,	0.84,    50.0,    600.0 },
+	{ "RG-8 (DX Engineering)",		DXE_8U,		0.81,    50.0,    600.0 },
+	{ "RG-8A (Belden 8237)",		BELDEN_8237,	0.66,    50.0,   3700.0 },
+	{ "RG-8X (DX Engineering)",		DXE_8X,		0.82,    50.0,    300.0 },
+	{ "RG-11 (DX Engineering)",		DXE_11U,	0.82,    75.0,    600.0 },
+	{ "RG-58A (DX Engineering)",		DXE_58AU,	0.66,    50.0,   1400.0 },
+	{ "RG-174 (Belden 8216)",		BELDEN_8216,	0.66,    50.0,   1100.0 },
+	{ "RG-213 (DX Engineering)",		DXE_213U,	0.66,    50.0,   3700.0 },
+	{ "RG-400 (DX Engineering)",		DXE_58AU,	0.695,   50.0,   1900.0 },
+	{ "DX Engineering DXE-400MAX",		DXE_400MAX,	0.84,    50.0,   3700.0 },
 	{ 0, 0, 0 }
 };
 
