@@ -54,20 +54,11 @@ class tlineUI : public wxFrame
 		wxTextCtrl* ui_frequency;
 		wxStaticText* ui_frequencyUnits;
 		wxStaticText* ui_wSuffixNote;
-		wxStaticText* ui_characteristicZ0Tag;
-		wxTextCtrl* ui_characteristicZ0;
-		wxStaticText* ui_matchedLineLossTag;
-		wxTextCtrl* ui_matchedLineLoss;
-		wxStaticText* ui_matchedLineLossUnits;
-		wxStaticText* ui_velocityFactorTag;
-		wxTextCtrl* ui_velocityFactor;
-		wxStaticText* ui_maxVoltageTag;
-		wxTextCtrl* ui_maxVoltage;
-		wxStaticText* ui_maxVoltageUnits;
-		wxStaticText* ui_totalMatchedLineLossTag;
-		wxTextCtrl* ui_totalMatchedLineLoss;
-		wxStaticText* ui_totalMatchedLineLossUnits;
-		wxRadioBox* ui_sourceRadioButtons;
+		wxStaticText* ui_powerTag;
+		wxTextCtrl* ui_power;
+		wxStaticText* ui_powerUnits;
+		wxStaticText* ui_inputVoltageTag;
+		wxTextCtrl* ui_inputVoltage;
 		wxRadioBox* ui_loadInputRadioButtons;
 		wxStaticText* ui_resistanceTag;
 		wxTextCtrl* ui_resistance;
@@ -78,6 +69,16 @@ class tlineUI : public wxFrame
 		wxButton* ui_graphVI;
 		wxButton* ui_graphZ;
 		wxButton* ui_tuner;
+		wxStaticText* ui_characteristicZ0Tag;
+		wxTextCtrl* ui_characteristicZ0;
+		wxStaticText* ui_matchedLineLossTag;
+		wxTextCtrl* ui_matchedLineLoss;
+		wxStaticText* ui_velocityFactorTag;
+		wxTextCtrl* ui_velocityFactor;
+		wxStaticText* ui_maxVoltageTag;
+		wxTextCtrl* ui_maxVoltage;
+		wxStaticText* ui_totalMatchedLineLossTag;
+		wxTextCtrl* ui_totalMatchedLineLoss;
 		wxStaticText* ui_swrInputTag;
 		wxTextCtrl* ui_swrInput;
 		wxStaticText* ui_swrLoadTag;
@@ -86,10 +87,8 @@ class tlineUI : public wxFrame
 		wxTextCtrl* ui_rhoLoad;
 		wxStaticText* ui_addedLossTag;
 		wxTextCtrl* ui_addedLoss;
-		wxStaticText* ui_addedLossUnits;
 		wxStaticText* ui_totalLossTag;
 		wxTextCtrl* ui_totalLoss;
-		wxStaticText* ui_totalLossUnits;
 		wxStaticText* ui_impedanceRectangularTag;
 		wxTextCtrl* ui_impedanceRectangular;
 		wxStaticText* ui_impedancePolarTag;
@@ -103,6 +102,7 @@ class tlineUI : public wxFrame
 		virtual void onUnitsSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLengthSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFrequencySelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onPowerSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLoadInputSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onResistanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onReactanceSelected( wxCommandEvent& event ) { event.Skip(); }
@@ -113,7 +113,7 @@ class tlineUI : public wxFrame
 
 	public:
 
-		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 844,604 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 871,507 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~tlineUI();
 

@@ -38,11 +38,14 @@ class tlineLogic : public tlineUI
 		void onGraphVIClicked( wxCommandEvent& event );
 		void onGraphZClicked( wxCommandEvent& event );
 		void onTunerClicked( wxCommandEvent& event );
+		void onPowerSelected( wxCommandEvent& event );
 
 		double wavelength();
+
 		std::complex<double> impedanceAtLoad();
 		std::complex<double> impedanceAtInput();
-
+		std::complex<double> voltageOut();
+		std::complex<double> currentOut();
 
 		void recalculate();
 
@@ -59,43 +62,47 @@ class tlineLogic : public tlineUI
 		int			m_saved;
 
 		wxString		m_cableTypeStr = _("RG-6 (Belden 8215)");
-		wxString		m_unitsStr = _("Feet");
 		wxString		m_frequencyStr = _("7.0");
 		wxString		m_lengthStr = _("100");
-		wxString		m_resistanceStr = _("50");
-		wxString		m_reactanceStr = _("0");
 		wxString		m_loadInputStr = _("Load");
+		wxString		m_powerStr = _("1500");
+		wxString		m_reactanceStr = _("0");
+		wxString		m_resistanceStr = _("50");
+		wxString		m_unitsStr = _("Feet");
 
-		double			m_units;
+		double			m_attenDBPerUnitLength;
+		double			m_attenNepersPerUnitLength;
 		double			m_attenPer100Feet;
 		double			m_attenPer100Meters;
 		double			m_attenPer100Units;
-		double			m_attenNepersPerUnitLength;
-		double			m_attenDBPerUnitLength;
+		double			m_cableReactivePart;
+		double			m_cableResistivePart;
+		double			m_extraSWRloss;
 		double			m_frequency;
+		double			m_lambda;
 		double			m_length;
 		double			m_phase;
-		double			m_cableResistivePart;
-		double			m_cableReactivePart;
-		double			m_wavelength;
-		double			m_lambda;
-		double			m_resistance;
+		double			m_power;
 		double			m_reactance;
-		double			m_rhoMagnitudeAtLoad;
-		double			m_rhoMagnitudeAtSource;
+		double			m_resistance;
 		double			m_returnLossAtLoad;
 		double			m_returnLossAtSource;
+		double			m_rhoMagnitudeAtLoad;
+		double			m_rhoMagnitudeAtSource;
 		double			m_swrAtLoad;
 		double			m_swrAtSource;
-		double			m_totalMatchedLineLoss;
 		double			m_totalLoss;
-		double			m_extraSWRloss;
+		double			m_totalMatchedLineLoss;
+		double			m_units;
+		double			m_voltageForPower;
+		double			m_wavelength;
 
 		std::complex<double>	m_lossCoef;
-		std::complex<double>	m_zCable;
-		std::complex<double>	m_zLoad;
-		std::complex<double>	m_zInput;
 		std::complex<double>	m_rho;
+		std::complex<double>	m_zCable;
+		std::complex<double>	m_zInput;
+		std::complex<double>	m_zLoad;
+
 };
 
 #endif // __tlineLogic__

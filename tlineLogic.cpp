@@ -107,6 +107,11 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 				ui_loadInputRadioButtons->SetSelection(USE_INPUT);
 			}
 		}
+
+		if(strcmp(buffer, "power") == 0) {
+			m_powerStr = p;
+			ui_power->ChangeValue(m_powerStr);
+		}
 	}
 
 	f->Close();
@@ -142,6 +147,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	fprintf(fp, "resistance=%s\n",	(const char *)m_resistanceStr.mb_str());
 	fprintf(fp, "reactance=%s\n",	(const char *)m_reactanceStr.mb_str());
 	fprintf(fp, "loadInput=%s\n",	(const char *)m_loadInputStr.mb_str());
+	fprintf(fp, "power=%s\n",	(const char *)m_powerStr.mb_str());
 
 	if(fflush(fp) == EOF) {
 		wxLogError("Cannot flush file '%s'.", saveFileDialog.GetPath());
@@ -215,6 +221,14 @@ void tlineLogic::onLoadInputSelected( wxCommandEvent& event )
 	recalculate();
 }
 
+void tlineLogic::onPowerSelected( wxCommandEvent& event )
+{
+	m_powerStr = event.GetString();
+	m_saved = 0;
+
+	recalculate();
+}
+
 void tlineLogic::onGraphVIClicked( wxCommandEvent& event )
 {
 	wxLogMessage("VI clicked");
@@ -265,6 +279,18 @@ std::complex<double> tlineLogic::impedanceAtInput()
 		       );
 }
 
+// Return the complex voltage at a given point along the line.
+std::complex<double> tlineLogic::voltageOut()
+{
+	return m_voltageForPower * (cosh(m_lossCoef * m_length) - (m_zCable / m_zInput) * sinh(m_lossCoef * m_length));
+}
+
+// Return the complex current at a given point along the line.
+std::complex<double> tlineLogic::currentOut()
+{
+	return (m_voltageForPower / m_zInput) * (cosh(m_lossCoef * m_length) - (m_zInput / m_zCable) * sinh(m_lossCoef * m_length));
+}
+
 void tlineLogic::recalculate()
 {
 	char				buffer[512];
@@ -286,13 +312,12 @@ void tlineLogic::recalculate()
 
 	// Look up the cable parameters.
 	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
+	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
+	ui_velocityFactor->ChangeValue(buffer);
+	snprintf(buffer, 512, "%.0f V", m_cp->maximumVoltage);
+	ui_maxVoltage->ChangeValue(buffer);
 
-	// FIXME - this is just for safety - remove it once all cable types are populated.
-	if(!m_cp) {
-		m_cp = m_c->findCable("RG-6 (Belden 8215)");
-	}
-
-	//Calculate the wavelength.  We need the velocity factor here.
+	// Calculate the wavelength.  We need the velocity factor here.
 	m_wavelength = wavelength();
 	
 	// Convert the length string.  We need the wavelength here.
@@ -312,6 +337,8 @@ void tlineLogic::recalculate()
 
 	// Calculate the length of the line in wavelength units.
 	m_lambda = m_length / m_wavelength;
+	snprintf(buffer, 512, "%.2f", m_lambda);
+	ui_lambda->ChangeValue(buffer);
 
 	// Look up the attenuation in dB per hundred feet, and convert to the
 	// other formats we will need.
@@ -319,12 +346,12 @@ void tlineLogic::recalculate()
 	m_attenPer100Meters = m_attenPer100Feet * M_TO_F;
 	if(m_units == USE_FEET) {
 		m_attenPer100Units = m_attenPer100Feet;
-		snprintf(buffer, 512, "dB/100 Feet");
-		ui_matchedLineLossUnits->SetLabel(buffer);
+		snprintf(buffer, 512, "%.2f dB/100 Feet", m_attenPer100Units);
+		ui_matchedLineLoss->ChangeValue(buffer);
 	} else {
 		m_attenPer100Units = m_attenPer100Meters;
-		snprintf(buffer, 512, "dB/100 Meters");
-		ui_matchedLineLossUnits->SetLabel(buffer);
+		snprintf(buffer, 512, "%.2f dB/100 Meters", m_attenPer100Units);
+		ui_matchedLineLoss->ChangeValue(buffer);
 	}
 	m_attenDBPerUnitLength = m_attenPer100Units / 100.0;
 	m_attenNepersPerUnitLength = m_attenDBPerUnitLength * DB_TO_NEPERS;
@@ -341,6 +368,8 @@ void tlineLogic::recalculate()
 	m_cableResistivePart = sqrt(sq(m_cp->impedance) / (1.0 + sq(m_attenNepersPerUnitLength) / sq(m_phase)));
 	m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
 	m_zCable = std::complex<double>(m_cableResistivePart, m_cableReactivePart);
+	snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zCable), imag(m_zCable));
+	ui_characteristicZ0->ChangeValue(buffer);
 
 	m_resistance = atof(m_resistanceStr);
 	m_reactance = atof(m_reactanceStr);
@@ -350,6 +379,10 @@ void tlineLogic::recalculate()
 
 		// Find the input impedance for the full length of cable.
 		m_zInput = impedanceAtLoad();
+		snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zInput), imag(m_zInput));
+		ui_impedanceRectangular->ChangeValue(buffer);
+		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
+		ui_impedancePolar->ChangeValue(buffer);
 
 		ui_impedanceRectangularTag->SetLabel("Impedance at Input (Real/Imaginary):");
 		ui_impedancePolarTag->SetLabel("Impedance at Input (Polar):");
@@ -359,79 +392,55 @@ void tlineLogic::recalculate()
 
 		// Find the load impedance for the full length of cable.
 		m_zLoad = impedanceAtInput();
+		snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zLoad), imag(m_zLoad));
+		ui_impedanceRectangular->ChangeValue(buffer);
+		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);
+		ui_impedancePolar->ChangeValue(buffer);
 
 		ui_impedanceRectangularTag->SetLabel("Impedance at Load (Real/Imaginary):");
 		ui_impedancePolarTag->SetLabel("Impedance at Load (Polar):");
 	}
 
-
 	// Calculate the reflection coefficient at the load.
 	m_rho = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
 	m_rhoMagnitudeAtLoad = abs(m_rho);
 	m_returnLossAtLoad = 20.0 * log10(m_rhoMagnitudeAtLoad);
+	snprintf(buffer, 512, "%.2f", m_rhoMagnitudeAtLoad);
+	ui_rhoLoad->ChangeValue(buffer);
 
 	// Calculate the SWR at the load.
 	m_swrAtLoad = (1.0 + m_rhoMagnitudeAtLoad) / (1.0 - m_rhoMagnitudeAtLoad);
+	snprintf(buffer, 512, "%.2f", m_swrAtLoad);
+	ui_swrLoad->ChangeValue(buffer);
 
 	// Calculate matched line loss.
 	m_totalMatchedLineLoss = m_attenDBPerUnitLength * m_length;
+	snprintf(buffer, 512, "%.2f dB", m_totalMatchedLineLoss);
+	ui_totalMatchedLineLoss->ChangeValue(buffer);
 
 	//Calculate total loss.
 	tmp = pow(10.0, 0.1 * m_totalMatchedLineLoss);
 	m_totalLoss = 10.0 * log10((sq(tmp) - sq(m_rhoMagnitudeAtLoad)) / (tmp * (1.0 - sq(m_rhoMagnitudeAtLoad))));
+	snprintf(buffer, 512, "%.2f dB", m_totalLoss);
+	ui_totalLoss->ChangeValue(buffer);
 	
 	// Calculate extra loss caused by SWR.
 	m_extraSWRloss = m_totalLoss - m_totalMatchedLineLoss;
+	snprintf(buffer, 512, "%.2f dB", m_extraSWRloss);
+	ui_addedLoss->ChangeValue(buffer);
 
 	// Calculate the SWR at the source.
 	m_returnLossAtSource = m_returnLossAtLoad - 2.0 * m_totalLoss;
 	m_rhoMagnitudeAtSource = pow(10.0, m_returnLossAtSource / 20.0);
 	m_swrAtSource = (1 + m_rhoMagnitudeAtSource) / (1 - m_rhoMagnitudeAtSource);
-	
-	snprintf(buffer, 512, "%.2f", m_lambda);
-	ui_lambda->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zCable), imag(m_zCable));
-	ui_characteristicZ0->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f", m_attenPer100Units);
-	ui_matchedLineLoss->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
-	ui_velocityFactor->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f", m_totalMatchedLineLoss);
-	ui_totalMatchedLineLoss->ChangeValue(buffer);
-
-	if(m_loadInputStr == "Load") {
-		snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zInput), imag(m_zInput));
-	} else if(m_loadInputStr == "Input") {
-		snprintf(buffer, 512, "%.2f, %.2fj Ohms", real(m_zLoad), imag(m_zLoad));
-	}
-	ui_impedanceRectangular->ChangeValue(buffer);
-
-	if(m_loadInputStr == "Load") {
-		snprintf(buffer, 512, "%.2f, %.2fj Ohms", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
-	} else if(m_loadInputStr == "Input") {
-		snprintf(buffer, 512, "%.2f, %.2fj Ohms", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);
-	}
-	ui_impedancePolar->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f", m_rhoMagnitudeAtLoad);
-	ui_rhoLoad->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f", m_swrAtLoad);
-	ui_swrLoad->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.0f", m_cp->maximumVoltage);
-	ui_maxVoltage->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f", m_totalLoss);
-	ui_totalLoss->ChangeValue(buffer);
-
-	snprintf(buffer, 512, "%.2f", m_extraSWRloss);
-	ui_addedLoss->ChangeValue(buffer);
-
 	snprintf(buffer, 512, "%.2f", m_swrAtSource);
 	ui_swrInput->ChangeValue(buffer);
+	
+	// Find the voltage necessary to produce the desired power at the
+	// input of the cable, given the magnitude of the complex input
+	// impedance.
+	m_power = atof(m_powerStr);
+	m_voltageForPower = sqrt(m_power * abs(m_zInput));
+	snprintf(buffer, 512, "%.2f V", m_voltageForPower);
+	ui_inputVoltage->ChangeValue(buffer);
 }
