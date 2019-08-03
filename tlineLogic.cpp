@@ -297,71 +297,101 @@ complex<double> tlineLogic::currentOut(double distance)
 	return (m_voltageForPower / m_zInput) * (cosh(m_lossCoef * distance) - (m_zInput / m_zCable) * sinh(m_lossCoef * distance));
 }
 
+// Build data and control files, then spawn gnuplot.
 void tlineLogic::showPlots()
 {
-	char			dataName[L_tmpnam];
-	char			controlName[L_tmpnam];
+	wxString		dataName;
+	wxString		impedanceControlName;
+	wxString		voltAmpControlName;
+
+	wxFFile			dataFP;
+	wxFFile			impedanceControlFP;
+	wxFFile			voltAmpControlFP;
+
 	char			buffer[512];
 
-	FILE*			dataFP;
-	FILE*			controlFP;
-
-	// Create temporary file names.
-	if(std::tmpnam(dataName) == NULL) {
-		wxLogError("Cannot allocate temporary data file name");
-		return;
-	}
-	if(std::tmpnam(controlName) == NULL) {
-		wxLogError("Cannot allocate temporary control file name");
-		return;
+	// Create temporary data file.
+	dataName = wxFileName::CreateTempFileName("", &dataFP);
+	if(dataName.IsEmpty()) {
+		wxLogError("Cannot create temporary data file");
+		goto QUIT;
 	}
 
-	// Create/truncate a temporary file to hold the data.
-	if((dataFP = fopen(dataName, "w")) == NULL) {
-		wxLogError("Cannot create/open temporary data file '%s'", dataName);
-		return;
+	// Create temporary impedanceControl file.
+	impedanceControlName = wxFileName::CreateTempFileName("", &impedanceControlFP);
+	if(impedanceControlName.IsEmpty()) {
+		wxLogError("Cannot create temporary impedanceControl file");
+		goto DELETE_DATA;
 	}
 
-	// Create/truncate a temporary file to hold the control commands.
-	if((controlFP = fopen(controlName, "w")) == NULL) {
-		wxLogError("Cannot create/open temporary control file '%s'", controlName);
-		fclose(dataFP);
-		return;
+	// Create temporary voltAmpControl file.
+	voltAmpControlName = wxFileName::CreateTempFileName("", &voltAmpControlFP);
+	if(voltAmpControlName.IsEmpty()) {
+		wxLogError("Cannot create temporary voltAmpControl file");
+		goto DELETE_IMPEDANCE_CONTROL;
 	}
 
-	generateGraphableData(dataFP);
+	// Generate the data.
+	generateGraphableData(dataFP.fp());
 
-	if(fflush(dataFP) == EOF) {
-		wxLogError("Cannot flush file '%s'", dataName);
-		fclose(controlFP);
-		fclose(dataFP);
-		return;
+	if(!dataFP.Flush()) {
+		wxLogError("Cannot flush data file '%s'", dataName);
+		goto DELETE_VOLT_AMP_CONTROL;
 	}
-	fclose(dataFP);
 
-	fprintf(controlFP, "set ytics -100000,10 nomirror tc lt 1\n");
-	fprintf(controlFP, "set ylabel \"Imaginary (Ohms)\" tc lt 1\n");
-	fprintf(controlFP, "set y2tics -1000000,10 nomirror tc lt 2\n");
-	fprintf(controlFP, "set y2label \"Real (Ohms)\" tc lt 2\n");
-	fprintf(controlFP, "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
-	fprintf(controlFP, "plot \\\n");
-	fprintf(controlFP, "  \"%s\" u 1:3 w l axes x1y1 title \"img\", \\\n", dataName );
-	fprintf(controlFP, "  \"%s\" u 1:2 w l axes x1y1 title \"img\"\n", dataName );
+	// Fill in the impedanceControl file.
+	fprintf(impedanceControlFP.fp(), "set ytics -1000000,10 nomirror tc lt 1\n");
+	fprintf(impedanceControlFP.fp(), "set ylabel \"Imaginary (Ohms)\" tc lt 1\n");
+	fprintf(impedanceControlFP.fp(), "set y2tics -1000000,10 nomirror tc lt 2\n");
+	fprintf(impedanceControlFP.fp(), "set y2label \"Real (Ohms)\" tc lt 2\n");
+	fprintf(impedanceControlFP.fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
+	fprintf(impedanceControlFP.fp(), "plot \\\n");
+	fprintf(impedanceControlFP.fp(), "  \"%s\" u 1:3 w l axes x1y1 title \"img\", \\\n", (const char*)dataName);
+	fprintf(impedanceControlFP.fp(), "  \"%s\" u 1:2 w l axes x1y2 title \"img\"\n", (const char*)dataName);
 	
-	if(fflush(controlFP) == EOF) {
-		wxLogError("Cannot flush file '%s'", controlName);
-		fclose(controlFP);
-		return;
+	if(!impedanceControlFP.Flush()) {
+		wxLogError("Cannot flush impedance control file '%s'", impedanceControlName);
+		goto DELETE_VOLT_AMP_CONTROL;
 	}
-	fclose(controlFP);
 
-	// Spawn gnuplot
-	snprintf(buffer, 512, "gnuplot -p %s", controlName);
+	// Fill in the voltAmpControl file.
+	fprintf(voltAmpControlFP.fp(), "set ytics -1000000,1 nomirror tc lt 1\n");
+	fprintf(voltAmpControlFP.fp(), "set ylabel \"Current (Amps)\" tc lt 1\n");
+	fprintf(voltAmpControlFP.fp(), "set y2tics -1000000,20 nomirror tc lt 2\n");
+	fprintf(voltAmpControlFP.fp(), "set y2label \"Voltage (Volts)\" tc lt 2\n");
+	fprintf(voltAmpControlFP.fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
+	fprintf(voltAmpControlFP.fp(), "plot \\\n");
+	fprintf(voltAmpControlFP.fp(), "  \"%s\" u 1:9 w l axes x1y1 title \"amps\", \\\n", (const char*)dataName);
+	fprintf(voltAmpControlFP.fp(), "  \"%s\" u 1:8 w l axes x1y2 title \"volts\"\n", (const char*)dataName);
+	
+	if(!voltAmpControlFP.Flush()) {
+		wxLogError("Cannot flush volt/amp control file '%s'", voltAmpControlName);
+		goto DELETE_VOLT_AMP_CONTROL;
+	}
+
+	// Spawn gnuplot.
+	snprintf(buffer, 512, "gnuplot -p %s", (const char *)impedanceControlName.mb_str());
 	system(buffer);
 	
-	// Delete the files from the filesystem.
-	remove(controlName);
-	remove(dataName);
+	// Spawn gnuplot.
+	snprintf(buffer, 512, "gnuplot -p %s", (const char *)voltAmpControlName.mb_str());
+	system(buffer);
+	
+	// Delete the temporary files from the filesystem.
+DELETE_VOLT_AMP_CONTROL:
+	voltAmpControlFP.Close();
+	wxRemoveFile(voltAmpControlName);
+
+DELETE_IMPEDANCE_CONTROL:
+	impedanceControlFP.Close();
+	wxRemoveFile(impedanceControlName);
+
+DELETE_DATA:
+	dataFP.Close();
+	wxRemoveFile(dataName);
+
+QUIT:
+	return;
 }
 
 void tlineLogic::savePlots()
