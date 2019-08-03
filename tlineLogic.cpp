@@ -15,6 +15,9 @@
 #include "tlineLogic.h"
 #include "constants.h"
 
+wxString g_widthStr;
+wxString g_heightStr;
+
 tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 {
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
@@ -304,7 +307,7 @@ complex<double> tlineLogic::currentOut(double distance)
 class MyExtraPanel : public wxPanel
 {
 	public:
-		MyExtraPanel(wxWindow *parent);
+		MyExtraPanel(wxWindow *parent, wxString width, wxString height);
 		wxString GetWidth() const
 		{
 			return wxString::Format("%s", (const char *)m_widthBox->GetValue());
@@ -317,16 +320,19 @@ class MyExtraPanel : public wxPanel
 		void onHeightSelected( wxCommandEvent& event );
 		
 	private:
-		wxString	m_widthStr = _("600");;
-		wxString	m_heightStr = _("600");;
+		wxString	m_widthStr;
+		wxString	m_heightStr;
 		wxStaticText	*m_widthTag;
 		wxTextCtrl	*m_widthBox;
 		wxStaticText	*m_heightTag;
 		wxTextCtrl	*m_heightBox;
 };
 
-MyExtraPanel::MyExtraPanel(wxWindow *parent) : wxPanel(parent)
+MyExtraPanel::MyExtraPanel(wxWindow *parent, wxString width, wxString height) : wxPanel(parent)
 {
+	m_widthStr = width;
+	m_heightStr = height;
+
 	m_widthTag = new wxStaticText(this, -1, "Width");
 	m_widthBox = new wxTextCtrl(this, -1, m_widthStr);
 
@@ -343,12 +349,6 @@ MyExtraPanel::MyExtraPanel(wxWindow *parent) : wxPanel(parent)
 	m_heightBox->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MyExtraPanel::onHeightSelected ), NULL, this );
 }
 
-// a static method can be used instead of a function with most of compilers
-static wxWindow* createMyExtraPanel(wxWindow *parent)
-{
-	return new MyExtraPanel(parent);
-}
-
 void MyExtraPanel::onWidthSelected( wxCommandEvent& event )
 {
 	m_widthStr = event.GetString();
@@ -358,6 +358,13 @@ void MyExtraPanel::onHeightSelected( wxCommandEvent& event )
 {
 	m_heightStr = event.GetString();
 }
+
+// a static method can be used instead of a function with most of compilers
+static wxWindow* createMyExtraPanel(wxWindow *parent)
+{
+	return new MyExtraPanel(parent, g_widthStr, g_heightStr);
+}
+
 //----------------------------
 
 // Build data and control files, then spawn gnuplot.
@@ -403,21 +410,26 @@ void tlineLogic::showPlots( bool hardCopy )
 	}
 
 	if(hardCopy) {
+		g_widthStr = m_widthStr;
+		g_heightStr = m_heightStr;
+
 		wxFileDialog saveFileDialog(this, _("Save plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
 		if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 			return;
 		}
+
 		wxWindow * const extra = saveFileDialog.GetExtraControl();
 		if(extra) {
-			wxString tmp;
+			m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
+			m_width = atoi(m_widthStr);
 
-		       	tmp = static_cast<MyExtraPanel*>(extra)->GetWidth();
-			m_width = atoi(tmp);
-		       	tmp = static_cast<MyExtraPanel*>(extra)->GetHeight();
-			m_height = atoi(tmp);
+			m_heightStr = static_cast<MyExtraPanel*>(extra)->GetHeight();
+			m_height = atoi(m_heightStr);
+			
+
+			wxLogMessage("%d x %d", m_width, m_height);
 		}
-		wxLogMessage("%d x %d", m_width, m_height);
 
 		fprintf(impedanceControlFP.fp(), "set terminal png size %d,%d\n", m_width, m_height);
 		fprintf(impedanceControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());

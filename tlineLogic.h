@@ -13,8 +13,8 @@ class tlineLogic : public tlineUI
 	public:
 		tlineLogic( wxWindow* parent );
 
-		void onWidthSelected( wxCommandEvent& event );
-		void onHeightSelected( wxCommandEvent& event );
+		wxString getWidth() { return m_widthStr; }
+		wxString getHeight() { return m_heightStr; }
 
 	private:
 		void onCableTypeSelected( wxCommandEvent& event );
@@ -65,6 +65,8 @@ class tlineLogic : public tlineUI
 		wxString		m_reactanceStr = _("0");
 		wxString		m_resistanceStr = _("50");
 		wxString		m_unitsStr = _("Feet");
+		wxString		m_widthStr = _("800");
+		wxString		m_heightStr = _("700");
 
 		double			m_attenDBPerUnitLength;
 		double			m_attenNepersPerUnitLength;
