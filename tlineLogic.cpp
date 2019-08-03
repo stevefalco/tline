@@ -8,6 +8,8 @@
 #include <wx/filedlg.h>
 #include <wx/wfstream.h>
 #include <wx/filename.h>
+#include <wx/textctrl.h>
+#include <wx/sizer.h>
 
 #include "version.h"
 #include "tlineLogic.h"
@@ -232,12 +234,12 @@ void tlineLogic::onPowerSelected( wxCommandEvent& event )
 
 void tlineLogic::onShowPlotsClicked( wxCommandEvent& event )
 {
-	showPlots();
+	showPlots(FALSE);
 }
 
 void tlineLogic::onSavePlotsClicked( wxCommandEvent& event )
 {
-	savePlots();
+	showPlots(TRUE);
 }
 
 void tlineLogic::onSaveDataClicked( wxCommandEvent& event )
@@ -297,8 +299,69 @@ complex<double> tlineLogic::currentOut(double distance)
 	return (m_voltageForPower / m_zInput) * (cosh(m_lossCoef * distance) - (m_zInput / m_zCable) * sinh(m_lossCoef * distance));
 }
 
+//----------------------------
+// panel with custom controls for file dialog
+class MyExtraPanel : public wxPanel
+{
+	public:
+		MyExtraPanel(wxWindow *parent);
+		wxString GetWidth() const
+		{
+			return wxString::Format("%s", (const char *)m_widthBox->GetValue());
+		}
+		wxString GetHeight() const
+		{
+			return wxString::Format("%s", (const char *)m_heightBox->GetValue());
+		}
+		void onWidthSelected( wxCommandEvent& event );
+		void onHeightSelected( wxCommandEvent& event );
+		
+	private:
+		wxString	m_widthStr = _("600");;
+		wxString	m_heightStr = _("600");;
+		wxStaticText	*m_widthTag;
+		wxTextCtrl	*m_widthBox;
+		wxStaticText	*m_heightTag;
+		wxTextCtrl	*m_heightBox;
+};
+
+MyExtraPanel::MyExtraPanel(wxWindow *parent) : wxPanel(parent)
+{
+	m_widthTag = new wxStaticText(this, -1, "Width");
+	m_widthBox = new wxTextCtrl(this, -1, m_widthStr);
+
+	m_heightTag = new wxStaticText(this, -1, "   Height");
+	m_heightBox = new wxTextCtrl(this, -1, m_heightStr);
+
+	wxBoxSizer *sizerTop = new wxBoxSizer(wxHORIZONTAL);
+	sizerTop->Add(m_widthTag, wxSizerFlags().Right().Border());
+	sizerTop->Add(m_widthBox, wxSizerFlags().Right().Border(wxALL, 0));
+	sizerTop->Add(m_heightTag, wxSizerFlags().Right().Border());
+	sizerTop->Add(m_heightBox, wxSizerFlags().Right().Border(wxALL, 0));
+	SetSizerAndFit(sizerTop);
+	m_widthBox->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MyExtraPanel::onWidthSelected ), NULL, this );
+	m_heightBox->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MyExtraPanel::onHeightSelected ), NULL, this );
+}
+
+// a static method can be used instead of a function with most of compilers
+static wxWindow* createMyExtraPanel(wxWindow *parent)
+{
+	return new MyExtraPanel(parent);
+}
+
+void MyExtraPanel::onWidthSelected( wxCommandEvent& event )
+{
+	m_widthStr = event.GetString();
+}
+
+void MyExtraPanel::onHeightSelected( wxCommandEvent& event )
+{
+	m_heightStr = event.GetString();
+}
+//----------------------------
+
 // Build data and control files, then spawn gnuplot.
-void tlineLogic::showPlots()
+void tlineLogic::showPlots( bool hardCopy )
 {
 	wxString		dataName;
 	wxString		impedanceControlName;
@@ -339,6 +402,27 @@ void tlineLogic::showPlots()
 		goto DELETE_VOLT_AMP_CONTROL;
 	}
 
+	if(hardCopy) {
+		wxFileDialog saveFileDialog(this, _("Save plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
+		if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+			return;
+		}
+		wxWindow * const extra = saveFileDialog.GetExtraControl();
+		if(extra) {
+			wxString tmp;
+
+		       	tmp = static_cast<MyExtraPanel*>(extra)->GetWidth();
+			m_width = atoi(tmp);
+		       	tmp = static_cast<MyExtraPanel*>(extra)->GetHeight();
+			m_height = atoi(tmp);
+		}
+		wxLogMessage("%d x %d", m_width, m_height);
+
+		fprintf(impedanceControlFP.fp(), "set terminal png size %d,%d\n", m_width, m_height);
+		fprintf(impedanceControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
+	}
+
 	// Fill in the impedanceControl file.
 	fprintf(impedanceControlFP.fp(), "set ytics -1000000,10 nomirror tc lt 1\n");
 	fprintf(impedanceControlFP.fp(), "set ylabel \"Imaginary (Ohms)\" tc lt 1\n");
@@ -370,11 +454,11 @@ void tlineLogic::showPlots()
 	}
 
 	// Spawn gnuplot.
-	snprintf(buffer, 512, "gnuplot -p %s", (const char *)impedanceControlName.mb_str());
+	snprintf(buffer, 512, "gnuplot %s %s", (hardCopy) ? "" : "-p", (const char *)impedanceControlName.mb_str());
 	system(buffer);
 	
 	// Spawn gnuplot.
-	snprintf(buffer, 512, "gnuplot -p %s", (const char *)voltAmpControlName.mb_str());
+	snprintf(buffer, 512, "gnuplot %s %s", (hardCopy) ? "" : "-p", (const char *)voltAmpControlName.mb_str());
 	system(buffer);
 	
 	// Delete the temporary files from the filesystem.
@@ -384,7 +468,7 @@ DELETE_VOLT_AMP_CONTROL:
 
 DELETE_IMPEDANCE_CONTROL:
 	impedanceControlFP.Close();
-	wxRemoveFile(impedanceControlName);
+	//wxRemoveFile(impedanceControlName);
 
 DELETE_DATA:
 	dataFP.Close();
@@ -392,20 +476,6 @@ DELETE_DATA:
 
 QUIT:
 	return;
-}
-
-void tlineLogic::savePlots()
-{
-	wxString		dataName;
-	wxFFile			dataFP;
-	int rv;
-
-	dataName = wxFileName::CreateTempFileName("", &dataFP);
-	wxLogMessage("dataname >>>%s<<<, status %d", dataName, dataFP.IsOpened());
-
-	rv = dataFP.Flush();
-	dataFP.Close();
-	wxLogMessage("rv %d", rv);
 }
 
 void tlineLogic::saveData()
@@ -454,6 +524,9 @@ void tlineLogic::generateGraphableData(
 	complex<double>		vOut;
 	complex<double>		iOut;
 
+	// Show column headings.
+	fprintf(fp, "#       Length        Z_In_Real      Z_In_Imag           V_Real         V_Imag           I_Real         I_Imag           V_Magn         I_Magn\n");
+
 	// Scale cable length by SCALE for a smoother curve.
 	for(i = 0; i <= POINTS_ON_X; i++) {
 		distanceFromSource = m_length * ((double)i / (double)POINTS_ON_X);
@@ -468,7 +541,7 @@ void tlineLogic::generateGraphableData(
 		// Find the current at a point along the cable.
 		iOut = currentOut(distanceFromSource);
 
-		fprintf(fp, "%f   %f %f   %f %f   %f %f   %f %f\n",
+		fprintf(fp, "%14.6f   %14.6f %14.6f   %14.6f %14.6f   %14.6f %14.6f   %14.6f %14.6f\n",
 				distanceFromSource,
 				real(zPoint), imag(zPoint),
 				real(vOut), imag(vOut),

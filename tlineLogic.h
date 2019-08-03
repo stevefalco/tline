@@ -13,6 +13,9 @@ class tlineLogic : public tlineUI
 	public:
 		tlineLogic( wxWindow* parent );
 
+		void onWidthSelected( wxCommandEvent& event );
+		void onHeightSelected( wxCommandEvent& event );
+
 	private:
 		void onCableTypeSelected( wxCommandEvent& event );
 		void onFileLoad( wxCommandEvent& event );
@@ -32,14 +35,13 @@ class tlineLogic : public tlineUI
 
 		double wavelength();
 
-		complex<double> impedanceAtLoad(double distance);
-		complex<double> impedanceAtInput(double distance);
-		complex<double> voltageOut(double distance);
-		complex<double> currentOut(double distance);
+		complex<double> impedanceAtLoad( double distance );
+		complex<double> impedanceAtInput( double distance );
+		complex<double> voltageOut( double distance );
+		complex<double> currentOut( double distance );
 
 		void recalculate();
-		void showPlots();
-		void savePlots();
+		void showPlots( bool hardcopy );
 		void saveData();
 
 		void generateGraphableData( FILE* fp );
@@ -52,6 +54,8 @@ class tlineLogic : public tlineUI
 		CABLE_PROPERTIES	*m_cp;
 
 		int			m_saved;
+		int			m_width;
+		int			m_height;
 
 		wxString		m_cableTypeStr = _("RG-6 (Belden 8215)");
 		wxString		m_frequencyStr = _("7.0");
