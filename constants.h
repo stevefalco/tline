@@ -9,6 +9,7 @@
 #define RADIANS_TO_DEGREES	(180.0 / PI)
 #define F_TO_M			0.3048
 #define M_TO_F			3.28084
+#define POINTS_ON_X		10000	// points on X axis
 
 // WARNING: These assigments must match the order in the GUI.
 #define USE_FEET		0

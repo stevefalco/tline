@@ -7,6 +7,7 @@
 #include <wx/textfile.h>
 #include <wx/filedlg.h>
 #include <wx/wfstream.h>
+#include <wx/filename.h>
 
 #include "version.h"
 #include "tlineLogic.h"
@@ -36,14 +37,14 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 		}
 	}
     
-	wxFileDialog openFileDialog(this, _("Open tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+	wxFileDialog openFileDialog(this, _("Open tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if(openFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
     
 	wxFileInputStream input_stream(openFileDialog.GetPath());
 	if(!input_stream.IsOk()) {
-		wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+		wxLogError("Cannot open file '%s'", openFileDialog.GetPath());
 		return;
 	}
     
@@ -121,14 +122,14 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 
 void tlineLogic::onFileSave( wxCommandEvent& event )
 {
-	wxFileDialog saveFileDialog(this, _("Save tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+	wxFileDialog saveFileDialog(this, _("Save tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
     
 	wxFileOutputStream output_stream(saveFileDialog.GetPath());
 	if (!output_stream.IsOk()) {
-		wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
+		wxLogError("Cannot save current contents in file '%s'", saveFileDialog.GetPath());
 		return;
 	}
     
@@ -136,7 +137,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	FILE *fp = fdopen(f->fd(), "w");
 
 	if(fp == NULL) {
-		wxLogError("Cannot open file '%s' for writing.", saveFileDialog.GetPath());
+		wxLogError("Cannot open file '%s' for writing", saveFileDialog.GetPath());
 		return;
 	}
 
@@ -150,7 +151,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	fprintf(fp, "power=%s\n",	(const char *)m_powerStr.mb_str());
 
 	if(fflush(fp) == EOF) {
-		wxLogError("Cannot flush file '%s'.", saveFileDialog.GetPath());
+		wxLogError("Cannot flush file '%s'", saveFileDialog.GetPath());
 		return;
 	}
 
@@ -229,14 +230,19 @@ void tlineLogic::onPowerSelected( wxCommandEvent& event )
 	recalculate();
 }
 
-void tlineLogic::onGraphVIClicked( wxCommandEvent& event )
+void tlineLogic::onShowPlotsClicked( wxCommandEvent& event )
 {
-	wxLogMessage("VI clicked");
+	showPlots();
 }
 
-void tlineLogic::onGraphZClicked( wxCommandEvent& event )
+void tlineLogic::onSavePlotsClicked( wxCommandEvent& event )
 {
-	wxLogMessage("Z clicked");
+	savePlots();
+}
+
+void tlineLogic::onSaveDataClicked( wxCommandEvent& event )
+{
+	saveData();
 }
 
 void tlineLogic::onTunerClicked( wxCommandEvent& event )
@@ -260,35 +266,185 @@ double tlineLogic::wavelength()
 }
 
 // Return complex impedance at input of cable for a given length and load.
-std::complex<double> tlineLogic::impedanceAtLoad()
+complex<double> tlineLogic::impedanceAtInput(double distance)
 {
 	return m_zCable * (
-			(m_zLoad * cosh(m_lossCoef * m_length) + m_zCable * sinh(m_lossCoef * m_length))
+			(m_zLoad * cosh(m_lossCoef * distance) + m_zCable * sinh(m_lossCoef * distance))
 			/
-			(m_zLoad * sinh(m_lossCoef * m_length) + m_zCable * cosh(m_lossCoef * m_length))
+			(m_zLoad * sinh(m_lossCoef * distance) + m_zCable * cosh(m_lossCoef * distance))
 		       );
 }
 
 // Return complex impedance at load of cable for a given length and input.
-std::complex<double> tlineLogic::impedanceAtInput()
+complex<double> tlineLogic::impedanceAtLoad(double distance)
 {
 	return -m_zCable * (
-			(m_zInput * cosh(m_lossCoef * m_length) - m_zCable * sinh(m_lossCoef * m_length))
+			(m_zInput * cosh(m_lossCoef * distance) - m_zCable * sinh(m_lossCoef * distance))
 			/
-			(m_zInput * sinh(m_lossCoef * m_length) - m_zCable * cosh(m_lossCoef * m_length))
+			(m_zInput * sinh(m_lossCoef * distance) - m_zCable * cosh(m_lossCoef * distance))
 		       );
 }
 
 // Return the complex voltage at a given point along the line.
-std::complex<double> tlineLogic::voltageOut()
+complex<double> tlineLogic::voltageOut(double distance)
 {
-	return m_voltageForPower * (cosh(m_lossCoef * m_length) - (m_zCable / m_zInput) * sinh(m_lossCoef * m_length));
+	return m_voltageForPower * (cosh(m_lossCoef * distance) - (m_zCable / m_zInput) * sinh(m_lossCoef * distance));
 }
 
 // Return the complex current at a given point along the line.
-std::complex<double> tlineLogic::currentOut()
+complex<double> tlineLogic::currentOut(double distance)
 {
-	return (m_voltageForPower / m_zInput) * (cosh(m_lossCoef * m_length) - (m_zInput / m_zCable) * sinh(m_lossCoef * m_length));
+	return (m_voltageForPower / m_zInput) * (cosh(m_lossCoef * distance) - (m_zInput / m_zCable) * sinh(m_lossCoef * distance));
+}
+
+void tlineLogic::showPlots()
+{
+	char			dataName[L_tmpnam];
+	char			controlName[L_tmpnam];
+	char			buffer[512];
+
+	FILE*			dataFP;
+	FILE*			controlFP;
+
+	// Create temporary file names.
+	if(std::tmpnam(dataName) == NULL) {
+		wxLogError("Cannot allocate temporary data file name");
+		return;
+	}
+	if(std::tmpnam(controlName) == NULL) {
+		wxLogError("Cannot allocate temporary control file name");
+		return;
+	}
+
+	// Create/truncate a temporary file to hold the data.
+	if((dataFP = fopen(dataName, "w")) == NULL) {
+		wxLogError("Cannot create/open temporary data file '%s'", dataName);
+		return;
+	}
+
+	// Create/truncate a temporary file to hold the control commands.
+	if((controlFP = fopen(controlName, "w")) == NULL) {
+		wxLogError("Cannot create/open temporary control file '%s'", controlName);
+		fclose(dataFP);
+		return;
+	}
+
+	generateGraphableData(dataFP);
+
+	if(fflush(dataFP) == EOF) {
+		wxLogError("Cannot flush file '%s'", dataName);
+		fclose(controlFP);
+		fclose(dataFP);
+		return;
+	}
+	fclose(dataFP);
+
+	fprintf(controlFP, "set ytics -100000,10 nomirror tc lt 1\n");
+	fprintf(controlFP, "set ylabel \"Imaginary (Ohms)\" tc lt 1\n");
+	fprintf(controlFP, "set y2tics -1000000,10 nomirror tc lt 2\n");
+	fprintf(controlFP, "set y2label \"Real (Ohms)\" tc lt 2\n");
+	fprintf(controlFP, "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
+	fprintf(controlFP, "plot \\\n");
+	fprintf(controlFP, "  \"%s\" u 1:3 w l axes x1y1 title \"img\", \\\n", dataName );
+	fprintf(controlFP, "  \"%s\" u 1:2 w l axes x1y1 title \"img\"\n", dataName );
+	
+	if(fflush(controlFP) == EOF) {
+		wxLogError("Cannot flush file '%s'", controlName);
+		fclose(controlFP);
+		return;
+	}
+	fclose(controlFP);
+
+	// Spawn gnuplot
+	snprintf(buffer, 512, "gnuplot -p %s", controlName);
+	system(buffer);
+	
+	// Delete the files from the filesystem.
+	remove(controlName);
+	remove(dataName);
+}
+
+void tlineLogic::savePlots()
+{
+	wxString		dataName;
+	wxFFile			dataFP;
+	int rv;
+
+	dataName = wxFileName::CreateTempFileName("", &dataFP);
+	wxLogMessage("dataname >>>%s<<<, status %d", dataName, dataFP.IsOpened());
+
+	rv = dataFP.Flush();
+	dataFP.Close();
+	wxLogMessage("rv %d", rv);
+}
+
+void tlineLogic::saveData()
+{
+	wxFileDialog saveFileDialog(this, _("Save plot data file"), "", "", "plot data files (*.plot)|*.plot", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+		return;
+	}
+    
+	wxFileOutputStream output_stream(saveFileDialog.GetPath());
+	if (!output_stream.IsOk()) {
+		wxLogError("Cannot save current contents in file '%s'", saveFileDialog.GetPath());
+		return;
+	}
+    
+	wxFile *f = output_stream.GetFile();
+	FILE *fp = fdopen(f->fd(), "w");
+
+	if(fp == NULL) {
+		wxLogError("Cannot open file '%s' for writing", saveFileDialog.GetPath());
+		return;
+	}
+
+	generateGraphableData(fp);
+
+	if(fflush(fp) == EOF) {
+		wxLogError("Cannot flush file '%s'", saveFileDialog.GetPath());
+		return;
+	}
+
+	f->Close();
+}
+
+// Calculate the graphable data.  We write it to a temporary file which we
+// will pass to gnuplot.
+void tlineLogic::generateGraphableData(
+		FILE*		fp
+		)
+{
+	int				i;
+
+	double				distanceFromSource;
+	double				distanceFromLoad;
+
+	complex<double>		zPoint;
+	complex<double>		vOut;
+	complex<double>		iOut;
+
+	// Scale cable length by SCALE for a smoother curve.
+	for(i = 0; i <= POINTS_ON_X; i++) {
+		distanceFromSource = m_length * ((double)i / (double)POINTS_ON_X);
+		distanceFromLoad = m_length - distanceFromSource;
+
+		// Find the impedance at the input for a given length of line.
+		zPoint = impedanceAtInput(distanceFromLoad);
+
+		// Find the voltage at a point along the cable.
+		vOut = voltageOut(distanceFromSource);
+
+		// Find the current at a point along the cable.
+		iOut = currentOut(distanceFromSource);
+
+		fprintf(fp, "%f   %f %f   %f %f   %f %f   %f %f\n",
+				distanceFromSource,
+				real(zPoint), imag(zPoint),
+				real(vOut), imag(vOut),
+				real(iOut), imag(iOut),
+				abs(vOut), abs(iOut));
+	}
 }
 
 void tlineLogic::recalculate()
@@ -360,14 +516,14 @@ void tlineLogic::recalculate()
 	m_phase = (2.0 * PI) / m_wavelength;
 
 	// Combine attenuation and phase angle to get the loss coefficient.
-	m_lossCoef = std::complex<double>(m_attenNepersPerUnitLength, m_phase);
+	m_lossCoef = complex<double>(m_attenNepersPerUnitLength, m_phase);
 
 	// Find the complex impedance of the coax.  There are several ways to
 	// do this, and they each give different answers.  This is the best
 	// method that I've found...
 	m_cableResistivePart = sqrt(sq(m_cp->impedance) / (1.0 + sq(m_attenNepersPerUnitLength) / sq(m_phase)));
 	m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
-	m_zCable = std::complex<double>(m_cableResistivePart, m_cableReactivePart);
+	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
 	snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zCable), imag(m_zCable));
 	ui_characteristicZ0->ChangeValue(buffer);
 
@@ -375,10 +531,10 @@ void tlineLogic::recalculate()
 	m_reactance = atof(m_reactanceStr);
 	if(m_loadInputStr == "Load") {
 		// Use the provided load impedance.
-		m_zLoad = std::complex<double>(m_resistance, m_reactance);
+		m_zLoad = complex<double>(m_resistance, m_reactance);
 
 		// Find the input impedance for the full length of cable.
-		m_zInput = impedanceAtLoad();
+		m_zInput = impedanceAtInput(m_length);
 		snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zInput), imag(m_zInput));
 		ui_impedanceRectangular->ChangeValue(buffer);
 		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
@@ -388,10 +544,10 @@ void tlineLogic::recalculate()
 		ui_impedancePolarTag->SetLabel("Impedance at Input (Polar):");
 	} else if(m_loadInputStr == "Input") {
 		// Use the provided input impedance.
-		m_zInput = std::complex<double>(m_resistance, m_reactance);
+		m_zInput = complex<double>(m_resistance, m_reactance);
 
 		// Find the load impedance for the full length of cable.
-		m_zLoad = impedanceAtInput();
+		m_zLoad = impedanceAtLoad(m_length);
 		snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zLoad), imag(m_zLoad));
 		ui_impedanceRectangular->ChangeValue(buffer);
 		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);

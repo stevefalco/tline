@@ -66,8 +66,9 @@ class tlineUI : public wxFrame
 		wxStaticText* ui_reactanceTag;
 		wxTextCtrl* ui_reactance;
 		wxStaticText* ui_reactanceUnits;
-		wxButton* ui_graphVI;
-		wxButton* ui_graphZ;
+		wxButton* ui_showPlots;
+		wxButton* ui_savePlots;
+		wxButton* ui_saveData;
 		wxButton* ui_tuner;
 		wxStaticText* ui_characteristicZ0Tag;
 		wxTextCtrl* ui_characteristicZ0;
@@ -106,8 +107,9 @@ class tlineUI : public wxFrame
 		virtual void onLoadInputSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onResistanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onReactanceSelected( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onGraphVIClicked( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onGraphZClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onShowPlotsClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSavePlotsClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSaveDataClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerClicked( wxCommandEvent& event ) { event.Skip(); }
 
 
