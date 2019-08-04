@@ -489,13 +489,14 @@ void tlineLogic::doPlot( int type, int mode )
 		goto DELETE_CONTROL;
 	}
 
+	// If saving, we need to set the terminal type and output file.
 	if(mode == SAVE) {
 		if(!setOutput( &controlFP )) {
 			goto DELETE_CONTROL;
 		}
 	}
 
-	// Fill in the control file.
+	// Add the remaining control statements.
 	switch(type) {
 		case DO_IMPEDANCE:
 			setControlZ( &controlFP, (const char*)dataName );
