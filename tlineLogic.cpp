@@ -254,22 +254,22 @@ void tlineLogic::onPowerSelected( wxCommandEvent& event )
 
 void tlineLogic::onPlotZclicked( wxCommandEvent& event )
 {
-	doPlots(PLOT_Z);
+	doPlot(DO_IMPEDANCE, PLOT);
 }
 
 void tlineLogic::onPlotVIclicked( wxCommandEvent& event )
 {
-	doPlots(PLOT_VI);
+	doPlot(DO_VOLT_AMP, PLOT);
 }
 
 void tlineLogic::onSavePlotZclicked( wxCommandEvent& event )
 {
-	doPlots(SAVE_Z);
+	doPlot(DO_IMPEDANCE, SAVE);
 }
 
 void tlineLogic::onSavePlotVIclicked( wxCommandEvent& event )
 {
-	doPlots(SAVE_VI);
+	doPlot(DO_VOLT_AMP, SAVE);
 }
 
 void tlineLogic::onSaveDataClicked( wxCommandEvent& event )
@@ -391,20 +391,81 @@ static wxWindow* createMyExtraPanel(wxWindow *parent)
 	return new MyExtraPanel(parent, g_widthStr, g_heightStr);
 }
 
-// Build data and control files, then spawn gnuplot.
-void tlineLogic::doPlots( int request )
+bool tlineLogic::setOutput( wxFFile* file )
 {
-	wxString		dataName;
-	wxString		impedanceControlName;
-	wxString		voltAmpControlName;
-
-	wxFFile			dataFP;
-	wxFFile			impedanceControlFP;
-	wxFFile			voltAmpControlFP;
-
 	char			buffer[512];
 	char			*p;
-	const char		*q;
+	const char		*q = "png";
+
+	g_widthStr = m_widthStr;
+	g_heightStr = m_heightStr;
+
+	wxFileDialog saveFileDialog(this, _("Save plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+		return FALSE;
+	}
+
+	snprintf(buffer, 512, "%s", (const char *)saveFileDialog.GetFilename().mb_str());
+	if((p = strrchr(buffer, '.')) != NULL) {
+		// We default to png, but process the suffix and change
+		// the selection to match the user's request if possible.
+		if((strcasecmp(p, ".jpg") == 0) || (strcasecmp(p, ".jpeg") == 0)) {
+			q = "jpeg";
+		} else if(strcasecmp(p, ".gif") == 0) {
+			q = "gif";
+		}
+	}
+
+	wxWindow * const extra = saveFileDialog.GetExtraControl();
+	if(extra) {
+		m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
+		m_width = atoi(m_widthStr);
+
+		m_heightStr = static_cast<MyExtraPanel*>(extra)->GetHeight();
+		m_height = atoi(m_heightStr);
+	}
+
+	fprintf(file->fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
+	fprintf(file->fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
+
+	return TRUE;
+}
+
+void tlineLogic::setControlZ( wxFFile* file, const char* name )
+{
+	fprintf(file->fp(), "set ytics -1000000,10 nomirror tc lt 1\n");
+	fprintf(file->fp(), "set ylabel \"Imaginary (Ohms)\" tc lt 1\n");
+	fprintf(file->fp(), "set y2tics -1000000,10 nomirror tc lt 2\n");
+	fprintf(file->fp(), "set y2label \"Real (Ohms)\" tc lt 2\n");
+	fprintf(file->fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
+	fprintf(file->fp(), "plot \\\n");
+	fprintf(file->fp(), "  \"%s\" u 1:3 w l axes x1y1 title \"imag\", \\\n", name);
+	fprintf(file->fp(), "  \"%s\" u 1:2 w l axes x1y2 title \"real\"\n", name);
+}
+
+void tlineLogic::setControlVI( wxFFile* file, const char* name )
+{	
+	fprintf(file->fp(), "set ytics -1000000,1 nomirror tc lt 1\n");
+	fprintf(file->fp(), "set ylabel \"Current (Amps)\" tc lt 1\n");
+	fprintf(file->fp(), "set y2tics -1000000,20 nomirror tc lt 2\n");
+	fprintf(file->fp(), "set y2label \"Voltage (Volts)\" tc lt 2\n");
+	fprintf(file->fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
+	fprintf(file->fp(), "plot \\\n");
+	fprintf(file->fp(), "  \"%s\" u 1:9 w l axes x1y1 title \"amps\", \\\n", name);
+	fprintf(file->fp(), "  \"%s\" u 1:8 w l axes x1y2 title \"volts\"\n", name);
+}
+
+// Build data and control files, then spawn gnuplot.
+void tlineLogic::doPlot( int type, int mode )
+{
+	wxString		dataName;
+	wxString		controlName;
+
+	wxFFile			dataFP;
+	wxFFile			controlFP;
+
+	char			buffer[512];
 
 	// Create temporary data file.
 	dataName = wxFileName::CreateTempFileName("", &dataFP);
@@ -413,18 +474,11 @@ void tlineLogic::doPlots( int request )
 		goto QUIT;
 	}
 
-	// Create temporary impedanceControl file.
-	impedanceControlName = wxFileName::CreateTempFileName("", &impedanceControlFP);
-	if(impedanceControlName.IsEmpty()) {
-		wxLogError("Cannot create temporary impedanceControl file");
+	// Create temporary control file.
+	controlName = wxFileName::CreateTempFileName("", &controlFP);
+	if(controlName.IsEmpty()) {
+		wxLogError("Cannot create temporary control file");
 		goto DELETE_DATA;
-	}
-
-	// Create temporary voltAmpControl file.
-	voltAmpControlName = wxFileName::CreateTempFileName("", &voltAmpControlFP);
-	if(voltAmpControlName.IsEmpty()) {
-		wxLogError("Cannot create temporary voltAmpControl file");
-		goto DELETE_IMPEDANCE_CONTROL;
 	}
 
 	// Generate the data.
@@ -432,148 +486,41 @@ void tlineLogic::doPlots( int request )
 
 	if(!dataFP.Flush()) {
 		wxLogError("Cannot flush data file '%s'", dataName);
-		goto DELETE_VOLT_AMP_CONTROL;
+		goto DELETE_CONTROL;
 	}
 
-	if(request == SAVE_Z) {
-		g_widthStr = m_widthStr;
-		g_heightStr = m_heightStr;
-
-		wxFileDialog saveFileDialog(this, _("Save Z plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-		saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
-		if (saveFileDialog.ShowModal() == wxID_CANCEL) {
-			goto DELETE_VOLT_AMP_CONTROL;
+	if(mode == SAVE) {
+		if(!setOutput( &controlFP )) {
+			goto DELETE_CONTROL;
 		}
-
-		snprintf(buffer, 512, "%s", (const char *)saveFileDialog.GetFilename().mb_str());
-		if((p = strrchr(buffer, '.')) != NULL) {
-			// Process the suffix.
-			if(strcasecmp(p, ".png") == 0) {
-				q = "png";
-			} else if((strcasecmp(p, ".jpg") == 0) || (strcasecmp(p, ".jpeg") == 0)) {
-				q = "jpeg";
-			} else if(strcasecmp(p, ".gif") == 0) {
-				q = "gif";
-			} else {
-				// Default
-				q = "png";
-			}
-		}
-
-		wxWindow * const extra = saveFileDialog.GetExtraControl();
-		if(extra) {
-			m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
-			m_width = atoi(m_widthStr);
-
-			m_heightStr = static_cast<MyExtraPanel*>(extra)->GetHeight();
-			m_height = atoi(m_heightStr);
-		}
-
-		fprintf(impedanceControlFP.fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
-		fprintf(impedanceControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
 	}
 
-	if(request == SAVE_VI) {
-		g_widthStr = m_widthStr;
-		g_heightStr = m_heightStr;
+	// Fill in the control file.
+	switch(type) {
+		case DO_IMPEDANCE:
+			setControlZ( &controlFP, (const char*)dataName );
+			break;
 
-		wxFileDialog saveFileDialog(this, _("Save VI plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-		saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
-		if (saveFileDialog.ShowModal() == wxID_CANCEL) {
-			goto DELETE_VOLT_AMP_CONTROL;
-		}
-
-		snprintf(buffer, 512, "%s", (const char *)saveFileDialog.GetFilename().mb_str());
-		if((p = strrchr(buffer, '.')) != NULL) {
-			// Process the suffix.
-			if(strcasecmp(p, ".png") == 0) {
-				q = "png";
-			} else if((strcasecmp(p, ".jpg") == 0) || (strcasecmp(p, ".jpeg") == 0)) {
-				q = "jpeg";
-			} else if(strcasecmp(p, ".gif") == 0) {
-				q = "gif";
-			} else {
-				// Default
-				q = "png";
-			}
-		}
-
-		wxWindow * const extra = saveFileDialog.GetExtraControl();
-		if(extra) {
-			m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
-			m_width = atoi(m_widthStr);
-
-			m_heightStr = static_cast<MyExtraPanel*>(extra)->GetHeight();
-			m_height = atoi(m_heightStr);
-		}
-
-		fprintf(voltAmpControlFP.fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
-		fprintf(voltAmpControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
+		case DO_VOLT_AMP:
+			setControlVI( &controlFP, (const char*)dataName );
+			break;
 	}
-
-	// Fill in the impedanceControl file.
-	fprintf(impedanceControlFP.fp(), "set ytics -1000000,10 nomirror tc lt 1\n");
-	fprintf(impedanceControlFP.fp(), "set ylabel \"Imaginary (Ohms)\" tc lt 1\n");
-	fprintf(impedanceControlFP.fp(), "set y2tics -1000000,10 nomirror tc lt 2\n");
-	fprintf(impedanceControlFP.fp(), "set y2label \"Real (Ohms)\" tc lt 2\n");
-	fprintf(impedanceControlFP.fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
-	fprintf(impedanceControlFP.fp(), "plot \\\n");
-	fprintf(impedanceControlFP.fp(), "  \"%s\" u 1:3 w l axes x1y1 title \"img\", \\\n", (const char*)dataName);
-	fprintf(impedanceControlFP.fp(), "  \"%s\" u 1:2 w l axes x1y2 title \"img\"\n", (const char*)dataName);
 	
-	if(!impedanceControlFP.Flush()) {
-		wxLogError("Cannot flush impedance control file '%s'", impedanceControlName);
-		goto DELETE_VOLT_AMP_CONTROL;
-	}
-
-	// Fill in the voltAmpControl file.
-	fprintf(voltAmpControlFP.fp(), "set ytics -1000000,1 nomirror tc lt 1\n");
-	fprintf(voltAmpControlFP.fp(), "set ylabel \"Current (Amps)\" tc lt 1\n");
-	fprintf(voltAmpControlFP.fp(), "set y2tics -1000000,20 nomirror tc lt 2\n");
-	fprintf(voltAmpControlFP.fp(), "set y2label \"Voltage (Volts)\" tc lt 2\n");
-	fprintf(voltAmpControlFP.fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
-	fprintf(voltAmpControlFP.fp(), "plot \\\n");
-	fprintf(voltAmpControlFP.fp(), "  \"%s\" u 1:9 w l axes x1y1 title \"amps\", \\\n", (const char*)dataName);
-	fprintf(voltAmpControlFP.fp(), "  \"%s\" u 1:8 w l axes x1y2 title \"volts\"\n", (const char*)dataName);
-	
-	if(!voltAmpControlFP.Flush()) {
-		wxLogError("Cannot flush volt/amp control file '%s'", voltAmpControlName);
-		goto DELETE_VOLT_AMP_CONTROL;
+	if(!controlFP.Flush()) {
+		wxLogError("Cannot flush control file '%s'", controlName);
+		goto DELETE_CONTROL;
 	}
 
 	// Build the plot command.
-	switch(request) {
-		case PLOT_Z:
-			snprintf(buffer, 512, "gnuplot -p %s", (const char *)impedanceControlName.mb_str());
-			break;
-
-		case SAVE_Z:
-			snprintf(buffer, 512, "gnuplot %s", (const char *)impedanceControlName.mb_str());
-			break;
-
-		case PLOT_VI:
-			snprintf(buffer, 512, "gnuplot -p %s", (const char *)voltAmpControlName.mb_str());
-			break;
-
-		case SAVE_VI:
-			snprintf(buffer, 512, "gnuplot %s", (const char *)voltAmpControlName.mb_str());
-			break;
-
-		default:
-			goto DELETE_VOLT_AMP_CONTROL;
-	}
+	snprintf(buffer, 512, "gnuplot %s %s", (mode == PLOT) ? "-p" : "", (const char *)controlName.mb_str());
 
 	// Execute the plot command.
 	system(buffer);
 	
 	// Delete the temporary files from the filesystem.
-DELETE_VOLT_AMP_CONTROL:
-	voltAmpControlFP.Close();
-	wxRemoveFile(voltAmpControlName);
-
-DELETE_IMPEDANCE_CONTROL:
-	impedanceControlFP.Close();
-	//wxRemoveFile(impedanceControlName);
+DELETE_CONTROL:
+	controlFP.Close();
+	wxRemoveFile(controlName);
 
 DELETE_DATA:
 	dataFP.Close();

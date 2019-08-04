@@ -60,8 +60,12 @@ class tlineLogic : public tlineUI
 		complex<double> currentOut( double distance );
 
 		void recalculate();
-		void doPlots( int request );
+		void doPlot( int type, int mode );
+		void setControlZ( wxFFile* file, const char* name );
+		void setControlVI( wxFFile* file, const char* name );
 		void saveData();
+
+		bool setOutput( wxFFile* file );
 
 		void generateGraphableData( FILE* fp );
 

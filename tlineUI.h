@@ -113,7 +113,7 @@ class tlineUI : public wxFrame
 		virtual void onPlotVIclicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onSavePlotZclicked( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onSavePlotVIClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSavePlotVIclicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onSaveDataClicked( wxCommandEvent& event ) { event.Skip(); }
 
 
