@@ -272,19 +272,37 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2->Add( 0, 0, 1, wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbPane2Right;
-	sbPane2Right = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Actions") ), wxVERTICAL );
+	sbPane2Right = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Actions") ), wxHORIZONTAL );
 
-	ui_showPlots = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Show Plots"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbPane2Right->Add( ui_showPlots, 0, wxALL, 5 );
+	wxBoxSizer* bPane2RightLeft;
+	bPane2RightLeft = new wxBoxSizer( wxVERTICAL );
 
-	ui_savePlots = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Save Plots"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbPane2Right->Add( ui_savePlots, 0, wxALL, 5 );
+	ui_plotZ = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Plot Z"), wxDefaultPosition, wxDefaultSize, 0 );
+	bPane2RightLeft->Add( ui_plotZ, 0, wxALL, 5 );
 
-	ui_saveData = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Save Data"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbPane2Right->Add( ui_saveData, 0, wxALL, 5 );
+	ui_plotVI = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Plot V/I"), wxDefaultPosition, wxDefaultSize, 0 );
+	bPane2RightLeft->Add( ui_plotVI, 0, wxALL, 5 );
 
 	ui_tuner = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Tuner"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbPane2Right->Add( ui_tuner, 0, wxALL, 5 );
+	bPane2RightLeft->Add( ui_tuner, 0, wxALL, 5 );
+
+
+	sbPane2Right->Add( bPane2RightLeft, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane2RightRight;
+	bPane2RightRight = new wxBoxSizer( wxVERTICAL );
+
+	ui_saveZplot = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Save Z Plot"), wxDefaultPosition, wxDefaultSize, 0 );
+	bPane2RightRight->Add( ui_saveZplot, 0, wxALL, 5 );
+
+	ui_saveVIplot = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Save V/I Plot"), wxDefaultPosition, wxDefaultSize, 0 );
+	bPane2RightRight->Add( ui_saveVIplot, 0, wxALL, 5 );
+
+	ui_saveData = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Save Raw Data"), wxDefaultPosition, wxDefaultSize, 0 );
+	bPane2RightRight->Add( ui_saveData, 0, wxALL, 5 );
+
+
+	sbPane2Right->Add( bPane2RightRight, 1, wxEXPAND, 5 );
 
 
 	bPane2->Add( sbPane2Right, 1, wxEXPAND, 5 );
@@ -459,10 +477,12 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_loadInputRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onLoadInputSelected ), NULL, this );
 	ui_resistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
 	ui_reactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
-	ui_showPlots->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onShowPlotsClicked ), NULL, this );
-	ui_savePlots->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSavePlotsClicked ), NULL, this );
-	ui_saveData->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSaveDataClicked ), NULL, this );
+	ui_plotZ->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onPlotZclicked ), NULL, this );
+	ui_plotVI->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onPlotVIclicked ), NULL, this );
 	ui_tuner->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onTunerClicked ), NULL, this );
+	ui_saveZplot->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSavePlotZclicked ), NULL, this );
+	ui_saveVIplot->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSavePlotVIClicked ), NULL, this );
+	ui_saveData->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSaveDataClicked ), NULL, this );
 }
 
 tlineUI::~tlineUI()
@@ -476,9 +496,11 @@ tlineUI::~tlineUI()
 	ui_loadInputRadioButtons->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onLoadInputSelected ), NULL, this );
 	ui_resistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onResistanceSelected ), NULL, this );
 	ui_reactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onReactanceSelected ), NULL, this );
-	ui_showPlots->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onShowPlotsClicked ), NULL, this );
-	ui_savePlots->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSavePlotsClicked ), NULL, this );
-	ui_saveData->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSaveDataClicked ), NULL, this );
+	ui_plotZ->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onPlotZclicked ), NULL, this );
+	ui_plotVI->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onPlotVIclicked ), NULL, this );
 	ui_tuner->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onTunerClicked ), NULL, this );
+	ui_saveZplot->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSavePlotZclicked ), NULL, this );
+	ui_saveVIplot->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSavePlotVIClicked ), NULL, this );
+	ui_saveData->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tlineUI::onSaveDataClicked ), NULL, this );
 
 }

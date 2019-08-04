@@ -28,6 +28,11 @@
 #define M_TO_F			3.28084
 #define POINTS_ON_X		10000	// points on X axis
 
+#define PLOT_Z			0
+#define PLOT_VI			1
+#define SAVE_Z			2
+#define SAVE_VI			3
+
 // WARNING: These assigments must match the order in the GUI.
 #define USE_FEET		0
 #define USE_METERS		1

@@ -252,14 +252,24 @@ void tlineLogic::onPowerSelected( wxCommandEvent& event )
 	recalculate();
 }
 
-void tlineLogic::onShowPlotsClicked( wxCommandEvent& event )
+void tlineLogic::onPlotZclicked( wxCommandEvent& event )
 {
-	showPlots(FALSE);
+	doPlots(PLOT_Z);
 }
 
-void tlineLogic::onSavePlotsClicked( wxCommandEvent& event )
+void tlineLogic::onPlotVIclicked( wxCommandEvent& event )
 {
-	showPlots(TRUE);
+	doPlots(PLOT_VI);
+}
+
+void tlineLogic::onSavePlotZclicked( wxCommandEvent& event )
+{
+	doPlots(SAVE_Z);
+}
+
+void tlineLogic::onSavePlotVIclicked( wxCommandEvent& event )
+{
+	doPlots(SAVE_VI);
 }
 
 void tlineLogic::onSaveDataClicked( wxCommandEvent& event )
@@ -319,7 +329,6 @@ complex<double> tlineLogic::currentOut(double distance)
 	return (m_voltageForPower / m_zInput) * (cosh(m_lossCoef * distance) - (m_zInput / m_zCable) * sinh(m_lossCoef * distance));
 }
 
-//----------------------------
 // panel with custom controls for file dialog
 class MyExtraPanel : public wxPanel
 {
@@ -382,10 +391,8 @@ static wxWindow* createMyExtraPanel(wxWindow *parent)
 	return new MyExtraPanel(parent, g_widthStr, g_heightStr);
 }
 
-//----------------------------
-
 // Build data and control files, then spawn gnuplot.
-void tlineLogic::showPlots( bool hardCopy )
+void tlineLogic::doPlots( int request )
 {
 	wxString		dataName;
 	wxString		impedanceControlName;
@@ -426,14 +433,14 @@ void tlineLogic::showPlots( bool hardCopy )
 		goto DELETE_VOLT_AMP_CONTROL;
 	}
 
-	if(hardCopy) {
+	if(request == SAVE_Z) {
 		g_widthStr = m_widthStr;
 		g_heightStr = m_heightStr;
 
-		wxFileDialog saveFileDialog(this, _("Save plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		wxFileDialog saveFileDialog(this, _("Save Z plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
 		if (saveFileDialog.ShowModal() == wxID_CANCEL) {
-			return;
+			goto DELETE_VOLT_AMP_CONTROL;
 		}
 
 		wxWindow * const extra = saveFileDialog.GetExtraControl();
@@ -443,13 +450,33 @@ void tlineLogic::showPlots( bool hardCopy )
 
 			m_heightStr = static_cast<MyExtraPanel*>(extra)->GetHeight();
 			m_height = atoi(m_heightStr);
-			
-
-			wxLogMessage("%d x %d", m_width, m_height);
 		}
 
 		fprintf(impedanceControlFP.fp(), "set terminal png size %d,%d\n", m_width, m_height);
 		fprintf(impedanceControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
+	}
+
+	if(request == SAVE_VI) {
+		g_widthStr = m_widthStr;
+		g_heightStr = m_heightStr;
+
+		wxFileDialog saveFileDialog(this, _("Save VI plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
+		if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+			goto DELETE_VOLT_AMP_CONTROL;
+		}
+
+		wxWindow * const extra = saveFileDialog.GetExtraControl();
+		if(extra) {
+			m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
+			m_width = atoi(m_widthStr);
+
+			m_heightStr = static_cast<MyExtraPanel*>(extra)->GetHeight();
+			m_height = atoi(m_heightStr);
+		}
+
+		fprintf(voltAmpControlFP.fp(), "set terminal png size %d,%d\n", m_width, m_height);
+		fprintf(voltAmpControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
 	}
 
 	// Fill in the impedanceControl file.
@@ -482,12 +509,29 @@ void tlineLogic::showPlots( bool hardCopy )
 		goto DELETE_VOLT_AMP_CONTROL;
 	}
 
-	// Spawn gnuplot.
-	snprintf(buffer, 512, "gnuplot %s %s", (hardCopy) ? "" : "-p", (const char *)impedanceControlName.mb_str());
-	system(buffer);
-	
-	// Spawn gnuplot.
-	snprintf(buffer, 512, "gnuplot %s %s", (hardCopy) ? "" : "-p", (const char *)voltAmpControlName.mb_str());
+	// Build the plot command.
+	switch(request) {
+		case PLOT_Z:
+			snprintf(buffer, 512, "gnuplot -p %s", (const char *)impedanceControlName.mb_str());
+			break;
+
+		case SAVE_Z:
+			snprintf(buffer, 512, "gnuplot %s", (const char *)impedanceControlName.mb_str());
+			break;
+
+		case PLOT_VI:
+			snprintf(buffer, 512, "gnuplot -p %s", (const char *)voltAmpControlName.mb_str());
+			break;
+
+		case SAVE_VI:
+			snprintf(buffer, 512, "gnuplot %s", (const char *)voltAmpControlName.mb_str());
+			break;
+
+		default:
+			goto DELETE_VOLT_AMP_CONTROL;
+	}
+
+	// Execute the plot command.
 	system(buffer);
 	
 	// Delete the temporary files from the filesystem.

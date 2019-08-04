@@ -66,10 +66,12 @@ class tlineUI : public wxFrame
 		wxStaticText* ui_reactanceTag;
 		wxTextCtrl* ui_reactance;
 		wxStaticText* ui_reactanceUnits;
-		wxButton* ui_showPlots;
-		wxButton* ui_savePlots;
-		wxButton* ui_saveData;
+		wxButton* ui_plotZ;
+		wxButton* ui_plotVI;
 		wxButton* ui_tuner;
+		wxButton* ui_saveZplot;
+		wxButton* ui_saveVIplot;
+		wxButton* ui_saveData;
 		wxStaticText* ui_characteristicZ0Tag;
 		wxTextCtrl* ui_characteristicZ0;
 		wxStaticText* ui_matchedLineLossTag;
@@ -107,10 +109,12 @@ class tlineUI : public wxFrame
 		virtual void onLoadInputSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onResistanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onReactanceSelected( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onShowPlotsClicked( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onSavePlotsClicked( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onSaveDataClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onPlotZclicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onPlotVIclicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSavePlotZclicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSavePlotVIClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onSaveDataClicked( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

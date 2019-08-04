@@ -44,10 +44,12 @@ class tlineLogic : public tlineUI
 		void onResistanceSelected( wxCommandEvent& event );
 		void onReactanceSelected( wxCommandEvent& event );
 		void onLoadInputSelected( wxCommandEvent& event );
-		void onShowPlotsClicked( wxCommandEvent& event );
-		void onSavePlotsClicked( wxCommandEvent& event );
-		void onSaveDataClicked( wxCommandEvent& event );
+		void onPlotZclicked( wxCommandEvent& event );
+		void onPlotVIclicked( wxCommandEvent& event );
 		void onTunerClicked( wxCommandEvent& event );
+		void onSavePlotZclicked( wxCommandEvent& event );
+		void onSavePlotVIclicked( wxCommandEvent& event );
+		void onSaveDataClicked( wxCommandEvent& event );
 		void onPowerSelected( wxCommandEvent& event );
 
 		double wavelength();
@@ -58,7 +60,7 @@ class tlineLogic : public tlineUI
 		complex<double> currentOut( double distance );
 
 		void recalculate();
-		void showPlots( bool hardcopy );
+		void doPlots( int request );
 		void saveData();
 
 		void generateGraphableData( FILE* fp );
