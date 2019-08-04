@@ -403,6 +403,8 @@ void tlineLogic::doPlots( int request )
 	wxFFile			voltAmpControlFP;
 
 	char			buffer[512];
+	char			*p;
+	const char		*q;
 
 	// Create temporary data file.
 	dataName = wxFileName::CreateTempFileName("", &dataFP);
@@ -443,6 +445,21 @@ void tlineLogic::doPlots( int request )
 			goto DELETE_VOLT_AMP_CONTROL;
 		}
 
+		snprintf(buffer, 512, "%s", (const char *)saveFileDialog.GetFilename().mb_str());
+		if((p = strrchr(buffer, '.')) != NULL) {
+			// Process the suffix.
+			if(strcasecmp(p, ".png") == 0) {
+				q = "png";
+			} else if((strcasecmp(p, ".jpg") == 0) || (strcasecmp(p, ".jpeg") == 0)) {
+				q = "jpeg";
+			} else if(strcasecmp(p, ".gif") == 0) {
+				q = "gif";
+			} else {
+				// Default
+				q = "png";
+			}
+		}
+
 		wxWindow * const extra = saveFileDialog.GetExtraControl();
 		if(extra) {
 			m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
@@ -452,7 +469,7 @@ void tlineLogic::doPlots( int request )
 			m_height = atoi(m_heightStr);
 		}
 
-		fprintf(impedanceControlFP.fp(), "set terminal png size %d,%d\n", m_width, m_height);
+		fprintf(impedanceControlFP.fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
 		fprintf(impedanceControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
 	}
 
@@ -466,6 +483,21 @@ void tlineLogic::doPlots( int request )
 			goto DELETE_VOLT_AMP_CONTROL;
 		}
 
+		snprintf(buffer, 512, "%s", (const char *)saveFileDialog.GetFilename().mb_str());
+		if((p = strrchr(buffer, '.')) != NULL) {
+			// Process the suffix.
+			if(strcasecmp(p, ".png") == 0) {
+				q = "png";
+			} else if((strcasecmp(p, ".jpg") == 0) || (strcasecmp(p, ".jpeg") == 0)) {
+				q = "jpeg";
+			} else if(strcasecmp(p, ".gif") == 0) {
+				q = "gif";
+			} else {
+				// Default
+				q = "png";
+			}
+		}
+
 		wxWindow * const extra = saveFileDialog.GetExtraControl();
 		if(extra) {
 			m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
@@ -475,7 +507,7 @@ void tlineLogic::doPlots( int request )
 			m_height = atoi(m_heightStr);
 		}
 
-		fprintf(voltAmpControlFP.fp(), "set terminal png size %d,%d\n", m_width, m_height);
+		fprintf(voltAmpControlFP.fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
 		fprintf(voltAmpControlFP.fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
 	}
 
