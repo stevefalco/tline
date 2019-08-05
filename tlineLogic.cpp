@@ -1,6 +1,6 @@
 // Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
 //
-// This file is part of t;ome.
+// This file is part of tline.
 //
 //  tline is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include "version.h"
 #include "tlineLogic.h"
 #include "constants.h"
+#include "userLine.h"
 
 wxString g_widthStr;
 wxString g_heightStr;
@@ -624,6 +625,19 @@ void tlineLogic::recalculate()
 
 	// Look up the cable parameters.
 	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
+	if(!m_cp) {
+		// No such cable - open a dialog to ask for parameters.
+		userLineDialog dialog(this,
+					"This is a small sample\n"
+					"A long, long string to test out the text entrybox",
+					"Please enter a string",
+					"Default value",
+					wxOK | wxCANCEL);
+		if (dialog.ShowModal() == wxID_OK) {
+			wxMessageBox(dialog.GetValue(), "Got string", wxOK | wxICON_INFORMATION, this);
+		}
+		
+	}
 	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
 	ui_velocityFactor->ChangeValue(buffer);
 	snprintf(buffer, 512, "%.0f V", m_cp->maximumVoltage);

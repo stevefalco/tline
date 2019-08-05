@@ -1,6 +1,6 @@
 // Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
 //
-// This file is part of t;ome.
+// This file is part of tline.
 //
 //  tline is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

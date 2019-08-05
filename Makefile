@@ -6,6 +6,7 @@ SRC :=									\
 	tlineLogic.cpp							\
 	tlineUI.cpp							\
 	cableTypes.cpp							\
+	userLine.cpp							\
 	#
 
 OBJ := $(SRC:%.cpp=build/%.o)

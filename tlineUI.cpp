@@ -78,14 +78,10 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_cableType->Append( wxT("1/2-inch, LMR500") );
 	ui_cableType->Append( wxT("0.59-inch, LMR600") );
 	ui_cableType->Append( wxT("1.2-inch, LMR1200") );
-	ui_cableType->Append( wxT("1/2-inch 50-Ohm Hardline") );
-	ui_cableType->Append( wxT("1/2-inch 75-Ohm Hardline") );
-	ui_cableType->Append( wxT("7/8-inch 50-Ohm Hardline") );
-	ui_cableType->Append( wxT("7/8-inch 75-Ohm Hardline") );
 	ui_cableType->Append( wxT("1/2-inch LDF4-50A Andrew Heliax") );
 	ui_cableType->Append( wxT("7/8-inch LDF5-50A Andrew Heliax") );
 	ui_cableType->Append( wxT("1-1/4 Inch LDF6-50A Andrew Heliax") );
-	ui_cableType->Append( wxT("300-Ohm Tubular Transmitting Line, #20 Wire") );
+	ui_cableType->Append( wxT("300-Ohm DXE #18 Ladder Line") );
 	ui_cableType->Append( wxT("450-Ohm Window Line, Wireman #551") );
 	ui_cableType->Append( wxT("450-Ohm Window Line, Wireman #554") );
 	ui_cableType->Append( wxT("600-Ohm Open-Wire Ladder Line, #12 Wire") );
