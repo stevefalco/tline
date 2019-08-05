@@ -631,10 +631,12 @@ void tlineLogic::recalculate()
 					"This is a small sample\n"
 					"A long, long string to test out the text entrybox",
 					"Please enter a string",
-					"Default value",
+					"Please enter attenuation",
+					"Please enter velocity factor",
 					wxOK | wxCANCEL);
 		if (dialog.ShowModal() == wxID_OK) {
-			wxMessageBox(dialog.GetValue(), "Got string", wxOK | wxICON_INFORMATION, this);
+			wxMessageBox(dialog.GetAttenuationValue(), "Got string", wxOK | wxICON_INFORMATION, this);
+			wxMessageBox(dialog.GetVelocityFactorValue(), "Got string", wxOK | wxICON_INFORMATION, this);
 		}
 		
 	}

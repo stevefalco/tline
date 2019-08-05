@@ -63,7 +63,8 @@ wxEND_EVENT_TABLE()
 bool userLineDialog::Create(wxWindow *parent,
 		const wxString& message,
 		const wxString& caption,
-		const wxString& value,
+		const wxString& valueAttenuation,
+		const wxString& valueVelocityFactor,
 		long style,
 		const wxPoint& pos)
 {
@@ -82,7 +83,8 @@ bool userLineDialog::Create(wxWindow *parent,
 	}
 
 	m_dialogStyle = style;
-	m_value = value;
+	m_valueAttenuation = valueAttenuation;
+	m_valueVelocityFactor = valueVelocityFactor;
 
 	wxBeginBusyCursor();
 
@@ -97,11 +99,20 @@ bool userLineDialog::Create(wxWindow *parent,
 #endif
 
 	// 2) text ctrl
-	m_textctrl = new wxTextCtrl(this, wxID_TEXT, value,
+	m_textctrlAttenuation = new wxTextCtrl(this, wxID_TEXT, valueAttenuation,
 			wxDefaultPosition, wxSize(300, wxDefaultCoord),
 			style & ~userLineDialogStyle);
 
-	topsizer->Add(m_textctrl,
+	topsizer->Add(m_textctrlAttenuation,
+			wxSizerFlags(style & wxTE_MULTILINE ? 1 : 0).
+			Expand().
+			TripleBorder(wxLEFT | wxRIGHT));
+
+	m_textctrlVelocityFactor = new wxTextCtrl(this, wxID_TEXT, valueVelocityFactor,
+			wxDefaultPosition, wxSize(300, wxDefaultCoord),
+			style & ~userLineDialogStyle);
+
+	topsizer->Add(m_textctrlVelocityFactor,
 			wxSizerFlags(style & wxTE_MULTILINE ? 1 : 0).
 			Expand().
 			TripleBorder(wxLEFT | wxRIGHT));
@@ -127,22 +138,43 @@ bool userLineDialog::Create(wxWindow *parent,
 	return true;
 }
 
-bool userLineDialog::TransferDataToWindow()
+bool userLineDialog::TransferAttenuationDataToWindow()
 {
-	if ( m_textctrl )
+	if ( m_textctrlAttenuation )
 	{
-		m_textctrl->SetValue(m_value);
-		m_textctrl->SetFocus();
+		m_textctrlAttenuation->SetValue(m_valueAttenuation);
+		m_textctrlAttenuation->SetFocus();
 	}
 
 	return wxDialog::TransferDataToWindow();
 }
 
-bool userLineDialog::TransferDataFromWindow()
+bool userLineDialog::TransferVelocityFactorDataToWindow()
 {
-	if ( m_textctrl )
+	if ( m_textctrlVelocityFactor )
 	{
-		m_value = m_textctrl->GetValue();
+		m_textctrlVelocityFactor->SetValue(m_valueVelocityFactor);
+		m_textctrlVelocityFactor->SetFocus();
+	}
+
+	return wxDialog::TransferDataToWindow();
+}
+
+bool userLineDialog::TransferAttenuationDataFromWindow()
+{
+	if ( m_textctrlAttenuation )
+	{
+		m_valueAttenuation = m_textctrlAttenuation->GetValue();
+	}
+
+	return wxDialog::TransferDataFromWindow();
+}
+
+bool userLineDialog::TransferVelocityFactorDataFromWindow()
+{
+	if ( m_textctrlVelocityFactor )
+	{
+		m_valueVelocityFactor = m_textctrlVelocityFactor->GetValue();
 	}
 
 	return wxDialog::TransferDataFromWindow();
@@ -150,26 +182,46 @@ bool userLineDialog::TransferDataFromWindow()
 
 void userLineDialog::OnOK(wxCommandEvent& WXUNUSED(event) )
 {
-	if ( Validate() && TransferDataFromWindow() )
+	if ( Validate() &&
+			TransferAttenuationDataFromWindow() &&
+			TransferVelocityFactorDataFromWindow() )
 	{
 		EndModal( wxID_OK );
 	}
 }
 
-void userLineDialog::SetMaxLength(unsigned long len)
+void userLineDialog::SetAttenuationMaxLength(unsigned long len)
 {
-	if ( m_textctrl )
+	if ( m_textctrlAttenuation )
 	{
-		m_textctrl->SetMaxLength(len);
+		m_textctrlAttenuation->SetMaxLength(len);
 	}
 }
 
-void userLineDialog::SetValue(const wxString& val)
+void userLineDialog::SetVelocityFactorMaxLength(unsigned long len)
 {
-	m_value = val;
-
-	if ( m_textctrl )
+	if ( m_textctrlVelocityFactor )
 	{
-		m_textctrl->SetValue(val);
+		m_textctrlVelocityFactor->SetMaxLength(len);
+	}
+}
+
+void userLineDialog::SetAttenuationValue(const wxString& val)
+{
+	m_valueAttenuation = val;
+
+	if ( m_textctrlAttenuation )
+	{
+		m_textctrlAttenuation->SetValue(val);
+	}
+}
+
+void userLineDialog::SetVelocityFactorValue(const wxString& val)
+{
+	m_valueVelocityFactor = val;
+
+	if ( m_textctrlVelocityFactor )
+	{
+		m_textctrlVelocityFactor->SetValue(val);
 	}
 }

@@ -43,42 +43,52 @@ class userLineDialog : public wxDialog
 	public:
 		userLineDialog()
 		{
-			m_textctrl = NULL;
+			m_textctrlAttenuation = NULL;
+			m_textctrlVelocityFactor = NULL;
 		}
 
 		userLineDialog(wxWindow *parent,
 				const wxString& message,
 				const wxString& caption = userLinePromptString,
-				const wxString& value = wxEmptyString,
+				const wxString& valueAttenuation = wxEmptyString,
+				const wxString& valueVelocityFactor = wxEmptyString,
 				long style = userLineDialogStyle,
 				const wxPoint& pos = wxDefaultPosition)
 		{
-			Create(parent, message, caption, value, style, pos);
+			Create(parent, message, caption, valueAttenuation,
+					valueVelocityFactor, style, pos);
 		}
 
 		bool Create(wxWindow *parent,
 				const wxString& message,
 				const wxString& caption = userLinePromptString,
-				const wxString& value = wxEmptyString,
+				const wxString& valueAttenuation = wxEmptyString,
+				const wxString& valueVelocityFactor = wxEmptyString,
 				long style = userLineDialogStyle,
 				const wxPoint& pos = wxDefaultPosition);
 
-		void SetValue(const wxString& val);
-		wxString GetValue() const { return m_value; }
+		void SetAttenuationValue(const wxString& val);
+		wxString GetAttenuationValue() const { return m_valueAttenuation; }
+		void SetAttenuationMaxLength(unsigned long len);
+		bool TransferAttenuationDataToWindow();
+		bool TransferAttenuationDataFromWindow();
 
-		void SetMaxLength(unsigned long len);
-
-		void ForceUpper();
-
-		bool TransferDataToWindow();
-		bool TransferDataFromWindow();
+		void SetVelocityFactorValue(const wxString& val);
+		wxString GetVelocityFactorValue() const { return m_valueVelocityFactor; }
+		void SetVelocityFactorMaxLength(unsigned long len);
+		bool TransferVelocityFactorDataToWindow();
+		bool TransferVelocityFactorDataFromWindow();
 
 		// implementation only
 		void OnOK(wxCommandEvent& event);
 
 	protected:
-		wxTextCtrl *m_textctrl;
-		wxString    m_value;
+		wxTextCtrl *m_textctrlAttenuation;
+		wxTextCtrl *m_textctrlVelocityFactor;
+
+		wxString    m_valueAttenuation;
+		wxString    m_valueVelocityFactor;
+
 		long        m_dialogStyle;
 
 	private:
