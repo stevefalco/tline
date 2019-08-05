@@ -26,6 +26,7 @@
 #include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/frame.h>
+#include <wx/dialog.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -122,6 +123,26 @@ class tlineUI : public wxFrame
 		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 920,615 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~tlineUI();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class userLineDialog
+///////////////////////////////////////////////////////////////////////////////
+class userLineDialog : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* dl_frequencyTag;
+		wxTextCtrl* dl_frequencyStr;
+		wxStaticText* dl_attenuationTag;
+		wxTextCtrl* dl_attenuationStr;
+
+	public:
+
+		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 524,310 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~userLineDialog();
 
 };
 
