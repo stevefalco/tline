@@ -506,21 +506,58 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
 	wxGridSizer* gParameters;
-	gParameters = new wxGridSizer( 5, 2, 0, 0 );
+	gParameters = new wxGridSizer( 7, 2, 0, 0 );
 
 	dl_frequencyTag = new wxStaticText( this, wxID_ANY, wxT("Frequency"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_frequencyTag->Wrap( -1 );
-	gParameters->Add( dl_frequencyTag, 0, wxALL, 5 );
+	gParameters->Add( dl_frequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_frequencyStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	gParameters->Add( dl_frequencyStr, 0, wxALL, 5 );
 
 	dl_attenuationTag = new wxStaticText( this, wxID_ANY, wxT("Attenuation"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_attenuationTag->Wrap( -1 );
-	gParameters->Add( dl_attenuationTag, 0, wxALL, 5 );
+	gParameters->Add( dl_attenuationTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
-	dl_attenuationStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	gParameters->Add( dl_attenuationStr, 0, wxALL, 5 );
+	dl_attenuationStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gParameters->Add( dl_attenuationStr, 0, wxALL, 0 );
+
+	dl_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_velocityFactorTag->Wrap( -1 );
+	gParameters->Add( dl_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_velocityFactorStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gParameters->Add( dl_velocityFactorStr, 0, wxALL, 0 );
+
+	dl_cableResistanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Resistance R(0)"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableResistanceTag->Wrap( -1 );
+	gParameters->Add( dl_cableResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_cableResistanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gParameters->Add( dl_cableResistanceStr, 0, wxALL, 0 );
+
+	dl_cableReactanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Reactance X(0)"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableReactanceTag->Wrap( -1 );
+	gParameters->Add( dl_cableReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_cableReactanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gParameters->Add( dl_cableReactanceStr, 0, wxALL, 0 );
+
+	dl_cableReactanceTag1 = new wxStaticText( this, wxID_ANY, wxT("Cable Voltage Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableReactanceTag1->Wrap( -1 );
+	gParameters->Add( dl_cableReactanceTag1, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_cableReactanceStr1 = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gParameters->Add( dl_cableReactanceStr1, 0, wxALL, 0 );
+
+	dl_hiddenPad = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_hiddenPad->Wrap( -1 );
+	dl_hiddenPad->Hide();
+
+	gParameters->Add( dl_hiddenPad, 0, wxALL, 5 );
+
+	dl_okButton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	gParameters->Add( dl_okButton, 0, wxALL, 5 );
 
 
 	this->SetSizer( gParameters );

@@ -138,6 +138,16 @@ class userLineDialog : public wxDialog
 		wxTextCtrl* dl_frequencyStr;
 		wxStaticText* dl_attenuationTag;
 		wxTextCtrl* dl_attenuationStr;
+		wxStaticText* dl_velocityFactorTag;
+		wxTextCtrl* dl_velocityFactorStr;
+		wxStaticText* dl_cableResistanceTag;
+		wxTextCtrl* dl_cableResistanceStr;
+		wxStaticText* dl_cableReactanceTag;
+		wxTextCtrl* dl_cableReactanceStr;
+		wxStaticText* dl_cableReactanceTag1;
+		wxTextCtrl* dl_cableReactanceStr1;
+		wxStaticText* dl_hiddenPad;
+		wxButton* dl_okButton;
 
 	public:
 

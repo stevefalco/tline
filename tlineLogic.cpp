@@ -31,7 +31,8 @@
 #include "version.h"
 #include "tlineLogic.h"
 #include "constants.h"
-#include "userLine.h"
+//#include "userLine.h"
+#include "tlineUIuserLineDialog.h"
 
 wxString g_widthStr;
 wxString g_heightStr;
@@ -627,6 +628,8 @@ void tlineLogic::recalculate()
 	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
 	if(!m_cp) {
 		// No such cable - open a dialog to ask for parameters.
+		tlineUIuserLineDialog* dialog = new tlineUIuserLineDialog(this);
+#if 0
 		userLineDialog dialog(this,
 					"This is a small sample\n"
 					"A long, long string to test out the text entrybox",
@@ -638,6 +641,7 @@ void tlineLogic::recalculate()
 			wxMessageBox(dialog.GetAttenuationValue(), "Got string", wxOK | wxICON_INFORMATION, this);
 			wxMessageBox(dialog.GetVelocityFactorValue(), "Got string", wxOK | wxICON_INFORMATION, this);
 		}
+#endif
 		
 	}
 	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
