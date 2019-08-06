@@ -34,23 +34,28 @@ class tlineLogic : public tlineUI
 		wxString getHeight() { return m_heightStr; }
 
 	private:
-		void onCableTypeSelected( wxCommandEvent& event );
 		void onFileLoad( wxCommandEvent& event );
 		void onFileSave( wxCommandEvent& event );
 		void onFileExit( wxCommandEvent& event );
+
+		void onHelpHelp( wxCommandEvent& event );
+		void onHelpAbout( wxCommandEvent& event );
+
+		void onCableTypeSelected( wxCommandEvent& event );
 		void onUnitsSelected( wxCommandEvent& event );
 		void onFrequencySelected( wxCommandEvent& event );
 		void onLengthSelected( wxCommandEvent& event );
 		void onResistanceSelected( wxCommandEvent& event );
 		void onReactanceSelected( wxCommandEvent& event );
 		void onLoadInputSelected( wxCommandEvent& event );
+		void onPowerSelected( wxCommandEvent& event );
+
 		void onPlotZclicked( wxCommandEvent& event );
 		void onPlotVIclicked( wxCommandEvent& event );
 		void onTunerClicked( wxCommandEvent& event );
 		void onSavePlotZclicked( wxCommandEvent& event );
 		void onSavePlotVIclicked( wxCommandEvent& event );
 		void onSaveDataClicked( wxCommandEvent& event );
-		void onPowerSelected( wxCommandEvent& event );
 
 		double wavelength();
 

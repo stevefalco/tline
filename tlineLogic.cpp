@@ -31,8 +31,8 @@
 #include "version.h"
 #include "tlineLogic.h"
 #include "constants.h"
-//#include "userLine.h"
-#include "tlineUIuserLineDialog.h"
+#include "userLine.h"
+#include "helpAbout.h"
 
 wxString g_widthStr;
 wxString g_heightStr;
@@ -188,6 +188,20 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 {
 	// Could check for dirty and request save before exiting here.
 	Destroy();
+}
+
+void tlineLogic::onHelpHelp( wxCommandEvent& event )
+{
+}
+
+void tlineLogic::onHelpAbout( wxCommandEvent& event )
+{
+	helpAbout* dialog = new helpAbout(this);
+
+	dialog->helpAboutAddText("test it");
+
+	if (dialog->ShowModal() == wxID_OK) {
+	}
 }
 
 // Ordinarily, this event only happens if the selected item changes.
@@ -647,25 +661,25 @@ void tlineLogic::recalculate()
 	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
 	if(m_cp == 0) {
 		// No such cable - open a dialog to ask for parameters.
-		tlineUIuserLineDialog* dialog = new tlineUIuserLineDialog(this);
+		userLine* dialog = new userLine(this);
 
 		// Fill in the frequency.
-		dialog->tlineUIuserLineDialogSetFrequency(m_frequency);
+		dialog->userLineSetFrequency(m_frequency);
 
 		// Fill in the previous user-provided values.
-		dialog->tlineUIuserLineDialogSetAttenuation(m_attenuationFromUser);
-		dialog->tlineUIuserLineDialogSetVelocityFactor(m_velocityFactorFromUser);
-		dialog->tlineUIuserLineDialogSetCableResistance(m_cableResistanceFromUser);
-		dialog->tlineUIuserLineDialogSetCableReactance(m_cableReactanceFromUser);
-		dialog->tlineUIuserLineDialogSetCableVoltageLimit(m_cableVoltageLimitFromUser);
+		dialog->userLineSetAttenuation(m_attenuationFromUser);
+		dialog->userLineSetVelocityFactor(m_velocityFactorFromUser);
+		dialog->userLineSetCableResistance(m_cableResistanceFromUser);
+		dialog->userLineSetCableReactance(m_cableReactanceFromUser);
+		dialog->userLineSetCableVoltageLimit(m_cableVoltageLimitFromUser);
 
 		if (dialog->ShowModal() == wxID_OK) {
 			// Save the new user values.
-			m_attenuationFromUser = dialog->tlineUIuserLineDialogGetAttenuation();
-			m_velocityFactorFromUser = dialog->tlineUIuserLineDialogGetVelocityFactor();
-			m_cableResistanceFromUser = dialog->tlineUIuserLineDialogGetCableResistance();
-			m_cableReactanceFromUser = dialog->tlineUIuserLineDialogGetCableReactance();
-			m_cableVoltageLimitFromUser = dialog->tlineUIuserLineDialogGetCableVoltageLimit();
+			m_attenuationFromUser = dialog->userLineGetAttenuation();
+			m_velocityFactorFromUser = dialog->userLineGetVelocityFactor();
+			m_cableResistanceFromUser = dialog->userLineGetCableResistance();
+			m_cableReactanceFromUser = dialog->userLineGetCableReactance();
+			m_cableVoltageLimitFromUser = dialog->userLineGetCableVoltageLimit();
 
 			// Also set our working values.
 			userSpecifiedZ = TRUE;

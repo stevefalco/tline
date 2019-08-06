@@ -102,6 +102,8 @@ class tlineUI : public wxFrame
 		virtual void onFileLoad( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onHelpHelp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onHelpAbout( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onUnitsSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLengthSelected( wxCommandEvent& event ) { event.Skip(); }
@@ -166,6 +168,39 @@ class userLineDialog : public wxDialog
 
 		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 828,310 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~userLineDialog();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class helpHelpDialog
+///////////////////////////////////////////////////////////////////////////////
+class helpHelpDialog : public wxDialog
+{
+	private:
+
+	protected:
+
+	public:
+
+		helpHelpDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		~helpHelpDialog();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class helpAboutDialog
+///////////////////////////////////////////////////////////////////////////////
+class helpAboutDialog : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* dl_helpAboutText;
+
+	public:
+
+		helpAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 788,674 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~helpAboutDialog();
 
 };
 

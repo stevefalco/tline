@@ -15,9 +15,9 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_menubar = new wxMenuBar( 0 );
 	fileMenu = new wxMenu();
-	wxMenuItem* m_fileMenuLoad;
-	m_fileMenuLoad = new wxMenuItem( fileMenu, wxID_ANY, wxString( wxT("Load") ) , wxEmptyString, wxITEM_NORMAL );
-	fileMenu->Append( m_fileMenuLoad );
+	wxMenuItem* ui_fileMenuLoad;
+	ui_fileMenuLoad = new wxMenuItem( fileMenu, wxID_ANY, wxString( wxT("Load") ) , wxEmptyString, wxITEM_NORMAL );
+	fileMenu->Append( ui_fileMenuLoad );
 
 	wxMenuItem* ui_fileMenuSave;
 	ui_fileMenuSave = new wxMenuItem( fileMenu, wxID_ANY, wxString( wxT("Save") ) , wxEmptyString, wxITEM_NORMAL );
@@ -29,13 +29,13 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_menubar->Append( fileMenu, wxT("File") );
 
 	helpMenu = new wxMenu();
-	wxMenuItem* ui_menuItem2;
-	ui_menuItem2 = new wxMenuItem( helpMenu, wxID_ANY, wxString( wxT("Help") ) , wxEmptyString, wxITEM_NORMAL );
-	helpMenu->Append( ui_menuItem2 );
+	wxMenuItem* ui_helpHelp;
+	ui_helpHelp = new wxMenuItem( helpMenu, wxID_ANY, wxString( wxT("Help") ) , wxEmptyString, wxITEM_NORMAL );
+	helpMenu->Append( ui_helpHelp );
 
-	wxMenuItem* ui_menuItem3;
-	ui_menuItem3 = new wxMenuItem( helpMenu, wxID_ANY, wxString( wxT("About") ) , wxEmptyString, wxITEM_NORMAL );
-	helpMenu->Append( ui_menuItem3 );
+	wxMenuItem* ui_helpAbout;
+	ui_helpAbout = new wxMenuItem( helpMenu, wxID_ANY, wxString( wxT("About") ) , wxEmptyString, wxITEM_NORMAL );
+	helpMenu->Append( ui_helpAbout );
 
 	ui_menubar->Append( helpMenu, wxT("Help") );
 
@@ -464,9 +464,11 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileLoad ), this, m_fileMenuLoad->GetId());
+	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileLoad ), this, ui_fileMenuLoad->GetId());
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileSave ), this, ui_fileMenuSave->GetId());
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileExit ), this, ui_fileMenuExit->GetId());
+	helpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onHelpHelp ), this, ui_helpHelp->GetId());
+	helpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onHelpAbout ), this, ui_helpAbout->GetId());
 	ui_cableType->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( tlineUI::onCableTypeSelected ), NULL, this );
 	ui_unitsRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );
 	ui_cableLength->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tlineUI::onLengthSelected ), NULL, this );
@@ -621,4 +623,38 @@ userLineDialog::~userLineDialog()
 	dl_useEstimatedReactanceButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onUseEstimatedReactanceClicked ), NULL, this );
 	dl_okButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onOkClicked ), NULL, this );
 
+}
+
+helpHelpDialog::helpHelpDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+
+	this->Centre( wxBOTH );
+}
+
+helpHelpDialog::~helpHelpDialog()
+{
+}
+
+helpAboutDialog::helpAboutDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bhelpAbout;
+	bhelpAbout = new wxBoxSizer( wxVERTICAL );
+
+	dl_helpAboutText = new wxStaticText( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_helpAboutText->Wrap( -1 );
+	bhelpAbout->Add( dl_helpAboutText, 0, wxALL, 5 );
+
+
+	this->SetSizer( bhelpAbout );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+}
+
+helpAboutDialog::~helpAboutDialog()
+{
 }

@@ -15,45 +15,45 @@
 //  You should have received a copy of the GNU General Public License
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "tlineUIuserLineDialog.h"
+#include "userLine.h"
 #include "constants.h"
 
-tlineUIuserLineDialog::tlineUIuserLineDialog( wxWindow* parent ) : userLineDialog( parent )
+userLine::userLine( wxWindow* parent ) : userLineDialog( parent )
 {
 }
 
-void tlineUIuserLineDialog::onAttenuationSelected( wxCommandEvent& event )
+void userLine::onAttenuationSelected( wxCommandEvent& event )
 {
 	m_attenuation = atof(event.GetString());
 
 	tlineUIrebuildEstimatedCableReactance();
 }
 
-void tlineUIuserLineDialog::onVelocityFactorSelected( wxCommandEvent& event )
+void userLine::onVelocityFactorSelected( wxCommandEvent& event )
 {
 	m_velocityFactor = atof(event.GetString());
 
 	tlineUIrebuildEstimatedCableReactance();
 }
 
-void tlineUIuserLineDialog::onCableResistanceSelected( wxCommandEvent& event )
+void userLine::onCableResistanceSelected( wxCommandEvent& event )
 {
 	m_cableResistance = atof(event.GetString());
 
 	tlineUIrebuildEstimatedCableReactance();
 }
 
-void tlineUIuserLineDialog::onCableReactanceSelected( wxCommandEvent& event )
+void userLine::onCableReactanceSelected( wxCommandEvent& event )
 {
 	m_cableReactance = atof(event.GetString());
 }
 
-void tlineUIuserLineDialog::onCableVoltageLimitSelected( wxCommandEvent& event )
+void userLine::onCableVoltageLimitSelected( wxCommandEvent& event )
 {
 	m_cableVoltageLimit = atof(event.GetString());
 }
 
-void tlineUIuserLineDialog::onOkClicked( wxCommandEvent& event )
+void userLine::onOkClicked( wxCommandEvent& event )
 {
 	if ( Validate() )
 	{
@@ -61,12 +61,12 @@ void tlineUIuserLineDialog::onOkClicked( wxCommandEvent& event )
 	}
 }
 
-void tlineUIuserLineDialog::onUseEstimatedReactanceClicked( wxCommandEvent& event )
+void userLine::onUseEstimatedReactanceClicked( wxCommandEvent& event )
 {
-	tlineUIuserLineDialogSetCableReactance(m_cableReactanceEstimate);
+	userLineSetCableReactance(m_cableReactanceEstimate);
 }
 
-void tlineUIuserLineDialog::tlineUIuserLineDialogSetFrequency( double v )
+void userLine::userLineSetFrequency( double v )
 {
 	char buffer[512];
 
@@ -76,12 +76,12 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetFrequency( double v )
 	dl_frequencyStr->ChangeValue(buffer);
 }
 
-double tlineUIuserLineDialog::tlineUIuserLineDialogGetAttenuation()
+double userLine::userLineGetAttenuation()
 {
 	return m_attenuation;
 }
 
-void tlineUIuserLineDialog::tlineUIuserLineDialogSetAttenuation( double v )
+void userLine::userLineSetAttenuation( double v )
 {
 	char buffer[512];
 
@@ -91,12 +91,12 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetAttenuation( double v )
 	dl_attenuationStr->ChangeValue(buffer);
 }
 
-double tlineUIuserLineDialog::tlineUIuserLineDialogGetVelocityFactor()
+double userLine::userLineGetVelocityFactor()
 {
 	return m_velocityFactor;
 }
 
-void tlineUIuserLineDialog::tlineUIuserLineDialogSetVelocityFactor( double v )
+void userLine::userLineSetVelocityFactor( double v )
 {
 	char buffer[512];
 
@@ -106,12 +106,12 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetVelocityFactor( double v )
 	dl_velocityFactorStr->ChangeValue(buffer);
 }
 
-double tlineUIuserLineDialog::tlineUIuserLineDialogGetCableResistance()
+double userLine::userLineGetCableResistance()
 {
 	return m_cableResistance;
 }
 
-void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableResistance( double v )
+void userLine::userLineSetCableResistance( double v )
 {
 	char buffer[512];
 
@@ -121,12 +121,12 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableResistance( double v )
 	dl_cableResistanceStr->ChangeValue(buffer);
 }
 
-double tlineUIuserLineDialog::tlineUIuserLineDialogGetCableReactance()
+double userLine::userLineGetCableReactance()
 {
 	return m_cableReactance;
 }
 
-void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableReactance( double v )
+void userLine::userLineSetCableReactance( double v )
 {
 	char buffer[512];
 
@@ -136,12 +136,12 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableReactance( double v )
 	dl_cableReactanceStr->ChangeValue(buffer);
 }
 
-double tlineUIuserLineDialog::tlineUIuserLineDialogGetCableVoltageLimit()
+double userLine::userLineGetCableVoltageLimit()
 {
 	return m_cableVoltageLimit;
 }
 
-void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableVoltageLimit( double v )
+void userLine::userLineSetCableVoltageLimit( double v )
 {
 	char buffer[512];
 
@@ -151,7 +151,7 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableVoltageLimit( double v 
 	dl_cableVoltageLimitStr->ChangeValue(buffer);
 }
 
-void tlineUIuserLineDialog::tlineUIrebuildEstimatedCableReactance()
+void userLine::tlineUIrebuildEstimatedCableReactance()
 {
 	char			buffer[512];
 

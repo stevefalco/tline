@@ -6,8 +6,8 @@ SRC :=									\
 	tlineLogic.cpp							\
 	tlineUI.cpp							\
 	cableTypes.cpp							\
-	tlineUIuserLineDialog.cpp					\
-	#userLine.cpp							\
+	userLine.cpp							\
+	helpAbout.cpp							\
 	#
 
 OBJ := $(SRC:%.cpp=build/%.o)

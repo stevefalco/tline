@@ -15,33 +15,33 @@
 //  You should have received a copy of the GNU General Public License
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef __tlineUIuserLineDialog__
-#define __tlineUIuserLineDialog__
+#ifndef __userLine__
+#define __userLine__
 
 #include "tlineUI.h"
 
-class tlineUIuserLineDialog : public userLineDialog
+class userLine : public userLineDialog
 {
 	public:
-		tlineUIuserLineDialog( wxWindow* parent );
+		userLine( wxWindow* parent );
 
-		void tlineUIuserLineDialogSetFrequency( double v );
+		void userLineSetFrequency( double v );
 
-		double tlineUIuserLineDialogGetAttenuation();
-		void tlineUIuserLineDialogSetAttenuation( double v );
+		double userLineGetAttenuation();
+		void userLineSetAttenuation( double v );
 
-		double tlineUIuserLineDialogGetVelocityFactor();
-		void tlineUIuserLineDialogSetVelocityFactor( double v );
+		double userLineGetVelocityFactor();
+		void userLineSetVelocityFactor( double v );
 
-		double tlineUIuserLineDialogGetCableResistance();
-		void tlineUIuserLineDialogSetCableResistance( double v );
+		double userLineGetCableResistance();
+		void userLineSetCableResistance( double v );
 
-		double tlineUIuserLineDialogGetCableReactance();
-		void tlineUIuserLineDialogSetCableReactance( double v );
+		double userLineGetCableReactance();
+		void userLineSetCableReactance( double v );
 		void tlineUIrebuildEstimatedCableReactance();
 
-		double tlineUIuserLineDialogGetCableVoltageLimit();
-		void tlineUIuserLineDialogSetCableVoltageLimit( double v );
+		double userLineGetCableVoltageLimit();
+		void userLineSetCableVoltageLimit( double v );
 
 	private:
 		void onAttenuationSelected( wxCommandEvent& event );
@@ -68,4 +68,4 @@ class tlineUIuserLineDialog : public userLineDialog
 		double m_cableVoltageLimit;
 };
 
-#endif // __tlineUIuserLineDialog__
+#endif // __userLine__
