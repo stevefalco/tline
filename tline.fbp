@@ -157,7 +157,7 @@
                     </object>
                 </object>
             </object>
-            <object class="wxBoxSizer" expanded="0">
+            <object class="wxBoxSizer" expanded="1">
                 <property name="minimum_size"></property>
                 <property name="name">bMainWindow</property>
                 <property name="orient">wxVERTICAL</property>
@@ -261,7 +261,7 @@
                         <property name="maximum_size"></property>
                         <property name="min_size"></property>
                         <property name="minimize_button">0</property>
-                        <property name="minimum_size"></property>
+                        <property name="minimum_size">500,-1</property>
                         <property name="moveable">1</property>
                         <property name="name">ui_cableType</property>
                         <property name="pane_border">1</property>
@@ -289,20 +289,20 @@
                         <event name="OnCombobox">onCableTypeSelected</event>
                     </object>
                 </object>
-                <object class="sizeritem" expanded="0">
+                <object class="sizeritem" expanded="1">
                     <property name="border">5</property>
                     <property name="flag">wxSHAPED</property>
                     <property name="proportion">1</property>
-                    <object class="wxBoxSizer" expanded="0">
+                    <object class="wxBoxSizer" expanded="1">
                         <property name="minimum_size"></property>
                         <property name="name">bPane1</property>
                         <property name="orient">wxHORIZONTAL</property>
                         <property name="permission">none</property>
-                        <object class="sizeritem" expanded="0">
+                        <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxALL|wxEXPAND</property>
                             <property name="proportion">0</property>
-                            <object class="wxBoxSizer" expanded="0">
+                            <object class="wxBoxSizer" expanded="1">
                                 <property name="minimum_size"></property>
                                 <property name="name">bPane1Left</property>
                                 <property name="orient">wxHORIZONTAL</property>
@@ -376,11 +376,11 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="sizeritem" expanded="0">
+                        <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxEXPAND</property>
                             <property name="proportion">1</property>
-                            <object class="wxStaticBoxSizer" expanded="0">
+                            <object class="wxStaticBoxSizer" expanded="1">
                                 <property name="id">wxID_ANY</property>
                                 <property name="label"></property>
                                 <property name="minimum_size"></property>
@@ -388,11 +388,11 @@
                                 <property name="orient">wxVERTICAL</property>
                                 <property name="parent">1</property>
                                 <property name="permission">none</property>
-                                <object class="sizeritem" expanded="0">
+                                <object class="sizeritem" expanded="1">
                                     <property name="border">5</property>
                                     <property name="flag">wxEXPAND</property>
                                     <property name="proportion">1</property>
-                                    <object class="wxBoxSizer" expanded="0">
+                                    <object class="wxBoxSizer" expanded="1">
                                         <property name="minimum_size">-1,-1</property>
                                         <property name="name">bPane1RightUpper</property>
                                         <property name="orient">wxHORIZONTAL</property>
@@ -4266,6 +4266,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
+                        <event name="OnText">onAttenuationSelected</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="0">
@@ -4391,6 +4392,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
+                        <event name="OnText">onVelocityFactorSelected</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="0">
@@ -4516,6 +4518,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
+                        <event name="OnText">onCableResistanceSelected</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="0">
@@ -4641,6 +4644,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
+                        <event name="OnText">onCableReactanceSelected</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="0">
@@ -4744,7 +4748,7 @@
                         <property name="minimize_button">0</property>
                         <property name="minimum_size"></property>
                         <property name="moveable">1</property>
-                        <property name="name">dl_cableReactanceStr1</property>
+                        <property name="name">dl_cableVoltageLimitStr</property>
                         <property name="pane_border">1</property>
                         <property name="pane_position"></property>
                         <property name="pane_size"></property>
@@ -4766,6 +4770,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
+                        <event name="OnText">onCableVoltageLimitSelected</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -4899,6 +4904,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
+                        <event name="OnButtonClick">onOkClicked</event>
                     </object>
                 </object>
             </object>

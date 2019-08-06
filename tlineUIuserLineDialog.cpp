@@ -19,5 +19,67 @@
 
 tlineUIuserLineDialog::tlineUIuserLineDialog( wxWindow* parent ) : userLineDialog( parent )
 {
+}
 
+void tlineUIuserLineDialog::onAttenuationSelected( wxCommandEvent& event )
+{
+	m_attenuation = atof(event.GetString());
+}
+
+void tlineUIuserLineDialog::onVelocityFactorSelected( wxCommandEvent& event )
+{
+	m_velocityFactor = atof(event.GetString());
+}
+
+void tlineUIuserLineDialog::onCableResistanceSelected( wxCommandEvent& event )
+{
+	m_cableResistance = atof(event.GetString());
+}
+
+void tlineUIuserLineDialog::onCableReactanceSelected( wxCommandEvent& event )
+{
+	m_cableReactance = atof(event.GetString());
+}
+
+void tlineUIuserLineDialog::onCableVoltageLimitSelected( wxCommandEvent& event )
+{
+	m_cableVoltageLimit = atof(event.GetString());
+}
+
+void tlineUIuserLineDialog::onOkClicked( wxCommandEvent& event )
+{
+	if ( Validate() )
+	{
+		EndModal( wxID_OK );
+	}
+}
+
+double tlineUIuserLineDialog::tlineUIuserLineDialogGetAttenuation()
+{
+	return m_attenuation;
+}
+
+void tlineUIuserLineDialog::tlineUIuserLineDialogSetAttenuation( double v )
+{
+	char buffer[512];
+
+	m_attenuation = v;
+
+	snprintf(buffer, 512, "%.2f", m_attenuation);
+	dl_attenuationStr->ChangeValue(buffer);
+}
+
+double tlineUIuserLineDialog::tlineUIuserLineDialogGetVelocityFactor()
+{
+	return m_velocityFactor;
+}
+
+void tlineUIuserLineDialog::tlineUIuserLineDialogSetVelocityFactor( double v )
+{
+	char buffer[512];
+
+	m_velocityFactor = v;
+
+	snprintf(buffer, 512, "%.2f", m_velocityFactor);
+	dl_velocityFactorStr->ChangeValue(buffer);
 }

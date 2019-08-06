@@ -145,9 +145,18 @@ class userLineDialog : public wxDialog
 		wxStaticText* dl_cableReactanceTag;
 		wxTextCtrl* dl_cableReactanceStr;
 		wxStaticText* dl_cableReactanceTag1;
-		wxTextCtrl* dl_cableReactanceStr1;
+		wxTextCtrl* dl_cableVoltageLimitStr;
 		wxStaticText* dl_hiddenPad;
 		wxButton* dl_okButton;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void onAttenuationSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onVelocityFactorSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onCableResistanceSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onCableReactanceSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onCableVoltageLimitSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onOkClicked( wxCommandEvent& event ) { event.Skip(); }
+
 
 	public:
 

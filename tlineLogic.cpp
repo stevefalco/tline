@@ -626,9 +626,19 @@ void tlineLogic::recalculate()
 
 	// Look up the cable parameters.
 	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
-	if(!m_cp) {
+	if(m_cp == 0) {
 		// No such cable - open a dialog to ask for parameters.
 		tlineUIuserLineDialog* dialog = new tlineUIuserLineDialog(this);
+		dialog->tlineUIuserLineDialogSetAttenuation(123.456);
+		dialog->tlineUIuserLineDialogSetVelocityFactor(998.889);
+		if (dialog->ShowModal() == wxID_OK) {
+			wxLogError("attenuation %f", dialog->tlineUIuserLineDialogGetAttenuation());
+			wxLogError("velocity factor %f", dialog->tlineUIuserLineDialogGetVelocityFactor());
+			//wxMessageBox(dialog->tlineUIuserLineDialogGetAttenuation(), "Got string", wxOK | wxICON_INFORMATION, this);
+			//wxMessageBox(dialog->tlineUIuserLineDialogGetVelocityFactor(), "Got string", wxOK | wxICON_INFORMATION, this);
+		}
+		wxLogError("after show");
+		return;
 #if 0
 		userLineDialog dialog(this,
 					"This is a small sample\n"

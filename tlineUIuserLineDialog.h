@@ -25,6 +25,25 @@ class tlineUIuserLineDialog : public userLineDialog
 	public:
 		tlineUIuserLineDialog( wxWindow* parent );
 
+		double tlineUIuserLineDialogGetAttenuation();
+		void tlineUIuserLineDialogSetAttenuation( double v );
+
+		double tlineUIuserLineDialogGetVelocityFactor();
+		void tlineUIuserLineDialogSetVelocityFactor( double v );
+
+	private:
+		void onAttenuationSelected( wxCommandEvent& event );
+		void onVelocityFactorSelected( wxCommandEvent& event );
+		void onCableResistanceSelected( wxCommandEvent& event );
+		void onCableReactanceSelected( wxCommandEvent& event );
+		void onCableVoltageLimitSelected( wxCommandEvent& event );
+		void onOkClicked( wxCommandEvent& event );
+
+		double m_attenuation;
+		double m_velocityFactor;
+		double m_cableResistance;
+		double m_cableReactance;
+		double m_cableVoltageLimit;
 };
 
 #endif // __tlineUIuserLineDialog__

@@ -87,6 +87,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_cableType->Append( wxT("600-Ohm Open-Wire Ladder Line, #12 Wire") );
 	ui_cableType->Append( wxT("User-Defined Transmission Line") );
 	ui_cableType->SetSelection( 0 );
+	ui_cableType->SetMinSize( wxSize( 500,-1 ) );
+
 	bMainWindow->Add( ui_cableType, 0, wxALL, 5 );
 
 	wxBoxSizer* bPane1;
@@ -547,8 +549,8 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_cableReactanceTag1->Wrap( -1 );
 	gParameters->Add( dl_cableReactanceTag1, 0, wxALIGN_RIGHT|wxALL, 5 );
 
-	dl_cableReactanceStr1 = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	gParameters->Add( dl_cableReactanceStr1, 0, wxALL, 0 );
+	dl_cableVoltageLimitStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gParameters->Add( dl_cableVoltageLimitStr, 0, wxALL, 0 );
 
 	dl_hiddenPad = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_hiddenPad->Wrap( -1 );
@@ -564,8 +566,24 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	this->Layout();
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	dl_attenuationStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onAttenuationSelected ), NULL, this );
+	dl_velocityFactorStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onVelocityFactorSelected ), NULL, this );
+	dl_cableResistanceStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableResistanceSelected ), NULL, this );
+	dl_cableReactanceStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableReactanceSelected ), NULL, this );
+	dl_cableVoltageLimitStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableVoltageLimitSelected ), NULL, this );
+	dl_okButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onOkClicked ), NULL, this );
 }
 
 userLineDialog::~userLineDialog()
 {
+	// Disconnect Events
+	dl_attenuationStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onAttenuationSelected ), NULL, this );
+	dl_velocityFactorStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onVelocityFactorSelected ), NULL, this );
+	dl_cableResistanceStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableResistanceSelected ), NULL, this );
+	dl_cableReactanceStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableReactanceSelected ), NULL, this );
+	dl_cableVoltageLimitStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableVoltageLimitSelected ), NULL, this );
+	dl_okButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onOkClicked ), NULL, this );
+
 }
