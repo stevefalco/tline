@@ -142,10 +142,13 @@ class userLineDialog : public wxDialog
 		wxTextCtrl* dl_velocityFactorStr;
 		wxStaticText* dl_cableResistanceTag;
 		wxTextCtrl* dl_cableResistanceStr;
+		wxStaticText* dl_cableReactanceEstimatedTag;
 		wxStaticText* dl_cableReactanceTag;
 		wxTextCtrl* dl_cableReactanceStr;
-		wxStaticText* dl_cableReactanceTag1;
+		wxTextCtrl* dl_cableReactanceEstimatedStr;
+		wxStaticText* dl_cableVoltageLimitTag;
 		wxTextCtrl* dl_cableVoltageLimitStr;
+		wxButton* dl_useEstimatedReactanceButton;
 		wxStaticText* dl_hiddenPad;
 		wxButton* dl_okButton;
 
@@ -155,12 +158,13 @@ class userLineDialog : public wxDialog
 		virtual void onCableResistanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableReactanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableVoltageLimitSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onUseEstimatedReactanceClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onOkClicked( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 524,310 ), long style = wxDEFAULT_DIALOG_STYLE );
+		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 828,310 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~userLineDialog();
 
 };

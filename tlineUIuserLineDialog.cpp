@@ -16,6 +16,7 @@
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "tlineUIuserLineDialog.h"
+#include "constants.h"
 
 tlineUIuserLineDialog::tlineUIuserLineDialog( wxWindow* parent ) : userLineDialog( parent )
 {
@@ -24,16 +25,22 @@ tlineUIuserLineDialog::tlineUIuserLineDialog( wxWindow* parent ) : userLineDialo
 void tlineUIuserLineDialog::onAttenuationSelected( wxCommandEvent& event )
 {
 	m_attenuation = atof(event.GetString());
+
+	tlineUIrebuildEstimatedCableReactance();
 }
 
 void tlineUIuserLineDialog::onVelocityFactorSelected( wxCommandEvent& event )
 {
 	m_velocityFactor = atof(event.GetString());
+
+	tlineUIrebuildEstimatedCableReactance();
 }
 
 void tlineUIuserLineDialog::onCableResistanceSelected( wxCommandEvent& event )
 {
 	m_cableResistance = atof(event.GetString());
+
+	tlineUIrebuildEstimatedCableReactance();
 }
 
 void tlineUIuserLineDialog::onCableReactanceSelected( wxCommandEvent& event )
@@ -54,13 +61,18 @@ void tlineUIuserLineDialog::onOkClicked( wxCommandEvent& event )
 	}
 }
 
+void tlineUIuserLineDialog::onUseEstimatedReactanceClicked( wxCommandEvent& event )
+{
+	tlineUIuserLineDialogSetCableReactance(m_cableReactanceEstimate);
+}
+
 void tlineUIuserLineDialog::tlineUIuserLineDialogSetFrequency( double v )
 {
 	char buffer[512];
 
-	v /= 1e6;
+	m_frequency = v;
 
-	snprintf(buffer, 512, "%.2f", v);
+	snprintf(buffer, 512, "%.2f", m_frequency / 1e6);
 	dl_frequencyStr->ChangeValue(buffer);
 }
 
@@ -137,4 +149,22 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableVoltageLimit( double v 
 
 	snprintf(buffer, 512, "%.2f", m_cableVoltageLimit);
 	dl_cableVoltageLimitStr->ChangeValue(buffer);
+}
+
+void tlineUIuserLineDialog::tlineUIrebuildEstimatedCableReactance()
+{
+	char			buffer[512];
+
+	double			attenuation;
+	double			wavelength;
+	double			phase;
+
+	wavelength = m_velocityFactor * SPEED_OF_LIGHT_F / m_frequency;
+	phase = (2.0 * PI) / wavelength;
+	attenuation = DB_TO_NEPERS * m_attenuation / 100.0;
+
+	m_cableReactanceEstimate = -m_cableResistance * (attenuation / phase);
+
+	snprintf(buffer, 512, "%.2f Ohms", m_cableReactanceEstimate);
+	dl_cableReactanceEstimatedStr->ChangeValue(buffer);
 }

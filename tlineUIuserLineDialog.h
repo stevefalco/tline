@@ -38,6 +38,7 @@ class tlineUIuserLineDialog : public userLineDialog
 
 		double tlineUIuserLineDialogGetCableReactance();
 		void tlineUIuserLineDialogSetCableReactance( double v );
+		void tlineUIrebuildEstimatedCableReactance();
 
 		double tlineUIuserLineDialogGetCableVoltageLimit();
 		void tlineUIuserLineDialogSetCableVoltageLimit( double v );
@@ -50,6 +51,7 @@ class tlineUIuserLineDialog : public userLineDialog
 		void onCableVoltageLimitSelected( wxCommandEvent& event );
 
 		void onOkClicked( wxCommandEvent& event );
+		void onUseEstimatedReactanceClicked( wxCommandEvent& event );
 
 		double m_attenuationFromUser;
 		double m_velocityFactorFromUser;
@@ -57,10 +59,12 @@ class tlineUIuserLineDialog : public userLineDialog
 		double m_cableReactanceFromUser;
 		double m_cableVoltageLimitFromUser;
 
+		double m_frequency;
 		double m_attenuation;
 		double m_velocityFactor;
 		double m_cableResistance;
 		double m_cableReactance;
+		double m_cableReactanceEstimate;
 		double m_cableVoltageLimit;
 };
 
