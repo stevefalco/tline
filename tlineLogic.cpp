@@ -190,9 +190,28 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 	Destroy();
 }
 
+// Ordinarily, this event only happens if the selected item changes.
+// Reselecting the same item a second time does not cause this event.
+// I consider that to be a bug; it is certainly not what I want here.
+// I have a special case of "User Specified Line", and I want a
+// reselection of that item to reopen the associated dialog box.
+//
+// I tried onComboBoxCloseup, but it doesn't return the string in the
+// event.  And, if I try to recover the string from the combo box itself,
+// I get the previous value.  Consequently, when switching away from
+// "User Specified Line", I wind up getting the dialog opening when it
+// shouldn't.
+//
+// After much experimentation, I found that if I set the selection to
+// wxNOT_FOUND, then I will get this event even if the same item is
+// reselected.  I was nervous that this would also blank out the text
+// in the comboBox, but fortunately, that is not the case.  The text
+// in the comboBox is unaffected by setting wxNOT_FOUND.
 void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 {
 	m_cableTypeStr = event.GetString();
+	ui_cableType->SetSelection(wxNOT_FOUND);
+
 	m_saved = 0;
 
 	recalculate();
