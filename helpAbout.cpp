@@ -21,7 +21,30 @@ helpAbout::helpAbout( wxWindow* parent ) : helpAboutDialog( parent )
 {
 }
 
-void helpAbout::helpAboutAddText( wxString s )
+void helpAbout::helpAboutAddTextLine1( wxString s )
 {
-	dl_helpAboutText->SetLabel(s);
+	dl_helpAboutTextLine1->SetLabel(s);
+}
+
+void helpAbout::helpAboutAddTextLine2( wxString s )
+{
+	dl_helpAboutTextLine2->SetLabel(s);
+}
+
+void helpAbout::helpAboutAddTextLine3( wxString s )
+{
+	dl_helpAboutTextLine3->SetLabel(s);
+}
+
+void helpAbout::helpAboutAddTextLine4( wxString s )
+{
+	dl_helpAboutTextLine4->SetLabel(s);
+}
+
+void helpAbout::onHelpAboutOK( wxCommandEvent& event )
+{
+	if ( Validate() )
+	{
+		EndModal( wxID_OK );
+	}
 }

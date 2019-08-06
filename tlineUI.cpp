@@ -644,17 +644,38 @@ helpAboutDialog::helpAboutDialog( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bhelpAbout;
 	bhelpAbout = new wxBoxSizer( wxVERTICAL );
 
-	dl_helpAboutText = new wxStaticText( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_helpAboutText->Wrap( -1 );
-	bhelpAbout->Add( dl_helpAboutText, 0, wxALL, 5 );
+	dl_helpAboutTextLine1 = new wxStaticText( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_helpAboutTextLine1->Wrap( -1 );
+	bhelpAbout->Add( dl_helpAboutTextLine1, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	dl_helpAboutTextLine2 = new wxStaticText( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_helpAboutTextLine2->Wrap( -1 );
+	bhelpAbout->Add( dl_helpAboutTextLine2, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	dl_helpAboutTextLine3 = new wxStaticText( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_helpAboutTextLine3->Wrap( -1 );
+	bhelpAbout->Add( dl_helpAboutTextLine3, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	dl_helpAboutTextLine4 = new wxStaticText( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_helpAboutTextLine4->Wrap( -1 );
+	bhelpAbout->Add( dl_helpAboutTextLine4, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	dl_helpAboutOk = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	bhelpAbout->Add( dl_helpAboutOk, 0, wxALIGN_CENTER|wxALL, 5 );
 
 
 	this->SetSizer( bhelpAbout );
 	this->Layout();
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	dl_helpAboutOk->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( helpAboutDialog::onHelpAboutOK ), NULL, this );
 }
 
 helpAboutDialog::~helpAboutDialog()
 {
+	// Disconnect Events
+	dl_helpAboutOk->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( helpAboutDialog::onHelpAboutOK ), NULL, this );
+
 }

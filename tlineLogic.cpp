@@ -196,9 +196,18 @@ void tlineLogic::onHelpHelp( wxCommandEvent& event )
 
 void tlineLogic::onHelpAbout( wxCommandEvent& event )
 {
+	char buffer[512];
+
 	helpAbout* dialog = new helpAbout(this);
 
-	dialog->helpAboutAddText("test it");
+	dialog->helpAboutAddTextLine1("tline - A Transmission Line Calculator");
+
+	snprintf(buffer, 512, "Version %s", VERSION);
+	dialog->helpAboutAddTextLine2(buffer);
+
+	dialog->helpAboutAddTextLine3("by Steven A. Falco, AC2XM");
+
+	dialog->helpAboutAddTextLine4("");
 
 	if (dialog->ShowModal() == wxID_OK) {
 	}

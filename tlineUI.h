@@ -195,11 +195,19 @@ class helpAboutDialog : public wxDialog
 	private:
 
 	protected:
-		wxStaticText* dl_helpAboutText;
+		wxStaticText* dl_helpAboutTextLine1;
+		wxStaticText* dl_helpAboutTextLine2;
+		wxStaticText* dl_helpAboutTextLine3;
+		wxStaticText* dl_helpAboutTextLine4;
+		wxButton* dl_helpAboutOk;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void onHelpAboutOK( wxCommandEvent& event ) { event.Skip(); }
+
 
 	public:
 
-		helpAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 788,674 ), long style = wxDEFAULT_DIALOG_STYLE );
+		helpAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 495,194 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~helpAboutDialog();
 
 };
