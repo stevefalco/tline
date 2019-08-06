@@ -510,21 +510,21 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxGridSizer* gParameters;
 	gParameters = new wxGridSizer( 7, 2, 0, 0 );
 
-	dl_frequencyTag = new wxStaticText( this, wxID_ANY, wxT("Frequency"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_frequencyTag = new wxStaticText( this, wxID_ANY, wxT("Frequency (MHz)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_frequencyTag->Wrap( -1 );
 	gParameters->Add( dl_frequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_frequencyStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	gParameters->Add( dl_frequencyStr, 0, wxALL, 5 );
 
-	dl_attenuationTag = new wxStaticText( this, wxID_ANY, wxT("Attenuation"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_attenuationTag = new wxStaticText( this, wxID_ANY, wxT("Attenuation (ohms/100 feet)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_attenuationTag->Wrap( -1 );
 	gParameters->Add( dl_attenuationTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_attenuationStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	gParameters->Add( dl_attenuationStr, 0, wxALL, 0 );
 
-	dl_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor (0 to 1)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_velocityFactorTag->Wrap( -1 );
 	gParameters->Add( dl_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 

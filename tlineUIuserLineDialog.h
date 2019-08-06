@@ -25,6 +25,8 @@ class tlineUIuserLineDialog : public userLineDialog
 	public:
 		tlineUIuserLineDialog( wxWindow* parent );
 
+		void tlineUIuserLineDialogSetFrequency( double v );
+
 		double tlineUIuserLineDialogGetAttenuation();
 		void tlineUIuserLineDialogSetAttenuation( double v );
 

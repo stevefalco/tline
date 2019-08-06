@@ -649,6 +649,9 @@ void tlineLogic::recalculate()
 		// No such cable - open a dialog to ask for parameters.
 		tlineUIuserLineDialog* dialog = new tlineUIuserLineDialog(this);
 
+		// Fill in the frequency.
+		dialog->tlineUIuserLineDialogSetFrequency(m_frequency);
+
 		// Fill in the previous user-provided values.
 		dialog->tlineUIuserLineDialogSetAttenuation(m_attenuationFromUser);
 		dialog->tlineUIuserLineDialogSetVelocityFactor(m_velocityFactorFromUser);

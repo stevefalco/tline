@@ -54,6 +54,16 @@ void tlineUIuserLineDialog::onOkClicked( wxCommandEvent& event )
 	}
 }
 
+void tlineUIuserLineDialog::tlineUIuserLineDialogSetFrequency( double v )
+{
+	char buffer[512];
+
+	v /= 1e6;
+
+	snprintf(buffer, 512, "%.2f", v);
+	dl_frequencyStr->ChangeValue(buffer);
+}
+
 double tlineUIuserLineDialog::tlineUIuserLineDialogGetAttenuation()
 {
 	return m_attenuation;
