@@ -83,3 +83,48 @@ void tlineUIuserLineDialog::tlineUIuserLineDialogSetVelocityFactor( double v )
 	snprintf(buffer, 512, "%.2f", m_velocityFactor);
 	dl_velocityFactorStr->ChangeValue(buffer);
 }
+
+double tlineUIuserLineDialog::tlineUIuserLineDialogGetCableResistance()
+{
+	return m_cableResistance;
+}
+
+void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableResistance( double v )
+{
+	char buffer[512];
+
+	m_cableResistance = v;
+
+	snprintf(buffer, 512, "%.2f", m_cableResistance);
+	dl_cableResistanceStr->ChangeValue(buffer);
+}
+
+double tlineUIuserLineDialog::tlineUIuserLineDialogGetCableReactance()
+{
+	return m_cableReactance;
+}
+
+void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableReactance( double v )
+{
+	char buffer[512];
+
+	m_cableReactance = v;
+
+	snprintf(buffer, 512, "%.2f", m_cableReactance);
+	dl_cableReactanceStr->ChangeValue(buffer);
+}
+
+double tlineUIuserLineDialog::tlineUIuserLineDialogGetCableVoltageLimit()
+{
+	return m_cableVoltageLimit;
+}
+
+void tlineUIuserLineDialog::tlineUIuserLineDialogSetCableVoltageLimit( double v )
+{
+	char buffer[512];
+
+	m_cableVoltageLimit = v;
+
+	snprintf(buffer, 512, "%.2f", m_cableVoltageLimit);
+	dl_cableVoltageLimitStr->ChangeValue(buffer);
+}

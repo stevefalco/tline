@@ -31,13 +31,29 @@ class tlineUIuserLineDialog : public userLineDialog
 		double tlineUIuserLineDialogGetVelocityFactor();
 		void tlineUIuserLineDialogSetVelocityFactor( double v );
 
+		double tlineUIuserLineDialogGetCableResistance();
+		void tlineUIuserLineDialogSetCableResistance( double v );
+
+		double tlineUIuserLineDialogGetCableReactance();
+		void tlineUIuserLineDialogSetCableReactance( double v );
+
+		double tlineUIuserLineDialogGetCableVoltageLimit();
+		void tlineUIuserLineDialogSetCableVoltageLimit( double v );
+
 	private:
 		void onAttenuationSelected( wxCommandEvent& event );
 		void onVelocityFactorSelected( wxCommandEvent& event );
 		void onCableResistanceSelected( wxCommandEvent& event );
 		void onCableReactanceSelected( wxCommandEvent& event );
 		void onCableVoltageLimitSelected( wxCommandEvent& event );
+
 		void onOkClicked( wxCommandEvent& event );
+
+		double m_attenuationFromUser;
+		double m_velocityFactorFromUser;
+		double m_cableResistanceFromUser;
+		double m_cableReactanceFromUser;
+		double m_cableVoltageLimitFromUser;
 
 		double m_attenuation;
 		double m_velocityFactor;

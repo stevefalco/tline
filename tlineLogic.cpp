@@ -308,9 +308,9 @@ double tlineLogic::wavelength()
 	double				wavelength;
 
 	if(m_units == USE_FEET) {
-		wavelength = m_cp->velocityFactor * SPEED_OF_LIGHT_F / m_frequency;
+		wavelength = m_velocityFactor * SPEED_OF_LIGHT_F / m_frequency;
 	} else if(m_units == USE_METERS) {
-		wavelength = m_cp->velocityFactor * SPEED_OF_LIGHT_M / m_frequency;
+		wavelength = m_velocityFactor * SPEED_OF_LIGHT_M / m_frequency;
 	} else {
 		wavelength = -1.0;
 	}
@@ -627,7 +627,7 @@ void tlineLogic::generateGraphableData(
 void tlineLogic::recalculate()
 {
 	char				buffer[512];
-	double				tmp;
+	bool				userSpecifiedZ = FALSE;
 
 	// Convert the units string.
 	if(m_unitsStr == "Feet") {
@@ -648,34 +648,41 @@ void tlineLogic::recalculate()
 	if(m_cp == 0) {
 		// No such cable - open a dialog to ask for parameters.
 		tlineUIuserLineDialog* dialog = new tlineUIuserLineDialog(this);
-		dialog->tlineUIuserLineDialogSetAttenuation(123.456);
-		dialog->tlineUIuserLineDialogSetVelocityFactor(998.889);
+
+		// Fill in the previous user-provided values.
+		dialog->tlineUIuserLineDialogSetAttenuation(m_attenuationFromUser);
+		dialog->tlineUIuserLineDialogSetVelocityFactor(m_velocityFactorFromUser);
+		dialog->tlineUIuserLineDialogSetCableResistance(m_cableResistanceFromUser);
+		dialog->tlineUIuserLineDialogSetCableReactance(m_cableReactanceFromUser);
+		dialog->tlineUIuserLineDialogSetCableVoltageLimit(m_cableVoltageLimitFromUser);
+
 		if (dialog->ShowModal() == wxID_OK) {
-			wxLogError("attenuation %f", dialog->tlineUIuserLineDialogGetAttenuation());
-			wxLogError("velocity factor %f", dialog->tlineUIuserLineDialogGetVelocityFactor());
-			//wxMessageBox(dialog->tlineUIuserLineDialogGetAttenuation(), "Got string", wxOK | wxICON_INFORMATION, this);
-			//wxMessageBox(dialog->tlineUIuserLineDialogGetVelocityFactor(), "Got string", wxOK | wxICON_INFORMATION, this);
+			// Save the new user values.
+			m_attenuationFromUser = dialog->tlineUIuserLineDialogGetAttenuation();
+			m_velocityFactorFromUser = dialog->tlineUIuserLineDialogGetVelocityFactor();
+			m_cableResistanceFromUser = dialog->tlineUIuserLineDialogGetCableResistance();
+			m_cableReactanceFromUser = dialog->tlineUIuserLineDialogGetCableReactance();
+			m_cableVoltageLimitFromUser = dialog->tlineUIuserLineDialogGetCableVoltageLimit();
+
+			// Also set our working values.
+			userSpecifiedZ = TRUE;
+			m_attenPer100Feet = m_attenuationFromUser;
+			m_velocityFactor = m_velocityFactorFromUser;
+			m_cableResistivePart = m_cableResistanceFromUser;
+			m_cableReactivePart = m_cableReactanceFromUser;
+			m_maximumVoltage = m_cableVoltageLimitFromUser;
 		}
-		wxLogError("after show");
-		return;
-#if 0
-		userLineDialog dialog(this,
-					"This is a small sample\n"
-					"A long, long string to test out the text entrybox",
-					"Please enter a string",
-					"Please enter attenuation",
-					"Please enter velocity factor",
-					wxOK | wxCANCEL);
-		if (dialog.ShowModal() == wxID_OK) {
-			wxMessageBox(dialog.GetAttenuationValue(), "Got string", wxOK | wxICON_INFORMATION, this);
-			wxMessageBox(dialog.GetVelocityFactorValue(), "Got string", wxOK | wxICON_INFORMATION, this);
-		}
-#endif
-		
+	} else {
+		userSpecifiedZ = FALSE;
+		m_attenPer100Feet = m_c->findAtten(m_cp, m_frequency);
+		m_velocityFactor = m_cp->velocityFactor;
+		m_impedance = m_cp->impedance;
+		m_maximumVoltage = m_cp->maximumVoltage;
 	}
-	snprintf(buffer, 512, "%.2f", m_cp->velocityFactor);
+
+	snprintf(buffer, 512, "%.2f", m_velocityFactor);
 	ui_velocityFactor->ChangeValue(buffer);
-	snprintf(buffer, 512, "%.0f V", m_cp->maximumVoltage);
+	snprintf(buffer, 512, "%.0f V", m_maximumVoltage);
 	ui_maxVoltage->ChangeValue(buffer);
 
 	// Calculate the wavelength.  We need the velocity factor here.
@@ -703,7 +710,6 @@ void tlineLogic::recalculate()
 
 	// Look up the attenuation in dB per hundred feet, and convert to the
 	// other formats we will need.
-	m_attenPer100Feet = m_c->findAtten(m_cp, m_frequency);
 	m_attenPer100Meters = m_attenPer100Feet * M_TO_F;
 	if(m_units == USE_FEET) {
 		m_attenPer100Units = m_attenPer100Feet;
@@ -723,11 +729,17 @@ void tlineLogic::recalculate()
 	// Combine attenuation and phase angle to get the loss coefficient.
 	m_lossCoef = complex<double>(m_attenNepersPerUnitLength, m_phase);
 
-	// Find the complex impedance of the coax.  There are several ways to
-	// do this, and they each give different answers.  This is the best
-	// method that I've found...
-	m_cableResistivePart = sqrt(sq(m_cp->impedance) / (1.0 + sq(m_attenNepersPerUnitLength) / sq(m_phase)));
-	m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
+	// The user can specify the cable resistance / reactance, in which
+	// case we use those values directly.  But manufacturers don't
+	// specify cable that way, so we have to generate the values
+	// ourselves from the attenuation and phase angle.
+	if(!userSpecifiedZ) {
+		// Find the complex impedance of the coax.  There are several ways to
+		// do this, and they each give different answers.  This is the best
+		// method that I've found...
+		m_cableResistivePart = sqrt(sq(m_impedance) / (1.0 + sq(m_attenNepersPerUnitLength) / sq(m_phase)));
+		m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
+	}
 	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
 	snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zCable), imag(m_zCable));
 	ui_characteristicZ0->ChangeValue(buffer);
@@ -779,8 +791,8 @@ void tlineLogic::recalculate()
 	snprintf(buffer, 512, "%.2f dB", m_totalMatchedLineLoss);
 	ui_totalMatchedLineLoss->ChangeValue(buffer);
 
-	//Calculate total loss.
-	tmp = pow(10.0, 0.1 * m_totalMatchedLineLoss);
+	// Calculate total loss.
+	double tmp = pow(10.0, 0.1 * m_totalMatchedLineLoss);
 	m_totalLoss = 10.0 * log10((sq(tmp) - sq(m_rhoMagnitudeAtLoad)) / (tmp * (1.0 - sq(m_rhoMagnitudeAtLoad))));
 	snprintf(buffer, 512, "%.2f dB", m_totalLoss);
 	ui_totalLoss->ChangeValue(buffer);

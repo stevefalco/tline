@@ -96,12 +96,18 @@ class tlineLogic : public tlineUI
 		double			m_attenPer100Feet;
 		double			m_attenPer100Meters;
 		double			m_attenPer100Units;
+		double			m_attenuationFromUser;
+		double			m_cableReactanceFromUser;
 		double			m_cableReactivePart;
+		double			m_cableResistanceFromUser;
 		double			m_cableResistivePart;
+		double			m_cableVoltageLimitFromUser;
 		double			m_extraSWRloss;
 		double			m_frequency;
+		double			m_impedance;
 		double			m_lambda;
 		double			m_length;
+		double			m_maximumVoltage;
 		double			m_phase;
 		double			m_power;
 		double			m_reactance;
@@ -115,6 +121,8 @@ class tlineLogic : public tlineUI
 		double			m_totalLoss;
 		double			m_totalMatchedLineLoss;
 		double			m_units;
+		double			m_velocityFactor;
+		double			m_velocityFactorFromUser;
 		double			m_voltageForPower;
 		double			m_wavelength;
 
