@@ -21,5 +21,7 @@ If you have a transmission line that **_tline_** doesn't provide, you can specif
 
 Please note that all transmission lines have an impedance with both real and imaginary parts, where the imaginary part is capacitive (i.e. a negative number like -j0.2 ohms).  Usually, the imaginary part is small, and cable manufacturers just specify a single number like "50 Ohms".  **_tline_** can estimate the imaginary part of the complex impedance for user-specified lines, or if you have measured the line and know what value you want to use, you can enter it.
 
+Finally, the "Tuner" calculator" portion of **_tline_** has not been completed yet.  I'm working on it...
+
 73 de AC2XM
 
