@@ -21,6 +21,31 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
 }
 
+void tuner::onSourceResistance( wxCommandEvent& event )
+{
+// TODO: Implement onSourceResistance
+}
+
+void tuner::onSourceReactance( wxCommandEvent& event )
+{
+// TODO: Implement onSourceReactance
+}
+
+void tuner::onLoadResistance( wxCommandEvent& event )
+{
+// TODO: Implement onLoadResistance
+}
+
+void tuner::onLoadReactance( wxCommandEvent& event )
+{
+// TODO: Implement onLoadReactance
+}
+
+void tuner::onQ( wxCommandEvent& event )
+{
+// TODO: Implement onQ
+}
+
 void tuner::onTUnerQSelected( wxCommandEvent& event )
 {
 // TODO: Implement onTUnerQSelected

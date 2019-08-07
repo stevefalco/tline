@@ -26,11 +26,15 @@ class tuner : public tunerDialog
 		tuner( wxWindow* parent );
 
 	protected:
+		void onSourceResistance( wxCommandEvent& event );
+		void onSourceReactance( wxCommandEvent& event );
+		void onLoadResistance( wxCommandEvent& event );
+		void onLoadReactance( wxCommandEvent& event );
+		void onQ( wxCommandEvent& event );
 		void onTUnerQSelected( wxCommandEvent& event );
 		void onTunerTopologySelected( wxCommandEvent& event );
 		void onTunerCalculateClicked( wxCommandEvent& event );
 		void onTunerOKclicked( wxCommandEvent& event );
-
 };
 
 #endif // __tuner__
