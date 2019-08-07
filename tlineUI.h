@@ -27,6 +27,7 @@
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/dialog.h>
+#include <wx/html/htmlwin.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -102,7 +103,7 @@ class tlineUI : public wxFrame
 		virtual void onFileLoad( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onHelpHelp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onHelpInfo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onHelpAbout( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onUnitsSelected( wxCommandEvent& event ) { event.Skip(); }
@@ -172,18 +173,23 @@ class userLineDialog : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class helpHelpDialog
+/// Class helpInfoDialog
 ///////////////////////////////////////////////////////////////////////////////
-class helpHelpDialog : public wxDialog
+class helpInfoDialog : public wxDialog
 {
 	private:
 
 	protected:
+		wxHtmlWindow* dl_htmlWindow;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void onLinkClicked( wxHtmlLinkEvent& event ) { event.Skip(); }
+
 
 	public:
 
-		helpHelpDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
-		~helpHelpDialog();
+		helpInfoDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 700,600 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~helpInfoDialog();
 
 };
 

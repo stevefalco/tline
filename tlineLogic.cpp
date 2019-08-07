@@ -33,6 +33,7 @@
 #include "constants.h"
 #include "userLine.h"
 #include "helpAbout.h"
+#include "helpInfo.h"
 
 wxString g_widthStr;
 wxString g_heightStr;
@@ -190,8 +191,14 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 	Destroy();
 }
 
-void tlineLogic::onHelpHelp( wxCommandEvent& event )
+void tlineLogic::onHelpInfo( wxCommandEvent& event )
 {
+	helpInfo* dialog = new helpInfo(this);
+
+	dialog->helpInfoLoadPage("/home/sfalco/tline/start.htm");
+
+	if (dialog->ShowModal() == wxID_OK) {
+	}
 }
 
 void tlineLogic::onHelpAbout( wxCommandEvent& event )
@@ -209,8 +216,7 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 
 	dialog->helpAboutAddTextLine4("");
 
-	if (dialog->ShowModal() == wxID_OK) {
-	}
+	dialog->ShowModal();
 }
 
 // Ordinarily, this event only happens if the selected item changes.

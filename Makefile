@@ -8,6 +8,7 @@ SRC :=									\
 	cableTypes.cpp							\
 	userLine.cpp							\
 	helpAbout.cpp							\
+	helpInfo.cpp							\
 	#
 
 OBJ := $(SRC:%.cpp=build/%.o)
