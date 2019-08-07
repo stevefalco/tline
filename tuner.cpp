@@ -21,6 +21,11 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
 }
 
+void tuner::SetFrequency( double frequency )
+{
+	m_frequency = frequency;
+}
+
 void tuner::onSourceResistance( wxCommandEvent& event )
 {
 // TODO: Implement onSourceResistance

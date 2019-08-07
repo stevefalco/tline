@@ -335,6 +335,8 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 {
 	tuner* dialog = new tuner(this);
 
+	dialog->SetFrequency( m_frequency );
+
 	dialog->ShowModal();
 }
 
