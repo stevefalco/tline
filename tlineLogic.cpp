@@ -34,12 +34,16 @@
 #include "userLine.h"
 #include "helpAbout.h"
 #include "helpInfo.h"
+#include "info.h"
 
 wxString g_widthStr;
 wxString g_heightStr;
 
 tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 {
+	wxImage::AddHandler(new wxPNGHandler);
+	wxImage::AddHandler(new wxJPEGHandler);
+
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
 
 	m_c = new cableTypes;
@@ -195,7 +199,7 @@ void tlineLogic::onHelpInfo( wxCommandEvent& event )
 {
 	helpInfo* dialog = new helpInfo(this);
 
-	dialog->helpInfoLoadPage("/home/sfalco/tline/start.htm");
+	dialog->helpInfoSetPage(INFO_PAGE);
 
 	if (dialog->ShowModal() == wxID_OK) {
 	}

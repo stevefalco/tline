@@ -20,8 +20,6 @@
 
 helpInfo::helpInfo( wxWindow* parent ) : helpInfoDialog( parent )
 {
-	wxImage::AddHandler(new wxPNGHandler);
-	wxImage::AddHandler(new wxJPEGHandler);
 }
 
 void helpInfo::helpInfoLoadPage( wxString s )
@@ -29,7 +27,12 @@ void helpInfo::helpInfoLoadPage( wxString s )
 	dl_htmlWindow->LoadPage(s);
 }
 
+void helpInfo::helpInfoSetPage( wxString s )
+{
+	dl_htmlWindow->SetPage(s);
+}
+
 void helpInfo::onLinkClicked( wxHtmlLinkEvent& event )
 {
-	event.Skip();
+	wxLaunchDefaultBrowser(event.GetLinkInfo().GetHref());
 }

@@ -26,6 +26,7 @@ class helpInfo : public helpInfoDialog
 		helpInfo( wxWindow* parent );
 
 		void helpInfoLoadPage( wxString s );
+		void helpInfoSetPage( wxString s );
 
 	private:
 		void onLinkClicked( wxHtmlLinkEvent& event );
