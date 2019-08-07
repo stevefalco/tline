@@ -35,6 +35,7 @@
 #include "helpAbout.h"
 #include "helpInfo.h"
 #include "info.h"
+#include "tuner.h"
 
 wxString g_widthStr;
 wxString g_heightStr;
@@ -201,8 +202,7 @@ void tlineLogic::onHelpInfo( wxCommandEvent& event )
 
 	dialog->helpInfoSetPage(INFO_PAGE);
 
-	if (dialog->ShowModal() == wxID_OK) {
-	}
+	dialog->ShowModal();
 }
 
 void tlineLogic::onHelpAbout( wxCommandEvent& event )
@@ -333,7 +333,9 @@ void tlineLogic::onSaveDataClicked( wxCommandEvent& event )
 
 void tlineLogic::onTunerClicked( wxCommandEvent& event )
 {
-	wxLogMessage("Tuner clicked");
+	tuner* dialog = new tuner(this);
+
+	dialog->ShowModal();
 }
 
 double tlineLogic::wavelength()

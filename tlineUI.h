@@ -218,3 +218,38 @@ class helpAboutDialog : public wxDialog
 
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class tunerDialog
+///////////////////////////////////////////////////////////////////////////////
+class tunerDialog : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* dl_tunerSourceImpedanceTag;
+		wxTextCtrl* dl_tunerSourceImpedance;
+		wxStaticText* dl_tunerLoadImpedanceTag;
+		wxTextCtrl* dl_tunerLoadImpedance;
+		wxStaticText* dl_tunerQtag;
+		wxTextCtrl* dl_tunerQ;
+		wxStaticText* dl_tunerParameterNote;
+		wxStaticText* dl_tunerTopologyNote;
+		wxRadioBox* dl_topology;
+		wxButton* dl_tunerCalculateButton;
+		wxButton* dl_tunerOKbutton;
+		wxStaticText* m_staticText50;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void onTUnerQSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerTopologySelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerCalculateClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerOKclicked( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 627,601 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~tunerDialog();
+
+};
+

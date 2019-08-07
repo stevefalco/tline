@@ -11,6 +11,7 @@ SRC :=									\
 	userLine.cpp							\
 	helpAbout.cpp							\
 	helpInfo.cpp							\
+	tuner.cpp							\
 	#
 
 OBJ := $(SRC:%.cpp=$(BUILD_DIR)/%.o)

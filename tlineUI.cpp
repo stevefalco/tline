@@ -694,3 +694,108 @@ helpAboutDialog::~helpAboutDialog()
 	dl_helpAboutOk->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( helpAboutDialog::onHelpAboutOK ), NULL, this );
 
 }
+
+tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bTunerOuter;
+	bTunerOuter = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bTunerInner;
+	bTunerInner = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bTunerLeft;
+	bTunerLeft = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* sbTunerParameterContainer;
+	sbTunerParameterContainer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Parameters") ), wxVERTICAL );
+
+	wxGridSizer* gTunerParameters;
+	gTunerParameters = new wxGridSizer( 3, 2, 0, 0 );
+
+	dl_tunerSourceImpedanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Impedance"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerSourceImpedanceTag->Wrap( -1 );
+	gTunerParameters->Add( dl_tunerSourceImpedanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerSourceImpedance = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	gTunerParameters->Add( dl_tunerSourceImpedance, 0, wxALL, 5 );
+
+	dl_tunerLoadImpedanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Load Impedance"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerLoadImpedanceTag->Wrap( -1 );
+	gTunerParameters->Add( dl_tunerLoadImpedanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerLoadImpedance = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	gTunerParameters->Add( dl_tunerLoadImpedance, 0, wxALL, 5 );
+
+	dl_tunerQtag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Desired Q"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerQtag->Wrap( -1 );
+	gTunerParameters->Add( dl_tunerQtag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerQ = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerParameters->Add( dl_tunerQ, 0, wxALL, 0 );
+
+
+	sbTunerParameterContainer->Add( gTunerParameters, 1, wxEXPAND|wxSHAPED, 5 );
+
+
+	bTunerLeft->Add( sbTunerParameterContainer, 1, wxEXPAND|wxSHAPED, 5 );
+
+	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: Typically, one will specify a fairly low Q.  Try a value less than 10 for the Q."), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerParameterNote->Wrap( 300 );
+	bTunerLeft->Add( dl_tunerParameterNote, 0, wxALL, 5 );
+
+	dl_tunerTopologyNote = new wxStaticText( this, wxID_ANY, wxT("Topology note: The radio buttons above list components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.  "), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerTopologyNote->Wrap( 300 );
+	bTunerLeft->Add( dl_tunerTopologyNote, 0, wxALL, 5 );
+
+
+	bTunerInner->Add( bTunerLeft, 1, wxEXPAND|wxSHAPED, 5 );
+
+	wxBoxSizer* bTunerRight;
+	bTunerRight = new wxBoxSizer( wxVERTICAL );
+
+	wxString dl_topologyChoices[] = { wxT("High Pass (Lpar Cser)"), wxT("Low Pass (Cpar Lser)"), wxT("Low Pass (Lser Cpar)"), wxT("High Pass (Cser Lpar)"), wxT("High Pass PI (Lpar Cser Lpar)"), wxT("Low Pass PI (Cpar Lser Cpar)"), wxT("High Pass T (Cser Lpar Cser)"), wxT("Low Pass T (Lser Cpar Lser)"), wxT("High Pass (Lpar Cser Lpar Cser)"), wxT("High Pass (Cser Lpar Cser Lpar)"), wxT("Low Pass (Cpar Lser Cpar Lser)"), wxT("Low Pass (Lser Cpar Lser Cpar)"), wxT("Band Pass (Lpar Cser Cpar Lser)"), wxT("Band Pass (Lser Cpar Cser Lpar)"), wxT("Band Pass (Cpar Lser Lpar Cser)"), wxT("Band Pass (Cser Lpar Lser Cpar)") };
+	int dl_topologyNChoices = sizeof( dl_topologyChoices ) / sizeof( wxString );
+	dl_topology = new wxRadioBox( this, wxID_ANY, wxT("Topology"), wxDefaultPosition, wxDefaultSize, dl_topologyNChoices, dl_topologyChoices, 1, wxRA_SPECIFY_COLS );
+	dl_topology->SetSelection( 0 );
+	bTunerRight->Add( dl_topology, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+	dl_tunerCalculateButton = new wxButton( this, wxID_ANY, wxT("Calculate and Display"), wxDefaultPosition, wxDefaultSize, 0 );
+	bTunerRight->Add( dl_tunerCalculateButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+	dl_tunerOKbutton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	bTunerRight->Add( dl_tunerOKbutton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+
+	bTunerInner->Add( bTunerRight, 1, wxEXPAND, 5 );
+
+
+	bTunerOuter->Add( bTunerInner, 1, wxEXPAND, 5 );
+
+	m_staticText50 = new wxStaticText( this, wxID_ANY, wxT("This tool is based on a Javascript implementation by John Wetherell:\n\nhttp://home.sandiego.edu/~ekim/e194rfs01/jwmatcher/matcher2.html"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText50->Wrap( -1 );
+	bTunerOuter->Add( m_staticText50, 0, wxALL, 5 );
+
+
+	this->SetSizer( bTunerOuter );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	dl_tunerQ->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onTUnerQSelected ), NULL, this );
+	dl_topology->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
+	dl_tunerCalculateButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerCalculateClicked ), NULL, this );
+	dl_tunerOKbutton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerOKclicked ), NULL, this );
+}
+
+tunerDialog::~tunerDialog()
+{
+	// Disconnect Events
+	dl_tunerQ->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onTUnerQSelected ), NULL, this );
+	dl_topology->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
+	dl_tunerCalculateButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerCalculateClicked ), NULL, this );
+	dl_tunerOKbutton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerOKclicked ), NULL, this );
+
+}
