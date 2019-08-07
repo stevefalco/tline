@@ -1,6 +1,3 @@
-# tline
-Transmission Line Calculator for Ham Radio
-
 tline - A Transmission Line Calculator for Ham Radio
 ====================================================
 
@@ -8,4 +5,7 @@ tline - A Transmission Line Calculator for Ham Radio
 
 **_tline_** makes use of gnuplot for visualizing its calculations. Graphs of impedance, voltage, and current along the line can be generated on-screen, and can be saved to files in png, jpeg, and gif formats. The raw data used to make the graphs can also be saved as a text file for post-processing.
 
-**_tline_** uses the wxWidgets library, so while it is being developed on Linux, it can be ported to other operating systems. If you want to help make that happen, please fork the project and create pull requests on github. The project page is [here](http://github.com/stevefalco/tline).
+**_tline_** uses the wxWidgets library, so while it is being developed on Linux, it can be ported to other operating systems. If you want to help make that happen, please fork the project and create pull requests on github.
+
+73 de AC2XM
+
