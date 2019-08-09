@@ -54,6 +54,9 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 	// Once any parameter is changed, this will flip to 0.
 	m_saved = 1;
 
+	// Remember when the tuner dialog has been opened at least once.
+	m_tunerInit = 0;
+
 	recalculate();
 }
 
@@ -336,9 +339,31 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 {
 	tuner* dialog = new tuner(this);
 
-	dialog->SetFrequency( m_frequency );
+	if(!m_tunerInit) {
+		// Start the tuner off with reasonable values.
+		m_tunerSourceResistance = 50.0;
+		m_tunerSourceReactance = 0.0;
+		m_tunerLoadResistance = real(m_zInput);
+		m_tunerLoadReactance = imag(m_zInput);
+		m_tunerQ = 1.0;
 
-	dialog->ShowModal();
+		m_tunerInit = 1;
+	}
+
+	dialog->SetFrequency( m_frequency );
+	dialog->SetSourceResistance( m_tunerSourceResistance );
+	dialog->SetSourceReactance( m_tunerSourceReactance );
+	dialog->SetLoadResistance( m_tunerLoadResistance );
+	dialog->SetLoadReactance( m_tunerLoadReactance );
+	dialog->SetQ( m_tunerQ );
+
+	if (dialog->ShowModal() == wxID_OK) {
+		m_tunerSourceResistance = dialog->GetSourceResistance();
+		m_tunerSourceReactance = dialog->GetSourceReactance();
+		m_tunerLoadResistance = dialog->GetLoadResistance();
+		m_tunerLoadReactance = dialog->GetLoadReactance();
+		m_tunerQ = dialog->GetQ();
+	}
 }
 
 double tlineLogic::wavelength()

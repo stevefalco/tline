@@ -125,6 +125,12 @@ class tlineLogic : public tlineUI
 		double			m_swrAtSource;
 		double			m_totalLoss;
 		double			m_totalMatchedLineLoss;
+		double			m_tunerInit;
+		double			m_tunerLoadReactance;
+		double			m_tunerLoadResistance;
+		double			m_tunerQ;
+		double			m_tunerSourceReactance;
+		double			m_tunerSourceResistance;
 		double			m_units;
 		double			m_velocityFactor;
 		double			m_velocityFactorFromUser;

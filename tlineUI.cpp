@@ -762,7 +762,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	bTunerLeft->Add( sbTunerParameterContainer, 1, wxEXPAND|wxSHAPED, 5 );
 
-	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Therefore, rather than having this tool fill in the values from the main screen, we leave it up to the user to fill in the source and load impedances.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.\n"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 ohm transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the dialog.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.\n"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerParameterNote->Wrap( 300 );
 	bTunerLeft->Add( dl_tunerParameterNote, 0, wxALL, 5 );
 
@@ -786,6 +786,46 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_bitmap->SetMinSize( wxSize( 230,104 ) );
 
 	bTunerRight->Add( dl_bitmap, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	wxStaticBoxSizer* sbTunerResultsContainer;
+	sbTunerResultsContainer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Results") ), wxVERTICAL );
+
+	wxGridSizer* gTunerParameters1;
+	gTunerParameters1 = new wxGridSizer( 6, 2, 0, 0 );
+
+	dl_tunerResultTag1 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 1"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag1->Wrap( -1 );
+	gTunerParameters1->Add( dl_tunerResultTag1, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult1 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerParameters1->Add( dl_tunerResult1, 0, wxALL, 0 );
+
+	dl_tunerResultTag2 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 2"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag2->Wrap( -1 );
+	gTunerParameters1->Add( dl_tunerResultTag2, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult2 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerParameters1->Add( dl_tunerResult2, 0, wxALL, 0 );
+
+	dl_tunerResultTag3 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 3"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag3->Wrap( -1 );
+	gTunerParameters1->Add( dl_tunerResultTag3, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult3 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerParameters1->Add( dl_tunerResult3, 0, wxALL, 0 );
+
+	dl_tunerResultTag4 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 4"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag4->Wrap( -1 );
+	gTunerParameters1->Add( dl_tunerResultTag4, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult4 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerParameters1->Add( dl_tunerResult4, 0, wxALL, 0 );
+
+
+	sbTunerResultsContainer->Add( gTunerParameters1, 1, wxEXPAND|wxSHAPED, 5 );
+
+
+	bTunerRight->Add( sbTunerResultsContainer, 1, wxEXPAND, 5 );
 
 	dl_tunerOKbutton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
 	bTunerRight->Add( dl_tunerOKbutton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
@@ -813,6 +853,10 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerLoadReactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
 	dl_tunerQ->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onQ ), NULL, this );
 	dl_topology->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
+	dl_tunerResult1->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
+	dl_tunerResult2->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
+	dl_tunerResult3->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
+	dl_tunerResult4->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
 	dl_tunerOKbutton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerOKclicked ), NULL, this );
 }
 
@@ -825,6 +869,10 @@ tunerDialog::~tunerDialog()
 	dl_tunerLoadReactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
 	dl_tunerQ->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onQ ), NULL, this );
 	dl_topology->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
+	dl_tunerResult1->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
+	dl_tunerResult2->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
+	dl_tunerResult3->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
+	dl_tunerResult4->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
 	dl_tunerOKbutton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerOKclicked ), NULL, this );
 
 }

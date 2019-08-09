@@ -243,6 +243,14 @@ class tunerDialog : public wxDialog
 		wxStaticText* dl_tunerTopologyNote;
 		wxRadioBox* dl_topology;
 		wxStaticBitmap* dl_bitmap;
+		wxStaticText* dl_tunerResultTag1;
+		wxTextCtrl* dl_tunerResult1;
+		wxStaticText* dl_tunerResultTag2;
+		wxTextCtrl* dl_tunerResult2;
+		wxStaticText* dl_tunerResultTag3;
+		wxTextCtrl* dl_tunerResult3;
+		wxStaticText* dl_tunerResultTag4;
+		wxTextCtrl* dl_tunerResult4;
 		wxButton* dl_tunerOKbutton;
 		wxStaticText* dl_tunerCredit;
 

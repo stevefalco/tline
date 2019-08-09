@@ -25,7 +25,7 @@ class tuner : public tunerDialog
 	public:
 		tuner( wxWindow* parent );
 
-		void		SetFrequency( double frequency );
+		void		SetFrequency( double v );
 
 		double		GetSourceResistance();
 		void		SetSourceResistance( double v );

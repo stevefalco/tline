@@ -40,9 +40,89 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 	recalculate();
 }
 
-void tuner::SetFrequency( double frequency )
+void tuner::SetFrequency( double v )
 {
-	m_frequency = frequency;
+	char buffer[512];
+
+	m_frequency = v;
+
+	snprintf(buffer, 512, "%.2f", m_frequency / 1e6);
+	dl_tunerFrequency->ChangeValue(buffer);
+}
+
+double tuner::GetSourceResistance()
+{
+	return m_sourceResistance;
+}
+
+void tuner::SetSourceResistance( double v )
+{
+	char buffer[512];
+
+	m_sourceResistance = v;
+
+	snprintf(buffer, 512, "%.2f", m_sourceResistance);
+	dl_tunerSourceResistance->ChangeValue(buffer);
+}
+
+double tuner::GetSourceReactance()
+{
+	return m_sourceReactance;
+}
+
+void tuner::SetSourceReactance( double v )
+{
+	char buffer[512];
+
+	m_sourceReactance = v;
+
+	snprintf(buffer, 512, "%.2f", m_sourceReactance);
+	dl_tunerSourceReactance->ChangeValue(buffer);
+}
+
+double tuner::GetLoadResistance()
+{
+	return m_loadResistance;
+}
+
+void tuner::SetLoadResistance( double v )
+{
+	char buffer[512];
+
+	m_loadResistance = v;
+
+	snprintf(buffer, 512, "%.2f", m_loadResistance);
+	dl_tunerLoadResistance->ChangeValue(buffer);
+}
+
+double tuner::GetLoadReactance()
+{
+	return m_loadReactance;
+}
+
+void tuner::SetLoadReactance( double v )
+{
+	char buffer[512];
+
+	m_loadReactance = v;
+
+	snprintf(buffer, 512, "%.2f", m_loadReactance);
+	dl_tunerLoadReactance->ChangeValue(buffer);
+}
+
+double tuner::GetQ()
+{
+	return m_desiredQ;
+}
+
+void tuner::SetQ( double v )
+{
+	char buffer[512];
+
+	m_desiredQ = v;
+
+	snprintf(buffer, 512, "%.2f", m_desiredQ);
+	dl_tunerQ->ChangeValue(buffer);
 }
 
 void tuner::onSourceResistance( wxCommandEvent& event )
