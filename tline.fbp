@@ -6407,7 +6407,6 @@
                                                         <property name="window_extra_style"></property>
                                                         <property name="window_name"></property>
                                                         <property name="window_style">wxBORDER_NONE</property>
-                                                        <event name="OnText">onTUnerQSelected</event>
                                                     </object>
                                                 </object>
                                             </object>

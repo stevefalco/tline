@@ -251,7 +251,6 @@ class tunerDialog : public wxDialog
 		virtual void onLoadResistance( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLoadReactance( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onQ( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onTUnerQSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerTopologySelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerCalculateClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerOKclicked( wxCommandEvent& event ) { event.Skip(); }

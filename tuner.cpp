@@ -28,37 +28,52 @@ void tuner::SetFrequency( double frequency )
 
 void tuner::onSourceResistance( wxCommandEvent& event )
 {
-// TODO: Implement onSourceResistance
+	m_sourceResistance = atof(event.GetString());
 }
 
 void tuner::onSourceReactance( wxCommandEvent& event )
 {
-// TODO: Implement onSourceReactance
+	m_sourceReactance = atof(event.GetString());
 }
 
 void tuner::onLoadResistance( wxCommandEvent& event )
 {
-// TODO: Implement onLoadResistance
+	m_loadResistance = atof(event.GetString());
 }
 
 void tuner::onLoadReactance( wxCommandEvent& event )
 {
-// TODO: Implement onLoadReactance
+	m_loadReactance = atof(event.GetString());
 }
 
 void tuner::onQ( wxCommandEvent& event )
 {
-// TODO: Implement onQ
-}
-
-void tuner::onTUnerQSelected( wxCommandEvent& event )
-{
-// TODO: Implement onTUnerQSelected
+	m_desiredQ = atof(event.GetString());
 }
 
 void tuner::onTunerTopologySelected( wxCommandEvent& event )
 {
-// TODO: Implement onTunerTopologySelected
+	const char* s = event.GetString().mb_str();
+
+	if(strcmp(s, "High Pass (Lpar Cser)") == 0) {
+		LCHP();
+	} else if(strcmp(s, "Low Pass (Cpar Lser)") == 0) {
+	} else if(strcmp(s, "Low Pass (Lser Cpar)") == 0) {
+	} else if(strcmp(s, "High Pass (Cser Lpar)") == 0) {
+	} else if(strcmp(s, "High Pass PI (Lpar Cser Lpar)") == 0) {
+	} else if(strcmp(s, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+	} else if(strcmp(s, "High Pass T (Cser Lpar Cser)") == 0) {
+	} else if(strcmp(s, "Low Pass T (Lser Cpar Lser)") == 0) {
+	} else if(strcmp(s, "High Pass (Lpar Cser Lpar Cser)") == 0) {
+	} else if(strcmp(s, "High Pass (Cser Lpar Cser Lpar)") == 0) {
+	} else if(strcmp(s, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
+	} else if(strcmp(s, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
+	} else if(strcmp(s, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
+	} else if(strcmp(s, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
+	} else if(strcmp(s, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
+	} else if(strcmp(s, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
+	} else {
+	}
 }
 
 void tuner::onTunerCalculateClicked( wxCommandEvent& event )
@@ -72,4 +87,8 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 	{
 		EndModal( wxID_OK );
 	}
+}
+
+void tuner::LCHP()
+{
 }

@@ -26,21 +26,21 @@ void userLine::onAttenuationSelected( wxCommandEvent& event )
 {
 	m_attenuation = atof(event.GetString());
 
-	tlineUIrebuildEstimatedCableReactance();
+	userLineRebuildEstimatedCableReactance();
 }
 
 void userLine::onVelocityFactorSelected( wxCommandEvent& event )
 {
 	m_velocityFactor = atof(event.GetString());
 
-	tlineUIrebuildEstimatedCableReactance();
+	userLineRebuildEstimatedCableReactance();
 }
 
 void userLine::onCableResistanceSelected( wxCommandEvent& event )
 {
 	m_cableResistance = atof(event.GetString());
 
-	tlineUIrebuildEstimatedCableReactance();
+	userLineRebuildEstimatedCableReactance();
 }
 
 void userLine::onCableReactanceSelected( wxCommandEvent& event )
@@ -151,7 +151,7 @@ void userLine::userLineSetCableVoltageLimit( double v )
 	dl_cableVoltageLimitStr->ChangeValue(buffer);
 }
 
-void userLine::tlineUIrebuildEstimatedCableReactance()
+void userLine::userLineRebuildEstimatedCableReactance()
 {
 	char			buffer[512];
 

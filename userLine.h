@@ -38,7 +38,7 @@ class userLine : public userLineDialog
 
 		double userLineGetCableReactance();
 		void userLineSetCableReactance( double v );
-		void tlineUIrebuildEstimatedCableReactance();
+		void userLineRebuildEstimatedCableReactance();
 
 		double userLineGetCableVoltageLimit();
 		void userLineSetCableVoltageLimit( double v );
