@@ -49,10 +49,11 @@ class tuner : public tunerDialog
 		void		onLoadReactance( wxCommandEvent& event );
 		void		onQ( wxCommandEvent& event );
 		void		onTunerTopologySelected( wxCommandEvent& event );
-		void		onTunerCalculateClicked( wxCommandEvent& event );
 		void		onTunerOKclicked( wxCommandEvent& event );
 
 	private:
+		void		recalculate();
+
 		void		LCHP();
 		void		CLLP();
 		void		LCLP();
@@ -69,6 +70,8 @@ class tuner : public tunerDialog
 		void		BP2LL();
 		void		BP3LL();
 		void		BP4LL();
+
+		wxString	m_topology = "High Pass (Lpar Cser)";
 
 		double		m_sourceResistance;
 		double		m_sourceReactance;

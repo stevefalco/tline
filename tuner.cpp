@@ -37,6 +37,7 @@
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
+	recalculate();
 }
 
 void tuner::SetFrequency( double frequency )
@@ -47,71 +48,81 @@ void tuner::SetFrequency( double frequency )
 void tuner::onSourceResistance( wxCommandEvent& event )
 {
 	m_sourceResistance = atof(event.GetString());
+
+	recalculate();
 }
 
 void tuner::onSourceReactance( wxCommandEvent& event )
 {
 	m_sourceReactance = atof(event.GetString());
+
+	recalculate();
 }
 
 void tuner::onLoadResistance( wxCommandEvent& event )
 {
 	m_loadResistance = atof(event.GetString());
+
+	recalculate();
 }
 
 void tuner::onLoadReactance( wxCommandEvent& event )
 {
 	m_loadReactance = atof(event.GetString());
+
+	recalculate();
 }
 
 void tuner::onQ( wxCommandEvent& event )
 {
 	m_desiredQ = atof(event.GetString());
+
+	recalculate();
 }
 
 void tuner::onTunerTopologySelected( wxCommandEvent& event )
 {
-	wxString s = event.GetString();
+	m_topology = event.GetString();
 
-	if(strcmp(s, "High Pass (Lpar Cser)") == 0) {
-		LCHP();
-	} else if(strcmp(s, "Low Pass (Cpar Lser)") == 0) {
-		CLLP();
-	} else if(strcmp(s, "Low Pass (Lser Cpar)") == 0) {
-		LCLP();
-	} else if(strcmp(s, "High Pass (Cser Lpar)") == 0) {
-		CLHP();
-	} else if(strcmp(s, "High Pass PI (Lpar Cser Lpar)") == 0) {
-		HPPI();
-	} else if(strcmp(s, "Low Pass PI (Cpar Lser Cpar)") == 0) {
-		LPPI();
-	} else if(strcmp(s, "High Pass T (Cser Lpar Cser)") == 0) {
-		HPT();
-	} else if(strcmp(s, "Low Pass T (Lser Cpar Lser)") == 0) {
-		LPT();
-	} else if(strcmp(s, "High Pass (Lpar Cser Lpar Cser)") == 0) {
-		HP1LL();
-	} else if(strcmp(s, "High Pass (Cser Lpar Cser Lpar)") == 0) {
-		HP2LL();
-	} else if(strcmp(s, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
-		LP1LL();
-	} else if(strcmp(s, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
-		LP2LL();
-	} else if(strcmp(s, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
-		BP1LL();
-	} else if(strcmp(s, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
-		BP2LL();
-	} else if(strcmp(s, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
-		BP3LL();
-	} else if(strcmp(s, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
-		BP4LL();
-	} else {
-	}
+	recalculate();
 }
 
-void tuner::onTunerCalculateClicked( wxCommandEvent& event )
+void tuner::recalculate()
 {
-// TODO: Implement onTunerCalculateClicked
+
+	if(strcmp(m_topology, "High Pass (Lpar Cser)") == 0) {
+		LCHP();
+	} else if(strcmp(m_topology, "Low Pass (Cpar Lser)") == 0) {
+		CLLP();
+	} else if(strcmp(m_topology, "Low Pass (Lser Cpar)") == 0) {
+		LCLP();
+	} else if(strcmp(m_topology, "High Pass (Cser Lpar)") == 0) {
+		CLHP();
+	} else if(strcmp(m_topology, "High Pass PI (Lpar Cser Lpar)") == 0) {
+		HPPI();
+	} else if(strcmp(m_topology, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+		LPPI();
+	} else if(strcmp(m_topology, "High Pass T (Cser Lpar Cser)") == 0) {
+		HPT();
+	} else if(strcmp(m_topology, "Low Pass T (Lser Cpar Lser)") == 0) {
+		LPT();
+	} else if(strcmp(m_topology, "High Pass (Lpar Cser Lpar Cser)") == 0) {
+		HP1LL();
+	} else if(strcmp(m_topology, "High Pass (Cser Lpar Cser Lpar)") == 0) {
+		HP2LL();
+	} else if(strcmp(m_topology, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
+		LP1LL();
+	} else if(strcmp(m_topology, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
+		LP2LL();
+	} else if(strcmp(m_topology, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
+		BP1LL();
+	} else if(strcmp(m_topology, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
+		BP2LL();
+	} else if(strcmp(m_topology, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
+		BP3LL();
+	} else if(strcmp(m_topology, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
+		BP4LL();
+	}
 }
 
 void tuner::onTunerOKclicked( wxCommandEvent& event )
