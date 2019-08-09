@@ -28,6 +28,7 @@
 #include <wx/frame.h>
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
+#include <wx/statbmp.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -241,7 +242,7 @@ class tunerDialog : public wxDialog
 		wxStaticText* dl_tunerParameterNote;
 		wxStaticText* dl_tunerTopologyNote;
 		wxRadioBox* dl_topology;
-		wxButton* dl_tunerCalculateButton;
+		wxStaticBitmap* dl_bitmap;
 		wxButton* dl_tunerOKbutton;
 		wxStaticText* dl_tunerCredit;
 
@@ -252,13 +253,12 @@ class tunerDialog : public wxDialog
 		virtual void onLoadReactance( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onQ( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerTopologySelected( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onTunerCalculateClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerOKclicked( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 750,750 ), long style = wxDEFAULT_DIALOG_STYLE );
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 750,900 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();
 
 };

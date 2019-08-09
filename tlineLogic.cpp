@@ -44,6 +44,7 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 {
 	wxImage::AddHandler(new wxPNGHandler);
 	wxImage::AddHandler(new wxJPEGHandler);
+	wxImage::AddHandler(new wxGIFHandler);
 
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
 

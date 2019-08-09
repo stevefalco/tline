@@ -16,6 +16,24 @@
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "tuner.h"
+#include <wx/log.h>
+
+#include "build/nt_bp1ll.h"
+#include "build/nt_bp2ll.h"
+#include "build/nt_bp3ll.h"
+#include "build/nt_clhp.h"
+#include "build/nt_bp4ll.h"
+#include "build/nt_hppi.h"
+#include "build/nt_hp2ll.h"
+#include "build/nt_hp1ll.h"
+#include "build/nt_cllp.h"
+#include "build/nt_hpt.h"
+#include "build/nt_lclp.h"
+#include "build/nt_lchp.h"
+#include "build/nt_lp2ll.h"
+#include "build/nt_lp1ll.h"
+#include "build/nt_lpt.h"
+#include "build/nt_lppi.h"
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
@@ -53,7 +71,9 @@ void tuner::onQ( wxCommandEvent& event )
 
 void tuner::onTunerTopologySelected( wxCommandEvent& event )
 {
-	const char* s = event.GetString().mb_str();
+	wxString s = event.GetString();
+
+	wxLogError("type %s", s);
 
 	if(strcmp(s, "High Pass (Lpar Cser)") == 0) {
 		LCHP();
@@ -91,4 +111,12 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 
 void tuner::LCHP()
 {
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_bp1ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
 }

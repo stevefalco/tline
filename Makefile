@@ -30,32 +30,31 @@ SRC :=									\
 	helpAbout.cpp							\
 	helpInfo.cpp							\
 	tuner.cpp							\
-	topologies.cpp							\
 	#
 
 TOPOLOGY :=								\
-	nt_bp1ll.gif							\
-	nt_bp2ll.gif							\
-	nt_bp3ll.gif							\
-	nt_clhp.gif							\
-	nt_bp4ll.gif							\
-	nt_hppi.gif							\
-	nt_hp2ll.gif							\
-	nt_hp1ll.gif							\
-	nt_cllp.gif							\
-	nt_hpt.gif							\
-	nt_lclp.gif							\
-	nt_lchp.gif							\
-	nt_lp2ll.gif							\
-	nt_lp1ll.gif							\
-	nt_lpt.gif							\
-	nt_lppi.gif							\
+	nt_bp1ll.png							\
+	nt_bp2ll.png							\
+	nt_bp3ll.png							\
+	nt_clhp.png							\
+	nt_bp4ll.png							\
+	nt_hppi.png							\
+	nt_hp2ll.png							\
+	nt_hp1ll.png							\
+	nt_cllp.png							\
+	nt_hpt.png							\
+	nt_lclp.png							\
+	nt_lchp.png							\
+	nt_lp2ll.png							\
+	nt_lp1ll.png							\
+	nt_lpt.png							\
+	nt_lppi.png							\
 	#
 
 OBJ := $(SRC:%.cpp=$(BUILD_DIR)/%.o)
 DEP := $(SRC:%.cpp=$(BUILD_DIR)/%.d)
-TOP := $(TOPOLOGY:%.gif=$(TOPOLOGY_DIR)/%.gif)
-GEN := $(TOP:$(TOPOLOGY_DIR)/%.gif=$(BUILD_DIR)/%.h)
+TOP := $(TOPOLOGY:%.png=$(TOPOLOGY_DIR)/%.png)
+GEN := $(TOP:$(TOPOLOGY_DIR)/%.png=$(BUILD_DIR)/%.h)
 
 all: $(BUILD_DIR) $(GEN) $(BUILD_DIR)/tline
 
@@ -68,7 +67,7 @@ $(BUILD_DIR)/tline: $(OBJ)
 $(BUILD_DIR)/%.o: %.cpp
 	g++ -MMD -g $(WX_CXX_FLAGS) -o $@ -c $<
 
-$(BUILD_DIR)/%.h: $(TOPOLOGY_DIR)/%.gif
+$(BUILD_DIR)/%.h: $(TOPOLOGY_DIR)/%.png
 	xxd --include $^ > $@
 
 $(BUILD_DIR):
