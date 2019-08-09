@@ -73,25 +73,38 @@ void tuner::onTunerTopologySelected( wxCommandEvent& event )
 {
 	wxString s = event.GetString();
 
-	wxLogError("type %s", s);
-
 	if(strcmp(s, "High Pass (Lpar Cser)") == 0) {
 		LCHP();
 	} else if(strcmp(s, "Low Pass (Cpar Lser)") == 0) {
+		CLLP();
 	} else if(strcmp(s, "Low Pass (Lser Cpar)") == 0) {
+		LCLP();
 	} else if(strcmp(s, "High Pass (Cser Lpar)") == 0) {
+		CLHP();
 	} else if(strcmp(s, "High Pass PI (Lpar Cser Lpar)") == 0) {
+		HPPI();
 	} else if(strcmp(s, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+		LPPI();
 	} else if(strcmp(s, "High Pass T (Cser Lpar Cser)") == 0) {
+		HPT();
 	} else if(strcmp(s, "Low Pass T (Lser Cpar Lser)") == 0) {
+		LPT();
 	} else if(strcmp(s, "High Pass (Lpar Cser Lpar Cser)") == 0) {
+		HP1LL();
 	} else if(strcmp(s, "High Pass (Cser Lpar Cser Lpar)") == 0) {
+		HP2LL();
 	} else if(strcmp(s, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
+		LP1LL();
 	} else if(strcmp(s, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
+		LP2LL();
 	} else if(strcmp(s, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
+		BP1LL();
 	} else if(strcmp(s, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
+		BP2LL();
 	} else if(strcmp(s, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
+		BP3LL();
 	} else if(strcmp(s, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
+		BP4LL();
 	} else {
 	}
 }
@@ -111,7 +124,172 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 
 void tuner::LCHP()
 {
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_lchp);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::CLLP()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_cllp);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::LCLP()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_lclp);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::CLHP()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_clhp);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::HPPI()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_hppi);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::LPPI()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_lppi);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::HPT()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_hpt);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::LPT()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_lpt);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::HP1LL()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_hp1ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::HP2LL()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_hp2ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::LP1LL()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_lp1ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::LP2LL()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_lp2ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::BP1LL()
+{
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_bp1ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::BP2LL()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_bp2ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::BP3LL()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_bp3ll);
+
+	if ( bmp.IsOk() ) {
+		dl_bitmap->SetBitmap(bmp);
+	} else {
+		wxLogError("bad png?");
+		return;
+	}
+}
+void tuner::BP4LL()
+{
+	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(topologies_nt_bp4ll);
 
 	if ( bmp.IsOk() ) {
 		dl_bitmap->SetBitmap(bmp);

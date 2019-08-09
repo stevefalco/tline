@@ -54,6 +54,21 @@ class tuner : public tunerDialog
 
 	private:
 		void		LCHP();
+		void		CLLP();
+		void		LCLP();
+		void		CLHP();
+		void		HPPI();
+		void		LPPI();
+		void		HPT();
+		void		LPT();
+		void		HP1LL();
+		void		HP2LL();
+		void		LP1LL();
+		void		LP2LL();
+		void		BP1LL();
+		void		BP2LL();
+		void		BP3LL();
+		void		BP4LL();
 
 		double		m_sourceResistance;
 		double		m_sourceReactance;
