@@ -766,7 +766,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerParameterNote->Wrap( 300 );
 	bTunerLeft->Add( dl_tunerParameterNote, 0, wxALL, 5 );
 
-	dl_tunerTopologyNote = new wxStaticText( this, wxID_ANY, wxT("Topology note: The radio buttons list the filter components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.\n\nSome combinations of Parameters and Topologies will result in invalid component values, and this will be indicated in the results.  In this case, try selecting a different topology."), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerTopologyNote = new wxStaticText( this, wxID_ANY, wxT("Topology note: The radio buttons list the filter components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.\n\nSome combinations of Parameters and Topologies will result in invalid component values, and this will be indicated in the results.  In this case, try selecting a different topology.\n"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerTopologyNote->Wrap( 300 );
 	bTunerLeft->Add( dl_tunerTopologyNote, 0, wxALL, 5 );
 
@@ -783,7 +783,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	bTunerRight->Add( dl_topology, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
 	dl_bitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
-	dl_bitmap->SetMinSize( wxSize( 230,104 ) );
+	dl_bitmap->SetMinSize( wxSize( 250,125 ) );
 
 	bTunerRight->Add( dl_bitmap, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -827,9 +827,6 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	bTunerRight->Add( sbTunerResultsContainer, 1, wxALIGN_CENTER|wxSHAPED, 5 );
 
-	dl_tunerOKbutton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-	bTunerRight->Add( dl_tunerOKbutton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
 
 	bTunerInner->Add( bTunerRight, 1, wxEXPAND, 5 );
 
@@ -839,6 +836,9 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerCredit = new wxStaticText( this, wxID_ANY, wxT("This portion of tline is based on a Javascript implementation by John Wetherell:\n\nhttp://home.sandiego.edu/~ekim/e194rfs01/jwmatcher/matcher2.html"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerCredit->Wrap( -1 );
 	bTunerOuter->Add( dl_tunerCredit, 0, wxALL, 5 );
+
+	dl_tunerOKbutton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	bTunerOuter->Add( dl_tunerOKbutton, 0, wxALIGN_RIGHT|wxALIGN_TOP|wxALL, 5 );
 
 
 	this->SetSizer( bTunerOuter );

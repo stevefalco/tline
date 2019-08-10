@@ -251,8 +251,8 @@ class tunerDialog : public wxDialog
 		wxTextCtrl* dl_tunerResult3;
 		wxStaticText* dl_tunerResultTag4;
 		wxTextCtrl* dl_tunerResult4;
-		wxButton* dl_tunerOKbutton;
 		wxStaticText* dl_tunerCredit;
+		wxButton* dl_tunerOKbutton;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onSourceResistance( wxCommandEvent& event ) { event.Skip(); }
