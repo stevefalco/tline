@@ -239,10 +239,6 @@ class tunerDialog : public wxDialog
 		wxTextCtrl* dl_tunerQ;
 		wxStaticText* dl_tunerFrequencyTag;
 		wxTextCtrl* dl_tunerFrequency;
-		wxStaticText* dl_tunerParameterNote;
-		wxStaticText* dl_tunerTopologyNote;
-		wxRadioBox* dl_topology;
-		wxStaticBitmap* dl_bitmap;
 		wxStaticText* dl_tunerResultTag1;
 		wxTextCtrl* dl_tunerResult1;
 		wxStaticText* dl_tunerResultTag2;
@@ -251,8 +247,12 @@ class tunerDialog : public wxDialog
 		wxTextCtrl* dl_tunerResult3;
 		wxStaticText* dl_tunerResultTag4;
 		wxTextCtrl* dl_tunerResult4;
-		wxStaticText* dl_tunerCredit;
+		wxRadioBox* dl_topology;
+		wxStaticBitmap* dl_bitmap;
+		wxStaticText* dl_tunerParameterNote;
+		wxStaticText* dl_tunerTopologyNote;
 		wxButton* dl_tunerOKbutton;
+		wxStaticText* dl_tunerCredit;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onSourceResistance( wxCommandEvent& event ) { event.Skip(); }
@@ -266,7 +266,7 @@ class tunerDialog : public wxDialog
 
 	public:
 
-		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 750,920 ), long style = wxDEFAULT_DIALOG_STYLE );
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,700 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();
 
 };

@@ -760,75 +760,87 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	sbTunerParameterContainer->Add( gTunerParameters, 1, wxEXPAND|wxSHAPED, 5 );
 
 
-	bTunerLeft->Add( sbTunerParameterContainer, 1, wxEXPAND|wxSHAPED, 5 );
+	bTunerLeft->Add( sbTunerParameterContainer, 1, wxEXPAND, 5 );
 
-	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 ohm transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden above.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.  The Q parameter is only used for the PI and T topologies.\n"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerParameterNote->Wrap( 300 );
-	bTunerLeft->Add( dl_tunerParameterNote, 0, wxALL, 5 );
 
-	dl_tunerTopologyNote = new wxStaticText( this, wxID_ANY, wxT("Topology note: The radio buttons list the filter components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.\n\nSome combinations of Parameters and Topologies will result in invalid component values, and this will be indicated in the results.  In this case, try selecting a different topology.\n"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerTopologyNote->Wrap( 300 );
-	bTunerLeft->Add( dl_tunerTopologyNote, 0, wxALL, 5 );
+	bTunerLeft->Add( 0, 20, 0, 0, 5 );
+
+	wxStaticBoxSizer* sbTunerResultsContainer;
+	sbTunerResultsContainer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Results") ), wxVERTICAL );
+
+	wxGridSizer* gTunerResults;
+	gTunerResults = new wxGridSizer( 0, 2, 0, 0 );
+
+	dl_tunerResultTag1 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 1"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag1->Wrap( -1 );
+	gTunerResults->Add( dl_tunerResultTag1, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult1 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerResults->Add( dl_tunerResult1, 0, wxALL, 0 );
+
+	dl_tunerResultTag2 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 2"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag2->Wrap( -1 );
+	gTunerResults->Add( dl_tunerResultTag2, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult2 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerResults->Add( dl_tunerResult2, 0, wxALL, 0 );
+
+	dl_tunerResultTag3 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 3"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag3->Wrap( -1 );
+	gTunerResults->Add( dl_tunerResultTag3, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult3 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerResults->Add( dl_tunerResult3, 0, wxALL, 0 );
+
+	dl_tunerResultTag4 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 4"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_tunerResultTag4->Wrap( -1 );
+	gTunerResults->Add( dl_tunerResultTag4, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerResult4 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	gTunerResults->Add( dl_tunerResult4, 0, wxALL, 0 );
+
+
+	sbTunerResultsContainer->Add( gTunerResults, 1, wxEXPAND|wxSHAPED, 5 );
+
+
+	bTunerLeft->Add( sbTunerResultsContainer, 1, wxALIGN_CENTER|wxEXPAND, 5 );
 
 
 	bTunerInner->Add( bTunerLeft, 1, wxEXPAND|wxSHAPED, 5 );
 
-	wxBoxSizer* bTunerRight;
-	bTunerRight = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer* bTunerCenter;
+	bTunerCenter = new wxBoxSizer( wxVERTICAL );
 
 	wxString dl_topologyChoices[] = { wxT("High Pass (Lpar Cser)"), wxT("Low Pass (Cpar Lser)"), wxT("Low Pass (Lser Cpar)"), wxT("High Pass (Cser Lpar)"), wxT("High Pass PI (Lpar Cser Lpar)"), wxT("Low Pass PI (Cpar Lser Cpar)"), wxT("High Pass T (Cser Lpar Cser)"), wxT("Low Pass T (Lser Cpar Lser)"), wxT("High Pass (Lpar Cser Lpar Cser)"), wxT("High Pass (Cser Lpar Cser Lpar)"), wxT("Low Pass (Cpar Lser Cpar Lser)"), wxT("Low Pass (Lser Cpar Lser Cpar)"), wxT("Band Pass (Lpar Cser Cpar Lser)"), wxT("Band Pass (Lser Cpar Cser Lpar)"), wxT("Band Pass (Cpar Lser Lpar Cser)"), wxT("Band Pass (Cser Lpar Lser Cpar)") };
 	int dl_topologyNChoices = sizeof( dl_topologyChoices ) / sizeof( wxString );
 	dl_topology = new wxRadioBox( this, wxID_ANY, wxT("Topology"), wxDefaultPosition, wxDefaultSize, dl_topologyNChoices, dl_topologyChoices, 1, wxRA_SPECIFY_COLS );
 	dl_topology->SetSelection( 0 );
-	bTunerRight->Add( dl_topology, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	bTunerCenter->Add( dl_topology, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
 	dl_bitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
-	dl_bitmap->SetMinSize( wxSize( 250,125 ) );
+	dl_bitmap->SetMinSize( wxSize( 280,180 ) );
 
-	bTunerRight->Add( dl_bitmap, 0, wxALIGN_CENTER|wxALL, 5 );
-
-	wxStaticBoxSizer* sbTunerResultsContainer;
-	sbTunerResultsContainer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Results") ), wxVERTICAL );
-
-	wxGridSizer* gTunerParameters1;
-	gTunerParameters1 = new wxGridSizer( 0, 2, 0, 0 );
-
-	dl_tunerResultTag1 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 1"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerResultTag1->Wrap( -1 );
-	gTunerParameters1->Add( dl_tunerResultTag1, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	dl_tunerResult1 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	gTunerParameters1->Add( dl_tunerResult1, 0, wxALL, 0 );
-
-	dl_tunerResultTag2 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 2"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerResultTag2->Wrap( -1 );
-	gTunerParameters1->Add( dl_tunerResultTag2, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	dl_tunerResult2 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	gTunerParameters1->Add( dl_tunerResult2, 0, wxALL, 0 );
-
-	dl_tunerResultTag3 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 3"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerResultTag3->Wrap( -1 );
-	gTunerParameters1->Add( dl_tunerResultTag3, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	dl_tunerResult3 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	gTunerParameters1->Add( dl_tunerResult3, 0, wxALL, 0 );
-
-	dl_tunerResultTag4 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 4"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
-	dl_tunerResultTag4->Wrap( -1 );
-	gTunerParameters1->Add( dl_tunerResultTag4, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	dl_tunerResult4 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	gTunerParameters1->Add( dl_tunerResult4, 0, wxALL, 0 );
+	bTunerCenter->Add( dl_bitmap, 0, wxALIGN_CENTER|wxALL, 5 );
 
 
-	sbTunerResultsContainer->Add( gTunerParameters1, 1, wxEXPAND|wxSHAPED, 5 );
+	bTunerInner->Add( bTunerCenter, 1, wxEXPAND|wxSHAPED, 5 );
+
+	wxBoxSizer* bTunerRight;
+	bTunerRight = new wxBoxSizer( wxVERTICAL );
+
+	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 ohm transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden above.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.  The Q parameter is only used for the PI and T topologies.\n"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerParameterNote->Wrap( 300 );
+	bTunerRight->Add( dl_tunerParameterNote, 0, wxALL, 5 );
+
+	dl_tunerTopologyNote = new wxStaticText( this, wxID_ANY, wxT("Topology note: The radio buttons list the filter components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.\n\nSome combinations of Parameters and Topologies will result in invalid component values, and this will be indicated in the results.  In this case, try selecting a different topology.\n"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerTopologyNote->Wrap( 300 );
+	bTunerRight->Add( dl_tunerTopologyNote, 0, wxALL, 5 );
+
+	dl_tunerOKbutton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	bTunerRight->Add( dl_tunerOKbutton, 0, wxALIGN_CENTER|wxALL, 5 );
 
 
-	bTunerRight->Add( sbTunerResultsContainer, 1, wxALIGN_CENTER|wxSHAPED, 5 );
-
-
-	bTunerInner->Add( bTunerRight, 1, wxEXPAND, 5 );
+	bTunerInner->Add( bTunerRight, 1, wxEXPAND|wxSHAPED, 5 );
 
 
 	bTunerOuter->Add( bTunerInner, 1, wxEXPAND, 5 );
@@ -836,9 +848,6 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerCredit = new wxStaticText( this, wxID_ANY, wxT("This portion of tline is based on a Javascript implementation by John Wetherell:\n\nhttp://home.sandiego.edu/~ekim/e194rfs01/jwmatcher/matcher2.html"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerCredit->Wrap( -1 );
 	bTunerOuter->Add( dl_tunerCredit, 0, wxALL, 5 );
-
-	dl_tunerOKbutton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-	bTunerOuter->Add( dl_tunerOKbutton, 0, wxALIGN_RIGHT|wxALIGN_TOP|wxALL, 5 );
 
 
 	this->SetSizer( bTunerOuter );
@@ -852,11 +861,11 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerLoadResistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
 	dl_tunerLoadReactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
 	dl_tunerQ->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onQ ), NULL, this );
-	dl_topology->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
 	dl_tunerResult1->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
 	dl_tunerResult2->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerResult3->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
 	dl_tunerResult4->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
+	dl_topology->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
 	dl_tunerOKbutton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerOKclicked ), NULL, this );
 }
 
@@ -868,11 +877,11 @@ tunerDialog::~tunerDialog()
 	dl_tunerLoadResistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
 	dl_tunerLoadReactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
 	dl_tunerQ->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onQ ), NULL, this );
-	dl_topology->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
 	dl_tunerResult1->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
 	dl_tunerResult2->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerResult3->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
 	dl_tunerResult4->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
+	dl_topology->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tunerDialog::onTunerTopologySelected ), NULL, this );
 	dl_tunerOKbutton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( tunerDialog::onTunerOKclicked ), NULL, this );
 
 }
