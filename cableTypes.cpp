@@ -575,7 +575,6 @@ cableTypes::findAtten(
 	double				attenHigh = 0.0;
 	double				freqLow   = 0.0;
 	double				freqHigh  = 0.0;
-	double				result;
 
 	for(attenuation = cp->attenuation; cp->attenuation->frequency != 99999E6; attenuation++) {
 		if(frequency >= attenuation->frequency) {

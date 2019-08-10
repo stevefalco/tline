@@ -62,10 +62,10 @@ install: $(BUILD_DIR) $(GEN) $(BUILD_DIR)/tline
 	cp $(BUILD_DIR)/tline ~/bin
 
 $(BUILD_DIR)/tline: $(OBJ)
-	g++ -g -o $@ $^ $(WX_CXX_LIBS)
+	g++ -Wall -Werror -g -o $@ $^ $(WX_CXX_LIBS)
 
 $(BUILD_DIR)/%.o: %.cpp
-	g++ -MMD -g $(WX_CXX_FLAGS) -o $@ -c $<
+	g++ -Wall -Werror -MMD -g $(WX_CXX_FLAGS) -o $@ -c $<
 
 $(BUILD_DIR)/%.h: $(TOPOLOGY_DIR)/%.png
 	xxd --include $^ > $@

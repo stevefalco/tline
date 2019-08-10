@@ -704,7 +704,6 @@ void tuner::HPPI()
 	double ls;
 	double cl;
 	double ll;
-	double l;
 	double lps;
 	double lpl;
 	double c;
@@ -742,7 +741,6 @@ void tuner::HPPI()
 				q = sqrt(rpl / rv - 1.0);
 				cl = q / w / rpl - cpl;
 				ll = q * rv / w;
-				l = ls + ll;
 				q = sqrt(rps / rv - 1.0);
 				ls = rps / w / q;
 				if(qs != 0.0) {
@@ -844,7 +842,6 @@ void tuner::LPPI()
 	double l;
 	double lps;
 	double lpl;
-	double c;
 
 	double cspi;
 	double clpi;
@@ -897,7 +894,6 @@ void tuner::LPPI()
 					ll = ll * lpl / (ll - lpl);
 				}
 				cl = 1.0 / w / q / rv;
-				c = cl * cs / (cl + cs);
 			}
 		}
 	}
@@ -973,7 +969,6 @@ void tuner::HPT()
 	double cl;
 	double ll;
 	double l;
-	double c;
 
 	double cst;
 	double clt;
@@ -1026,7 +1021,6 @@ void tuner::HPT()
 				q = sqrt(rv / rl - 1.0);
 				ll = q * rl / w - xl / w;
 				cl = q / w / rv;
-				c = cs + cl;
 			}
 		}
 	}
@@ -1101,7 +1095,6 @@ void tuner::LPT()
 	double ls;
 	double cl;
 	double ll;
-	double l;
 	double c;
 
 	double lst;
@@ -1145,7 +1138,6 @@ void tuner::LPT()
 					}
 				}
 				ll = rv / w / q;
-				l = ll * ls / (ll + ls);
 				q = sqrt(rv / rs - 1.0);
 				ls = q * rs / w - xs / w;
 				lst = ls * 1.0e9;
