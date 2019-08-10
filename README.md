@@ -16,7 +16,7 @@ line:
 
 <img src="screenshots/sample_graph.png" >
 
-If you have a transmission line that **_tline_** doesn't provide, you can specify the parameters on this screen:
+**_tline_** has parameters for many common transmission lines already built-in.  If you have a transmission line that **_tline_** doesn't provide, you can specify its parameters on this screen:
 
 <img src="screenshots/user_specified_line.png" >
 
@@ -27,6 +27,13 @@ Please note that all transmission lines have an impedance with both real and ima
 Here is a screenshot of the matching calculator:
 
 <img src="screenshots/tuner_design_tool.png" >
+
+Note that you must choose a matching network topology that is appropriate for the combination of source and load impedance that you are
+trying to match.  **_tline_** will indicate combinations where it is unable to calculate a match.  When this happens, please select a
+different network topology.
+
+If you are curious as to the source of the equations that **_tline_** uses to perform its calculations, most of them are taken from the
+"ARRL Antenna Book (23rd Edition)".  See also "Reference Data For Radio Engineers (6th Edition)" by ITT.
 
 73 de AC2XM
 
