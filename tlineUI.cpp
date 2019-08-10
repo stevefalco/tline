@@ -712,7 +712,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	sbTunerParameterContainer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Parameters") ), wxVERTICAL );
 
 	wxGridSizer* gTunerParameters;
-	gTunerParameters = new wxGridSizer( 6, 2, 0, 0 );
+	gTunerParameters = new wxGridSizer( 0, 2, 0, 0 );
 
 	dl_tunerSourceResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerSourceResistanceTag->Wrap( -1 );
@@ -762,11 +762,11 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	bTunerLeft->Add( sbTunerParameterContainer, 1, wxEXPAND|wxSHAPED, 5 );
 
-	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 ohm transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the dialog.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.\n"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 ohm transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden above.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.  The Q parameter is only used for the PI and T topologies.\n"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerParameterNote->Wrap( 300 );
 	bTunerLeft->Add( dl_tunerParameterNote, 0, wxALL, 5 );
 
-	dl_tunerTopologyNote = new wxStaticText( this, wxID_ANY, wxT("Topology note: The radio buttons list components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.  "), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerTopologyNote = new wxStaticText( this, wxID_ANY, wxT("Topology note: The radio buttons list the filter components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.\n\nSome combinations of Parameters and Topologies will result in invalid component values, and this will be indicated in the results.  In this case, try selecting a different topology."), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerTopologyNote->Wrap( 300 );
 	bTunerLeft->Add( dl_tunerTopologyNote, 0, wxALL, 5 );
 
@@ -825,7 +825,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	sbTunerResultsContainer->Add( gTunerParameters1, 1, wxEXPAND|wxSHAPED, 5 );
 
 
-	bTunerRight->Add( sbTunerResultsContainer, 1, wxEXPAND, 5 );
+	bTunerRight->Add( sbTunerResultsContainer, 1, wxALIGN_CENTER|wxSHAPED, 5 );
 
 	dl_tunerOKbutton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
 	bTunerRight->Add( dl_tunerOKbutton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );

@@ -266,7 +266,7 @@ class tunerDialog : public wxDialog
 
 	public:
 
-		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 750,900 ), long style = wxDEFAULT_DIALOG_STYLE );
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 750,920 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();
 
 };

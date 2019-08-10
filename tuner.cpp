@@ -304,6 +304,34 @@ void tuner::LCHP()
 
 	char buffer[512];
 
+	if(!isfinite(lchplval) || !isfinite(lchpcval) || !isfinite(lchpqval) ||
+			lchplval < 0.0 || lchpcval < 0.0 || lchpqval < 0.0 ||
+			lchplval > 1e7 || lchpcval > 1e7 || lchpqval > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
+
 	snprintf(buffer, 512, "%.2f", lchplval);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
@@ -315,9 +343,6 @@ void tuner::LCHP()
 	snprintf(buffer, 512, "%.2f", lchpqval);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("Q Value");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -380,7 +405,35 @@ void tuner::CLLP()
 		}
 	}
 
-	char buffer[512];
+	if(!isfinite(cllplval) || !isfinite(cllpcval) || !isfinite(cllpqval) ||
+			cllplval < 0.0 || cllpcval < 0.0 || cllpqval < 0.0 ||
+			cllplval > 1e7 || cllpcval > 1e7 || cllpqval > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+char buffer[512];
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
 
 	snprintf(buffer, 512, "%.2f", cllplval);
 	dl_tunerResult1->ChangeValue(buffer);
@@ -393,9 +446,6 @@ void tuner::CLLP()
 	snprintf(buffer, 512, "%.2f", cllpqval);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("Q Value");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -458,7 +508,35 @@ void tuner::LCLP()
 		}
 	}
 
+	if(!isfinite(lclplval) || !isfinite(lclpcval) || !isfinite(lclpqval) ||
+			lclplval < 0.0 || lclpcval < 0.0 || lclpqval < 0.0 ||
+			lclplval > 1e7 || lclpcval > 1e7 || lclpqval > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
 	char buffer[512];
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
 
 	snprintf(buffer, 512, "%.2f", lclplval);
 	dl_tunerResult1->ChangeValue(buffer);
@@ -471,9 +549,6 @@ void tuner::LCLP()
 	snprintf(buffer, 512, "%.2f", lclpqval);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("Q Value");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -555,6 +630,34 @@ void tuner::CLHP()
 
 	char buffer[512];
 
+	if(!isfinite(clhplval) || !isfinite(clhpcval) || !isfinite(clhpqval) ||
+			clhplval < 0.0 || clhpcval < 0.0 || clhpqval < 0.0 ||
+			clhplval > 1e7 || clhpcval > 1e7 || clhpqval > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
+
 	snprintf(buffer, 512, "%.2f", clhplval);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
@@ -566,9 +669,6 @@ void tuner::CLHP()
 	snprintf(buffer, 512, "%.2f", clhpqval);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("Q Value");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -667,6 +767,34 @@ void tuner::HPPI()
 
 	char buffer[512];
 
+	if(!isfinite(cpi) || !isfinite(lspi) || !isfinite(llpi) ||
+			cpi < 0.0 || lspi < 0.0 || llpi < 0.0 ||
+			cpi > 1e7 || lspi > 1e7 || llpi > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
+
 	snprintf(buffer, 512, "%.2f", cpi);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
@@ -678,9 +806,6 @@ void tuner::HPPI()
 	snprintf(buffer, 512, "%.2f", llpi);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -779,6 +904,34 @@ void tuner::LPPI()
 
 	char buffer[512];
 
+	if(!isfinite(lpi) || !isfinite(cspi) || !isfinite(clpi) ||
+			lpi < 0.0 || cspi < 0.0 || clpi < 0.0 ||
+			lpi > 1e7 || cspi > 1e7 || clpi > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
+
 	snprintf(buffer, 512, "%.2f", lpi);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
@@ -790,9 +943,6 @@ void tuner::LPPI()
 	snprintf(buffer, 512, "%.2f", clpi);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("CL Value (pF)");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -883,6 +1033,34 @@ void tuner::HPT()
 
 	char buffer[512];
 
+	if(!isfinite(lt) || !isfinite(cst) || !isfinite(clt) ||
+			lt < 0.0 || cst < 0.0 || clt < 0.0 ||
+			lt > 1e7 || cst > 1e7 || clt > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
+
 	snprintf(buffer, 512, "%.2f", lt);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
@@ -894,9 +1072,6 @@ void tuner::HPT()
 	snprintf(buffer, 512, "%.2f", clt);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("CL Value (pF)");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -987,6 +1162,34 @@ void tuner::LPT()
 
 	char buffer[512];
 
+	if(!isfinite(ct) || !isfinite(lst) || !isfinite(llt) ||
+			ct < 0.0 || lst < 0.0 || llt < 0.0 ||
+			ct > 1e7 || lst > 1e7 || llt > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
+
 	snprintf(buffer, 512, "%.2f", ct);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
@@ -998,9 +1201,6 @@ void tuner::LPT()
 	snprintf(buffer, 512, "%.2f", llt);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
 
 	Layout();
 }
@@ -1078,6 +1278,34 @@ void tuner::HP1LL()
 
 	char buffer[512];
 
+	if(!isfinite(hp1ls) || !isfinite(hp1cs) || !isfinite(hp1ll) || !isfinite(hp1cl) ||
+			hp1ls < 0.0 || hp1cs < 0.0 || hp1ll < 0.0 || hp1cl < 0.0 ||
+			hp1ls > 1e7 || hp1cs > 1e7 || hp1ll > 1e7 || hp1cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", hp1ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1089,9 +1317,6 @@ void tuner::HP1LL()
 	snprintf(buffer, 512, "%.2f", hp1ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", hp1cl);
 	dl_tunerResult4->ChangeValue(buffer);
@@ -1173,6 +1398,34 @@ void tuner::HP2LL()
 
 	char buffer[512];
 
+	if(!isfinite(hp2ls) || !isfinite(hp2cs) || !isfinite(hp2ll) || !isfinite(hp2cl) ||
+			hp2ls < 0.0 || hp2cs < 0.0 || hp2ll < 0.0 || hp2cl < 0.0 ||
+			hp2ls > 1e7 || hp2cs > 1e7 || hp2ll > 1e7 || hp2cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", hp2ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1184,9 +1437,6 @@ void tuner::HP2LL()
 	snprintf(buffer, 512, "%.2f", hp2ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", hp2cl);
 	dl_tunerResult4->ChangeValue(buffer);
@@ -1252,6 +1502,34 @@ void tuner::LP1LL()
 
 	char buffer[512];
 
+	if(!isfinite(lp1ls) || !isfinite(lp1cs) || !isfinite(lp1ll) || !isfinite(lp1cl) ||
+			lp1ls < 0.0 || lp1cs < 0.0 || lp1ll < 0.0 || lp1cl < 0.0 ||
+			lp1ls > 1e7 || lp1cs > 1e7 || lp1ll > 1e7 || lp1cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", lp1ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1263,9 +1541,6 @@ void tuner::LP1LL()
 	snprintf(buffer, 512, "%.2f", lp1ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", lp1cl);
 	dl_tunerResult4->ChangeValue(buffer);
@@ -1331,6 +1606,34 @@ void tuner::LP2LL()
 
 	char buffer[512];
 
+	if(!isfinite(lp2ls) || !isfinite(lp2cs) || !isfinite(lp2ll) || !isfinite(lp2cl) ||
+			lp2ls < 0.0 || lp2cs < 0.0 || lp2ll < 0.0 || lp2cl < 0.0 ||
+			lp2ls > 1e7 || lp2cs > 1e7 || lp2ll > 1e7 || lp2cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", lp2ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1342,9 +1645,6 @@ void tuner::LP2LL()
 	snprintf(buffer, 512, "%.2f", lp2ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", lp2cl);
 	dl_tunerResult4->ChangeValue(buffer);
@@ -1417,6 +1717,34 @@ void tuner::BP1LL()
 	
 	char buffer[512];
 
+	if(!isfinite(bp1ls) || !isfinite(bp1cs) || !isfinite(bp1ll) || !isfinite(bp1cl) ||
+			bp1ls < 0.0 || bp1cs < 0.0 || bp1ll < 0.0 || bp1cl < 0.0 ||
+			bp1ls > 1e7 || bp1cs > 1e7 || bp1ll > 1e7 || bp1cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", bp1ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1428,9 +1756,6 @@ void tuner::BP1LL()
 	snprintf(buffer, 512, "%.2f", bp1ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", bp1cl);
 	dl_tunerResult4->ChangeValue(buffer);
@@ -1503,6 +1828,34 @@ void tuner::BP2LL()
 
 	char buffer[512];
 
+	if(!isfinite(bp2ls) || !isfinite(bp2cs) || !isfinite(bp2ll) || !isfinite(bp2cl) ||
+			bp2ls < 0.0 || bp2cs < 0.0 || bp2ll < 0.0 || bp2cl < 0.0 ||
+			bp2ls > 1e7 || bp2cs > 1e7 || bp2ll > 1e7 || bp2cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", bp2ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1514,9 +1867,6 @@ void tuner::BP2LL()
 	snprintf(buffer, 512, "%.2f", bp2ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", bp2cl);
 	dl_tunerResult4->ChangeValue(buffer);
@@ -1591,6 +1941,34 @@ void tuner::BP3LL()
 	
 	char buffer[512];
 
+	if(!isfinite(bp3ls) || !isfinite(bp3cs) || !isfinite(bp3ll) || !isfinite(bp3cl) ||
+			bp3ls < 0.0 || bp3cs < 0.0 || bp3ll < 0.0 || bp3cl < 0.0 ||
+			bp3ls > 1e7 || bp3cs > 1e7 || bp3ll > 1e7 || bp3cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", bp3ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1602,9 +1980,6 @@ void tuner::BP3LL()
 	snprintf(buffer, 512, "%.2f", bp3ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", bp3cl);
 	dl_tunerResult4->ChangeValue(buffer);
@@ -1679,6 +2054,34 @@ void tuner::BP4LL()
 	
 	char buffer[512];
 
+	if(!isfinite(bp4ls) || !isfinite(bp4cs) || !isfinite(bp4ll) || !isfinite(bp4cl) ||
+			bp4ls < 0.0 || bp4cs < 0.0 || bp4ll < 0.0 || bp4cl < 0.0 ||
+			bp4ls > 1e7 || bp4cs > 1e7 || bp4ll > 1e7 || bp4cl > 1e7) {
+		// Invalid
+		dl_tunerResult1->Hide();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Hide();
+		dl_tunerResultTag2->Hide();
+		dl_tunerResult3->Hide();
+		dl_tunerResultTag3->Hide();
+		dl_tunerResult4->Hide();
+		dl_tunerResultTag4->Hide();
+
+		dl_tunerResultTag1->SetLabel("No Match Found");
+
+		Layout();
+		return;
+	}
+
+	dl_tunerResult1->Show();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Show();
+	dl_tunerResultTag2->Show();
+	dl_tunerResult3->Show();
+	dl_tunerResultTag3->Show();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+
 	snprintf(buffer, 512, "%.2f", bp4ls);
 	dl_tunerResult1->ChangeValue(buffer);
 	dl_tunerResultTag1->SetLabel("LS Value (nH)");
@@ -1690,9 +2093,6 @@ void tuner::BP4LL()
 	snprintf(buffer, 512, "%.2f", bp4ll);
 	dl_tunerResult3->ChangeValue(buffer);
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
 
 	snprintf(buffer, 512, "%.2f", bp4cl);
 	dl_tunerResult4->ChangeValue(buffer);
