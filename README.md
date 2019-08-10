@@ -21,5 +21,11 @@ If you have a transmission line that **_tline_** doesn't provide, you can specif
 
 Please note that all transmission lines have an impedance with both real and imaginary parts, where the imaginary part is capacitive (i.e. a negative number like -j0.2 ohms).  Usually, the imaginary part is small, and cable manufacturers just specify a single number like "50 Ohms".  **_tline_** can estimate the imaginary part of the complex impedance for user-specified lines, or if you have measured the line and know what value you want to use, you can enter it.
 
+**_tline_** can help design a matching circuit between a source impedance and a load impedance.  The calculations are based on a Javascript implementation by John Wetherell.  Please follow this [link]( http://home.sandiego.edu/~ekim/e194rfs01/jwmatcher/matcher2.html) for his implementation.
+
+Here is a screenshot of the matching calculator:
+
+<img src="screenshots/tuner_design_tool.png" >
+
 73 de AC2XM
 
