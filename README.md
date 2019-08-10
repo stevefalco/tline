@@ -11,7 +11,8 @@ Here is a screenshot of the main screen:
 
 <img src="screenshots/main_screen.png" >
 
-Here is a sample graph.  Since we have chosen a 75 Ohm line with a 50 Ohm load, you can see how the impedance varies with length:
+Here is a sample graph.  You can see how the impedance varies with length; this happens because the cable and load have different impedances, and hence there are standing waves along the transmission
+line:
 
 <img src="screenshots/sample_graph.png" >
 
@@ -19,7 +20,7 @@ If you have a transmission line that **_tline_** doesn't provide, you can specif
 
 <img src="screenshots/user_specified_line.png" >
 
-Please note that all transmission lines have an impedance with both real and imaginary parts, where the imaginary part is capacitive (i.e. a negative number like -j0.2 ohms).  Usually, the imaginary part is small, and cable manufacturers just specify a single number like "50 Ohms".  **_tline_** can estimate the imaginary part of the complex impedance for user-specified lines, or if you have measured the line and know what value you want to use, you can enter it.
+Please note that all transmission lines have an impedance with both real and imaginary parts, where the imaginary part is capacitive (i.e. a negative number like -j0.2 ohms).  Usually, the imaginary part is small, and cable manufacturers just specify a single number like "50 Ohms".  **_tline_** can estimate the imaginary part of the complex impedance for user-specified lines, or if you have measured the line and know what value you want to use, you can enter that instead.
 
 **_tline_** can help design a matching circuit between a source impedance and a load impedance.  The calculations are based on a Javascript implementation by John Wetherell.  Please follow this [link]( http://home.sandiego.edu/~ekim/e194rfs01/jwmatcher/matcher2.html) for his implementation.
 
