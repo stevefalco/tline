@@ -2,14 +2,25 @@ This program uses wxFormBuilder to generate its user interface, so if you want
 to make any UI changes, install wxFormBuilder and open tline.fbp.  Typing F8
 in wxFormBuilder will regenerate the tlineUI.h and tlineUI.cpp files.
 
-Compilation can be done by typing "make", which will result in the tline
-binary being created as "build/tline".  You will need to have a development
-version of wxWidgets installed.  On Fedora Linux this is provided by
-the wxGTK3-devel package.
+Compilation can be done by the following steps:
 
-There is a simple install target in the makefile that copies tline to ~/bin.
-If you want the binary somewhere else, you should either manually copy it
-where you like, or you can change the makefile.
+1) mkdir build
+2) cd build
+3) cmake ..
+4) make
+
+If you have a multi-core CPU, you can speed up the compilation by replacing
+step 4 above with "make -jN" where N is number of CPU cores available.
+
+If you need to see the full text of the commands being executed by "make", add
+VERBOSE=1 to the command.  For example, to produce a verbose build, with 12
+CPU cores available, step 4 would be:
+
+make -j12 VERBOSE=1
+
+This will result in the tline binary being created as "build/tline".  You
+will need to have a development version of wxWidgets installed.  On Fedora
+Linux this is provided by the wxGTK3-devel package.
 
 tline is reasonably self-contained, but it does use gnuplot for graphing,
 so you will need gnuplot installed somewhere accessible by your shell.
