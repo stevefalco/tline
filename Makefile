@@ -68,7 +68,7 @@ $(BUILD_DIR)/%.o: %.cpp
 	g++ -Wall -Werror -MMD -g $(WX_CXX_FLAGS) -o $@ -c $<
 
 $(BUILD_DIR)/%.h: $(TOPOLOGY_DIR)/%.png
-	xxd --include $^ > $@
+	xxd --include $^ | sed -e 's,topologies_,,' > $@
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
