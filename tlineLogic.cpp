@@ -550,6 +550,7 @@ void tlineLogic::doPlot( int type, int mode )
 	wxFFile			controlFP;
 
 	char			buffer[512];
+	int			rv;
 
 	// Create temporary data file.
 	dataName = wxFileName::CreateTempFileName("", &dataFP);
@@ -600,7 +601,10 @@ void tlineLogic::doPlot( int type, int mode )
 	snprintf(buffer, 512, "gnuplot %s %s", (mode == PLOT) ? "-p" : "", (const char *)controlName.mb_str());
 
 	// Execute the plot command.
-	system(buffer);
+	rv = system(buffer);
+	if(!WIFEXITED(rv) || WEXITSTATUS(rv) != 0) {
+		wxLogError("Could not run gnuplot");
+	}
 	
 	// Delete the temporary files from the filesystem.
 DELETE_CONTROL:

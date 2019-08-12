@@ -53,3 +53,5 @@ foreach(VAR IN LISTS TOPOLOGIES)
 	string(REGEX REPLACE ".png$" ".h" H ${VAR})
 	add_dependencies(tline ${H})
 endforeach()
+
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/tline DESTINATION /usr/bin)
