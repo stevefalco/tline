@@ -4,6 +4,8 @@ project (tline)
 find_package(wxWidgets REQUIRED COMPONENTS net core base webview xrc html qa adv xml)
 
 include(${wxWidgets_USE_FILE})
+ 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I.")
 
 set(TOPOLOGIES
 	nt_bp1ll.png
@@ -37,6 +39,7 @@ add_executable(${PROJECT_NAME}
 	cableTypes.cpp
 	helpAbout.cpp
 	helpInfo.cpp
+	strchrnul.cpp
 	tlineLogic.cpp
 	tlineMain.cpp
 	tlineUI.cpp

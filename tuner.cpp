@@ -20,22 +20,22 @@
 
 #include <wx/log.h>
 
-#include "build/nt_bp1ll.h"
-#include "build/nt_bp2ll.h"
-#include "build/nt_bp3ll.h"
-#include "build/nt_clhp.h"
-#include "build/nt_bp4ll.h"
-#include "build/nt_hppi.h"
-#include "build/nt_hp2ll.h"
-#include "build/nt_hp1ll.h"
-#include "build/nt_cllp.h"
-#include "build/nt_hpt.h"
-#include "build/nt_lclp.h"
-#include "build/nt_lchp.h"
-#include "build/nt_lp2ll.h"
-#include "build/nt_lp1ll.h"
-#include "build/nt_lpt.h"
-#include "build/nt_lppi.h"
+#include "nt_bp1ll.h"
+#include "nt_bp2ll.h"
+#include "nt_bp3ll.h"
+#include "nt_clhp.h"
+#include "nt_bp4ll.h"
+#include "nt_hppi.h"
+#include "nt_hp2ll.h"
+#include "nt_hp1ll.h"
+#include "nt_cllp.h"
+#include "nt_hpt.h"
+#include "nt_lclp.h"
+#include "nt_lchp.h"
+#include "nt_lp2ll.h"
+#include "nt_lp1ll.h"
+#include "nt_lpt.h"
+#include "nt_lppi.h"
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
