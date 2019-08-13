@@ -250,6 +250,10 @@ void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 	m_cableTypeStr = event.GetString();
 	ui_cableType->SetSelection(wxNOT_FOUND);
 
+	if(m_cableTypeStr == "User-Defined Transmission Line") {
+		m_newUserLine = TRUE;
+	}
+
 	m_saved = 0;
 
 	recalculate();
@@ -710,28 +714,41 @@ void tlineLogic::recalculate()
 	// Look up the cable parameters.
 	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
 	if(m_cp == 0) {
-		// No such cable - open a dialog to ask for parameters.
-		userLine* dialog = new userLine(this);
+		if(m_newUserLine == TRUE) {
+			// No such cable - open a dialog to ask for parameters.
+			userLine* dialog = new userLine(this);
 
-		// Fill in the frequency.
-		dialog->userLineSetFrequency(m_frequency);
+			// Fill in the frequency.
+			dialog->userLineSetFrequency(m_frequency);
 
-		// Fill in the previous user-provided values.
-		dialog->userLineSetAttenuation(m_attenuationFromUser);
-		dialog->userLineSetVelocityFactor(m_velocityFactorFromUser);
-		dialog->userLineSetCableResistance(m_cableResistanceFromUser);
-		dialog->userLineSetCableReactance(m_cableReactanceFromUser);
-		dialog->userLineSetCableVoltageLimit(m_cableVoltageLimitFromUser);
+			// Fill in the previous user-provided values.
+			dialog->userLineSetAttenuation(m_attenuationFromUser);
+			dialog->userLineSetVelocityFactor(m_velocityFactorFromUser);
+			dialog->userLineSetCableResistance(m_cableResistanceFromUser);
+			dialog->userLineSetCableReactance(m_cableReactanceFromUser);
+			dialog->userLineSetCableVoltageLimit(m_cableVoltageLimitFromUser);
 
-		if (dialog->ShowModal() == wxID_OK) {
-			// Save the new user values.
-			m_attenuationFromUser = dialog->userLineGetAttenuation();
-			m_velocityFactorFromUser = dialog->userLineGetVelocityFactor();
-			m_cableResistanceFromUser = dialog->userLineGetCableResistance();
-			m_cableReactanceFromUser = dialog->userLineGetCableReactance();
-			m_cableVoltageLimitFromUser = dialog->userLineGetCableVoltageLimit();
+			if (dialog->ShowModal() == wxID_OK) {
+				// Save the new user values.
+				m_attenuationFromUser = dialog->userLineGetAttenuation();
+				m_velocityFactorFromUser = dialog->userLineGetVelocityFactor();
+				m_cableResistanceFromUser = dialog->userLineGetCableResistance();
+				m_cableReactanceFromUser = dialog->userLineGetCableReactance();
+				m_cableVoltageLimitFromUser = dialog->userLineGetCableVoltageLimit();
 
-			// Also set our working values.
+				// Also set our working values.
+				userSpecifiedZ = TRUE;
+				m_attenPer100Feet = m_attenuationFromUser;
+				m_velocityFactor = m_velocityFactorFromUser;
+				m_cableResistivePart = m_cableResistanceFromUser;
+				m_cableReactivePart = m_cableReactanceFromUser;
+				m_maximumVoltage = m_cableVoltageLimitFromUser;
+
+				// Cache has been loaded.
+				m_newUserLine = FALSE;
+			}
+		} else {
+			// Use the cached values.
 			userSpecifiedZ = TRUE;
 			m_attenPer100Feet = m_attenuationFromUser;
 			m_velocityFactor = m_velocityFactorFromUser;

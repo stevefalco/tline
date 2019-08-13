@@ -85,6 +85,8 @@ class tlineLogic : public tlineUI
 		int			m_width;
 		int			m_height;
 
+		bool			m_newUserLine;
+
 		wxString		m_cableTypeStr = _("RG-6 (Belden 8215)");
 		wxString		m_frequencyStr = _("7.0");
 		wxString		m_lengthStr = _("100");
