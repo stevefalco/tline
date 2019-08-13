@@ -228,11 +228,14 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 	dialog->ShowModal();
 }
 
-// Ordinarily, this event only happens if the selected item changes.
+// On Linux, this event only happens if the selected item changes.
 // Reselecting the same item a second time does not cause this event.
-// I consider that to be a bug; it is certainly not what I want here.
-// I have a special case of "User Specified Line", and I want a
-// reselection of that item to reopen the associated dialog box.
+// However, Windows behaves differently; reselecting the same item does
+// regenerate this event.
+//
+// I consider the Linux behavior to be a bug; it is certainly not what
+// I want here.  I have a special case of "User Specified Line", and I
+// want a reselection of that item to reopen the associated dialog box.
 //
 // I tried onComboBoxCloseup, but it doesn't return the string in the
 // event.  And, if I try to recover the string from the combo box itself,
@@ -241,14 +244,16 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 // shouldn't.
 //
 // After much experimentation, I found that if I set the selection to
-// wxNOT_FOUND, then I will get this event even if the same item is
-// reselected.  I was nervous that this would also blank out the text
-// in the comboBox, but fortunately, that is not the case.  The text
-// in the comboBox is unaffected by setting wxNOT_FOUND.
+// wxNOT_FOUND on Linux, then I will get this event even if the same
+// item is reselected.  But I cannot use that on Windows, because it
+// blanks out the displayed string.  Thus, we use the wxNOT_FOUND hack
+// only on Linux.
 void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 {
 	m_cableTypeStr = event.GetString();
+#ifdef __linux
 	ui_cableType->SetSelection(wxNOT_FOUND);
+#endif
 
 	if(m_cableTypeStr == "User-Defined Transmission Line") {
 		m_newUserLine = TRUE;
