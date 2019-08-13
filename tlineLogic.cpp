@@ -485,6 +485,8 @@ static wxWindow* createMyExtraPanel(wxWindow *parent)
 	return new MyExtraPanel(parent, g_widthStr, g_heightStr);
 }
 
+// Warning: File names must be in single-quotes for gnuplot on Windows,
+// otherwise the backslashes are interpolated and the paths don't work.
 bool tlineLogic::setOutput( wxFFile* file )
 {
 	char			buffer[512];
@@ -521,33 +523,37 @@ bool tlineLogic::setOutput( wxFFile* file )
 	}
 
 	fprintf(file->fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
-	fprintf(file->fp(), "set output \"%s\"\n", (const char*)saveFileDialog.GetPath());
+	fprintf(file->fp(), "set output '%s'\n", (const char*)saveFileDialog.GetPath());
 
 	return TRUE;
 }
 
+// Warning: File names must be in single-quotes for gnuplot on Windows,
+// otherwise the backslashes are interpolated and the paths don't work.
 void tlineLogic::setControlZ( wxFFile* file, const char* name )
 {
 	fprintf(file->fp(), "set ytics -1000000,10 nomirror tc lt 1\n");
-	fprintf(file->fp(), "set ylabel \"Imaginary (Ohms)\" tc lt 1\n");
+	fprintf(file->fp(), "set ylabel 'Imaginary (Ohms)' tc lt 1\n");
 	fprintf(file->fp(), "set y2tics -1000000,10 nomirror tc lt 2\n");
-	fprintf(file->fp(), "set y2label \"Real (Ohms)\" tc lt 2\n");
-	fprintf(file->fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
+	fprintf(file->fp(), "set y2label 'Real (Ohms)' tc lt 2\n");
+	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr);
 	fprintf(file->fp(), "plot \\\n");
-	fprintf(file->fp(), "  \"%s\" u 1:3 w l axes x1y1 title \"imag\", \\\n", name);
-	fprintf(file->fp(), "  \"%s\" u 1:2 w l axes x1y2 title \"real\"\n", name);
+	fprintf(file->fp(), "  '%s' u 1:3 w l axes x1y1 title 'imag', \\\n", name);
+	fprintf(file->fp(), "  '%s' u 1:2 w l axes x1y2 title 'real'\n", name);
 }
 
+// Warning: File names must be in single-quotes for gnuplot on Windows,
+// otherwise the backslashes are interpolated and the paths don't work.
 void tlineLogic::setControlVI( wxFFile* file, const char* name )
 {	
 	fprintf(file->fp(), "set ytics -1000000,1 nomirror tc lt 1\n");
-	fprintf(file->fp(), "set ylabel \"Current (Amps)\" tc lt 1\n");
+	fprintf(file->fp(), "set ylabel 'Current (Amps)' tc lt 1\n");
 	fprintf(file->fp(), "set y2tics -1000000,20 nomirror tc lt 2\n");
-	fprintf(file->fp(), "set y2label \"Voltage (Volts)\" tc lt 2\n");
-	fprintf(file->fp(), "set xlabel \"Length (%s)\"\n", (const char*)m_unitsStr);
+	fprintf(file->fp(), "set y2label 'Voltage (Volts)' tc lt 2\n");
+	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr);
 	fprintf(file->fp(), "plot \\\n");
-	fprintf(file->fp(), "  \"%s\" u 1:9 w l axes x1y1 title \"amps\", \\\n", name);
-	fprintf(file->fp(), "  \"%s\" u 1:8 w l axes x1y2 title \"volts\"\n", name);
+	fprintf(file->fp(), "  '%s' u 1:9 w l axes x1y1 title 'amps', \\\n", name);
+	fprintf(file->fp(), "  '%s' u 1:8 w l axes x1y2 title 'volts'\n", name);
 }
 
 // Build data and control files, then spawn gnuplot.
