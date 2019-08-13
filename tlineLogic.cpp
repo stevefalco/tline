@@ -728,6 +728,8 @@ void tlineLogic::recalculate()
 			dialog->userLineSetCableReactance(m_cableReactanceFromUser);
 			dialog->userLineSetCableVoltageLimit(m_cableVoltageLimitFromUser);
 
+			dialog->userLineRebuildEstimatedCableReactance();
+
 			if (dialog->ShowModal() == wxID_OK) {
 				// Save the new user values.
 				m_attenuationFromUser = dialog->userLineGetAttenuation();
