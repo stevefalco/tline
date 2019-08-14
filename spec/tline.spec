@@ -4,14 +4,16 @@ Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
 
-License:	GPLv3+
+License:        GPLv3+
 
-Source0:	tline-%{version}.tar.gz
+Source0:        tline-%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  wxGTK3-devel
 BuildRequires:  vim-common
+
+Requires:       gnuplot-wx
 
 %description
 tline is a transmission line calculator
