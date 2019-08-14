@@ -33,5 +33,9 @@ cd build
 
 %files
 %{_bindir}/tline
+%license LICENSE
 
 %changelog
+* Wed Aug 14 2019 Steven A. Falco <stevenfalco@gmail.com> - 1:0.0-1
+- Initial release of 0.0
+
