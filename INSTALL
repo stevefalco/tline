@@ -24,3 +24,33 @@ Linux this is provided by the wxGTK3-devel package.
 
 tline is reasonably self-contained, but it does use gnuplot for graphing,
 so you will need gnuplot installed somewhere accessible by your shell.
+
+Fedora users can use the spec/tline.spec file to generate an RPM:
+
+First, create a source archive.  Note that the version 0.0 must be changed
+to match the version in the spec file.
+
+git archive --format=tar.gz --prefix=tline-0.0/ -o ~/tline-0.0.tar.gz HEAD
+
+Next, prepare a working directory:
+
+mkdir -p ~/rpmbuild/{SPECS,SOURCES}
+cp spec/tline.spec ~/rpmbuild/SPECS
+mv ~/tline-0.0.tar.gz ~/rpmbuild/SOURCES
+cd ~/rpmbuild
+
+Now, run the build:
+
+rpmbuild -ba SPECS/tline.spec
+
+If you are set up for it, you could instead use mock, again adjusting the
+version string and target Fedora version as necessary:
+
+git archive --format=tar.gz --prefix=tline-0.0/ -o ~/tline-0.0.tar.gz HEAD
+mkdir -p ~/rpmbuild/{SPECS,SOURCES}
+cp spec/tline.spec ~/rpmbuild/SPECS
+mv ~/tline-0.0.tar.gz ~/rpmbuild/SOURCES
+cd ~/rpmbuild
+rpmbuild -bs SPECS/tline.spec
+mock -r fedora-30-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-0.0-1.fc30.src.rpm
+
