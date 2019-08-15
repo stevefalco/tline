@@ -37,6 +37,7 @@
 #include "info.h"
 #include "tuner.h"
 #include "strchrnul.h"
+#include "icons/tlineIcon.xpm"
 
 wxString g_widthStr;
 wxString g_heightStr;
@@ -46,6 +47,8 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 	wxImage::AddHandler(new wxPNGHandler);
 	wxImage::AddHandler(new wxJPEGHandler);
 	wxImage::AddHandler(new wxGIFHandler);
+
+	this->SetIcon(tlineIcon_xpm);
 
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
 
