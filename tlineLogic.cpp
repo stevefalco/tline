@@ -49,6 +49,7 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 	wxImage::AddHandler(new wxGIFHandler);
 
 	this->SetIcon(tlineIcon_xpm);
+	this->SetTitle("Tline - A Transmission Line Calculator");
 
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
 
