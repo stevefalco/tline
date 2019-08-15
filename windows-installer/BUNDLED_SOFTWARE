@@ -1,0 +1,25 @@
+The following information is provided for GPL compliance:
+
+Source code for libstdc++-6.dll and libgcc_s_sjlj-1.dll:
+http://mirrors.kernel.org/fedora/updates/30/Everything/SRPMS/Packages/m/mingw-gcc-8.3.0-2.fc30.src.rpm
+
+Source code for libjpeg-62.dll:
+http://mirrors.kernel.org/fedora/releases/30/Everything/source/tree/Packages/m/mingw-libjpeg-turbo-2.0.2-1.fc30.src.rpm
+
+Source code for libpng16-16.dll:
+http://mirrors.kernel.org/fedora/releases/30/Everything/source/tree/Packages/m/mingw-libpng-1.6.29-5.fc30.src.rpm
+
+Source code for libtiff-5.dll:
+http://mirrors.kernel.org/fedora/releases/30/Everything/source/tree/Packages/m/mingw-libtiff-4.0.9-3.fc30.src.rpm
+
+Source code for libwinpthread-1.dll:
+http://mirrors.kernel.org/fedora/releases/30/Everything/source/tree/Packages/m/mingw-winpthreads-5.0.4-3.fc30.src.rpm
+
+Source code for wxbase30u_gcc_custom.dll, wxmsw30u_core_gcc_custom.dll, and wxmsw30u_html_gcc_custom:
+http://mirrors.kernel.org/fedora/updates/30/Everything/SRPMS/Packages/m/mingw-wxWidgets3-3.0.4-1.fc30.src.rpm
+
+Source code for zlib1.dll:
+http://mirrors.kernel.org/fedora/releases/30/Everything/source/tree/Packages/m/mingw-zlib-1.2.8-10.fc30.src.rpm
+
+Source code for gnuplot:
+https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.7/gnuplot-5.2.7.tar.gz/download

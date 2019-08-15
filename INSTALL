@@ -1,11 +1,28 @@
-This program uses wxFormBuilder to generate its user interface, so if you want
-to make any UI changes, install wxFormBuilder and open tline.fbp.  Typing F8
-in wxFormBuilder will regenerate the tlineUI.h and tlineUI.cpp files.
+0) General Information
+======================
 
-Compilation can be done by the following steps:
+This program uses wxFormBuilder to generate its user interface, so if you
+want to make any UI changes, install wxFormBuilder and open tline.fbp.
+After making your changes, type F8 in wxFormBuilder to regenerate the
+tlineUI.h and tlineUI.cpp files.
 
-1) mkdir build
-2) cd build
+Development of Tline is done under Linux.  I also use Linux to cross-compile
+for Windows.
+
+tline is reasonably self-contained, but it does use gnuplot for graphing,
+so you will need gnuplot installed somewhere accessible by your shell.  The
+Tline windows installer includes gnuplot, and will install it on request.
+
+1) BUILDING FOR LINUX
+=====================
+
+1a) Manual Builds
+=================
+
+Compilation for Linux can be done by the following steps:
+
+1) mkdir build-linux
+2) cd build-linux
 3) cmake ..
 4) make
 
@@ -18,14 +35,14 @@ CPU cores available, step 4 would be:
 
 make -j12 VERBOSE=1
 
-This will result in the tline binary being created as "build/tline".  You
-will need to have a development version of wxWidgets installed.  On Fedora
-Linux this is provided by the wxGTK3-devel package.
+This will result in the tline binary being created as "build-linux/tline".
+You will need to have a development version of wxWidgets installed to perform
+the build.  On Fedora Linux this is provided by the wxGTK3-devel package.
 
-tline is reasonably self-contained, but it does use gnuplot for graphing,
-so you will need gnuplot installed somewhere accessible by your shell.
+1b) RPM builds
+==============
 
-Fedora users can use the spec/tline.spec file to generate an RPM:
+Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 
 First, create a source archive.  Note that the version 0.0 must be changed
 to match the version in the spec file.
@@ -43,8 +60,12 @@ Now, run the build:
 
 rpmbuild -ba SPECS/tline.spec
 
-If you are set up for it, you could instead use mock, again adjusting the
-version string and target Fedora version as necessary:
+1c) MOCK builds
+
+If you are set up for it on Fedora, you could instead use mock, again
+adjusting the version string and target Fedora version as necessary.  In
+this case, you first generate the sourc RPM in your local rpmbuild
+directory, then pass that to mock:
 
 git archive --format=tar.gz --prefix=tline-0.0/ -o ~/tline-0.0.tar.gz HEAD
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -53,4 +74,33 @@ mv ~/tline-0.0.tar.gz ~/rpmbuild/SOURCES
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
 mock -r fedora-30-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-0.0-1.fc30.src.rpm
+
+2) BUILDING FOR WINDOWS
+=======================
+
+The windows version of TLine is built using the MinGW cross-compilers running
+on a Fedora Linux machine.  Also, the NSIS installer is used.  Therefore,
+you will want to install mingw32-nsis.x86_64, mingw32-gcc-c++.x86_64, etc.
+
+Also, Tline for windows uses a number of dlls from various projects.  The dll
+files are stored in the windows-installer subdirectory.
+
+First, build the Tline.exe file:
+
+1) mkdir build-windows
+2) cd build-windows
+3) cmake ..
+4) make
+
+Copy the tline executable into the windows-installer subdirectory:
+
+cp tline.exe ../windows-installer
+
+Generate the installer:
+
+cd ../windows-installer
+makensis tline.nsi
+
+You will wind up with tline-installer.exe, which contains all the components
+needed to install and run Tline.
 
