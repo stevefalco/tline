@@ -80,7 +80,7 @@ mock -r fedora-30-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-0.0.1-1.fc30.src.rpm
 
 The windows version of TLine is built using the MinGW cross-compilers running
 on a Fedora Linux machine.  Also, the NSIS installer is used.  Therefore,
-you will want to install mingw32-nsis.x86_64, mingw32-gcc-c++.x86_64, etc.
+you will want to install mingw32-wxWidgets3.noarch, mingw32-nsis.x86_64, etc.
 
 Also, Tline for windows uses a number of dlls from various projects.  The dll
 files are stored in the windows-installer subdirectory.
