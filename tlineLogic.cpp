@@ -223,7 +223,7 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 
 	dialog->helpAboutAddTextLine3("by Steven A. Falco, AC2XM");
 
-	dialog->helpAboutAddTextLine4("");
+	dialog->helpAboutAddTextLine4("License: GPLv3");
 
 	dialog->ShowModal();
 }

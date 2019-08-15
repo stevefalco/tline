@@ -1,5 +1,5 @@
 Name:           tline
-Version:        0.0
+Version:        0.0.1
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -36,6 +36,6 @@ cd build
 %license LICENSE
 
 %changelog
-* Wed Aug 14 2019 Steven A. Falco <stevenfalco@gmail.com> - 1:0.0-1
-- Initial release of 0.0
+* Thu Aug 15 2019 Steven A. Falco <stevenfalco@gmail.com> - 1:0.0.1-1
+- Initial release of 0.0.1
 

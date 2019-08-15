@@ -44,16 +44,16 @@ the build.  On Fedora Linux this is provided by the wxGTK3-devel package.
 
 Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 
-First, create a source archive.  Note that the version 0.0 must be changed
+First, create a source archive.  Note that the version 0.0.1 must be changed
 to match the version in the spec file.
 
-git archive --format=tar.gz --prefix=tline-0.0/ -o ~/tline-0.0.tar.gz HEAD
+git archive --format=tar.gz --prefix=tline-0.0.1/ -o ~/tline-0.0.1.tar.gz HEAD
 
 Next, prepare a working directory:
 
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
 cp spec/tline.spec ~/rpmbuild/SPECS
-mv ~/tline-0.0.tar.gz ~/rpmbuild/SOURCES
+mv ~/tline-0.0.1.tar.gz ~/rpmbuild/SOURCES
 cd ~/rpmbuild
 
 Now, run the build:
@@ -67,13 +67,13 @@ adjusting the version string and target Fedora version as necessary.  In
 this case, you first generate the sourc RPM in your local rpmbuild
 directory, then pass that to mock:
 
-git archive --format=tar.gz --prefix=tline-0.0/ -o ~/tline-0.0.tar.gz HEAD
+git archive --format=tar.gz --prefix=tline-0.0.1/ -o ~/tline-0.0.1.tar.gz HEAD
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
 cp spec/tline.spec ~/rpmbuild/SPECS
-mv ~/tline-0.0.tar.gz ~/rpmbuild/SOURCES
+mv ~/tline-0.0.1.tar.gz ~/rpmbuild/SOURCES
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
-mock -r fedora-30-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-0.0-1.fc30.src.rpm
+mock -r fedora-30-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-0.0.1-1.fc30.src.rpm
 
 2) BUILDING FOR WINDOWS
 =======================
@@ -89,14 +89,14 @@ First, build the Tline.exe file:
 
 1) mkdir build-windows
 2) cd build-windows
-3) cmake ..
+3) mingw32-cmake ..
 4) make
 
 Copy the tline executable into the windows-installer subdirectory:
 
 cp tline.exe ../windows-installer
 
-Generate the installer:
+Generate the windows package:
 
 cd ../windows-installer
 makensis tline.nsi
