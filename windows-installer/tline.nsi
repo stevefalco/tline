@@ -5,7 +5,7 @@
 !define APPNAME "Tline"
 !define DESCRIPTION "Tline - a transmission line calculator"
 
-!define ICON "tlineIcon.ico"
+!define ICON "..\icons\tlineIcon.ico"
 
 !define LICENSE "LICENSE"
 
