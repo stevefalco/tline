@@ -1,6 +1,6 @@
 build*
 .*.sw?
 
-# Ignore most .exe files
+# Ignore most .exe files, but include the gnuplot installer.
 *.exe
-
+!gp527-win32-mingw.exe
