@@ -21,6 +21,7 @@
 #  include "wx/wx.h"
 #endif
 
+#include <wx/icon.h>
 #include <wx/textfile.h>
 #include <wx/filedlg.h>
 #include <wx/wfstream.h>
@@ -37,7 +38,10 @@
 #include "info.h"
 #include "tuner.h"
 #include "strchrnul.h"
+
+#ifndef wxHAS_IMAGES_IN_RESOURCES
 #include "icons/tlineIcon.xpm"
+#endif
 
 wxString g_widthStr;
 wxString g_heightStr;
@@ -48,8 +52,8 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 	wxImage::AddHandler(new wxJPEGHandler);
 	wxImage::AddHandler(new wxGIFHandler);
 
-	this->SetIcon(tlineIcon_xpm);
-	this->SetTitle("Tline - A Transmission Line Calculator");
+	SetIcon(wxICON(aaaa));
+	SetTitle("Tline - A Transmission Line Calculator");
 
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
 

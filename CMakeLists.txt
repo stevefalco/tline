@@ -45,6 +45,7 @@ add_executable(${PROJECT_NAME}
 	tlineUI.cpp
 	tuner.cpp
 	userLine.cpp
+	tline.rc
 	)
 
 target_link_libraries(

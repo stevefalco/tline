@@ -1,0 +1,2 @@
+aaaa ICON "windows-installer/tlineIcon.ico"
+#include "wx/msw/wx.rc"
