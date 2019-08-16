@@ -153,6 +153,36 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 			m_powerStr = p;
 			ui_power->ChangeValue(m_powerStr);
 		}
+
+		if(strcmp(buffer, "tunerSourceResistance") == 0) {
+			m_tunerSourceResistance = atof(p);
+			m_tunerInit = 1;
+		}
+
+		if(strcmp(buffer, "tunerSourceReactance") == 0) {
+			m_tunerSourceReactance = atof(p);
+			m_tunerInit = 1;
+		}
+
+		if(strcmp(buffer, "tunerLoadResistance") == 0) {
+			m_tunerLoadResistance = atof(p);
+			m_tunerInit = 1;
+		}
+
+		if(strcmp(buffer, "tunerLoadReactance") == 0) {
+			m_tunerLoadReactance = atof(p);
+			m_tunerInit = 1;
+		}
+
+		if(strcmp(buffer, "tunerQ") == 0) {
+			m_tunerQ = atof(p);
+			m_tunerInit = 1;
+		}
+
+		if(strcmp(buffer, "tunerTopology") == 0) {
+			m_tunerTopologyStr = p;
+			m_tunerInit = 1;
+		}
 	}
 
 	f->Close();
@@ -189,6 +219,13 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	fprintf(fp, "reactance=%s\n",	(const char *)m_reactanceStr.mb_str());
 	fprintf(fp, "loadInput=%s\n",	(const char *)m_loadInputStr.mb_str());
 	fprintf(fp, "power=%s\n",	(const char *)m_powerStr.mb_str());
+
+	fprintf(fp, "tunerSourceResistance=%f\n",	m_tunerSourceResistance);
+	fprintf(fp, "tunerSourceReactance=%f\n",	m_tunerSourceReactance);
+	fprintf(fp, "tunerLoadResistance=%f\n",		m_tunerLoadResistance);
+	fprintf(fp, "tunerLoadReactance=%f\n",		m_tunerLoadReactance);
+	fprintf(fp, "tunerQ=%f\n",			m_tunerQ);
+	fprintf(fp, "tunerTopology=%s\n",		(const char *)m_tunerTopologyStr.mb_str());
 
 	if(fflush(fp) == EOF) {
 		wxLogError("Cannot flush file '%s'", saveFileDialog.GetPath());
