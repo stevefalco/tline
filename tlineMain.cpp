@@ -16,6 +16,8 @@
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <wx/wx.h>
+#include <wx/colour.h>
+
 #include "tlineLogic.h"
 
 class tlineMain: public wxApp {
@@ -32,6 +34,7 @@ IMPLEMENT_APP (tlineMain);
 
 inline bool tlineMain::OnInit() {
 	wxFrame* mainFrame = new tlineLogic(NULL);
+	mainFrame->SetBackgroundColour(wxColour(240,240,240));
 	mainFrame->Show(true);
 	SetTopWindow(mainFrame);
 

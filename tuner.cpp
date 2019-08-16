@@ -39,7 +39,6 @@
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
-	SetTitle("Tuner Calculator");
 	recalculate();
 }
 

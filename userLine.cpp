@@ -20,7 +20,6 @@
 
 userLine::userLine( wxWindow* parent ) : userLineDialog( parent )
 {
-	SetTitle("Set User Line");
 }
 
 void userLine::onAttenuationSelected( wxCommandEvent& event )

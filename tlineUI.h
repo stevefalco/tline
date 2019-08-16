@@ -168,7 +168,7 @@ class userLineDialog : public wxDialog
 
 	public:
 
-		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 828,310 ), long style = wxDEFAULT_DIALOG_STYLE );
+		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("User Defined Line"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 828,310 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~userLineDialog();
 
 };
@@ -266,7 +266,7 @@ class tunerDialog : public wxDialog
 
 	public:
 
-		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,700 ), long style = wxDEFAULT_DIALOG_STYLE );
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,700 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();
 
 };
