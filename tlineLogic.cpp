@@ -541,9 +541,9 @@ bool tlineLogic::setOutput( wxFFile* file )
 void tlineLogic::setControlZ( wxFFile* file, const char* name )
 {
 	fprintf(file->fp(), "set ytics -1000000,10 nomirror tc lt 1\n");
-	fprintf(file->fp(), "set ylabel 'Imaginary (Ohms)' tc lt 1\n");
+	fprintf(file->fp(), "set ylabel 'Imaginary (Ω)' tc lt 1\n");
 	fprintf(file->fp(), "set y2tics -1000000,10 nomirror tc lt 2\n");
-	fprintf(file->fp(), "set y2label 'Real (Ohms)' tc lt 2\n");
+	fprintf(file->fp(), "set y2label 'Real (Ω)' tc lt 2\n");
 	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr);
 	fprintf(file->fp(), "plot \\\n");
 	fprintf(file->fp(), "  '%s' u 1:3 w l axes x1y1 title 'imag', \\\n", name);
@@ -596,6 +596,9 @@ void tlineLogic::doPlot( int type, int mode )
 		wxLogError("Cannot flush data file '%s'", dataName);
 		goto DELETE_CONTROL;
 	}
+
+	// Arrange for gnuplot to handle special characters.
+	fprintf(controlFP.fp(), "set encoding utf8\n");
 
 	// If saving, we need to set the terminal type and output file.
 	if(mode == SAVE) {
@@ -846,8 +849,8 @@ void tlineLogic::recalculate()
 		m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
 	}
 	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
-	snprintf(buffer, 512, "%.2f, %.2fi Ohms", real(m_zCable), imag(m_zCable));
-	ui_characteristicZ0->ChangeValue(buffer);
+	snprintf(buffer, 512, "%.2f, %.2fi Ω", real(m_zCable), imag(m_zCable));
+	ui_characteristicZ0->ChangeValue(wxString::FromUTF8(buffer));
 
 	m_resistance = atof(m_resistanceStr);
 	m_reactance = atof(m_reactanceStr);
@@ -857,10 +860,10 @@ void tlineLogic::recalculate()
 
 		// Find the input impedance for the full length of cable.
 		m_zInput = impedanceAtInput(m_length);
-		snprintf(buffer, 512, "%.2f, %.2fi Ohms", real(m_zInput), imag(m_zInput));
-		ui_impedanceRectangular->ChangeValue(buffer);
-		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
-		ui_impedancePolar->ChangeValue(buffer);
+		snprintf(buffer, 512, "%.2f, %.2fi Ω", real(m_zInput), imag(m_zInput));
+		ui_impedanceRectangular->ChangeValue(wxString::FromUTF8(buffer));
+		snprintf(buffer, 512, "%.2f @ %.2f°", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
+		ui_impedancePolar->ChangeValue(wxString::FromUTF8(buffer));
 
 		ui_impedanceRectangularTag->SetLabel("Impedance at Input (Real/Imaginary):");
 		ui_impedancePolarTag->SetLabel("Impedance at Input (Polar):");
@@ -870,10 +873,10 @@ void tlineLogic::recalculate()
 
 		// Find the load impedance for the full length of cable.
 		m_zLoad = impedanceAtLoad(m_length);
-		snprintf(buffer, 512, "%.2f, %.2fi Ohms", real(m_zLoad), imag(m_zLoad));
-		ui_impedanceRectangular->ChangeValue(buffer);
-		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);
-		ui_impedancePolar->ChangeValue(buffer);
+		snprintf(buffer, 512, "%.2f, %.2fi Ω", real(m_zLoad), imag(m_zLoad));
+		ui_impedanceRectangular->ChangeValue(wxString::FromUTF8(buffer));
+		snprintf(buffer, 512, "%.2f @ %.2f°", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);
+		ui_impedancePolar->ChangeValue(wxString::FromUTF8(buffer));
 
 		ui_impedanceRectangularTag->SetLabel("Impedance at Load (Real/Imaginary):");
 		ui_impedancePolarTag->SetLabel("Impedance at Load (Polar):");
