@@ -15,11 +15,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-#include <wx/log.h>
 #include "helpInfo.h"
+#include "tlineIcon.h"
 
 helpInfo::helpInfo( wxWindow* parent ) : helpInfoDialog( parent )
 {
+	SetIcon(wxICON(aaaa));
 }
 
 void helpInfo::helpInfoLoadPage( wxString s )

@@ -21,27 +21,24 @@
 #  include "wx/wx.h"
 #endif
 
-#include <wx/icon.h>
-#include <wx/textfile.h>
 #include <wx/filedlg.h>
-#include <wx/wfstream.h>
 #include <wx/filename.h>
-#include <wx/textctrl.h>
+#include <wx/icon.h>
 #include <wx/sizer.h>
+#include <wx/textctrl.h>
+#include <wx/textfile.h>
+#include <wx/wfstream.h>
 
-#include "version.h"
-#include "tlineLogic.h"
 #include "constants.h"
-#include "userLine.h"
 #include "helpAbout.h"
 #include "helpInfo.h"
 #include "info.h"
-#include "tuner.h"
 #include "strchrnul.h"
-
-#ifndef wxHAS_IMAGES_IN_RESOURCES
-#include "icons/tlineIcon.xpm"
-#endif
+#include "tlineIcon.h"
+#include "tlineLogic.h"
+#include "tuner.h"
+#include "userLine.h"
+#include "version.h"
 
 wxString g_widthStr;
 wxString g_heightStr;

@@ -40,6 +40,7 @@ add_executable(${PROJECT_NAME}
 	helpAbout.cpp
 	helpInfo.cpp
 	strchrnul.cpp
+	tlineIcon.cpp
 	tlineLogic.cpp
 	tlineMain.cpp
 	tlineUI.cpp

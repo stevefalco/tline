@@ -15,38 +15,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "helpAbout.h"
-#include "tlineIcon.h"
+#ifndef __TLINE_ICON__
+#define __TLINE_ICON__
 
-helpAbout::helpAbout( wxWindow* parent ) : helpAboutDialog( parent )
-{
-	SetIcon(wxICON(aaaa));
-}
+extern char const * aaaa_xpm[];
 
-void helpAbout::helpAboutAddTextLine1( wxString s )
-{
-	dl_helpAboutTextLine1->SetLabel(s);
-}
-
-void helpAbout::helpAboutAddTextLine2( wxString s )
-{
-	dl_helpAboutTextLine2->SetLabel(s);
-}
-
-void helpAbout::helpAboutAddTextLine3( wxString s )
-{
-	dl_helpAboutTextLine3->SetLabel(s);
-}
-
-void helpAbout::helpAboutAddTextLine4( wxString s )
-{
-	dl_helpAboutTextLine4->SetLabel(s);
-}
-
-void helpAbout::onHelpAboutOK( wxCommandEvent& event )
-{
-	if ( Validate() )
-	{
-		EndModal( wxID_OK );
-	}
-}
+#endif // __TLINE_ICON__

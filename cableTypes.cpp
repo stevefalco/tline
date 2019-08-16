@@ -23,8 +23,8 @@
 
 #include <cstring>
 
-#include "constants.h"
 #include "cableTypes.h"
+#include "constants.h"
 
 // Attenuation in dB per hundred feet.
 ATTENUATION BELDEN_8215[] = {

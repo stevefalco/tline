@@ -15,11 +15,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "userLine.h"
 #include "constants.h"
+#include "tlineIcon.h"
+#include "userLine.h"
 
 userLine::userLine( wxWindow* parent ) : userLineDialog( parent )
 {
+	SetIcon(wxICON(aaaa));
 }
 
 void userLine::onAttenuationSelected( wxCommandEvent& event )

@@ -15,7 +15,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-#include <wx/wx.h>
+#include "wx/wxprec.h"
+
+#ifndef WX_PRECOMP
+#  include "wx/wx.h"
+#endif
+
 #include <wx/colour.h>
 
 #include "tlineLogic.h"

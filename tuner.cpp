@@ -15,11 +15,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "tuner.h"
-#include "constants.h"
-
 #include <wx/log.h>
 
+#include "constants.h"
+#include "tlineIcon.h"
+#include "tuner.h"
+
+// Generated images from PNG files.
 #include "nt_bp1ll.h"
 #include "nt_bp2ll.h"
 #include "nt_bp3ll.h"
@@ -39,6 +41,8 @@
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
+	SetIcon(wxICON(aaaa));
+
 	recalculate();
 }
 
