@@ -243,7 +243,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_resistance = new wxTextCtrl( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("50"), wxDefaultPosition, wxDefaultSize, 0 );
 	bPane2CenterRightTop->Add( ui_resistance, 0, wxALL, 0 );
 
-	ui_resistanceUnits = new wxStaticText( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_resistanceUnits = new wxStaticText( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("Ω"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_resistanceUnits->Wrap( -1 );
 	bPane2CenterRightTop->Add( ui_resistanceUnits, 0, wxALL, 5 );
 
@@ -260,7 +260,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_reactance = new wxTextCtrl( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0 );
 	bPane2CenterRightBottom->Add( ui_reactance, 0, wxALL, 0 );
 
-	ui_reactanceUnits = new wxStaticText( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("Ohms"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_reactanceUnits = new wxStaticText( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("Ω"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_reactanceUnits->Wrap( -1 );
 	bPane2CenterRightBottom->Add( ui_reactanceUnits, 0, wxALL, 5 );
 
@@ -550,7 +550,7 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	gParameters->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	dl_cableResistanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Resistance (Ohms)"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableResistanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Resistance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableResistanceTag->Wrap( -1 );
 	gParameters->Add( dl_cableResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
@@ -563,7 +563,7 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_cableReactanceEstimatedTag->Wrap( -1 );
 	gParameters->Add( dl_cableReactanceEstimatedTag, 0, wxALL, 5 );
 
-	dl_cableReactanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Reactance (Ohms)"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableReactanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Reactance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableReactanceTag->Wrap( -1 );
 	gParameters->Add( dl_cableReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
@@ -836,7 +836,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bTunerRight;
 	bTunerRight = new wxBoxSizer( wxVERTICAL );
 
-	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 ohm transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the \"Parameters\" box at left.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.  The Q parameter is only used for the PI and T topologies.\n"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 Ω transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the \"Parameters\" box at left.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.  The Q parameter is only used for the PI and T topologies.\n"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerParameterNote->Wrap( 300 );
 	bTunerRight->Add( dl_tunerParameterNote, 0, wxALL, 5 );
 

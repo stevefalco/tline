@@ -167,6 +167,6 @@ void userLine::userLineRebuildEstimatedCableReactance()
 
 	m_cableReactanceEstimate = -m_cableResistance * (attenuation / phase);
 
-	snprintf(buffer, 512, "%.2f Ohms", m_cableReactanceEstimate);
-	dl_cableReactanceEstimatedStr->ChangeValue(buffer);
+	snprintf(buffer, 512, "%.2f Ω", m_cableReactanceEstimate);
+	dl_cableReactanceEstimatedStr->ChangeValue(wxString::FromUTF8(buffer));
 }
