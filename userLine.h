@@ -53,12 +53,6 @@ class userLine : public userLineDialog
 		void onOkClicked( wxCommandEvent& event );
 		void onUseEstimatedReactanceClicked( wxCommandEvent& event );
 
-		double m_attenuationFromUser;
-		double m_velocityFactorFromUser;
-		double m_cableResistanceFromUser;
-		double m_cableReactanceFromUser;
-		double m_cableVoltageLimitFromUser;
-
 		double m_frequency;
 		double m_attenuation;
 		double m_velocityFactor;

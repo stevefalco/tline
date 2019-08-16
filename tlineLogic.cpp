@@ -61,7 +61,7 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 	m_saved = 1;
 
 	// Remember when the tuner dialog has been opened at least once.
-	m_tunerInit = 0;
+	m_tunerInit = FALSE;
 
 	recalculate();
 }
@@ -104,6 +104,7 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 		}
 		*p++ = 0;
 
+		// Parse top-level parameters
 		if(strcmp(buffer, "cableType") == 0) {
 			m_cableTypeStr = p;
 			ui_cableType->ChangeValue(m_cableTypeStr);
@@ -154,34 +155,61 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 			ui_power->ChangeValue(m_powerStr);
 		}
 
-		if(strcmp(buffer, "tunerSourceResistance") == 0) {
+		// Parse tuner parameters
+		if(strcmp(buffer, "m_tunerSourceResistance") == 0) {
 			m_tunerSourceResistance = atof(p);
-			m_tunerInit = 1;
+			m_tunerInit = TRUE;
 		}
 
-		if(strcmp(buffer, "tunerSourceReactance") == 0) {
+		if(strcmp(buffer, "m_tunerSourceReactance") == 0) {
 			m_tunerSourceReactance = atof(p);
-			m_tunerInit = 1;
+			m_tunerInit = TRUE;
 		}
 
-		if(strcmp(buffer, "tunerLoadResistance") == 0) {
+		if(strcmp(buffer, "m_tunerLoadResistance") == 0) {
 			m_tunerLoadResistance = atof(p);
-			m_tunerInit = 1;
+			m_tunerInit = TRUE;
 		}
 
-		if(strcmp(buffer, "tunerLoadReactance") == 0) {
+		if(strcmp(buffer, "m_tunerLoadReactance") == 0) {
 			m_tunerLoadReactance = atof(p);
-			m_tunerInit = 1;
+			m_tunerInit = TRUE;
 		}
 
-		if(strcmp(buffer, "tunerQ") == 0) {
+		if(strcmp(buffer, "m_tunerQ") == 0) {
 			m_tunerQ = atof(p);
-			m_tunerInit = 1;
+			m_tunerInit = TRUE;
 		}
 
-		if(strcmp(buffer, "tunerTopology") == 0) {
+		if(strcmp(buffer, "m_tunerTopology") == 0) {
 			m_tunerTopologyStr = p;
-			m_tunerInit = 1;
+			m_tunerInit = TRUE;
+		}
+
+		// Parse user line parameters
+		if(strcmp(buffer, "m_userLineAttenuation") == 0) {
+			m_userLineAttenuation = atof(p);
+			m_userLineInit = 1;
+		}
+
+		if(strcmp(buffer, "m_userLineVelocityFactor") == 0) {
+			m_userLineVelocityFactor = atof(p);
+			m_userLineInit = 1;
+		}
+
+		if(strcmp(buffer, "m_userLineCableResistance") == 0) {
+			m_userLineCableResistance = atof(p);
+			m_userLineInit = 1;
+		}
+
+		if(strcmp(buffer, "m_userLineCableReactance") == 0) {
+			m_userLineCableReactance = atof(p);
+			m_userLineInit = 1;
+		}
+
+		if(strcmp(buffer, "m_userLineCableVoltageLimit") == 0) {
+			m_userLineCableVoltageLimit = atof(p);
+			m_userLineInit = 1;
 		}
 	}
 
@@ -211,6 +239,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 		return;
 	}
 
+	// Save top-level parameters
 	fprintf(fp, "cableType=%s\n",	(const char *)m_cableTypeStr.mb_str());
 	fprintf(fp, "units=%s\n",	(const char *)m_unitsStr.mb_str());
 	fprintf(fp, "frequency=%s\n",	(const char *)m_frequencyStr.mb_str());
@@ -220,12 +249,24 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	fprintf(fp, "loadInput=%s\n",	(const char *)m_loadInputStr.mb_str());
 	fprintf(fp, "power=%s\n",	(const char *)m_powerStr.mb_str());
 
-	fprintf(fp, "tunerSourceResistance=%f\n",	m_tunerSourceResistance);
-	fprintf(fp, "tunerSourceReactance=%f\n",	m_tunerSourceReactance);
-	fprintf(fp, "tunerLoadResistance=%f\n",		m_tunerLoadResistance);
-	fprintf(fp, "tunerLoadReactance=%f\n",		m_tunerLoadReactance);
-	fprintf(fp, "tunerQ=%f\n",			m_tunerQ);
-	fprintf(fp, "tunerTopology=%s\n",		(const char *)m_tunerTopologyStr.mb_str());
+	// Save tuner parameters
+	if(m_tunerInit) {
+		fprintf(fp, "m_tunerSourceResistance=%f\n",	m_tunerSourceResistance);
+		fprintf(fp, "m_tunerSourceReactance=%f\n",	m_tunerSourceReactance);
+		fprintf(fp, "m_tunerLoadResistance=%f\n",	m_tunerLoadResistance);
+		fprintf(fp, "m_tunerLoadReactance=%f\n",	m_tunerLoadReactance);
+		fprintf(fp, "m_tunerQ=%f\n",			m_tunerQ);
+		fprintf(fp, "m_tunerTopology=%s\n",		(const char *)m_tunerTopologyStr.mb_str());
+	}
+
+	// Save user line parameters
+	if(m_userLineInit) {
+		fprintf(fp, "m_userLineAttenuation=%f\n",	m_userLineAttenuation);
+		fprintf(fp, "m_userLineVelocityFactor=%f\n",	m_userLineVelocityFactor);
+		fprintf(fp, "m_userLineCableResistance=%f\n",	m_userLineCableResistance);
+		fprintf(fp, "m_userLineCableReactance=%f\n",	m_userLineCableReactance);
+		fprintf(fp, "m_userLineCableVoltageLimit=%f\n",	m_userLineCableVoltageLimit);
+	}
 
 	if(fflush(fp) == EOF) {
 		wxLogError("Cannot flush file '%s'", saveFileDialog.GetPath());
@@ -391,7 +432,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 {
 	tuner* dialog = new tuner(this);
 
-	if(!m_tunerInit) {
+	if(m_tunerInit == FALSE) {
 		// Start the tuner off with reasonable values.
 		m_tunerSourceResistance = 50.0;
 		m_tunerSourceReactance = 0.0;
@@ -400,7 +441,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerQ = 1.0;
 		m_tunerTopologyStr = _("High Pass (Lpar Cser)");
 
-		m_tunerInit = 1;
+		m_tunerInit = TRUE;
 	}
 
 	dialog->SetFrequency( m_frequency );
@@ -781,41 +822,44 @@ void tlineLogic::recalculate()
 			dialog->userLineSetFrequency(m_frequency);
 
 			// Fill in the previous user-provided values.
-			dialog->userLineSetAttenuation(m_attenuationFromUser);
-			dialog->userLineSetVelocityFactor(m_velocityFactorFromUser);
-			dialog->userLineSetCableResistance(m_cableResistanceFromUser);
-			dialog->userLineSetCableReactance(m_cableReactanceFromUser);
-			dialog->userLineSetCableVoltageLimit(m_cableVoltageLimitFromUser);
+			dialog->userLineSetAttenuation(m_userLineAttenuation);
+			dialog->userLineSetVelocityFactor(m_userLineVelocityFactor);
+			dialog->userLineSetCableResistance(m_userLineCableResistance);
+			dialog->userLineSetCableReactance(m_userLineCableReactance);
+			dialog->userLineSetCableVoltageLimit(m_userLineCableVoltageLimit);
 
 			dialog->userLineRebuildEstimatedCableReactance();
 
 			if (dialog->ShowModal() == wxID_OK) {
 				// Save the new user values.
-				m_attenuationFromUser = dialog->userLineGetAttenuation();
-				m_velocityFactorFromUser = dialog->userLineGetVelocityFactor();
-				m_cableResistanceFromUser = dialog->userLineGetCableResistance();
-				m_cableReactanceFromUser = dialog->userLineGetCableReactance();
-				m_cableVoltageLimitFromUser = dialog->userLineGetCableVoltageLimit();
+				m_userLineAttenuation = dialog->userLineGetAttenuation();
+				m_userLineVelocityFactor = dialog->userLineGetVelocityFactor();
+				m_userLineCableResistance = dialog->userLineGetCableResistance();
+				m_userLineCableReactance = dialog->userLineGetCableReactance();
+				m_userLineCableVoltageLimit = dialog->userLineGetCableVoltageLimit();
 
 				// Also set our working values.
 				userSpecifiedZ = TRUE;
-				m_attenPer100Feet = m_attenuationFromUser;
-				m_velocityFactor = m_velocityFactorFromUser;
-				m_cableResistivePart = m_cableResistanceFromUser;
-				m_cableReactivePart = m_cableReactanceFromUser;
-				m_maximumVoltage = m_cableVoltageLimitFromUser;
+				m_attenPer100Feet = m_userLineAttenuation;
+				m_velocityFactor = m_userLineVelocityFactor;
+				m_cableResistivePart = m_userLineCableResistance;
+				m_cableReactivePart = m_userLineCableReactance;
+				m_maximumVoltage = m_userLineCableVoltageLimit;
 
 				// Cache has been loaded.
 				m_newUserLine = FALSE;
+
+				// Permit saving the values.
+				m_userLineInit = TRUE;
 			}
 		} else {
 			// Use the cached values.
 			userSpecifiedZ = TRUE;
-			m_attenPer100Feet = m_attenuationFromUser;
-			m_velocityFactor = m_velocityFactorFromUser;
-			m_cableResistivePart = m_cableResistanceFromUser;
-			m_cableReactivePart = m_cableReactanceFromUser;
-			m_maximumVoltage = m_cableVoltageLimitFromUser;
+			m_attenPer100Feet = m_userLineAttenuation;
+			m_velocityFactor = m_userLineVelocityFactor;
+			m_cableResistivePart = m_userLineCableResistance;
+			m_cableReactivePart = m_userLineCableReactance;
+			m_maximumVoltage = m_userLineCableVoltageLimit;
 		}
 	} else {
 		userSpecifiedZ = FALSE;

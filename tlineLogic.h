@@ -85,6 +85,8 @@ class tlineLogic : public tlineUI
 		int			m_width;
 		int			m_height;
 
+		bool			m_tunerInit;
+		bool			m_userLineInit;
 		bool			m_newUserLine;
 
 		wxString		m_cableTypeStr = _("RG-6 (Belden 8215)");
@@ -105,12 +107,8 @@ class tlineLogic : public tlineUI
 		double			m_attenPer100Feet;
 		double			m_attenPer100Meters;
 		double			m_attenPer100Units;
-		double			m_attenuationFromUser;
-		double			m_cableReactanceFromUser;
 		double			m_cableReactivePart;
-		double			m_cableResistanceFromUser;
 		double			m_cableResistivePart;
-		double			m_cableVoltageLimitFromUser;
 		double			m_extraSWRloss;
 		double			m_frequency;
 		double			m_impedance;
@@ -129,17 +127,22 @@ class tlineLogic : public tlineUI
 		double			m_swrAtSource;
 		double			m_totalLoss;
 		double			m_totalMatchedLineLoss;
-		double			m_tunerInit;
+		double			m_units;
+		double			m_velocityFactor;
+		double			m_voltageForPower;
+		double			m_wavelength;
+
 		double			m_tunerLoadReactance;
 		double			m_tunerLoadResistance;
 		double			m_tunerQ;
 		double			m_tunerSourceReactance;
 		double			m_tunerSourceResistance;
-		double			m_units;
-		double			m_velocityFactor;
-		double			m_velocityFactorFromUser;
-		double			m_voltageForPower;
-		double			m_wavelength;
+
+		double			m_userLineAttenuation;
+		double			m_userLineCableReactance;
+		double			m_userLineCableResistance;
+		double			m_userLineCableVoltageLimit;
+		double			m_userLineVelocityFactor;
 
 		complex<double>		m_lossCoef;
 		complex<double>		m_rho;
