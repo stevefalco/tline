@@ -333,6 +333,7 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 // only on Linux.
 void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 {
+	m_cableTypePrevStr = m_cableTypeStr;
 	m_cableTypeStr = event.GetString();
 #ifdef __linux
 	ui_cableType->SetSelection(wxNOT_FOUND);
@@ -795,7 +796,6 @@ void tlineLogic::generateGraphableData(
 void tlineLogic::recalculate()
 {
 	char				buffer[512];
-	bool				userSpecifiedZ = FALSE;
 
 	// Convert the units string.
 	if(m_unitsStr == "Feet") {
@@ -839,7 +839,7 @@ void tlineLogic::recalculate()
 				m_userLineCableVoltageLimit = dialog->userLineGetCableVoltageLimit();
 
 				// Also set our working values.
-				userSpecifiedZ = TRUE;
+				m_userSpecifiedZ = TRUE;
 				m_attenPer100Feet = m_userLineAttenuation;
 				m_velocityFactor = m_userLineVelocityFactor;
 				m_cableResistivePart = m_userLineCableResistance;
@@ -851,10 +851,14 @@ void tlineLogic::recalculate()
 
 				// Permit saving the values.
 				m_userLineInit = TRUE;
+			} else {
+				// If cancelled, set back to previous type.
+				m_cableTypeStr = m_cableTypePrevStr;
+				ui_cableType->ChangeValue(m_cableTypeStr);
 			}
 		} else {
 			// Use the cached values.
-			userSpecifiedZ = TRUE;
+			m_userSpecifiedZ = TRUE;
 			m_attenPer100Feet = m_userLineAttenuation;
 			m_velocityFactor = m_userLineVelocityFactor;
 			m_cableResistivePart = m_userLineCableResistance;
@@ -862,7 +866,7 @@ void tlineLogic::recalculate()
 			m_maximumVoltage = m_userLineCableVoltageLimit;
 		}
 	} else {
-		userSpecifiedZ = FALSE;
+		m_userSpecifiedZ = FALSE;
 		m_attenPer100Feet = m_c->findAtten(m_cp, m_frequency);
 		m_velocityFactor = m_cp->velocityFactor;
 		m_impedance = m_cp->impedance;
@@ -922,7 +926,7 @@ void tlineLogic::recalculate()
 	// case we use those values directly.  But manufacturers don't
 	// specify cable that way, so we have to generate the values
 	// ourselves from the attenuation and phase angle.
-	if(!userSpecifiedZ) {
+	if(!m_userSpecifiedZ) {
 		// Find the complex impedance of the coax.  There are several ways to
 		// do this, and they each give different answers.  This is the best
 		// method that I've found...

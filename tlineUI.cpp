@@ -596,8 +596,17 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	gParameters->Add( dl_hiddenPad, 0, wxALL, 5 );
 
+	wxBoxSizer* bButtons;
+	bButtons = new wxBoxSizer( wxHORIZONTAL );
+
 	dl_okButton = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-	gParameters->Add( dl_okButton, 0, wxALL, 5 );
+	bButtons->Add( dl_okButton, 0, wxALL, 5 );
+
+	dl_cancelButton = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bButtons->Add( dl_cancelButton, 0, wxALL, 5 );
+
+
+	gParameters->Add( bButtons, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( gParameters );
@@ -613,6 +622,7 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_cableVoltageLimitStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableVoltageLimitSelected ), NULL, this );
 	dl_useEstimatedReactanceButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onUseEstimatedReactanceClicked ), NULL, this );
 	dl_okButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onOkClicked ), NULL, this );
+	dl_cancelButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onCancelClicked ), NULL, this );
 }
 
 userLineDialog::~userLineDialog()
@@ -625,6 +635,7 @@ userLineDialog::~userLineDialog()
 	dl_cableVoltageLimitStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableVoltageLimitSelected ), NULL, this );
 	dl_useEstimatedReactanceButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onUseEstimatedReactanceClicked ), NULL, this );
 	dl_okButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onOkClicked ), NULL, this );
+	dl_cancelButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onCancelClicked ), NULL, this );
 
 }
 
@@ -784,6 +795,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerResults->Add( dl_tunerResultTag1, 0, wxALIGN_RIGHT|wxALL, 0 );
 
 	dl_tunerResult1 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult1->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	gTunerResults->Add( dl_tunerResult1, 0, wxALL, 0 );
 
 	dl_tunerResultTag2 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 2"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -791,6 +804,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerResults->Add( dl_tunerResultTag2, 0, wxALIGN_RIGHT|wxALL, 0 );
 
 	dl_tunerResult2 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult2->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	gTunerResults->Add( dl_tunerResult2, 0, wxALL, 0 );
 
 	dl_tunerResultTag3 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 3"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -798,6 +813,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerResults->Add( dl_tunerResultTag3, 0, wxALIGN_RIGHT|wxALL, 0 );
 
 	dl_tunerResult3 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult3->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	gTunerResults->Add( dl_tunerResult3, 0, wxALL, 0 );
 
 	dl_tunerResultTag4 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 4"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
@@ -805,6 +822,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerResults->Add( dl_tunerResultTag4, 0, wxALIGN_RIGHT|wxALL, 0 );
 
 	dl_tunerResult4 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult4->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	gTunerResults->Add( dl_tunerResult4, 0, wxALL, 0 );
 
 

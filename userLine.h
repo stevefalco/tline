@@ -51,6 +51,7 @@ class userLine : public userLineDialog
 		void onCableVoltageLimitSelected( wxCommandEvent& event );
 
 		void onOkClicked( wxCommandEvent& event );
+		void onCancelClicked( wxCommandEvent& event );
 		void onUseEstimatedReactanceClicked( wxCommandEvent& event );
 
 		double m_frequency;

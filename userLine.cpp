@@ -63,6 +63,14 @@ void userLine::onOkClicked( wxCommandEvent& event )
 	}
 }
 
+void userLine::onCancelClicked( wxCommandEvent& event )
+{
+	if ( Validate() )
+	{
+		EndModal( wxID_CANCEL );
+	}
+}
+
 void userLine::onUseEstimatedReactanceClicked( wxCommandEvent& event )
 {
 	userLineSetCableReactance(m_cableReactanceEstimate);

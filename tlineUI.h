@@ -155,6 +155,7 @@ class userLineDialog : public wxDialog
 		wxButton* dl_useEstimatedReactanceButton;
 		wxStaticText* dl_hiddenPad;
 		wxButton* dl_okButton;
+		wxButton* dl_cancelButton;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onAttenuationSelected( wxCommandEvent& event ) { event.Skip(); }
@@ -164,6 +165,7 @@ class userLineDialog : public wxDialog
 		virtual void onCableVoltageLimitSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onUseEstimatedReactanceClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onOkClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onCancelClicked( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
