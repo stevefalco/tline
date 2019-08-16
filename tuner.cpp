@@ -143,6 +143,52 @@ void tuner::SetQ( double v )
 	recalculate();
 }
 
+wxString tuner::GetTopology()
+{
+	return m_topologyStr;
+}
+
+void tuner::SetTopology( wxString v )
+{
+	m_topologyStr = v;
+
+	if(strcmp(m_topologyStr, "High Pass (Lpar Cser)") == 0) {
+		dl_topology->SetSelection(USE_LCHP);
+	} else if(strcmp(m_topologyStr, "Low Pass (Cpar Lser)") == 0) {
+		dl_topology->SetSelection(USE_CLLP);
+	} else if(strcmp(m_topologyStr, "Low Pass (Lser Cpar)") == 0) {
+		dl_topology->SetSelection(USE_LCLP);
+	} else if(strcmp(m_topologyStr, "High Pass (Cser Lpar)") == 0) {
+		dl_topology->SetSelection(USE_CLHP);
+	} else if(strcmp(m_topologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
+		dl_topology->SetSelection(USE_HPPI);
+	} else if(strcmp(m_topologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+		dl_topology->SetSelection(USE_LPPI);
+	} else if(strcmp(m_topologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
+		dl_topology->SetSelection(USE_HPT);
+	} else if(strcmp(m_topologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
+		dl_topology->SetSelection(USE_LPT);
+	} else if(strcmp(m_topologyStr, "High Pass (Lpar Cser Lpar Cser)") == 0) {
+		dl_topology->SetSelection(USE_HP1LL);
+	} else if(strcmp(m_topologyStr, "High Pass (Cser Lpar Cser Lpar)") == 0) {
+		dl_topology->SetSelection(USE_HP2LL);
+	} else if(strcmp(m_topologyStr, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
+		dl_topology->SetSelection(USE_LP1LL);
+	} else if(strcmp(m_topologyStr, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
+		dl_topology->SetSelection(USE_LP2LL);
+	} else if(strcmp(m_topologyStr, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
+		dl_topology->SetSelection(USE_BP1LL);
+	} else if(strcmp(m_topologyStr, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
+		dl_topology->SetSelection(USE_BP2LL);
+	} else if(strcmp(m_topologyStr, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
+		dl_topology->SetSelection(USE_BP3LL);
+	} else if(strcmp(m_topologyStr, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
+		dl_topology->SetSelection(USE_BP4LL);
+	}
+
+	recalculate();
+}
+
 void tuner::onSourceResistance( wxCommandEvent& event )
 {
 	m_sourceResistance = atof(event.GetString());
@@ -180,45 +226,44 @@ void tuner::onQ( wxCommandEvent& event )
 
 void tuner::onTunerTopologySelected( wxCommandEvent& event )
 {
-	m_topology = event.GetString();
+	m_topologyStr = event.GetString();
 
 	recalculate();
 }
 
 void tuner::recalculate()
 {
-
-	if(strcmp(m_topology, "High Pass (Lpar Cser)") == 0) {
+	if(strcmp(m_topologyStr, "High Pass (Lpar Cser)") == 0) {
 		LCHP();
-	} else if(strcmp(m_topology, "Low Pass (Cpar Lser)") == 0) {
+	} else if(strcmp(m_topologyStr, "Low Pass (Cpar Lser)") == 0) {
 		CLLP();
-	} else if(strcmp(m_topology, "Low Pass (Lser Cpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "Low Pass (Lser Cpar)") == 0) {
 		LCLP();
-	} else if(strcmp(m_topology, "High Pass (Cser Lpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "High Pass (Cser Lpar)") == 0) {
 		CLHP();
-	} else if(strcmp(m_topology, "High Pass PI (Lpar Cser Lpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
 		HPPI();
-	} else if(strcmp(m_topology, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
 		LPPI();
-	} else if(strcmp(m_topology, "High Pass T (Cser Lpar Cser)") == 0) {
+	} else if(strcmp(m_topologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
 		HPT();
-	} else if(strcmp(m_topology, "Low Pass T (Lser Cpar Lser)") == 0) {
+	} else if(strcmp(m_topologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
 		LPT();
-	} else if(strcmp(m_topology, "High Pass (Lpar Cser Lpar Cser)") == 0) {
+	} else if(strcmp(m_topologyStr, "High Pass (Lpar Cser Lpar Cser)") == 0) {
 		HP1LL();
-	} else if(strcmp(m_topology, "High Pass (Cser Lpar Cser Lpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "High Pass (Cser Lpar Cser Lpar)") == 0) {
 		HP2LL();
-	} else if(strcmp(m_topology, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
+	} else if(strcmp(m_topologyStr, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
 		LP1LL();
-	} else if(strcmp(m_topology, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
 		LP2LL();
-	} else if(strcmp(m_topology, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
+	} else if(strcmp(m_topologyStr, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
 		BP1LL();
-	} else if(strcmp(m_topology, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
 		BP2LL();
-	} else if(strcmp(m_topology, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
+	} else if(strcmp(m_topologyStr, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
 		BP3LL();
-	} else if(strcmp(m_topology, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
+	} else if(strcmp(m_topologyStr, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
 		BP4LL();
 	}
 }

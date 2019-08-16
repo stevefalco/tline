@@ -361,6 +361,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerLoadResistance = real(m_zInput);
 		m_tunerLoadReactance = imag(m_zInput);
 		m_tunerQ = 1.0;
+		m_tunerTopologyStr = _("High Pass (Lpar Cser)");
 
 		m_tunerInit = 1;
 	}
@@ -371,6 +372,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 	dialog->SetLoadResistance( m_tunerLoadResistance );
 	dialog->SetLoadReactance( m_tunerLoadReactance );
 	dialog->SetQ( m_tunerQ );
+	dialog->SetTopology( m_tunerTopologyStr );
 
 	if (dialog->ShowModal() == wxID_OK) {
 		m_tunerSourceResistance = dialog->GetSourceResistance();
@@ -378,6 +380,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerLoadResistance = dialog->GetLoadResistance();
 		m_tunerLoadReactance = dialog->GetLoadReactance();
 		m_tunerQ = dialog->GetQ();
+		m_tunerTopologyStr = dialog->GetTopology();
 	}
 }
 

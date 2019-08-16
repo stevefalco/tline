@@ -20,6 +20,24 @@
 
 #include "tlineUI.h"
 
+// WARNING: These assigments must match the order in the GUI.
+#define USE_LCHP		0
+#define USE_CLLP		1
+#define USE_LCLP		2
+#define USE_CLHP		3
+#define USE_HPPI		4
+#define USE_LPPI		5
+#define USE_HPT			6
+#define USE_LPT			7
+#define USE_HP1LL		8
+#define USE_HP2LL		9
+#define USE_LP1LL		10
+#define USE_LP2LL		11
+#define USE_BP1LL		12
+#define USE_BP2LL		13
+#define USE_BP3LL		14
+#define USE_BP4LL		15
+
 class tuner : public tunerDialog
 {
 	public:
@@ -41,6 +59,9 @@ class tuner : public tunerDialog
 
 		double		GetQ();
 		void		SetQ( double v );
+
+		wxString	GetTopology();
+		void		SetTopology( wxString v );
 
 	protected:
 		void		onSourceResistance( wxCommandEvent& event );
@@ -71,7 +92,7 @@ class tuner : public tunerDialog
 		void		BP3LL();
 		void		BP4LL();
 
-		wxString	m_topology = "High Pass (Lpar Cser)";
+		wxString	m_topologyStr = "High Pass (Lpar Cser)";
 
 		double		m_sourceResistance;
 		double		m_sourceReactance;
