@@ -75,30 +75,30 @@ class tlineUI : public wxFrame
 		wxButton* ui_saveZplot;
 		wxButton* ui_saveVIplot;
 		wxButton* ui_saveData;
-		wxStaticText* ui_characteristicZ0Tag;
-		wxTextCtrl* ui_characteristicZ0;
 		wxStaticText* ui_matchedLineLossTag;
-		wxTextCtrl* ui_matchedLineLoss;
-		wxStaticText* ui_velocityFactorTag;
-		wxTextCtrl* ui_velocityFactor;
-		wxStaticText* ui_maxVoltageTag;
-		wxTextCtrl* ui_maxVoltage;
 		wxStaticText* ui_totalMatchedLineLossTag;
-		wxTextCtrl* ui_totalMatchedLineLoss;
-		wxStaticText* ui_swrInputTag;
-		wxTextCtrl* ui_swrInput;
-		wxStaticText* ui_swrLoadTag;
-		wxTextCtrl* ui_swrLoad;
-		wxStaticText* ui_rhoLoadTag;
-		wxTextCtrl* ui_rhoLoad;
 		wxStaticText* ui_addedLossTag;
-		wxTextCtrl* ui_addedLoss;
 		wxStaticText* ui_totalLossTag;
-		wxTextCtrl* ui_totalLoss;
 		wxStaticText* ui_impedanceRectangularTag;
-		wxTextCtrl* ui_impedanceRectangular;
 		wxStaticText* ui_impedancePolarTag;
+		wxTextCtrl* ui_matchedLineLoss;
+		wxTextCtrl* ui_totalMatchedLineLoss;
+		wxTextCtrl* ui_addedLoss;
+		wxTextCtrl* ui_totalLoss;
+		wxTextCtrl* ui_impedanceRectangular;
 		wxTextCtrl* ui_impedancePolar;
+		wxStaticText* ui_characteristicZ0Tag;
+		wxStaticText* ui_velocityFactorTag;
+		wxStaticText* ui_maxVoltageTag;
+		wxStaticText* ui_swrInputTag;
+		wxStaticText* ui_swrLoadTag;
+		wxStaticText* ui_rhoLoadTag;
+		wxTextCtrl* ui_characteristicZ0;
+		wxTextCtrl* ui_velocityFactor;
+		wxTextCtrl* ui_maxVoltage;
+		wxTextCtrl* ui_swrInput;
+		wxTextCtrl* ui_swrLoad;
+		wxTextCtrl* ui_rhoLoad;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onFileLoad( wxCommandEvent& event ) { event.Skip(); }

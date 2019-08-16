@@ -12,8 +12,11 @@
 tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	ui_menubar = new wxMenuBar( 0 );
+	ui_menubar->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	fileMenu = new wxMenu();
 	wxMenuItem* ui_fileMenuLoad;
 	ui_fileMenuLoad = new wxMenuItem( fileMenu, wxID_ANY, wxString( wxT("Load") ) , wxEmptyString, wxITEM_NORMAL );
@@ -131,6 +134,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane1RightUpper->Add( ui_lambdaTag, 0, wxALL, 5 );
 
 	ui_lambda = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_lambda->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	bPane1RightUpper->Add( ui_lambda, 0, wxALL, 5 );
 
 
@@ -197,6 +202,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2LeftBottom->Add( ui_inputVoltageTag, 0, wxALL, 5 );
 
 	ui_inputVoltage = new wxTextCtrl( sbPane2Left->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_inputVoltage->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	bPane2LeftBottom->Add( ui_inputVoltage, 0, wxALL, 5 );
 
 
@@ -309,153 +316,146 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bMainWindow->Add( bPane2, 0, 0, 5 );
 
 	wxBoxSizer* bPane3;
-	bPane3 = new wxBoxSizer( wxVERTICAL );
+	bPane3 = new wxBoxSizer( wxHORIZONTAL );
 
-	wxBoxSizer* bPane3Line1;
-	bPane3Line1 = new wxBoxSizer( wxHORIZONTAL );
-
-	ui_characteristicZ0Tag = new wxStaticText( this, wxID_ANY, wxT("Characteristic Z0:"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_characteristicZ0Tag->Wrap( -1 );
-	bPane3Line1->Add( ui_characteristicZ0Tag, 0, wxALL, 5 );
-
-	ui_characteristicZ0 = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	ui_characteristicZ0->SetMinSize( wxSize( 200,-1 ) );
-
-	bPane3Line1->Add( ui_characteristicZ0, 0, wxALL, 5 );
-
-
-	bPane3Line1->Add( 0, 0, 1, 0, 5 );
+	wxBoxSizer* bPane3_0;
+	bPane3_0 = new wxBoxSizer( wxVERTICAL );
 
 	ui_matchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_matchedLineLossTag->Wrap( -1 );
-	bPane3Line1->Add( ui_matchedLineLossTag, 0, wxALL, 5 );
+	bPane3_0->Add( ui_matchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
-	ui_matchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	ui_matchedLineLoss->SetMinSize( wxSize( 160,-1 ) );
-
-	bPane3Line1->Add( ui_matchedLineLoss, 0, wxALL, 5 );
-
-
-	bPane3->Add( bPane3Line1, 1, wxEXPAND, 5 );
-
-	wxBoxSizer* bPane3Line2;
-	bPane3Line2 = new wxBoxSizer( wxHORIZONTAL );
-
-	ui_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor:"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_velocityFactorTag->Wrap( -1 );
-	bPane3Line2->Add( ui_velocityFactorTag, 0, wxALL, 5 );
-
-	ui_velocityFactor = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line2->Add( ui_velocityFactor, 0, wxALL, 5 );
-
-
-	bPane3Line2->Add( 0, 0, 1, wxEXPAND, 5 );
-
-	ui_maxVoltageTag = new wxStaticText( this, wxID_ANY, wxT("Max Voltage"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_maxVoltageTag->Wrap( -1 );
-	bPane3Line2->Add( ui_maxVoltageTag, 0, wxALL, 5 );
-
-	ui_maxVoltage = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line2->Add( ui_maxVoltage, 0, wxALL, 5 );
-
-
-	bPane3Line2->Add( 0, 0, 1, wxEXPAND, 5 );
-
-	ui_totalMatchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Matched-Line Loss"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_totalMatchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_totalMatchedLineLossTag->Wrap( -1 );
-	bPane3Line2->Add( ui_totalMatchedLineLossTag, 0, wxALL, 5 );
-
-	ui_totalMatchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line2->Add( ui_totalMatchedLineLoss, 0, wxALL, 5 );
-
-
-	bPane3->Add( bPane3Line2, 1, wxEXPAND, 5 );
-
-	wxBoxSizer* bPane3Line3;
-	bPane3Line3 = new wxBoxSizer( wxHORIZONTAL );
-
-	ui_swrInputTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Line Input):"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_swrInputTag->Wrap( -1 );
-	bPane3Line3->Add( ui_swrInputTag, 0, wxALL, 5 );
-
-	ui_swrInput = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line3->Add( ui_swrInput, 0, wxALL, 5 );
-
-
-	bPane3Line3->Add( 0, 0, 1, wxEXPAND, 5 );
-
-	ui_swrLoadTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_swrLoadTag->Wrap( -1 );
-	bPane3Line3->Add( ui_swrLoadTag, 0, wxALL, 5 );
-
-	ui_swrLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line3->Add( ui_swrLoad, 0, wxALL, 5 );
-
-
-	bPane3Line3->Add( 0, 0, 1, wxEXPAND, 5 );
-
-	ui_rhoLoadTag = new wxStaticText( this, wxID_ANY, wxT("Rho (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_rhoLoadTag->Wrap( -1 );
-	bPane3Line3->Add( ui_rhoLoadTag, 0, wxALL, 5 );
-
-	ui_rhoLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line3->Add( ui_rhoLoad, 0, wxALL, 5 );
-
-
-	bPane3->Add( bPane3Line3, 1, wxEXPAND, 5 );
-
-	wxBoxSizer* bPane3Line4;
-	bPane3Line4 = new wxBoxSizer( wxHORIZONTAL );
+	bPane3_0->Add( ui_totalMatchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	ui_addedLossTag = new wxStaticText( this, wxID_ANY, wxT("Additional Loss Due To SWR:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_addedLossTag->Wrap( -1 );
-	bPane3Line4->Add( ui_addedLossTag, 0, wxALL, 5 );
-
-	ui_addedLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line4->Add( ui_addedLoss, 0, wxALL, 5 );
-
-
-	bPane3Line4->Add( 0, 0, 1, wxEXPAND, 5 );
+	bPane3_0->Add( ui_addedLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	ui_totalLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_totalLossTag->Wrap( -1 );
-	bPane3Line4->Add( ui_totalLossTag, 0, wxALL, 5 );
-
-	ui_totalLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	bPane3Line4->Add( ui_totalLoss, 0, wxALL, 5 );
-
-
-	bPane3->Add( bPane3Line4, 1, wxEXPAND, 5 );
-
-	wxBoxSizer* bPane3Line5;
-	bPane3Line5 = new wxBoxSizer( wxHORIZONTAL );
+	bPane3_0->Add( ui_totalLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	ui_impedanceRectangularTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Real/Imaginary):"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_impedanceRectangularTag->Wrap( -1 );
-	bPane3Line5->Add( ui_impedanceRectangularTag, 0, wxALL, 5 );
-
-	ui_impedanceRectangular = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	ui_impedanceRectangular->SetMinSize( wxSize( 200,-1 ) );
-
-	bPane3Line5->Add( ui_impedanceRectangular, 0, wxALL, 5 );
-
-
-	bPane3Line5->Add( 0, 0, 1, wxEXPAND, 5 );
+	bPane3_0->Add( ui_impedanceRectangularTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	ui_impedancePolarTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Polar):"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
 	ui_impedancePolarTag->Wrap( -1 );
-	bPane3Line5->Add( ui_impedancePolarTag, 0, wxALL, 5 );
+	bPane3_0->Add( ui_impedancePolarTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bPane3->Add( bPane3_0, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane3_1;
+	bPane3_1 = new wxBoxSizer( wxVERTICAL );
+
+	ui_matchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_matchedLineLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_matchedLineLoss->SetMinSize( wxSize( 160,-1 ) );
+
+	bPane3_1->Add( ui_matchedLineLoss, 0, wxALL, 5 );
+
+	ui_totalMatchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_totalMatchedLineLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_1->Add( ui_totalMatchedLineLoss, 0, wxALL, 5 );
+
+	ui_addedLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_addedLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_1->Add( ui_addedLoss, 0, wxALL, 5 );
+
+	ui_totalLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_totalLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_1->Add( ui_totalLoss, 0, wxALL, 5 );
+
+	ui_impedanceRectangular = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_impedanceRectangular->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_impedanceRectangular->SetMinSize( wxSize( 200,-1 ) );
+
+	bPane3_1->Add( ui_impedanceRectangular, 0, wxALL, 5 );
 
 	ui_impedancePolar = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_impedancePolar->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	ui_impedancePolar->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3Line5->Add( ui_impedancePolar, 0, wxALL, 5 );
+	bPane3_1->Add( ui_impedancePolar, 0, wxALL, 5 );
 
 
-	bPane3->Add( bPane3Line5, 1, wxEXPAND, 5 );
+	bPane3->Add( bPane3_1, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane3_2;
+	bPane3_2 = new wxBoxSizer( wxVERTICAL );
+
+	ui_characteristicZ0Tag = new wxStaticText( this, wxID_ANY, wxT("Characteristic Z0:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_characteristicZ0Tag->Wrap( -1 );
+	bPane3_2->Add( ui_characteristicZ0Tag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	ui_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_velocityFactorTag->Wrap( -1 );
+	bPane3_2->Add( ui_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	ui_maxVoltageTag = new wxStaticText( this, wxID_ANY, wxT("Max Voltage:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_maxVoltageTag->Wrap( -1 );
+	bPane3_2->Add( ui_maxVoltageTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	ui_swrInputTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Input):"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_swrInputTag->Wrap( -1 );
+	bPane3_2->Add( ui_swrInputTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	ui_swrLoadTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_swrLoadTag->Wrap( -1 );
+	bPane3_2->Add( ui_swrLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	ui_rhoLoadTag = new wxStaticText( this, wxID_ANY, wxT("Rho (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_rhoLoadTag->Wrap( -1 );
+	bPane3_2->Add( ui_rhoLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
-	bMainWindow->Add( bPane3, 0, wxEXPAND, 5 );
+	bPane3->Add( bPane3_2, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bPane3_3;
+	bPane3_3 = new wxBoxSizer( wxVERTICAL );
+
+	ui_characteristicZ0 = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_characteristicZ0->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_characteristicZ0->SetMinSize( wxSize( 200,-1 ) );
+
+	bPane3_3->Add( ui_characteristicZ0, 0, wxALL, 5 );
+
+	ui_velocityFactor = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_velocityFactor->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_3->Add( ui_velocityFactor, 0, wxALL, 5 );
+
+	ui_maxVoltage = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_maxVoltage->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_3->Add( ui_maxVoltage, 0, wxALL, 5 );
+
+	ui_swrInput = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_swrInput->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_3->Add( ui_swrInput, 0, wxALL, 5 );
+
+	ui_swrLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_swrLoad->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_3->Add( ui_swrLoad, 0, wxALL, 5 );
+
+	ui_rhoLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	ui_rhoLoad->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	bPane3_3->Add( ui_rhoLoad, 0, wxALL, 5 );
+
+
+	bPane3->Add( bPane3_3, 1, wxEXPAND, 5 );
+
+
+	bMainWindow->Add( bPane3, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bMainWindow );
@@ -508,6 +508,7 @@ tlineUI::~tlineUI()
 userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxGridSizer* gParameters;
 	gParameters = new wxGridSizer( 7, 3, 0, 0 );
@@ -517,6 +518,7 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	gParameters->Add( dl_frequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_frequencyStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_frequencyStr->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	dl_frequencyStr->SetMinSize( wxSize( 150,-1 ) );
 
 	gParameters->Add( dl_frequencyStr, 0, wxALL, 5 );
@@ -571,6 +573,7 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	gParameters->Add( dl_cableReactanceStr, 0, wxALL, 0 );
 
 	dl_cableReactanceEstimatedStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_cableReactanceEstimatedStr->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	dl_cableReactanceEstimatedStr->SetMinSize( wxSize( 200,-1 ) );
 
 	gParameters->Add( dl_cableReactanceEstimatedStr, 0, wxALL, 5 );
@@ -628,6 +631,7 @@ userLineDialog::~userLineDialog()
 helpInfoDialog::helpInfoDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bHelpInfo;
 	bHelpInfo = new wxBoxSizer( wxVERTICAL );
@@ -655,6 +659,7 @@ helpInfoDialog::~helpInfoDialog()
 helpAboutDialog::helpAboutDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bhelpAbout;
 	bhelpAbout = new wxBoxSizer( wxVERTICAL );
@@ -698,6 +703,7 @@ helpAboutDialog::~helpAboutDialog()
 tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bTunerOuter;
 	bTunerOuter = new wxBoxSizer( wxVERTICAL );
@@ -754,6 +760,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerParameters->Add( dl_tunerFrequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_tunerFrequency = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerFrequency->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
 	gTunerParameters->Add( dl_tunerFrequency, 0, wxALL, 5 );
 
 

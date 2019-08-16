@@ -34,7 +34,6 @@ IMPLEMENT_APP (tlineMain);
 
 inline bool tlineMain::OnInit() {
 	wxFrame* mainFrame = new tlineLogic(NULL);
-	mainFrame->SetBackgroundColour(wxColour(240,240,240));
 	mainFrame->Show(true);
 	SetTopWindow(mainFrame);
 

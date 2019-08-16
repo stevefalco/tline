@@ -846,7 +846,7 @@ void tlineLogic::recalculate()
 		m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
 	}
 	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
-	snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zCable), imag(m_zCable));
+	snprintf(buffer, 512, "%.2f, %.2fi Ohms", real(m_zCable), imag(m_zCable));
 	ui_characteristicZ0->ChangeValue(buffer);
 
 	m_resistance = atof(m_resistanceStr);
@@ -857,7 +857,7 @@ void tlineLogic::recalculate()
 
 		// Find the input impedance for the full length of cable.
 		m_zInput = impedanceAtInput(m_length);
-		snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zInput), imag(m_zInput));
+		snprintf(buffer, 512, "%.2f, %.2fi Ohms", real(m_zInput), imag(m_zInput));
 		ui_impedanceRectangular->ChangeValue(buffer);
 		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
 		ui_impedancePolar->ChangeValue(buffer);
@@ -870,7 +870,7 @@ void tlineLogic::recalculate()
 
 		// Find the load impedance for the full length of cable.
 		m_zLoad = impedanceAtLoad(m_length);
-		snprintf(buffer, 512, "%.2f, %.2fJ Ohms", real(m_zLoad), imag(m_zLoad));
+		snprintf(buffer, 512, "%.2f, %.2fi Ohms", real(m_zLoad), imag(m_zLoad));
 		ui_impedanceRectangular->ChangeValue(buffer);
 		snprintf(buffer, 512, "%.2f @ %.2f DEG", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);
 		ui_impedancePolar->ChangeValue(buffer);
