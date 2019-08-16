@@ -36,6 +36,6 @@ cd build
 %license LICENSE
 
 %changelog
-* Thu Aug 15 2019 Steven A. Falco <stevenfalco@gmail.com> - 1:0.0.1-1
+* Fri Aug 16 2019 Steven A. Falco <stevenfalco@gmail.com> - 1:0.0.1-1
 - Initial release of 0.0.1
 
