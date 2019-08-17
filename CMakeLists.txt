@@ -60,3 +60,36 @@ foreach(VAR IN LISTS TOPOLOGIES)
 endforeach()
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/tline DESTINATION /usr/bin)
+
+if( UNIX AND NOT APPLE )
+	# Set paths
+	set( UNIX_MIME_DIR resources/linux/mime )
+	set( UNIX_MIME_FILES ${UNIX_MIME_DIR}/mime )
+	set( UNIX_ICON_FILES ${UNIX_MIME_DIR}/icons )
+	set( UNIX_APPLICATIONS_FILES ${UNIX_MIME_DIR}/applications )
+	set( UNIX_APPDATA_FILES resources/linux/appdata )
+
+	# Install Mime directory
+	install( DIRECTORY ${UNIX_ICON_FILES}
+		DESTINATION share
+		COMPONENT resources
+		)
+
+	# Install Icons
+	install( DIRECTORY ${UNIX_MIME_FILES}
+		DESTINATION share
+		COMPONENT resources
+		)
+
+	# Install Applications directory (.desktop files)
+	install( DIRECTORY ${UNIX_APPLICATIONS_FILES}
+		DESTINATION share
+		COMPONENT resources
+		)
+
+	# Install AppStream directory (app store entry)
+	install( DIRECTORY ${UNIX_APPDATA_FILES}
+		DESTINATION share
+		COMPONENT resources
+		)
+endif()
