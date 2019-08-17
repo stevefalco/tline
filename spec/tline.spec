@@ -12,6 +12,9 @@ BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  wxGTK3-devel
 BuildRequires:  vim-common
+BuildRequires:  ImageMagick
+BuildRequires:  desktop-file-utils
+BuildRequires:  libappstream-glib
 
 Requires:       electronics-menu
 Requires:       gnuplot-wx
