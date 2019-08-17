@@ -35,6 +35,11 @@ foreach(VAR IN LISTS TOPOLOGIES)
 		)
 endforeach()
 
+add_custom_target(GEN_RESOURCES
+	COMMAND make
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resources
+)
+
 add_executable(${PROJECT_NAME}
 	cableTypes.cpp
 	helpAbout.cpp
@@ -48,6 +53,8 @@ add_executable(${PROJECT_NAME}
 	userLine.cpp
 	tline.rc
 	)
+
+add_dependencies(${PROJECT_NAME} GEN_RESOURCES)
 
 target_link_libraries(
 	${PROJECT_NAME}

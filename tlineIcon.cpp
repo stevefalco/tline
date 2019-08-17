@@ -18,5 +18,5 @@
 #include "tlineIcon.h"
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
-#include "icons/tlineIcon.xpm"
+#include "generated-resources/linux/xpm/tlineIcon.xpm"
 #endif

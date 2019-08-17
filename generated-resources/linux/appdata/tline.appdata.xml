@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2019 Steven A. Falco <stevenfalco@gmail.com> -->
+	<component type="desktop">
+		<id>tline.desktop</id>
+		<name>tline</name>
+		<project_license>GPL-3.0+</project_license>
+		<metadata_license>CC-BY-SA-4.0</metadata_license>
+		<summary>Transmission Line Calculator</summary>
+
+		<keywords>
+			<keyword>tline</keyword>
+			<keyword>transmission</keyword>
+			<keyword>impedance</keyword>
+			<keyword>coax</keyword>
+		</keywords>
+
+		<description>
+			<p>
+				A Cross Platform and Open Source Transmission Line Calculator.
+				The intended use is in Amateur Radio.
+			</p>
+		</description>
+
+		<url type="homepage">https://github.com/stevefalco/tline</url>
+		<url type="bugtracker">https://github.com/stevefalco/tline/issues</url>
+		<update_contact>stevenfalco@gmail.com</update_contact>
+		<developer_name>Steven A. Falco</developer_name>
+	</component>

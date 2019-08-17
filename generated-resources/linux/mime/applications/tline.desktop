@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Icon=tline
+Type=Application
+Categories=Electronics;
+Exec=tline %f
+MimeType=application/x-tline;
+Name=tline
+GenericName=Transmission Line Calculator
+Comment=Transmission Line Calculator
+X-Desktop-File-Install-Version=0.22

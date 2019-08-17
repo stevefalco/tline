@@ -15,55 +15,59 @@
 #  You should have received a copy of the GNU General Public License
 #  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
-PNG_FILES_128 =											\
-	../resources/linux/mime/icons/hicolor/128x128/apps/tline.png				\
-	../resources/linux/mime/icons/hicolor/128x128/mimetypes/application-x-tline.png		\
+GEN_BASE = ../generated-resources/linux
+
+ICON_BASE = ${GEN_BASE}/mime/icons/hicolor
+
+PNG_FILES_128 =								\
+	${ICON_BASE}/128x128/apps/tline.png				\
+	${ICON_BASE}/128x128/mimetypes/application-x-tline.png		\
 	#
 
-PNG_FILES_64 =											\
-	../resources/linux/mime/icons/hicolor/64x64/apps/tline.png				\
-	../resources/linux/mime/icons/hicolor/64x64/mimetypes/application-x-tline.png		\
+PNG_FILES_64 =								\
+	${ICON_BASE}/64x64/apps/tline.png				\
+	${ICON_BASE}/64x64/mimetypes/application-x-tline.png		\
 	#
 
-PNG_FILES_48 =											\
-	../resources/linux/mime/icons/hicolor/48x48/apps/tline.png				\
-	../resources/linux/mime/icons/hicolor/48x48/mimetypes/application-x-tline.png		\
+PNG_FILES_48 =								\
+	${ICON_BASE}/48x48/apps/tline.png				\
+	${ICON_BASE}/48x48/mimetypes/application-x-tline.png		\
 	#
 
-PNG_FILES_32 =											\
-	../resources/linux/mime/icons/hicolor/32x32/apps/tline.png				\
-	../resources/linux/mime/icons/hicolor/32x32/mimetypes/application-x-tline.png		\
+PNG_FILES_32 =								\
+	${ICON_BASE}/32x32/apps/tline.png				\
+	${ICON_BASE}/32x32/mimetypes/application-x-tline.png		\
 	#
 
-PNG_FILES_24 =											\
-	../resources/linux/mime/icons/hicolor/24x24/apps/tline.png				\
-	../resources/linux/mime/icons/hicolor/24x24/mimetypes/application-x-tline.png		\
+PNG_FILES_24 =								\
+	${ICON_BASE}/24x24/apps/tline.png				\
+	${ICON_BASE}/24x24/mimetypes/application-x-tline.png		\
 	#
 
-PNG_FILES_22 =											\
-	../resources/linux/mime/icons/hicolor/22x22/apps/tline.png				\
-	../resources/linux/mime/icons/hicolor/22x22/mimetypes/application-x-tline.png		\
+PNG_FILES_22 =								\
+	${ICON_BASE}/22x22/apps/tline.png				\
+	${ICON_BASE}/22x22/mimetypes/application-x-tline.png		\
 	#
 
-PNG_FILES_16 =											\
-	../resources/linux/mime/icons/hicolor/16x16/apps/tline.png				\
-	../resources/linux/mime/icons/hicolor/16x16/mimetypes/application-x-tline.png		\
+PNG_FILES_16 =								\
+	${ICON_BASE}/16x16/apps/tline.png				\
+	${ICON_BASE}/16x16/mimetypes/application-x-tline.png		\
 	#
 
 PNG_FILES = $(PNG_FILES_128) $(PNG_FILES_64) $(PNG_FILES_48) $(PNG_FILES_32) $(PNG_FILES_24) $(PNG_FILES_22) $(PNG_FILES_16)
 
-SVG_FILES =											\
-	../resources/linux/mime/icons/hicolor/scalable/apps/tline.svg				\
-	../resources/linux/mime/icons/hicolor/scalable/mimetypes/application-x-tline.svg	\
+SVG_FILES =								\
+	${ICON_BASE}/scalable/apps/tline.svg				\
+	${ICON_BASE}/scalable/mimetypes/application-x-tline.svg		\
 	#
 
-PACK_XML_FILE = ../resources/linux/mime/mime/packages/tline-tline.xml
+PACK_XML_FILE = ${GEN_BASE}/mime/mime/packages/tline-tline.xml
 
-APP_XML_FILE = ../resources/linux/appdata/tline.appdata.xml
+APP_XML_FILE = ${GEN_BASE}/appdata/tline.appdata.xml
 
-DESKTOP_FILE = ../resources/linux/mime/applications/tline.desktop
+DESKTOP_FILE = ${GEN_BASE}/mime/applications/tline.desktop
 
-XPM_FILE = tlineIcon.xpm
+XPM_FILE = $(GEN_BASE)/xpm/tlineIcon.xpm
 
 ICO_FILE = ../windows-installer/tlineIcon.ico
 
@@ -114,6 +118,7 @@ $(DESKTOP_FILE): tline.desktop
 	cp $^ $@
 	
 $(XPM_FILE): tline.svg
+	mkdir -p `dirname $@`
 	convert $^ $@
 	sed -i -e 's/^static char \*tlineIcon\[] = {$$/char const * aaaa_xpm[] = {/' $@
 
