@@ -124,7 +124,7 @@ class tlineUI : public wxFrame
 
 	public:
 
-		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 850,550 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 850,570 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~tlineUI();
 

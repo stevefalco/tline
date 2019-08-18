@@ -327,6 +327,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer34->SetMinSize( wxSize( 260,-1 ) );
 	ui_matchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_matchedLineLossTag->Wrap( -1 );
+	ui_matchedLineLossTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer34->Add( ui_matchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -337,7 +339,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_matchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_matchedLineLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_matchedLineLoss->SetMinSize( wxSize( 200,-1 ) );
+	ui_matchedLineLoss->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer35->Add( ui_matchedLineLoss, 0, wxALL, 5 );
 
@@ -356,6 +358,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer36->SetMinSize( wxSize( 260,-1 ) );
 	ui_totalMatchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_totalMatchedLineLossTag->Wrap( -1 );
+	ui_totalMatchedLineLossTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer36->Add( ui_totalMatchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -366,7 +370,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_totalMatchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_totalMatchedLineLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_totalMatchedLineLoss->SetMinSize( wxSize( 200,-1 ) );
+	ui_totalMatchedLineLoss->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer37->Add( ui_totalMatchedLineLoss, 0, wxALL, 5 );
 
@@ -385,6 +389,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer361->SetMinSize( wxSize( 260,-1 ) );
 	ui_addedLossTag = new wxStaticText( this, wxID_ANY, wxT("Additional Loss Due To SWR:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_addedLossTag->Wrap( -1 );
+	ui_addedLossTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer361->Add( ui_addedLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -395,7 +401,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_addedLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_addedLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_addedLoss->SetMinSize( wxSize( 200,-1 ) );
+	ui_addedLoss->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer371->Add( ui_addedLoss, 0, wxALL, 5 );
 
@@ -414,6 +420,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer362->SetMinSize( wxSize( 260,-1 ) );
 	ui_totalLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Line Loss:"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	ui_totalLossTag->Wrap( -1 );
+	ui_totalLossTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer362->Add( ui_totalLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -424,7 +432,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_totalLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_totalLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_totalLoss->SetMinSize( wxSize( 200,-1 ) );
+	ui_totalLoss->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer372->Add( ui_totalLoss, 0, wxALL, 5 );
 
@@ -443,6 +451,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer3621->SetMinSize( wxSize( 260,-1 ) );
 	ui_impedanceRectangularTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Real/Imaginary):"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	ui_impedanceRectangularTag->Wrap( -1 );
+	ui_impedanceRectangularTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer3621->Add( ui_impedanceRectangularTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -453,7 +463,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_impedanceRectangular = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_impedanceRectangular->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_impedanceRectangular->SetMinSize( wxSize( 200,-1 ) );
+	ui_impedanceRectangular->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer3721->Add( ui_impedanceRectangular, 0, wxALL, 5 );
 
@@ -472,6 +482,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer3622->SetMinSize( wxSize( 260,-1 ) );
 	ui_impedancePolarTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Polar):"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
 	ui_impedancePolarTag->Wrap( -1 );
+	ui_impedancePolarTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer3622->Add( ui_impedancePolarTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -482,7 +494,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_impedancePolar = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_impedancePolar->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_impedancePolar->SetMinSize( wxSize( 200,-1 ) );
+	ui_impedancePolar->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer3722->Add( ui_impedancePolar, 0, wxALL, 5 );
 
@@ -507,6 +519,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer38->SetMinSize( wxSize( 150,-1 ) );
 	ui_characteristicZ0Tag = new wxStaticText( this, wxID_ANY, wxT("Characteristic Z0:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_characteristicZ0Tag->Wrap( -1 );
+	ui_characteristicZ0Tag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer38->Add( ui_characteristicZ0Tag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -517,7 +531,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_characteristicZ0 = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_characteristicZ0->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_characteristicZ0->SetMinSize( wxSize( 200,-1 ) );
+	ui_characteristicZ0->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer39->Add( ui_characteristicZ0, 0, wxALL, 5 );
 
@@ -536,6 +550,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer40->SetMinSize( wxSize( 150,-1 ) );
 	ui_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_velocityFactorTag->Wrap( -1 );
+	ui_velocityFactorTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer40->Add( ui_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -546,7 +562,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_velocityFactor = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_velocityFactor->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_velocityFactor->SetMinSize( wxSize( 200,-1 ) );
+	ui_velocityFactor->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer41->Add( ui_velocityFactor, 0, wxALL, 5 );
 
@@ -565,6 +581,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer401->SetMinSize( wxSize( 150,-1 ) );
 	ui_maxVoltageTag = new wxStaticText( this, wxID_ANY, wxT("Max Voltage:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_maxVoltageTag->Wrap( -1 );
+	ui_maxVoltageTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer401->Add( ui_maxVoltageTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -575,7 +593,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_maxVoltage = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_maxVoltage->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_maxVoltage->SetMinSize( wxSize( 200,-1 ) );
+	ui_maxVoltage->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer411->Add( ui_maxVoltage, 0, wxALL, 5 );
 
@@ -594,6 +612,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer402->SetMinSize( wxSize( 150,-1 ) );
 	ui_swrInputTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Input):"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_swrInputTag->Wrap( -1 );
+	ui_swrInputTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer402->Add( ui_swrInputTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -604,7 +624,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_swrInput = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_swrInput->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_swrInput->SetMinSize( wxSize( 200,-1 ) );
+	ui_swrInput->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer412->Add( ui_swrInput, 0, wxALL, 5 );
 
@@ -623,6 +643,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer4021->SetMinSize( wxSize( 150,-1 ) );
 	ui_swrLoadTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_swrLoadTag->Wrap( -1 );
+	ui_swrLoadTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer4021->Add( ui_swrLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -633,7 +655,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_swrLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_swrLoad->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_swrLoad->SetMinSize( wxSize( 200,-1 ) );
+	ui_swrLoad->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer4121->Add( ui_swrLoad, 0, wxALL, 5 );
 
@@ -652,6 +674,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer4022->SetMinSize( wxSize( 150,-1 ) );
 	ui_rhoLoadTag = new wxStaticText( this, wxID_ANY, wxT("Rho (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_rhoLoadTag->Wrap( -1 );
+	ui_rhoLoadTag->SetMinSize( wxSize( -1,20 ) );
+
 	bSizer4022->Add( ui_rhoLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
@@ -662,7 +686,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_rhoLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_rhoLoad->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_rhoLoad->SetMinSize( wxSize( 200,-1 ) );
+	ui_rhoLoad->SetMinSize( wxSize( 200,20 ) );
 
 	bSizer4122->Add( ui_rhoLoad, 0, wxALL, 5 );
 

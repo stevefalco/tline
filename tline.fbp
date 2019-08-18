@@ -47,7 +47,7 @@
             <property name="minimum_size">-1,-1</property>
             <property name="name">tlineUI</property>
             <property name="pos"></property>
-            <property name="size">850,550</property>
+            <property name="size">850,570</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">tline</property>
@@ -2351,34 +2351,34 @@
                     <property name="border">5</property>
                     <property name="flag">wxALIGN_CENTER|wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxBoxSizer" expanded="1">
+                    <object class="wxBoxSizer" expanded="0">
                         <property name="minimum_size"></property>
                         <property name="name">bSizer27</property>
                         <property name="orient">wxHORIZONTAL</property>
                         <property name="permission">none</property>
-                        <object class="sizeritem" expanded="1">
+                        <object class="sizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="flag"></property>
                             <property name="proportion">1</property>
-                            <object class="wxBoxSizer" expanded="1">
+                            <object class="wxBoxSizer" expanded="0">
                                 <property name="minimum_size"></property>
                                 <property name="name">bSizer28</property>
                                 <property name="orient">wxVERTICAL</property>
                                 <property name="permission">none</property>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag"></property>
                                     <property name="proportion">1</property>
-                                    <object class="wxBoxSizer" expanded="1">
+                                    <object class="wxBoxSizer" expanded="0">
                                         <property name="minimum_size"></property>
                                         <property name="name">bSizer30</property>
                                         <property name="orient">wxHORIZONTAL</property>
                                         <property name="permission">none</property>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size">260,-1</property>
                                                 <property name="name">bSizer34</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2422,7 +2422,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_matchedLineLossTag</property>
                                                         <property name="pane_border">1</property>
@@ -2446,11 +2446,11 @@
                                                 </object>
                                             </object>
                                         </object>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size"></property>
                                                 <property name="name">bSizer35</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2493,7 +2493,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_matchedLineLoss</property>
                                                         <property name="pane_border">1</property>
@@ -2523,20 +2523,20 @@
                                         </object>
                                     </object>
                                 </object>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag"></property>
                                     <property name="proportion">1</property>
-                                    <object class="wxBoxSizer" expanded="1">
+                                    <object class="wxBoxSizer" expanded="0">
                                         <property name="minimum_size"></property>
                                         <property name="name">bSizer31</property>
                                         <property name="orient">wxHORIZONTAL</property>
                                         <property name="permission">none</property>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size">260,-1</property>
                                                 <property name="name">bSizer36</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2580,7 +2580,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_totalMatchedLineLossTag</property>
                                                         <property name="pane_border">1</property>
@@ -2604,11 +2604,11 @@
                                                 </object>
                                             </object>
                                         </object>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size"></property>
                                                 <property name="name">bSizer37</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2651,7 +2651,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_totalMatchedLineLoss</property>
                                                         <property name="pane_border">1</property>
@@ -2681,20 +2681,20 @@
                                         </object>
                                     </object>
                                 </object>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag"></property>
                                     <property name="proportion">1</property>
-                                    <object class="wxBoxSizer" expanded="1">
+                                    <object class="wxBoxSizer" expanded="0">
                                         <property name="minimum_size"></property>
                                         <property name="name">bSizer311</property>
                                         <property name="orient">wxHORIZONTAL</property>
                                         <property name="permission">none</property>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size">260,-1</property>
                                                 <property name="name">bSizer361</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2738,7 +2738,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_addedLossTag</property>
                                                         <property name="pane_border">1</property>
@@ -2762,11 +2762,11 @@
                                                 </object>
                                             </object>
                                         </object>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size"></property>
                                                 <property name="name">bSizer371</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2809,7 +2809,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_addedLoss</property>
                                                         <property name="pane_border">1</property>
@@ -2839,20 +2839,20 @@
                                         </object>
                                     </object>
                                 </object>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag"></property>
                                     <property name="proportion">1</property>
-                                    <object class="wxBoxSizer" expanded="1">
+                                    <object class="wxBoxSizer" expanded="0">
                                         <property name="minimum_size"></property>
                                         <property name="name">bSizer312</property>
                                         <property name="orient">wxHORIZONTAL</property>
                                         <property name="permission">none</property>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag">wxALIGN_RIGHT</property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size">260,-1</property>
                                                 <property name="name">bSizer362</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2896,7 +2896,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_totalLossTag</property>
                                                         <property name="pane_border">1</property>
@@ -2920,11 +2920,11 @@
                                                 </object>
                                             </object>
                                         </object>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size"></property>
                                                 <property name="name">bSizer372</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -2967,7 +2967,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_totalLoss</property>
                                                         <property name="pane_border">1</property>
@@ -2997,11 +2997,11 @@
                                         </object>
                                     </object>
                                 </object>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag"></property>
                                     <property name="proportion">1</property>
-                                    <object class="wxBoxSizer" expanded="1">
+                                    <object class="wxBoxSizer" expanded="0">
                                         <property name="minimum_size"></property>
                                         <property name="name">bSizer3121</property>
                                         <property name="orient">wxHORIZONTAL</property>
@@ -3054,7 +3054,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">-1,-1</property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_impedanceRectangularTag</property>
                                                         <property name="pane_border">1</property>
@@ -3078,11 +3078,11 @@
                                                 </object>
                                             </object>
                                         </object>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size"></property>
                                                 <property name="name">bSizer3721</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -3125,7 +3125,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_impedanceRectangular</property>
                                                         <property name="pane_border">1</property>
@@ -3155,11 +3155,11 @@
                                         </object>
                                     </object>
                                 </object>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag"></property>
                                     <property name="proportion">1</property>
-                                    <object class="wxBoxSizer" expanded="1">
+                                    <object class="wxBoxSizer" expanded="0">
                                         <property name="minimum_size"></property>
                                         <property name="name">bSizer3122</property>
                                         <property name="orient">wxHORIZONTAL</property>
@@ -3212,7 +3212,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">-1,-1</property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_impedancePolarTag</property>
                                                         <property name="pane_border">1</property>
@@ -3236,11 +3236,11 @@
                                                 </object>
                                             </object>
                                         </object>
-                                        <object class="sizeritem" expanded="1">
+                                        <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag"></property>
                                             <property name="proportion">1</property>
-                                            <object class="wxBoxSizer" expanded="1">
+                                            <object class="wxBoxSizer" expanded="0">
                                                 <property name="minimum_size"></property>
                                                 <property name="name">bSizer3722</property>
                                                 <property name="orient">wxVERTICAL</property>
@@ -3283,7 +3283,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_impedancePolar</property>
                                                         <property name="pane_border">1</property>
@@ -3315,7 +3315,7 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="sizeritem" expanded="1">
+                        <object class="sizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="flag"></property>
                             <property name="proportion">1</property>
@@ -3381,7 +3381,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_characteristicZ0Tag</property>
                                                         <property name="pane_border">1</property>
@@ -3452,7 +3452,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_characteristicZ0</property>
                                                         <property name="pane_border">1</property>
@@ -3539,7 +3539,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_velocityFactorTag</property>
                                                         <property name="pane_border">1</property>
@@ -3610,7 +3610,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_velocityFactor</property>
                                                         <property name="pane_border">1</property>
@@ -3697,7 +3697,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_maxVoltageTag</property>
                                                         <property name="pane_border">1</property>
@@ -3768,7 +3768,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_maxVoltage</property>
                                                         <property name="pane_border">1</property>
@@ -3855,7 +3855,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_swrInputTag</property>
                                                         <property name="pane_border">1</property>
@@ -3926,7 +3926,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_swrInput</property>
                                                         <property name="pane_border">1</property>
@@ -4013,7 +4013,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_swrLoadTag</property>
                                                         <property name="pane_border">1</property>
@@ -4084,7 +4084,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_swrLoad</property>
                                                         <property name="pane_border">1</property>
@@ -4171,7 +4171,7 @@
                                                         <property name="maximum_size"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size"></property>
+                                                        <property name="minimum_size">-1,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_rhoLoadTag</property>
                                                         <property name="pane_border">1</property>
@@ -4242,7 +4242,7 @@
                                                         <property name="maxlength"></property>
                                                         <property name="min_size"></property>
                                                         <property name="minimize_button">0</property>
-                                                        <property name="minimum_size">200,-1</property>
+                                                        <property name="minimum_size">200,20</property>
                                                         <property name="moveable">1</property>
                                                         <property name="name">ui_rhoLoad</property>
                                                         <property name="pane_border">1</property>
