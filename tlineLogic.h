@@ -28,7 +28,7 @@ using namespace std;
 class tlineLogic : public tlineUI
 {
 	public:
-		tlineLogic( wxWindow* parent );
+		tlineLogic( wxWindow* parent, wxString fileName );
 
 		wxString getWidth() { return m_widthStr; }
 		wxString getHeight() { return m_heightStr; }
@@ -64,6 +64,7 @@ class tlineLogic : public tlineUI
 		complex<double> voltageOut( double distance );
 		complex<double> currentOut( double distance );
 
+		void loadFile( wxString path );
 		void recalculate();
 		void doPlot( int type, int mode );
 		void setControlZ( wxFFile* file, const char* name );

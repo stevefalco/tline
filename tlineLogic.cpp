@@ -43,7 +43,7 @@
 wxString g_widthStr;
 wxString g_heightStr;
 
-tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
+tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent )
 {
 	wxImage::AddHandler(new wxPNGHandler);
 	wxImage::AddHandler(new wxJPEGHandler);
@@ -63,14 +63,15 @@ tlineLogic::tlineLogic( wxWindow* parent ) : tlineUI( parent )
 	// Remember when the tuner dialog has been opened at least once.
 	m_tunerInit = FALSE;
 
+	if(fileName != "") {
+		loadFile(fileName);
+	}
+
 	recalculate();
 }
 
 void tlineLogic::onFileLoad( wxCommandEvent& event )
 {
-	char buffer[512];
-	char *p;
-
 	if(!m_saved) {
 		if(wxMessageBox(_("Current content has not been saved! Proceed?"), _("Please confirm"), wxICON_QUESTION | wxYES_NO, this) == wxNO) {
 			return;
@@ -81,10 +82,18 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 	if(openFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
+
+	loadFile(openFileDialog.GetPath());
+}
     
-	wxFileInputStream input_stream(openFileDialog.GetPath());
+void tlineLogic::loadFile( wxString path )
+{
+	char buffer[512];
+	char *p;
+
+	wxFileInputStream input_stream( path );
 	if(!input_stream.IsOk()) {
-		wxLogError("Cannot open file '%s'", openFileDialog.GetPath());
+		wxLogError("Cannot open file '%s'", path);
 		return;
 	}
     

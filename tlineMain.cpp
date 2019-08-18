@@ -21,27 +21,63 @@
 #  include "wx/wx.h"
 #endif
 
-#include <wx/colour.h>
+#include <wx/cmdline.h>
 
 #include "tlineLogic.h"
 
 class tlineMain: public wxApp {
+	public:
+		tlineMain() {}
+		virtual ~tlineMain() {}
+		virtual bool OnInit();
+		virtual int OnExit();
+		virtual void OnInitCmdLine(wxCmdLineParser& parser);
+		virtual bool OnCmdLineParsed(wxCmdLineParser& parser);
 
-public:
-	tlineMain() {}
-	virtual ~tlineMain() {}
-	virtual bool OnInit();
-	virtual int OnExit() { return 0; }
+	private:
+		wxString m_file = "";
+};
 
+static const wxCmdLineEntryDesc g_cmdLineDesc[] =
+{
+	{ wxCMD_LINE_SWITCH, "h", "help", "This help message.",
+		wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+	{ wxCMD_LINE_PARAM, NULL, NULL, "optional_saved_parameter_file.tline",
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+	{ wxCMD_LINE_NONE }
 };
 
 IMPLEMENT_APP (tlineMain);
 
 inline bool tlineMain::OnInit() {
-	wxFrame* mainFrame = new tlineLogic(NULL);
+	if(!wxApp::OnInit()) {
+		return false;
+	}
+
+
+	wxFrame* mainFrame = new tlineLogic(NULL, m_file);
 	mainFrame->Show(true);
 	SetTopWindow(mainFrame);
 
 	return true;
 }
 
+int tlineMain::OnExit()
+{
+	return 0;
+}
+
+void tlineMain::OnInitCmdLine(wxCmdLineParser& parser)
+{
+	parser.SetDesc(g_cmdLineDesc);
+	parser.SetSwitchChars(wxT("-"));
+}
+
+bool tlineMain::OnCmdLineParsed(wxCmdLineParser& parser)
+{
+	if(parser.GetParamCount() > 0) {
+		m_file = parser.GetParam(0);
+	}
+
+	return true;
+}
