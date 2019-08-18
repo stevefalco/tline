@@ -11,7 +11,7 @@
 
 tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( -1,-1 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	ui_menubar = new wxMenuBar( 0 );
@@ -213,25 +213,22 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2->Add( sbPane2Left, 1, wxEXPAND, 5 );
 
 
-	bPane2->Add( 0, 0, 1, wxEXPAND, 5 );
+	bPane2->Add( 10, 0, 1, wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbPane2Center;
-	sbPane2Center = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxEmptyString ), wxHORIZONTAL );
-
-	wxBoxSizer* bPane2CenterLeft;
-	bPane2CenterLeft = new wxBoxSizer( wxVERTICAL );
+	sbPane2Center = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Line/Load") ), wxHORIZONTAL );
 
 	wxString ui_loadInputRadioButtonsChoices[] = { wxT("Load"), wxT("Input") };
 	int ui_loadInputRadioButtonsNChoices = sizeof( ui_loadInputRadioButtonsChoices ) / sizeof( wxString );
 	ui_loadInputRadioButtons = new wxRadioBox( sbPane2Center->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, ui_loadInputRadioButtonsNChoices, ui_loadInputRadioButtonsChoices, 1, wxRA_SPECIFY_COLS );
 	ui_loadInputRadioButtons->SetSelection( 0 );
-	bPane2CenterLeft->Add( ui_loadInputRadioButtons, 0, wxALL, 5 );
+	sbPane2Center->Add( ui_loadInputRadioButtons, 0, wxALL, 5 );
 
 
-	sbPane2Center->Add( bPane2CenterLeft, 1, wxEXPAND, 5 );
+	sbPane2Center->Add( 20, 0, 0, wxEXPAND, 5 );
 
-	wxBoxSizer* bCenterRight;
-	bCenterRight = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer* bPane2CenterRight;
+	bPane2CenterRight = new wxBoxSizer( wxVERTICAL );
 
 	wxBoxSizer* bPane2CenterRightTop;
 	bPane2CenterRightTop = new wxBoxSizer( wxHORIZONTAL );
@@ -248,7 +245,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2CenterRightTop->Add( ui_resistanceUnits, 0, wxALL, 5 );
 
 
-	bCenterRight->Add( bPane2CenterRightTop, 1, wxEXPAND, 5 );
+	bPane2CenterRight->Add( bPane2CenterRightTop, 1, 0, 5 );
 
 	wxBoxSizer* bPane2CenterRightBottom;
 	bPane2CenterRightBottom = new wxBoxSizer( wxHORIZONTAL );
@@ -265,16 +262,16 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2CenterRightBottom->Add( ui_reactanceUnits, 0, wxALL, 5 );
 
 
-	bCenterRight->Add( bPane2CenterRightBottom, 1, wxEXPAND, 5 );
+	bPane2CenterRight->Add( bPane2CenterRightBottom, 1, 0, 5 );
 
 
-	sbPane2Center->Add( bCenterRight, 1, wxEXPAND, 5 );
+	sbPane2Center->Add( bPane2CenterRight, 1, wxEXPAND, 5 );
 
 
 	bPane2->Add( sbPane2Center, 1, wxEXPAND, 5 );
 
 
-	bPane2->Add( 0, 0, 1, wxEXPAND, 5 );
+	bPane2->Add( 10, 0, 1, wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbPane2Right;
 	sbPane2Right = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Actions") ), wxHORIZONTAL );
@@ -283,13 +280,13 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2RightLeft = new wxBoxSizer( wxVERTICAL );
 
 	ui_plotZ = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Plot Z"), wxDefaultPosition, wxDefaultSize, 0 );
-	bPane2RightLeft->Add( ui_plotZ, 0, wxALL, 5 );
+	bPane2RightLeft->Add( ui_plotZ, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	ui_plotVI = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Plot V/I"), wxDefaultPosition, wxDefaultSize, 0 );
-	bPane2RightLeft->Add( ui_plotVI, 0, wxALL, 5 );
+	bPane2RightLeft->Add( ui_plotVI, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	ui_tuner = new wxButton( sbPane2Right->GetStaticBox(), wxID_ANY, wxT("Tuner"), wxDefaultPosition, wxDefaultSize, 0 );
-	bPane2RightLeft->Add( ui_tuner, 0, wxALL, 5 );
+	bPane2RightLeft->Add( ui_tuner, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
 	sbPane2Right->Add( bPane2RightLeft, 1, wxEXPAND, 5 );
@@ -507,7 +504,7 @@ tlineUI::~tlineUI()
 
 userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 750,350 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxGridSizer* gParameters;
@@ -611,6 +608,7 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	this->SetSizer( gParameters );
 	this->Layout();
+	gParameters->Fit( this );
 
 	this->Centre( wxBOTH );
 
@@ -641,18 +639,22 @@ userLineDialog::~userLineDialog()
 
 helpInfoDialog::helpInfoDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 800,400 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bHelpInfo;
 	bHelpInfo = new wxBoxSizer( wxVERTICAL );
 
-	dl_htmlWindow = new wxHtmlWindow( this, wxID_ANY, wxDefaultPosition, wxSize( 700,600 ), wxHW_SCROLLBAR_AUTO|wxHSCROLL|wxVSCROLL );
+	bHelpInfo->SetMinSize( wxSize( 800,400 ) );
+	dl_htmlWindow = new wxHtmlWindow( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxHW_SCROLLBAR_AUTO|wxHSCROLL|wxVSCROLL );
+	dl_htmlWindow->SetMinSize( wxSize( 800,400 ) );
+
 	bHelpInfo->Add( dl_htmlWindow, 0, wxALL, 5 );
 
 
 	this->SetSizer( bHelpInfo );
 	this->Layout();
+	bHelpInfo->Fit( this );
 
 	this->Centre( wxBOTH );
 
@@ -669,7 +671,7 @@ helpInfoDialog::~helpInfoDialog()
 
 helpAboutDialog::helpAboutDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 500,200 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bhelpAbout;
@@ -713,7 +715,7 @@ helpAboutDialog::~helpAboutDialog()
 
 tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 900,700 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( -1,-1 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bTunerOuter;
