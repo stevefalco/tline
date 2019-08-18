@@ -590,8 +590,9 @@ cableTypes::findAtten(
 				return attenHigh;
 			}
 
-			// Linear interpolation of attenuation.
-			return (((frequency - freqLow) / (freqHigh - freqLow)) * (attenHigh - attenLow)) + attenLow;
+			// Attenuation is pretty close to a straight line if plotted log-log, so convert
+			// all values to their logs, then perform a linear interpolation, then convert back.
+			return pow(10.0, (((log10(frequency) - log10(freqLow)) / (log10(freqHigh) - log10(freqLow))) * (log10(attenHigh) - log10(attenLow))) + log10(attenLow));
 		}
 	}
 
