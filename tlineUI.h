@@ -76,28 +76,28 @@ class tlineUI : public wxFrame
 		wxButton* ui_saveVIplot;
 		wxButton* ui_saveData;
 		wxStaticText* ui_matchedLineLossTag;
-		wxStaticText* ui_totalMatchedLineLossTag;
-		wxStaticText* ui_addedLossTag;
-		wxStaticText* ui_totalLossTag;
-		wxStaticText* ui_impedanceRectangularTag;
-		wxStaticText* ui_impedancePolarTag;
 		wxTextCtrl* ui_matchedLineLoss;
+		wxStaticText* ui_totalMatchedLineLossTag;
 		wxTextCtrl* ui_totalMatchedLineLoss;
+		wxStaticText* ui_addedLossTag;
 		wxTextCtrl* ui_addedLoss;
+		wxStaticText* ui_totalLossTag;
 		wxTextCtrl* ui_totalLoss;
+		wxStaticText* ui_impedanceRectangularTag;
 		wxTextCtrl* ui_impedanceRectangular;
+		wxStaticText* ui_impedancePolarTag;
 		wxTextCtrl* ui_impedancePolar;
 		wxStaticText* ui_characteristicZ0Tag;
-		wxStaticText* ui_velocityFactorTag;
-		wxStaticText* ui_maxVoltageTag;
-		wxStaticText* ui_swrInputTag;
-		wxStaticText* ui_swrLoadTag;
-		wxStaticText* ui_rhoLoadTag;
 		wxTextCtrl* ui_characteristicZ0;
+		wxStaticText* ui_velocityFactorTag;
 		wxTextCtrl* ui_velocityFactor;
+		wxStaticText* ui_maxVoltageTag;
 		wxTextCtrl* ui_maxVoltage;
+		wxStaticText* ui_swrInputTag;
 		wxTextCtrl* ui_swrInput;
+		wxStaticText* ui_swrLoadTag;
 		wxTextCtrl* ui_swrLoad;
+		wxStaticText* ui_rhoLoadTag;
 		wxTextCtrl* ui_rhoLoad;
 
 		// Virtual event handlers, overide them in your derived class
@@ -124,7 +124,7 @@ class tlineUI : public wxFrame
 
 	public:
 
-		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 850,630 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 850,550 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~tlineUI();
 

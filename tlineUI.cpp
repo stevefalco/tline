@@ -312,147 +312,371 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	bMainWindow->Add( bPane2, 0, 0, 5 );
 
-	wxBoxSizer* bPane3;
-	bPane3 = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer* bSizer27;
+	bSizer27 = new wxBoxSizer( wxHORIZONTAL );
 
-	wxBoxSizer* bPane3_0;
-	bPane3_0 = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer* bSizer28;
+	bSizer28 = new wxBoxSizer( wxVERTICAL );
 
+	wxBoxSizer* bSizer30;
+	bSizer30 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer34;
+	bSizer34 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer34->SetMinSize( wxSize( 260,-1 ) );
 	ui_matchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_matchedLineLossTag->Wrap( -1 );
-	bPane3_0->Add( ui_matchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_totalMatchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_totalMatchedLineLossTag->Wrap( -1 );
-	bPane3_0->Add( ui_totalMatchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_addedLossTag = new wxStaticText( this, wxID_ANY, wxT("Additional Loss Due To SWR:"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_addedLossTag->Wrap( -1 );
-	bPane3_0->Add( ui_addedLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_totalLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_totalLossTag->Wrap( -1 );
-	bPane3_0->Add( ui_totalLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_impedanceRectangularTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Real/Imaginary):"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_impedanceRectangularTag->Wrap( -1 );
-	bPane3_0->Add( ui_impedanceRectangularTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_impedancePolarTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Polar):"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
-	ui_impedancePolarTag->Wrap( -1 );
-	bPane3_0->Add( ui_impedancePolarTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	bSizer34->Add( ui_matchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
-	bPane3->Add( bPane3_0, 1, wxEXPAND, 5 );
+	bSizer30->Add( bSizer34, 1, 0, 5 );
 
-	wxBoxSizer* bPane3_1;
-	bPane3_1 = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer* bSizer35;
+	bSizer35 = new wxBoxSizer( wxVERTICAL );
 
 	ui_matchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_matchedLineLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	ui_matchedLineLoss->SetMinSize( wxSize( 160,-1 ) );
+	ui_matchedLineLoss->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_1->Add( ui_matchedLineLoss, 0, wxALL, 5 );
+	bSizer35->Add( ui_matchedLineLoss, 0, wxALL, 5 );
+
+
+	bSizer30->Add( bSizer35, 1, 0, 5 );
+
+
+	bSizer28->Add( bSizer30, 1, 0, 5 );
+
+	wxBoxSizer* bSizer31;
+	bSizer31 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer36;
+	bSizer36 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer36->SetMinSize( wxSize( 260,-1 ) );
+	ui_totalMatchedLineLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Matched-Line Loss:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_totalMatchedLineLossTag->Wrap( -1 );
+	bSizer36->Add( ui_totalMatchedLineLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer31->Add( bSizer36, 1, 0, 5 );
+
+	wxBoxSizer* bSizer37;
+	bSizer37 = new wxBoxSizer( wxVERTICAL );
 
 	ui_totalMatchedLineLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_totalMatchedLineLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_totalMatchedLineLoss->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_1->Add( ui_totalMatchedLineLoss, 0, wxALL, 5 );
+	bSizer37->Add( ui_totalMatchedLineLoss, 0, wxALL, 5 );
+
+
+	bSizer31->Add( bSizer37, 1, 0, 5 );
+
+
+	bSizer28->Add( bSizer31, 1, 0, 5 );
+
+	wxBoxSizer* bSizer311;
+	bSizer311 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer361;
+	bSizer361 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer361->SetMinSize( wxSize( 260,-1 ) );
+	ui_addedLossTag = new wxStaticText( this, wxID_ANY, wxT("Additional Loss Due To SWR:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_addedLossTag->Wrap( -1 );
+	bSizer361->Add( ui_addedLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer311->Add( bSizer361, 1, 0, 5 );
+
+	wxBoxSizer* bSizer371;
+	bSizer371 = new wxBoxSizer( wxVERTICAL );
 
 	ui_addedLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_addedLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_addedLoss->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_1->Add( ui_addedLoss, 0, wxALL, 5 );
+	bSizer371->Add( ui_addedLoss, 0, wxALL, 5 );
+
+
+	bSizer311->Add( bSizer371, 1, 0, 5 );
+
+
+	bSizer28->Add( bSizer311, 1, 0, 5 );
+
+	wxBoxSizer* bSizer312;
+	bSizer312 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer362;
+	bSizer362 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer362->SetMinSize( wxSize( 260,-1 ) );
+	ui_totalLossTag = new wxStaticText( this, wxID_ANY, wxT("Total Line Loss:"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	ui_totalLossTag->Wrap( -1 );
+	bSizer362->Add( ui_totalLossTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer312->Add( bSizer362, 1, wxALIGN_RIGHT, 5 );
+
+	wxBoxSizer* bSizer372;
+	bSizer372 = new wxBoxSizer( wxVERTICAL );
 
 	ui_totalLoss = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_totalLoss->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_totalLoss->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_1->Add( ui_totalLoss, 0, wxALL, 5 );
+	bSizer372->Add( ui_totalLoss, 0, wxALL, 5 );
+
+
+	bSizer312->Add( bSizer372, 1, 0, 5 );
+
+
+	bSizer28->Add( bSizer312, 1, 0, 5 );
+
+	wxBoxSizer* bSizer3121;
+	bSizer3121 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer3621;
+	bSizer3621 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer3621->SetMinSize( wxSize( 260,-1 ) );
+	ui_impedanceRectangularTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Real/Imaginary):"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	ui_impedanceRectangularTag->Wrap( -1 );
+	bSizer3621->Add( ui_impedanceRectangularTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer3121->Add( bSizer3621, 1, 0, 5 );
+
+	wxBoxSizer* bSizer3721;
+	bSizer3721 = new wxBoxSizer( wxVERTICAL );
 
 	ui_impedanceRectangular = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_impedanceRectangular->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	ui_impedanceRectangular->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_1->Add( ui_impedanceRectangular, 0, wxALL, 5 );
+	bSizer3721->Add( ui_impedanceRectangular, 0, wxALL, 5 );
+
+
+	bSizer3121->Add( bSizer3721, 1, 0, 5 );
+
+
+	bSizer28->Add( bSizer3121, 1, 0, 5 );
+
+	wxBoxSizer* bSizer3122;
+	bSizer3122 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer3622;
+	bSizer3622 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer3622->SetMinSize( wxSize( 260,-1 ) );
+	ui_impedancePolarTag = new wxStaticText( this, wxID_ANY, wxT("Impedance at Input (Polar):"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
+	ui_impedancePolarTag->Wrap( -1 );
+	bSizer3622->Add( ui_impedancePolarTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer3122->Add( bSizer3622, 1, 0, 5 );
+
+	wxBoxSizer* bSizer3722;
+	bSizer3722 = new wxBoxSizer( wxVERTICAL );
 
 	ui_impedancePolar = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_impedancePolar->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	ui_impedancePolar->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_1->Add( ui_impedancePolar, 0, wxALL, 5 );
+	bSizer3722->Add( ui_impedancePolar, 0, wxALL, 5 );
 
 
-	bPane3->Add( bPane3_1, 1, wxEXPAND, 5 );
+	bSizer3122->Add( bSizer3722, 1, 0, 5 );
 
-	wxBoxSizer* bPane3_2;
-	bPane3_2 = new wxBoxSizer( wxVERTICAL );
 
+	bSizer28->Add( bSizer3122, 1, 0, 5 );
+
+
+	bSizer27->Add( bSizer28, 1, 0, 5 );
+
+	wxBoxSizer* bSizer29;
+	bSizer29 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer32;
+	bSizer32 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer38;
+	bSizer38 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer38->SetMinSize( wxSize( 150,-1 ) );
 	ui_characteristicZ0Tag = new wxStaticText( this, wxID_ANY, wxT("Characteristic Z0:"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_characteristicZ0Tag->Wrap( -1 );
-	bPane3_2->Add( ui_characteristicZ0Tag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor:"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_velocityFactorTag->Wrap( -1 );
-	bPane3_2->Add( ui_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_maxVoltageTag = new wxStaticText( this, wxID_ANY, wxT("Max Voltage:"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_maxVoltageTag->Wrap( -1 );
-	bPane3_2->Add( ui_maxVoltageTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_swrInputTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Input):"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_swrInputTag->Wrap( -1 );
-	bPane3_2->Add( ui_swrInputTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_swrLoadTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_swrLoadTag->Wrap( -1 );
-	bPane3_2->Add( ui_swrLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	ui_rhoLoadTag = new wxStaticText( this, wxID_ANY, wxT("Rho (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
-	ui_rhoLoadTag->Wrap( -1 );
-	bPane3_2->Add( ui_rhoLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	bSizer38->Add( ui_characteristicZ0Tag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 
-	bPane3->Add( bPane3_2, 1, wxEXPAND, 5 );
+	bSizer32->Add( bSizer38, 1, 0, 5 );
 
-	wxBoxSizer* bPane3_3;
-	bPane3_3 = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer* bSizer39;
+	bSizer39 = new wxBoxSizer( wxVERTICAL );
 
 	ui_characteristicZ0 = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_characteristicZ0->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	ui_characteristicZ0->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_3->Add( ui_characteristicZ0, 0, wxALL, 5 );
+	bSizer39->Add( ui_characteristicZ0, 0, wxALL, 5 );
+
+
+	bSizer32->Add( bSizer39, 1, 0, 5 );
+
+
+	bSizer29->Add( bSizer32, 1, 0, 5 );
+
+	wxBoxSizer* bSizer33;
+	bSizer33 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer40;
+	bSizer40 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer40->SetMinSize( wxSize( 150,-1 ) );
+	ui_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_velocityFactorTag->Wrap( -1 );
+	bSizer40->Add( ui_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer33->Add( bSizer40, 1, 0, 5 );
+
+	wxBoxSizer* bSizer41;
+	bSizer41 = new wxBoxSizer( wxVERTICAL );
 
 	ui_velocityFactor = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_velocityFactor->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_velocityFactor->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_3->Add( ui_velocityFactor, 0, wxALL, 5 );
+	bSizer41->Add( ui_velocityFactor, 0, wxALL, 5 );
+
+
+	bSizer33->Add( bSizer41, 1, 0, 5 );
+
+
+	bSizer29->Add( bSizer33, 1, 0, 5 );
+
+	wxBoxSizer* bSizer331;
+	bSizer331 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer401;
+	bSizer401 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer401->SetMinSize( wxSize( 150,-1 ) );
+	ui_maxVoltageTag = new wxStaticText( this, wxID_ANY, wxT("Max Voltage:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_maxVoltageTag->Wrap( -1 );
+	bSizer401->Add( ui_maxVoltageTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer331->Add( bSizer401, 1, 0, 5 );
+
+	wxBoxSizer* bSizer411;
+	bSizer411 = new wxBoxSizer( wxVERTICAL );
 
 	ui_maxVoltage = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_maxVoltage->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_maxVoltage->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_3->Add( ui_maxVoltage, 0, wxALL, 5 );
+	bSizer411->Add( ui_maxVoltage, 0, wxALL, 5 );
+
+
+	bSizer331->Add( bSizer411, 1, 0, 5 );
+
+
+	bSizer29->Add( bSizer331, 1, 0, 5 );
+
+	wxBoxSizer* bSizer332;
+	bSizer332 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer402;
+	bSizer402 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer402->SetMinSize( wxSize( 150,-1 ) );
+	ui_swrInputTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Input):"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_swrInputTag->Wrap( -1 );
+	bSizer402->Add( ui_swrInputTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer332->Add( bSizer402, 1, 0, 5 );
+
+	wxBoxSizer* bSizer412;
+	bSizer412 = new wxBoxSizer( wxVERTICAL );
 
 	ui_swrInput = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_swrInput->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_swrInput->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_3->Add( ui_swrInput, 0, wxALL, 5 );
+	bSizer412->Add( ui_swrInput, 0, wxALL, 5 );
+
+
+	bSizer332->Add( bSizer412, 1, 0, 5 );
+
+
+	bSizer29->Add( bSizer332, 1, 0, 5 );
+
+	wxBoxSizer* bSizer3321;
+	bSizer3321 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer4021;
+	bSizer4021 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer4021->SetMinSize( wxSize( 150,-1 ) );
+	ui_swrLoadTag = new wxStaticText( this, wxID_ANY, wxT("SWR (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_swrLoadTag->Wrap( -1 );
+	bSizer4021->Add( ui_swrLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer3321->Add( bSizer4021, 1, 0, 5 );
+
+	wxBoxSizer* bSizer4121;
+	bSizer4121 = new wxBoxSizer( wxVERTICAL );
 
 	ui_swrLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_swrLoad->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_swrLoad->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_3->Add( ui_swrLoad, 0, wxALL, 5 );
+	bSizer4121->Add( ui_swrLoad, 0, wxALL, 5 );
+
+
+	bSizer3321->Add( bSizer4121, 1, 0, 5 );
+
+
+	bSizer29->Add( bSizer3321, 1, 0, 5 );
+
+	wxBoxSizer* bSizer3322;
+	bSizer3322 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer4022;
+	bSizer4022 = new wxBoxSizer( wxVERTICAL );
+
+	bSizer4022->SetMinSize( wxSize( 150,-1 ) );
+	ui_rhoLoadTag = new wxStaticText( this, wxID_ANY, wxT("Rho (Load):"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_rhoLoadTag->Wrap( -1 );
+	bSizer4022->Add( ui_rhoLoadTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+
+	bSizer3322->Add( bSizer4022, 1, 0, 5 );
+
+	wxBoxSizer* bSizer4122;
+	bSizer4122 = new wxBoxSizer( wxVERTICAL );
 
 	ui_rhoLoad = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	ui_rhoLoad->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+	ui_rhoLoad->SetMinSize( wxSize( 200,-1 ) );
 
-	bPane3_3->Add( ui_rhoLoad, 0, wxALL, 5 );
-
-
-	bPane3->Add( bPane3_3, 1, wxEXPAND, 5 );
+	bSizer4122->Add( ui_rhoLoad, 0, wxALL, 5 );
 
 
-	bMainWindow->Add( bPane3, 1, wxEXPAND, 5 );
+	bSizer3322->Add( bSizer4122, 1, 0, 5 );
+
+
+	bSizer29->Add( bSizer3322, 1, 0, 5 );
+
+
+	bSizer27->Add( bSizer29, 1, 0, 5 );
+
+
+	bMainWindow->Add( bSizer27, 1, wxALIGN_CENTER|wxEXPAND, 5 );
 
 
 	this->SetSizer( bMainWindow );
