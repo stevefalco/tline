@@ -713,7 +713,7 @@ helpAboutDialog::~helpAboutDialog()
 
 tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 900,700 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bTunerOuter;
@@ -879,6 +879,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	this->SetSizer( bTunerOuter );
 	this->Layout();
+	bTunerOuter->Fit( this );
 
 	this->Centre( wxBOTH );
 
