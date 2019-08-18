@@ -44,10 +44,10 @@ the build.  On Fedora Linux this is provided by the wxGTK3-devel package.
 
 Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 
-First, create a source archive.  Note that the version 0.0.1 must be changed
-to match the version in the spec file.
+First, create a source archive.  Note that the "TAG=x.x.x" must be changed
+to match the version in the spec file, and that has to match a tag in git.
 
-TAG=0.0.1
+TAG=0.0.2
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 
 Next, prepare a working directory:
@@ -68,7 +68,7 @@ adjusting the version string and target Fedora version as necessary.  In
 this case, you first generate the sourc RPM in your local rpmbuild
 directory, then pass that to mock:
 
-TAG=0.0.1
+TAG=0.0.2
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
 cp spec/tline.spec ~/rpmbuild/SPECS
@@ -87,16 +87,13 @@ you will want to install mingw32-wxWidgets3.noarch, mingw32-nsis.x86_64, etc.
 Also, Tline for windows uses a number of dlls from various projects.  The dll
 files are stored in the windows-installer subdirectory.
 
-First, build the Tline.exe file:
+First, build the Tline.exe file and copy it into the windows-installer
+directory:
 
 1) mkdir build-windows
 2) cd build-windows
 3) mingw32-cmake ..
-4) make
-
-Copy the tline executable into the windows-installer subdirectory:
-
-cp tline.exe ../windows-installer
+4) make -j12 && cp tline.exe ../windows-installer
 
 Generate the windows package:
 
