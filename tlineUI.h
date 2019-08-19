@@ -28,6 +28,7 @@
 #include <wx/frame.h>
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
+#include <wx/valtext.h>
 #include <wx/statbmp.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -267,6 +268,11 @@ class tunerDialog : public wxDialog
 
 
 	public:
+		wxString m_tunerSourceResistanceStr;
+		wxString m_tunerSourceReactanceStr;
+		wxString m_tunerLoadResistanceStr;
+		wxString m_tunerLoadReactanceStr;
+		wxString m_tunerQStr;
 
 		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();

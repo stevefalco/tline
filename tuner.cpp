@@ -55,72 +55,72 @@ void tuner::SetFrequency( double v )
 	recalculate();
 }
 
-double tuner::GetSourceResistance()
+wxString tuner::GetSourceResistance()
 {
-	return m_sourceResistance;
+	return m_tunerSourceResistanceStr;
 }
 
-void tuner::SetSourceResistance( double v )
+void tuner::SetSourceResistance( wxString v )
 {
-	m_sourceResistance = v;
+	m_tunerSourceResistanceStr = v;
 
-	dl_tunerSourceResistance->ChangeValue(wxString::Format(wxT("%.2f"), m_sourceResistance));
+	dl_tunerSourceResistance->ChangeValue(m_tunerSourceResistanceStr);
 
 	recalculate();
 }
 
-double tuner::GetSourceReactance()
+wxString tuner::GetSourceReactance()
 {
-	return m_sourceReactance;
+	return m_tunerSourceReactanceStr;
 }
 
-void tuner::SetSourceReactance( double v )
+void tuner::SetSourceReactance( wxString v )
 {
-	m_sourceReactance = v;
+	m_tunerSourceReactanceStr = v;
 
-	dl_tunerSourceReactance->ChangeValue(wxString::Format(wxT("%.2f"), m_sourceReactance));
+	dl_tunerSourceReactance->ChangeValue(m_tunerSourceReactanceStr);
 
 	recalculate();
 }
 
-double tuner::GetLoadResistance()
+wxString tuner::GetLoadResistance()
 {
-	return m_loadResistance;
+	return m_tunerLoadResistanceStr;
 }
 
-void tuner::SetLoadResistance( double v )
+void tuner::SetLoadResistance( wxString v )
 {
-	m_loadResistance = v;
+	m_tunerLoadResistanceStr = v;
 
-	dl_tunerLoadResistance->ChangeValue(wxString::Format(wxT("%.2f"), m_loadResistance));
+	dl_tunerLoadResistance->ChangeValue(m_tunerLoadResistanceStr);
 
 	recalculate();
 }
 
-double tuner::GetLoadReactance()
+wxString tuner::GetLoadReactance()
 {
-	return m_loadReactance;
+	return m_tunerLoadReactanceStr;
 }
 
-void tuner::SetLoadReactance( double v )
+void tuner::SetLoadReactance( wxString v )
 {
-	m_loadReactance = v;
+	m_tunerLoadReactanceStr = v;
 
-	dl_tunerLoadReactance->ChangeValue(wxString::Format(wxT("%.2f"), m_loadReactance));
+	dl_tunerLoadReactance->ChangeValue(m_tunerLoadReactanceStr);
 
 	recalculate();
 }
 
-double tuner::GetQ()
+wxString tuner::GetQ()
 {
-	return m_desiredQ;
+	return m_tunerQStr;
 }
 
-void tuner::SetQ( double v )
+void tuner::SetQ( wxString v )
 {
-	m_desiredQ = v;
+	m_tunerQStr = v;
 
-	dl_tunerQ->ChangeValue(wxString::Format(wxT("%.2f"), m_desiredQ));
+	dl_tunerQ->ChangeValue(m_tunerQStr);
 
 	recalculate();
 }
@@ -173,35 +173,35 @@ void tuner::SetTopology( wxString v )
 
 void tuner::onSourceResistance( wxCommandEvent& event )
 {
-	m_sourceResistance = atof(event.GetString());
+	m_tunerSourceResistanceStr = event.GetString();
 
 	recalculate();
 }
 
 void tuner::onSourceReactance( wxCommandEvent& event )
 {
-	m_sourceReactance = atof(event.GetString());
+	m_tunerSourceReactanceStr = event.GetString();
 
 	recalculate();
 }
 
 void tuner::onLoadResistance( wxCommandEvent& event )
 {
-	m_loadResistance = atof(event.GetString());
+	m_tunerLoadResistanceStr = event.GetString();
 
 	recalculate();
 }
 
 void tuner::onLoadReactance( wxCommandEvent& event )
 {
-	m_loadReactance = atof(event.GetString());
+	m_tunerLoadReactanceStr = event.GetString();
 
 	recalculate();
 }
 
 void tuner::onQ( wxCommandEvent& event )
 {
-	m_desiredQ = atof(event.GetString());
+	m_tunerQStr = event.GetString();
 
 	recalculate();
 }
@@ -215,6 +215,12 @@ void tuner::onTunerTopologySelected( wxCommandEvent& event )
 
 void tuner::recalculate()
 {
+	m_sourceResistance = atof(m_tunerSourceResistanceStr);
+	m_sourceReactance = atof(m_tunerSourceReactanceStr);
+	m_loadResistance = atof(m_tunerLoadResistanceStr);
+	m_loadReactance = atof(m_tunerLoadReactanceStr);
+	m_desiredQ = atof(m_tunerQStr);
+
 	if(strcmp(m_topologyStr, "High Pass (Lpar Cser)") == 0) {
 		LCHP();
 	} else if(strcmp(m_topologyStr, "Low Pass (Cpar Lser)") == 0) {

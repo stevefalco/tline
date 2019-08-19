@@ -758,6 +758,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerParameters->Add( dl_tunerSourceResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_tunerSourceResistance = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerSourceResistance->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerSourceResistanceStr ) );
+
 	gTunerParameters->Add( dl_tunerSourceResistance, 0, wxALL, 0 );
 
 	dl_tunerSourceReactanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -765,6 +767,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerParameters->Add( dl_tunerSourceReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_tunerSourceReactance = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerSourceReactance->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerSourceReactanceStr ) );
+
 	gTunerParameters->Add( dl_tunerSourceReactance, 0, wxALL, 0 );
 
 	dl_tunerLoadResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Load Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -772,6 +776,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerParameters->Add( dl_tunerLoadResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_tunerLoadResistance = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerLoadResistance->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerLoadResistanceStr ) );
+
 	gTunerParameters->Add( dl_tunerLoadResistance, 0, wxALL, 0 );
 
 	dl_tunerLoadReactanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Load Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -779,6 +785,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerParameters->Add( dl_tunerLoadReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_tunerLoadReactance = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerLoadReactance->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerLoadReactanceStr ) );
+
 	gTunerParameters->Add( dl_tunerLoadReactance, 0, wxALL, 0 );
 
 	dl_tunerQtag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Desired Q"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -786,6 +794,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerParameters->Add( dl_tunerQtag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_tunerQ = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerQ->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerQStr ) );
+
 	gTunerParameters->Add( dl_tunerQ, 0, wxALL, 0 );
 
 	dl_tunerFrequencyTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Frequency (MHz)"), wxDefaultPosition, wxDefaultSize, 0 );

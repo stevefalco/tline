@@ -45,20 +45,20 @@ class tuner : public tunerDialog
 
 		void		SetFrequency( double v );
 
-		double		GetSourceResistance();
-		void		SetSourceResistance( double v );
+		wxString	GetSourceResistance();
+		void		SetSourceResistance( wxString v );
 
-		double		GetSourceReactance();
-		void		SetSourceReactance( double v );
+		wxString	GetSourceReactance();
+		void		SetSourceReactance( wxString v );
 
-		double		GetLoadResistance();
-		void		SetLoadResistance( double v );
+		wxString	GetLoadResistance();
+		void		SetLoadResistance( wxString v );
 
-		double		GetLoadReactance();
-		void		SetLoadReactance( double v );
+		wxString	GetLoadReactance();
+		void		SetLoadReactance( wxString v );
 
-		double		GetQ();
-		void		SetQ( double v );
+		wxString	GetQ();
+		void		SetQ( wxString v );
 
 		wxString	GetTopology();
 		void		SetTopology( wxString v );

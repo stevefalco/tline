@@ -135,11 +135,11 @@ class tlineLogic : public tlineUI
 		double			m_voltageForPower;
 		double			m_wavelength;
 
-		double			m_tunerLoadReactance;
-		double			m_tunerLoadResistance;
-		double			m_tunerQ;
-		double			m_tunerSourceReactance;
-		double			m_tunerSourceResistance;
+		wxString		m_tunerLoadReactanceStr;
+		wxString		m_tunerLoadResistanceStr;
+		wxString		m_tunerQStr;
+		wxString		m_tunerSourceReactanceStr;
+		wxString		m_tunerSourceResistanceStr;
 
 		double			m_userLineAttenuation;
 		double			m_userLineCableReactance;

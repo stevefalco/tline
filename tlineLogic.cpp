@@ -166,27 +166,27 @@ void tlineLogic::loadFile( wxString path )
 
 		// Parse tuner parameters
 		if(strcmp(buffer, "m_tunerSourceResistance") == 0) {
-			m_tunerSourceResistance = atof(p);
+			m_tunerSourceResistanceStr = p;
 			m_tunerInit = TRUE;
 		}
 
 		if(strcmp(buffer, "m_tunerSourceReactance") == 0) {
-			m_tunerSourceReactance = atof(p);
+			m_tunerSourceReactanceStr = p;
 			m_tunerInit = TRUE;
 		}
 
 		if(strcmp(buffer, "m_tunerLoadResistance") == 0) {
-			m_tunerLoadResistance = atof(p);
+			m_tunerLoadResistanceStr = p;
 			m_tunerInit = TRUE;
 		}
 
 		if(strcmp(buffer, "m_tunerLoadReactance") == 0) {
-			m_tunerLoadReactance = atof(p);
+			m_tunerLoadReactanceStr = p;
 			m_tunerInit = TRUE;
 		}
 
 		if(strcmp(buffer, "m_tunerQ") == 0) {
-			m_tunerQ = atof(p);
+			m_tunerQStr = p;
 			m_tunerInit = TRUE;
 		}
 
@@ -260,11 +260,11 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 
 	// Save tuner parameters
 	if(m_tunerInit) {
-		fprintf(fp, "m_tunerSourceResistance=%f\n",	m_tunerSourceResistance);
-		fprintf(fp, "m_tunerSourceReactance=%f\n",	m_tunerSourceReactance);
-		fprintf(fp, "m_tunerLoadResistance=%f\n",	m_tunerLoadResistance);
-		fprintf(fp, "m_tunerLoadReactance=%f\n",	m_tunerLoadReactance);
-		fprintf(fp, "m_tunerQ=%f\n",			m_tunerQ);
+		fprintf(fp, "m_tunerSourceResistance=%s\n",	(const char *)m_tunerSourceResistanceStr.mb_str());
+		fprintf(fp, "m_tunerSourceReactance=%s\n",	(const char *)m_tunerSourceReactanceStr.mb_str());
+		fprintf(fp, "m_tunerLoadResistance=%s\n",	(const char *)m_tunerLoadResistanceStr.mb_str());
+		fprintf(fp, "m_tunerLoadReactance=%s\n",	(const char *)m_tunerLoadReactanceStr.mb_str());
+		fprintf(fp, "m_tunerQ=%s\n",			(const char *)m_tunerQStr.mb_str());
 		fprintf(fp, "m_tunerTopology=%s\n",		(const char *)m_tunerTopologyStr.mb_str());
 	}
 
@@ -438,30 +438,30 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 
 	if(m_tunerInit == FALSE) {
 		// Start the tuner off with reasonable values.
-		m_tunerSourceResistance = 50.0;
-		m_tunerSourceReactance = 0.0;
-		m_tunerLoadResistance = real(m_zInput);
-		m_tunerLoadReactance = imag(m_zInput);
-		m_tunerQ = 1.0;
+		m_tunerSourceResistanceStr = "50.0";
+		m_tunerSourceReactanceStr = "0.0";
+		m_tunerLoadResistanceStr = wxString::Format(wxT("%.2f"), real(m_zInput));
+		m_tunerLoadReactanceStr = wxString::Format(wxT("%.2f"), imag(m_zInput));
+		m_tunerQStr= "1.0";
 		m_tunerTopologyStr = _("High Pass (Lpar Cser)");
 
 		m_tunerInit = TRUE;
 	}
 
 	dialog->SetFrequency( m_frequency );
-	dialog->SetSourceResistance( m_tunerSourceResistance );
-	dialog->SetSourceReactance( m_tunerSourceReactance );
-	dialog->SetLoadResistance( m_tunerLoadResistance );
-	dialog->SetLoadReactance( m_tunerLoadReactance );
-	dialog->SetQ( m_tunerQ );
+	dialog->SetSourceResistance( m_tunerSourceResistanceStr );
+	dialog->SetSourceReactance( m_tunerSourceReactanceStr );
+	dialog->SetLoadResistance( m_tunerLoadResistanceStr );
+	dialog->SetLoadReactance( m_tunerLoadReactanceStr );
+	dialog->SetQ( m_tunerQStr );
 	dialog->SetTopology( m_tunerTopologyStr );
 
 	if (dialog->ShowModal() == wxID_OK) {
-		m_tunerSourceResistance = dialog->GetSourceResistance();
-		m_tunerSourceReactance = dialog->GetSourceReactance();
-		m_tunerLoadResistance = dialog->GetLoadResistance();
-		m_tunerLoadReactance = dialog->GetLoadReactance();
-		m_tunerQ = dialog->GetQ();
+		m_tunerSourceResistanceStr = dialog->GetSourceResistance();
+		m_tunerSourceReactanceStr = dialog->GetSourceReactance();
+		m_tunerLoadResistanceStr = dialog->GetLoadResistance();
+		m_tunerLoadReactanceStr = dialog->GetLoadReactance();
+		m_tunerQStr = dialog->GetQ();
 		m_tunerTopologyStr = dialog->GetTopology();
 	}
 }
