@@ -304,17 +304,11 @@ void tlineLogic::onHelpInfo( wxCommandEvent& event )
 
 void tlineLogic::onHelpAbout( wxCommandEvent& event )
 {
-	char buffer[512];
-
 	helpAbout* dialog = new helpAbout(this);
 
 	dialog->helpAboutAddTextLine1("tline - A Transmission Line Calculator");
-
-	snprintf(buffer, 512, "Version %s", VERSION);
-	dialog->helpAboutAddTextLine2(buffer);
-
+	dialog->helpAboutAddTextLine2(wxString::Format(wxT("Version %s"), VERSION));
 	dialog->helpAboutAddTextLine3("by Steven A. Falco, AC2XM");
-
 	dialog->helpAboutAddTextLine4("License: GPLv3");
 
 	dialog->ShowModal();
@@ -588,6 +582,7 @@ bool tlineLogic::setOutput( wxFFile* file )
 	char			buffer[512];
 	char			*p;
 	const char		*q = "png";
+	wxString		fileName;
 
 	g_widthStr = m_widthStr;
 	g_heightStr = m_heightStr;
@@ -598,13 +593,14 @@ bool tlineLogic::setOutput( wxFFile* file )
 		return FALSE;
 	}
 
-	snprintf(buffer, 512, "%s", (const char *)saveFileDialog.GetFilename().mb_str());
-	if((p = strrchr(buffer, '.')) != NULL) {
+	fileName = saveFileDialog.GetFilename();
+	std::size_t dot = fileName.find_last_of(".");
+	if(dot != string::npos) {
 		// We default to png, but process the suffix and change
 		// the selection to match the user's request if possible.
-		if((strcasecmp(p, ".jpg") == 0) || (strcasecmp(p, ".jpeg") == 0)) {
+		if(fileName.substr(dot).Lower() == ".jpg" || fileName.substr(dot).Lower() == ".jpeg") {
 			q = "jpeg";
-		} else if(strcasecmp(p, ".gif") == 0) {
+		} else if(fileName.substr(dot).Lower() == ".gif") {
 			q = "gif";
 		}
 	}
@@ -661,8 +657,6 @@ void tlineLogic::doPlot( int type, int mode )
 	wxFFile			dataFP;
 	wxFFile			controlFP;
 
-	char			buffer[512];
-
 	// Create temporary data file.
 	dataName = wxFileName::CreateTempFileName("", &dataFP);
 	if(dataName.IsEmpty()) {
@@ -711,11 +705,8 @@ void tlineLogic::doPlot( int type, int mode )
 		goto DELETE_CONTROL;
 	}
 
-	// Build the plot command.
-	snprintf(buffer, 512, "gnuplot %s %s", (mode == PLOT) ? "-p" : "", (const char *)controlName.mb_str());
-
-	// Execute the plot command.
-	system(buffer);
+	// Build and execute the plot command.
+	system(wxString::Format(wxT("gnuplot %s %s"), (mode == PLOT) ? "-p" : "", controlName));
 	
 	// Delete the temporary files from the filesystem.
 DELETE_CONTROL:
@@ -804,8 +795,6 @@ void tlineLogic::generateGraphableData(
 
 void tlineLogic::recalculate()
 {
-	char				buffer[512];
-
 	// Convert the units string.
 	if(m_unitsStr == "Feet") {
 		m_units = USE_FEET;
@@ -882,10 +871,8 @@ void tlineLogic::recalculate()
 		m_maximumVoltage = m_cp->maximumVoltage;
 	}
 
-	snprintf(buffer, 512, "%.2f", m_velocityFactor);
-	ui_velocityFactor->ChangeValue(buffer);
-	snprintf(buffer, 512, "%.0f V", m_maximumVoltage);
-	ui_maxVoltage->ChangeValue(buffer);
+	ui_velocityFactor->ChangeValue(wxString::Format(wxT("%.2f"), m_velocityFactor));
+	ui_maxVoltage->ChangeValue(wxString::Format(wxT("%.0f V"), m_maximumVoltage));
 
 	// Calculate the wavelength.  We need the velocity factor here.
 	m_wavelength = wavelength();
@@ -896,8 +883,7 @@ void tlineLogic::recalculate()
 
 		if(lastChar == 'w' || lastChar == 'W') {
 			m_length = atof(m_lengthStr) * m_wavelength;
-			snprintf(buffer, 512, "%.2f", m_length);
-			ui_cableLength->ChangeValue(buffer);
+			ui_cableLength->ChangeValue(wxString::Format(wxT("%.2f"), m_length));
 		} else {
 			m_length = atof(m_lengthStr);
 		}
@@ -907,20 +893,17 @@ void tlineLogic::recalculate()
 
 	// Calculate the length of the line in wavelength units.
 	m_lambda = m_length / m_wavelength;
-	snprintf(buffer, 512, "%.2f", m_lambda);
-	ui_lambda->ChangeValue(buffer);
+	ui_lambda->ChangeValue(wxString::Format(wxT("%.2f"), m_lambda));
 
 	// Look up the attenuation in dB per hundred feet, and convert to the
 	// other formats we will need.
 	m_attenPer100Meters = m_attenPer100Feet * M_TO_F;
 	if(m_units == USE_FEET) {
 		m_attenPer100Units = m_attenPer100Feet;
-		snprintf(buffer, 512, "%.2f dB/100 Feet", m_attenPer100Units);
-		ui_matchedLineLoss->ChangeValue(buffer);
+		ui_matchedLineLoss->ChangeValue(wxString::Format(wxT("%.2f dB/100 Feet"), m_attenPer100Units));
 	} else {
 		m_attenPer100Units = m_attenPer100Meters;
-		snprintf(buffer, 512, "%.2f dB/100 Meters", m_attenPer100Units);
-		ui_matchedLineLoss->ChangeValue(buffer);
+		ui_matchedLineLoss->ChangeValue(wxString::Format(wxT("%.2f dB/100 Meters"), m_attenPer100Units));
 	}
 	m_attenDBPerUnitLength = m_attenPer100Units / 100.0;
 	m_attenNepersPerUnitLength = m_attenDBPerUnitLength * DB_TO_NEPERS;
@@ -943,8 +926,7 @@ void tlineLogic::recalculate()
 		m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
 	}
 	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
-	snprintf(buffer, 512, "%.2f, %.2fi Ω", real(m_zCable), imag(m_zCable));
-	ui_characteristicZ0->ChangeValue(wxString::FromUTF8(buffer));
+	ui_characteristicZ0->ChangeValue(wxString::Format(wxT("%.2f, %.2fi Ω"), real(m_zCable), imag(m_zCable)));
 
 	m_resistance = atof(m_resistanceStr);
 	m_reactance = atof(m_reactanceStr);
@@ -954,10 +936,8 @@ void tlineLogic::recalculate()
 
 		// Find the input impedance for the full length of cable.
 		m_zInput = impedanceAtInput(m_length);
-		snprintf(buffer, 512, "%.2f, %.2fi Ω", real(m_zInput), imag(m_zInput));
-		ui_impedanceRectangular->ChangeValue(wxString::FromUTF8(buffer));
-		snprintf(buffer, 512, "%.2f @ %.2f°", abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES);
-		ui_impedancePolar->ChangeValue(wxString::FromUTF8(buffer));
+		ui_impedanceRectangular->ChangeValue(wxString::Format(wxT("%.2f, %.2fi Ω"), real(m_zInput), imag(m_zInput)));
+		ui_impedancePolar->ChangeValue(wxString::Format(wxT("%.2f @ %.2f°"), abs(m_zInput), arg(m_zInput) * RADIANS_TO_DEGREES));
 
 		ui_impedanceRectangularTag->SetLabel("Impedance at Input (Real/Imaginary):");
 		ui_impedancePolarTag->SetLabel("Impedance at Input (Polar):");
@@ -967,10 +947,8 @@ void tlineLogic::recalculate()
 
 		// Find the load impedance for the full length of cable.
 		m_zLoad = impedanceAtLoad(m_length);
-		snprintf(buffer, 512, "%.2f, %.2fi Ω", real(m_zLoad), imag(m_zLoad));
-		ui_impedanceRectangular->ChangeValue(wxString::FromUTF8(buffer));
-		snprintf(buffer, 512, "%.2f @ %.2f°", abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES);
-		ui_impedancePolar->ChangeValue(wxString::FromUTF8(buffer));
+		ui_impedanceRectangular->ChangeValue(wxString::Format(wxT("%.2f, %.2fi Ω"), real(m_zLoad), imag(m_zLoad)));
+		ui_impedancePolar->ChangeValue(wxString::Format(wxT("%.2f @ %.2f°"), abs(m_zLoad), arg(m_zLoad) * RADIANS_TO_DEGREES));
 
 		ui_impedanceRectangularTag->SetLabel("Impedance at Load (Real/Imaginary):");
 		ui_impedancePolarTag->SetLabel("Impedance at Load (Polar):");
@@ -980,42 +958,35 @@ void tlineLogic::recalculate()
 	m_rho = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
 	m_rhoMagnitudeAtLoad = abs(m_rho);
 	m_returnLossAtLoad = 20.0 * log10(m_rhoMagnitudeAtLoad);
-	snprintf(buffer, 512, "%.2f", m_rhoMagnitudeAtLoad);
-	ui_rhoLoad->ChangeValue(buffer);
+	ui_rhoLoad->ChangeValue(wxString::Format(wxT("%.2f"), m_rhoMagnitudeAtLoad));
 
 	// Calculate the SWR at the load.
 	m_swrAtLoad = (1.0 + m_rhoMagnitudeAtLoad) / (1.0 - m_rhoMagnitudeAtLoad);
-	snprintf(buffer, 512, "%.2f", m_swrAtLoad);
-	ui_swrLoad->ChangeValue(buffer);
+	ui_swrLoad->ChangeValue(wxString::Format(wxT("%.2f"), m_swrAtLoad));
 
 	// Calculate matched line loss.
 	m_totalMatchedLineLoss = m_attenDBPerUnitLength * m_length;
-	snprintf(buffer, 512, "%.2f dB", m_totalMatchedLineLoss);
-	ui_totalMatchedLineLoss->ChangeValue(buffer);
+	ui_totalMatchedLineLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_totalMatchedLineLoss));
 
 	// Calculate total loss.
 	double tmp = pow(10.0, 0.1 * m_totalMatchedLineLoss);
 	m_totalLoss = 10.0 * log10((sq(tmp) - sq(m_rhoMagnitudeAtLoad)) / (tmp * (1.0 - sq(m_rhoMagnitudeAtLoad))));
-	snprintf(buffer, 512, "%.2f dB", m_totalLoss);
-	ui_totalLoss->ChangeValue(buffer);
+	ui_totalLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_totalLoss));
 	
 	// Calculate extra loss caused by SWR.
 	m_extraSWRloss = m_totalLoss - m_totalMatchedLineLoss;
-	snprintf(buffer, 512, "%.2f dB", m_extraSWRloss);
-	ui_addedLoss->ChangeValue(buffer);
+	ui_addedLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_extraSWRloss));
 
 	// Calculate the SWR at the source.
 	m_returnLossAtSource = m_returnLossAtLoad - 2.0 * m_totalLoss;
 	m_rhoMagnitudeAtSource = pow(10.0, m_returnLossAtSource / 20.0);
 	m_swrAtSource = (1 + m_rhoMagnitudeAtSource) / (1 - m_rhoMagnitudeAtSource);
-	snprintf(buffer, 512, "%.2f", m_swrAtSource);
-	ui_swrInput->ChangeValue(buffer);
+	ui_swrInput->ChangeValue(wxString::Format(wxT("%.2f"), m_swrAtSource));
 	
 	// Find the voltage necessary to produce the desired power at the
 	// input of the cable, given the magnitude of the complex input
 	// impedance.
 	m_power = atof(m_powerStr);
 	m_voltageForPower = sqrt(m_power * abs(m_zInput));
-	snprintf(buffer, 512, "%.2f V", m_voltageForPower);
-	ui_inputVoltage->ChangeValue(buffer);
+	ui_inputVoltage->ChangeValue(wxString::Format(wxT("%.2f V"), m_voltageForPower));
 }

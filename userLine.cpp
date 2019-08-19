@@ -78,12 +78,9 @@ void userLine::onUseEstimatedReactanceClicked( wxCommandEvent& event )
 
 void userLine::userLineSetFrequency( double v )
 {
-	char buffer[512];
-
 	m_frequency = v;
 
-	snprintf(buffer, 512, "%.2f", m_frequency / 1e6);
-	dl_frequencyStr->ChangeValue(buffer);
+	dl_frequencyStr->ChangeValue(wxString::Format(wxT("%.2f"), m_frequency / 1e6));
 }
 
 double userLine::userLineGetAttenuation()
@@ -93,12 +90,9 @@ double userLine::userLineGetAttenuation()
 
 void userLine::userLineSetAttenuation( double v )
 {
-	char buffer[512];
-
 	m_attenuation = v;
 
-	snprintf(buffer, 512, "%.2f", m_attenuation);
-	dl_attenuationStr->ChangeValue(buffer);
+	dl_attenuationStr->ChangeValue(wxString::Format(wxT("%.2f"), m_attenuation));
 }
 
 double userLine::userLineGetVelocityFactor()
@@ -108,12 +102,9 @@ double userLine::userLineGetVelocityFactor()
 
 void userLine::userLineSetVelocityFactor( double v )
 {
-	char buffer[512];
-
 	m_velocityFactor = v;
 
-	snprintf(buffer, 512, "%.2f", m_velocityFactor);
-	dl_velocityFactorStr->ChangeValue(buffer);
+	dl_velocityFactorStr->ChangeValue(wxString::Format(wxT("%.2f"), m_velocityFactor));
 }
 
 double userLine::userLineGetCableResistance()
@@ -123,12 +114,9 @@ double userLine::userLineGetCableResistance()
 
 void userLine::userLineSetCableResistance( double v )
 {
-	char buffer[512];
-
 	m_cableResistance = v;
 
-	snprintf(buffer, 512, "%.2f", m_cableResistance);
-	dl_cableResistanceStr->ChangeValue(buffer);
+	dl_cableResistanceStr->ChangeValue(wxString::Format(wxT("%.2f"), m_cableResistance));
 }
 
 double userLine::userLineGetCableReactance()
@@ -138,12 +126,9 @@ double userLine::userLineGetCableReactance()
 
 void userLine::userLineSetCableReactance( double v )
 {
-	char buffer[512];
-
 	m_cableReactance = v;
 
-	snprintf(buffer, 512, "%.2f", m_cableReactance);
-	dl_cableReactanceStr->ChangeValue(buffer);
+	dl_cableReactanceStr->ChangeValue(wxString::Format(wxT("%.2f"), m_cableReactance));
 }
 
 double userLine::userLineGetCableVoltageLimit()
@@ -153,18 +138,13 @@ double userLine::userLineGetCableVoltageLimit()
 
 void userLine::userLineSetCableVoltageLimit( double v )
 {
-	char buffer[512];
-
 	m_cableVoltageLimit = v;
 
-	snprintf(buffer, 512, "%.2f", m_cableVoltageLimit);
-	dl_cableVoltageLimitStr->ChangeValue(buffer);
+	dl_cableVoltageLimitStr->ChangeValue(wxString::Format(wxT("%.2f"), m_cableVoltageLimit));
 }
 
 void userLine::userLineRebuildEstimatedCableReactance()
 {
-	char			buffer[512];
-
 	double			attenuation;
 	double			wavelength;
 	double			phase;
@@ -174,7 +154,5 @@ void userLine::userLineRebuildEstimatedCableReactance()
 	attenuation = DB_TO_NEPERS * m_attenuation / 100.0;
 
 	m_cableReactanceEstimate = -m_cableResistance * (attenuation / phase);
-
-	snprintf(buffer, 512, "%.2f Ω", m_cableReactanceEstimate);
-	dl_cableReactanceEstimatedStr->ChangeValue(wxString::FromUTF8(buffer));
+	dl_cableReactanceEstimatedStr->ChangeValue(wxString::Format(wxT("%.2f Ω"), m_cableReactanceEstimate));
 }

@@ -88,12 +88,7 @@ Section "Tline"
 
 	CreateDirectory "$SMPROGRAMS\${APPNAME}"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\tline.exe" "" "$INSTDIR\${ICON}"
-	# ClearErrors
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\${ICON}"
-	# IfErrors +3
-	# DetailPrint 'PASSED uninstaller link no errors'
-	# goto +2
-	# DetailPrint 'FAILED uninstaller error'
 
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${DESCRIPTION}"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
