@@ -805,6 +805,8 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerFrequency = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerFrequency->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
+	dl_tunerFrequency->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerFrequencyStr ) );
+
 	gTunerParameters->Add( dl_tunerFrequency, 0, wxALL, 5 );
 
 

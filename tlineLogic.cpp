@@ -448,7 +448,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerInit = TRUE;
 	}
 
-	dialog->SetFrequency( m_frequency );
+	dialog->m_tunerFrequencyStr = m_frequencyStr;
 	dialog->m_tunerSourceResistanceStr = m_tunerSourceResistanceStr;
 	dialog->m_tunerSourceReactanceStr = m_tunerSourceReactanceStr;
 	dialog->m_tunerLoadResistanceStr = m_tunerLoadResistanceStr;

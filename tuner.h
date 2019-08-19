@@ -43,8 +43,6 @@ class tuner : public tunerDialog
 	public:
 		tuner( wxWindow* parent );
 
-		void		SetFrequency( double v );
-
 		wxString	GetTopology();
 		void		SetTopology( wxString v );
 

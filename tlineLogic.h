@@ -93,7 +93,7 @@ class tlineLogic : public tlineUI
 
 		wxString		m_cableTypeStr = _("RG-6 (Belden 8215)");
 		wxString		m_cableTypePrevStr = _("RG-6 (Belden 8215)");
-		wxString		m_frequencyStr = _("7.0");
+		wxString		m_frequencyStr = _("7.00");
 		wxString		m_lengthStr = _("100");
 		wxString		m_loadInputStr = _("Load");
 		wxString		m_powerStr = _("1500");

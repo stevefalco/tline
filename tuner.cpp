@@ -46,15 +46,6 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 	recalculate();
 }
 
-void tuner::SetFrequency( double v )
-{
-	m_frequency = v;
-
-	dl_tunerFrequency->ChangeValue(wxString::Format(wxT("%.2f"), m_frequency / 1e6));
-
-	recalculate();
-}
-
 wxString tuner::GetTopology()
 {
 	return m_topologyStr;
@@ -103,6 +94,7 @@ void tuner::SetTopology( wxString v )
 
 void tuner::Update()
 {
+	dl_tunerFrequency->ChangeValue(m_tunerFrequencyStr);
 	dl_tunerSourceResistance->ChangeValue(m_tunerSourceResistanceStr);
 	dl_tunerSourceReactance->ChangeValue(m_tunerSourceReactanceStr);
 	dl_tunerLoadResistance->ChangeValue(m_tunerLoadResistanceStr);
@@ -154,6 +146,7 @@ void tuner::onTunerTopologySelected( wxCommandEvent& event )
 
 void tuner::recalculate()
 {
+	m_frequency = atof(m_tunerFrequencyStr) * 1.0E6;
 	m_sourceResistance = atof(m_tunerSourceResistanceStr);
 	m_sourceReactance = atof(m_tunerSourceReactanceStr);
 	m_loadResistance = atof(m_tunerLoadResistanceStr);
