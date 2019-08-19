@@ -103,8 +103,6 @@ class tlineLogic : public tlineUI
 		wxString		m_widthStr = _("800");
 		wxString		m_heightStr = _("700");
 
-		wxString		m_tunerTopologyStr;
-
 		double			m_attenDBPerUnitLength;
 		double			m_attenNepersPerUnitLength;
 		double			m_attenPer100Feet;
@@ -140,6 +138,7 @@ class tlineLogic : public tlineUI
 		wxString		m_tunerQStr;
 		wxString		m_tunerSourceReactanceStr;
 		wxString		m_tunerSourceResistanceStr;
+		wxString		m_tunerTopologyStr;
 
 		double			m_userLineAttenuation;
 		double			m_userLineCableReactance;

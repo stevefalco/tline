@@ -454,7 +454,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 	dialog->m_tunerLoadResistanceStr = m_tunerLoadResistanceStr;
 	dialog->m_tunerLoadReactanceStr = m_tunerLoadReactanceStr;
 	dialog->m_tunerQStr = m_tunerQStr;
-	dialog->SetTopology( m_tunerTopologyStr );
+	dialog->m_tunerTopologyStr = m_tunerTopologyStr;
 	dialog->Update();
 
 	if (dialog->ShowModal() == wxID_OK) {
@@ -463,7 +463,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerLoadResistanceStr = dialog->m_tunerLoadResistanceStr;
 		m_tunerLoadReactanceStr = dialog->m_tunerLoadReactanceStr;
 		m_tunerQStr = dialog->m_tunerQStr;
-		m_tunerTopologyStr = dialog->GetTopology();
+		m_tunerTopologyStr = dialog->m_tunerTopologyStr;
 	}
 }
 

@@ -43,10 +43,9 @@ class tuner : public tunerDialog
 	public:
 		tuner( wxWindow* parent );
 
-		wxString	GetTopology();
-		void		SetTopology( wxString v );
-
 		void		Update();
+
+		wxString	m_tunerTopologyStr = "High Pass (Lpar Cser)";
 
 	protected:
 		void		onSourceResistance( wxCommandEvent& event );
@@ -76,8 +75,6 @@ class tuner : public tunerDialog
 		void		BP2LL();
 		void		BP3LL();
 		void		BP4LL();
-
-		wxString	m_topologyStr = "High Pass (Lpar Cser)";
 
 		double		m_sourceResistance;
 		double		m_sourceReactance;
