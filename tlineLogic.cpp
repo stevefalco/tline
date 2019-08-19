@@ -449,19 +449,20 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 	}
 
 	dialog->SetFrequency( m_frequency );
-	dialog->SetSourceResistance( m_tunerSourceResistanceStr );
-	dialog->SetSourceReactance( m_tunerSourceReactanceStr );
-	dialog->SetLoadResistance( m_tunerLoadResistanceStr );
-	dialog->SetLoadReactance( m_tunerLoadReactanceStr );
-	dialog->SetQ( m_tunerQStr );
+	dialog->m_tunerSourceResistanceStr = m_tunerSourceResistanceStr;
+	dialog->m_tunerSourceReactanceStr = m_tunerSourceReactanceStr;
+	dialog->m_tunerLoadResistanceStr = m_tunerLoadResistanceStr;
+	dialog->m_tunerLoadReactanceStr = m_tunerLoadReactanceStr;
+	dialog->m_tunerQStr = m_tunerQStr;
 	dialog->SetTopology( m_tunerTopologyStr );
+	dialog->Update();
 
 	if (dialog->ShowModal() == wxID_OK) {
-		m_tunerSourceResistanceStr = dialog->GetSourceResistance();
-		m_tunerSourceReactanceStr = dialog->GetSourceReactance();
-		m_tunerLoadResistanceStr = dialog->GetLoadResistance();
-		m_tunerLoadReactanceStr = dialog->GetLoadReactance();
-		m_tunerQStr = dialog->GetQ();
+		m_tunerSourceResistanceStr = dialog->m_tunerSourceResistanceStr;
+		m_tunerSourceReactanceStr = dialog->m_tunerSourceReactanceStr;
+		m_tunerLoadResistanceStr = dialog->m_tunerLoadResistanceStr;
+		m_tunerLoadReactanceStr = dialog->m_tunerLoadReactanceStr;
+		m_tunerQStr = dialog->m_tunerQStr;
 		m_tunerTopologyStr = dialog->GetTopology();
 	}
 }
