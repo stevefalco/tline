@@ -19,6 +19,9 @@
 
 !define MUI_COMPONENTSPAGE_TEXT_DESCRIPTION_INFO "${DESCRIPTION}"
 
+!define MUI_ICON "${ICON}"
+!define MUI_UNICON "modern-uninstall-full.ico"
+
 RequestExecutionLevel admin
 
 InstallDir $PROGRAMFILES${BITS}\${APPNAME}
@@ -62,7 +65,6 @@ Section -Prerequisites
 SectionEnd
 
 Name "Tline"
-Icon "${ICON}"
 OutFile "tline-installer.exe"
 
 Section "Tline"
@@ -86,6 +88,12 @@ Section "Tline"
 
 	CreateDirectory "$SMPROGRAMS\${APPNAME}"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\tline.exe" "" "$INSTDIR\${ICON}"
+	# ClearErrors
+	CreateShortCut "$SMPROGRAMS\${APPNAME}\uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\${ICON}"
+	# IfErrors +3
+	# DetailPrint 'PASSED uninstaller link no errors'
+	# goto +2
+	# DetailPrint 'FAILED uninstaller error'
 
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${DESCRIPTION}"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
@@ -111,6 +119,7 @@ function un.onInit
 functionEnd
 
 section "uninstall"
+	delete "$SMPROGRAMS\${APPNAME}\uninstall.lnk"
 	delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
 	rmDir "$SMPROGRAMS\${APPNAME}"
 
