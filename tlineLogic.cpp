@@ -197,27 +197,27 @@ void tlineLogic::loadFile( wxString path )
 
 		// Parse user line parameters
 		if(strcmp(buffer, "m_userLineAttenuation") == 0) {
-			m_userLineAttenuation = atof(p);
+			m_userLineAttenuationStr = p;
 			m_userLineInit = 1;
 		}
 
 		if(strcmp(buffer, "m_userLineVelocityFactor") == 0) {
-			m_userLineVelocityFactor = atof(p);
+			m_userLineVelocityFactorStr = p;
 			m_userLineInit = 1;
 		}
 
 		if(strcmp(buffer, "m_userLineCableResistance") == 0) {
-			m_userLineCableResistance = atof(p);
+			m_userLineCableResistanceStr = p;
 			m_userLineInit = 1;
 		}
 
 		if(strcmp(buffer, "m_userLineCableReactance") == 0) {
-			m_userLineCableReactance = atof(p);
+			m_userLineCableReactanceStr = p;
 			m_userLineInit = 1;
 		}
 
 		if(strcmp(buffer, "m_userLineCableVoltageLimit") == 0) {
-			m_userLineCableVoltageLimit = atof(p);
+			m_userLineCableVoltageLimitStr = p;
 			m_userLineInit = 1;
 		}
 	}
@@ -270,11 +270,11 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 
 	// Save user line parameters
 	if(m_userLineInit) {
-		fprintf(fp, "m_userLineAttenuation=%f\n",	m_userLineAttenuation);
-		fprintf(fp, "m_userLineVelocityFactor=%f\n",	m_userLineVelocityFactor);
-		fprintf(fp, "m_userLineCableResistance=%f\n",	m_userLineCableResistance);
-		fprintf(fp, "m_userLineCableReactance=%f\n",	m_userLineCableReactance);
-		fprintf(fp, "m_userLineCableVoltageLimit=%f\n",	m_userLineCableVoltageLimit);
+		fprintf(fp, "m_userLineAttenuation=%s\n",	(const char *)m_userLineAttenuationStr.mb_str());
+		fprintf(fp, "m_userLineVelocityFactor=%s\n",	(const char *)m_userLineVelocityFactorStr.mb_str());
+		fprintf(fp, "m_userLineCableResistance=%s\n",	(const char *)m_userLineCableResistanceStr.mb_str());
+		fprintf(fp, "m_userLineCableReactance=%s\n",	(const char *)m_userLineCableReactanceStr.mb_str());
+		fprintf(fp, "m_userLineCableVoltageLimit=%s\n",	(const char *)m_userLineCableVoltageLimitStr.mb_str());
 	}
 
 	if(fflush(fp) == EOF) {
@@ -817,33 +817,30 @@ void tlineLogic::recalculate()
 			// No such cable - open a dialog to ask for parameters.
 			userLine* dialog = new userLine(this);
 
-			// Fill in the frequency.
-			dialog->userLineSetFrequency(m_frequency);
-
 			// Fill in the previous user-provided values.
-			dialog->userLineSetAttenuation(m_userLineAttenuation);
-			dialog->userLineSetVelocityFactor(m_userLineVelocityFactor);
-			dialog->userLineSetCableResistance(m_userLineCableResistance);
-			dialog->userLineSetCableReactance(m_userLineCableReactance);
-			dialog->userLineSetCableVoltageLimit(m_userLineCableVoltageLimit);
-
-			dialog->userLineRebuildEstimatedCableReactance();
+			dialog->m_userLineFrequencyStr = m_frequencyStr;
+			dialog->m_userLineAttenuationStr = m_userLineAttenuationStr;
+			dialog->m_userLineVelocityFactorStr = m_userLineVelocityFactorStr;
+			dialog->m_userLineCableResistanceStr = m_userLineCableResistanceStr;
+			dialog->m_userLineCableReactanceStr = m_userLineCableReactanceStr;
+			dialog->m_userLineCableVoltageLimitStr = m_userLineCableVoltageLimitStr;
+			dialog->Update();
 
 			if (dialog->ShowModal() == wxID_OK) {
 				// Save the new user values.
-				m_userLineAttenuation = dialog->userLineGetAttenuation();
-				m_userLineVelocityFactor = dialog->userLineGetVelocityFactor();
-				m_userLineCableResistance = dialog->userLineGetCableResistance();
-				m_userLineCableReactance = dialog->userLineGetCableReactance();
-				m_userLineCableVoltageLimit = dialog->userLineGetCableVoltageLimit();
+				m_userLineAttenuationStr = dialog->m_userLineAttenuationStr;
+				m_userLineVelocityFactorStr = dialog->m_userLineVelocityFactorStr;
+				m_userLineCableResistanceStr = dialog->m_userLineCableResistanceStr;
+				m_userLineCableReactanceStr = dialog->m_userLineCableReactanceStr;
+				m_userLineCableVoltageLimitStr = dialog->m_userLineCableVoltageLimitStr;
 
 				// Also set our working values.
 				m_userSpecifiedZ = TRUE;
-				m_attenPer100Feet = m_userLineAttenuation;
-				m_velocityFactor = m_userLineVelocityFactor;
-				m_cableResistivePart = m_userLineCableResistance;
-				m_cableReactivePart = m_userLineCableReactance;
-				m_maximumVoltage = m_userLineCableVoltageLimit;
+				m_attenPer100Feet = atof(m_userLineAttenuationStr);
+				m_velocityFactor = atof(m_userLineVelocityFactorStr);
+				m_cableResistivePart = atof(m_userLineCableResistanceStr);
+				m_cableReactivePart = atof(m_userLineCableReactanceStr);
+				m_maximumVoltage = atof(m_userLineCableVoltageLimitStr);
 
 				// Cache has been loaded.
 				m_newUserLine = FALSE;
@@ -858,11 +855,11 @@ void tlineLogic::recalculate()
 		} else {
 			// Use the cached values.
 			m_userSpecifiedZ = TRUE;
-			m_attenPer100Feet = m_userLineAttenuation;
-			m_velocityFactor = m_userLineVelocityFactor;
-			m_cableResistivePart = m_userLineCableResistance;
-			m_cableReactivePart = m_userLineCableReactance;
-			m_maximumVoltage = m_userLineCableVoltageLimit;
+			m_attenPer100Feet = atof(m_userLineAttenuationStr);
+			m_velocityFactor = atof(m_userLineVelocityFactorStr);
+			m_cableResistivePart = atof(m_userLineCableResistanceStr);
+			m_cableReactivePart = atof(m_userLineCableReactanceStr);
+			m_maximumVoltage = atof(m_userLineCableVoltageLimitStr);
 		}
 	} else {
 		m_userSpecifiedZ = FALSE;

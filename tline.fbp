@@ -3888,7 +3888,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg">255,255,255</property>
@@ -4037,10 +4037,10 @@
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
                         <property name="tooltip"></property>
-                        <property name="validator_data_type"></property>
-                        <property name="validator_style">wxFILTER_NONE</property>
-                        <property name="validator_type">wxDefaultValidator</property>
-                        <property name="validator_variable"></property>
+                        <property name="validator_data_type">wxString</property>
+                        <property name="validator_style">wxFILTER_NUMERIC</property>
+                        <property name="validator_type">wxTextValidator</property>
+                        <property name="validator_variable">m_userLineFrequencyStr</property>
                         <property name="value">XXXXXX</property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
@@ -4172,10 +4172,10 @@
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
                         <property name="tooltip"></property>
-                        <property name="validator_data_type"></property>
-                        <property name="validator_style">wxFILTER_NONE</property>
-                        <property name="validator_type">wxDefaultValidator</property>
-                        <property name="validator_variable"></property>
+                        <property name="validator_data_type">wxString</property>
+                        <property name="validator_style">wxFILTER_NUMERIC</property>
+                        <property name="validator_type">wxTextValidator</property>
+                        <property name="validator_variable">m_userLineAttenuationStr</property>
                         <property name="value">XXXXXX</property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
@@ -4308,10 +4308,10 @@
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
                         <property name="tooltip"></property>
-                        <property name="validator_data_type"></property>
-                        <property name="validator_style">wxFILTER_NONE</property>
-                        <property name="validator_type">wxDefaultValidator</property>
-                        <property name="validator_variable"></property>
+                        <property name="validator_data_type">wxString</property>
+                        <property name="validator_style">wxFILTER_NUMERIC</property>
+                        <property name="validator_type">wxTextValidator</property>
+                        <property name="validator_variable">m_userLineVelocityFactorStr</property>
                         <property name="value">XXXXXX</property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
@@ -4444,10 +4444,10 @@
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
                         <property name="tooltip"></property>
-                        <property name="validator_data_type"></property>
-                        <property name="validator_style">wxFILTER_NONE</property>
-                        <property name="validator_type">wxDefaultValidator</property>
-                        <property name="validator_variable"></property>
+                        <property name="validator_data_type">wxString</property>
+                        <property name="validator_style">wxFILTER_NUMERIC</property>
+                        <property name="validator_type">wxTextValidator</property>
+                        <property name="validator_variable">m_userLineCableResistanceStr</property>
                         <property name="value">XXXXXX</property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
@@ -4487,7 +4487,7 @@
                         <property name="gripper">0</property>
                         <property name="hidden">0</property>
                         <property name="id">wxID_ANY</property>
-                        <property name="label">Estimated Reactance</property>
+                        <property name="label">Estimated Reactance (Ω)</property>
                         <property name="markup">0</property>
                         <property name="max_size"></property>
                         <property name="maximize_button">0</property>
@@ -4631,10 +4631,10 @@
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
                         <property name="tooltip"></property>
-                        <property name="validator_data_type"></property>
-                        <property name="validator_style">wxFILTER_NONE</property>
-                        <property name="validator_type">wxDefaultValidator</property>
-                        <property name="validator_variable"></property>
+                        <property name="validator_data_type">wxString</property>
+                        <property name="validator_style">wxFILTER_NUMERIC</property>
+                        <property name="validator_type">wxTextValidator</property>
+                        <property name="validator_variable">m_userLineCableReactanceStr</property>
                         <property name="value">XXXXXX</property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
@@ -4821,10 +4821,10 @@
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
                         <property name="tooltip"></property>
-                        <property name="validator_data_type"></property>
-                        <property name="validator_style">wxFILTER_NONE</property>
-                        <property name="validator_type">wxDefaultValidator</property>
-                        <property name="validator_variable"></property>
+                        <property name="validator_data_type">wxString</property>
+                        <property name="validator_style">wxFILTER_NUMERIC</property>
+                        <property name="validator_type">wxTextValidator</property>
+                        <property name="validator_variable">m_userLineCableVoltageLimitStr</property>
                         <property name="value">XXXXXX</property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
@@ -5567,7 +5567,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="1">
+        <object class="Dialog" expanded="0">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg">255,255,255</property>

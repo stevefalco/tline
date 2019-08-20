@@ -26,33 +26,44 @@ userLine::userLine( wxWindow* parent ) : userLineDialog( parent )
 
 void userLine::onAttenuationSelected( wxCommandEvent& event )
 {
-	m_attenuation = atof(event.GetString());
+	m_userLineAttenuationStr = event.GetString();
 
-	userLineRebuildEstimatedCableReactance();
+	Update();
 }
 
 void userLine::onVelocityFactorSelected( wxCommandEvent& event )
 {
-	m_velocityFactor = atof(event.GetString());
+	m_userLineVelocityFactorStr = event.GetString();
 
-	userLineRebuildEstimatedCableReactance();
+	Update();
 }
 
 void userLine::onCableResistanceSelected( wxCommandEvent& event )
 {
-	m_cableResistance = atof(event.GetString());
+	m_userLineCableResistanceStr = event.GetString();
 
-	userLineRebuildEstimatedCableReactance();
+	Update();
 }
 
 void userLine::onCableReactanceSelected( wxCommandEvent& event )
 {
-	m_cableReactance = atof(event.GetString());
+	m_userLineCableReactanceStr = event.GetString();
+
+	Update();
 }
 
 void userLine::onCableVoltageLimitSelected( wxCommandEvent& event )
 {
-	m_cableVoltageLimit = atof(event.GetString());
+	m_userLineCableVoltageLimitStr = event.GetString();
+
+	Update();
+}
+
+void userLine::onUseEstimatedReactanceClicked( wxCommandEvent& event )
+{
+	m_userLineCableReactanceStr = m_cableReactanceEstimateStr;
+
+	Update();
 }
 
 void userLine::onOkClicked( wxCommandEvent& event )
@@ -71,88 +82,31 @@ void userLine::onCancelClicked( wxCommandEvent& event )
 	}
 }
 
-void userLine::onUseEstimatedReactanceClicked( wxCommandEvent& event )
-{
-	userLineSetCableReactance(m_cableReactanceEstimate);
-}
-
-void userLine::userLineSetFrequency( double v )
-{
-	m_frequency = v;
-
-	dl_frequencyStr->ChangeValue(wxString::Format(wxT("%.2f"), m_frequency / 1e6));
-}
-
-double userLine::userLineGetAttenuation()
-{
-	return m_attenuation;
-}
-
-void userLine::userLineSetAttenuation( double v )
-{
-	m_attenuation = v;
-
-	dl_attenuationStr->ChangeValue(wxString::Format(wxT("%.2f"), m_attenuation));
-}
-
-double userLine::userLineGetVelocityFactor()
-{
-	return m_velocityFactor;
-}
-
-void userLine::userLineSetVelocityFactor( double v )
-{
-	m_velocityFactor = v;
-
-	dl_velocityFactorStr->ChangeValue(wxString::Format(wxT("%.2f"), m_velocityFactor));
-}
-
-double userLine::userLineGetCableResistance()
-{
-	return m_cableResistance;
-}
-
-void userLine::userLineSetCableResistance( double v )
-{
-	m_cableResistance = v;
-
-	dl_cableResistanceStr->ChangeValue(wxString::Format(wxT("%.2f"), m_cableResistance));
-}
-
-double userLine::userLineGetCableReactance()
-{
-	return m_cableReactance;
-}
-
-void userLine::userLineSetCableReactance( double v )
-{
-	m_cableReactance = v;
-
-	dl_cableReactanceStr->ChangeValue(wxString::Format(wxT("%.2f"), m_cableReactance));
-}
-
-double userLine::userLineGetCableVoltageLimit()
-{
-	return m_cableVoltageLimit;
-}
-
-void userLine::userLineSetCableVoltageLimit( double v )
-{
-	m_cableVoltageLimit = v;
-
-	dl_cableVoltageLimitStr->ChangeValue(wxString::Format(wxT("%.2f"), m_cableVoltageLimit));
-}
-
-void userLine::userLineRebuildEstimatedCableReactance()
+void userLine::Update()
 {
 	double			attenuation;
 	double			wavelength;
 	double			phase;
 
+	// Convert those parameters that we need for estimating reactance.
+	m_frequency = atof(m_userLineFrequencyStr) * 1.0E6;
+	m_attenuation = atof(m_userLineAttenuationStr);
+	m_velocityFactor = atof(m_userLineVelocityFactorStr);
+	m_cableResistance = atof(m_userLineCableResistanceStr);
+
+	// Compute the estimated reactance, and convert to string format.
 	wavelength = m_velocityFactor * SPEED_OF_LIGHT_F / m_frequency;
 	phase = (2.0 * PI) / wavelength;
 	attenuation = DB_TO_NEPERS * m_attenuation / 100.0;
-
 	m_cableReactanceEstimate = -m_cableResistance * (attenuation / phase);
-	dl_cableReactanceEstimatedStr->ChangeValue(wxString::Format(wxT("%.2f Ω"), m_cableReactanceEstimate));
+	m_cableReactanceEstimateStr = wxString::Format(wxT("%.2f"), m_cableReactanceEstimate);
+
+	// Update all the displayed values.
+	dl_frequencyStr->ChangeValue(m_userLineFrequencyStr);
+	dl_attenuationStr->ChangeValue(m_userLineAttenuationStr);
+	dl_velocityFactorStr->ChangeValue(m_userLineVelocityFactorStr);
+	dl_cableResistanceStr->ChangeValue(m_userLineCableResistanceStr);
+	dl_cableReactanceStr->ChangeValue(m_userLineCableReactanceStr);
+	dl_cableReactanceEstimatedStr->ChangeValue(m_cableReactanceEstimateStr);
+	dl_cableVoltageLimitStr->ChangeValue(m_userLineCableVoltageLimitStr);
 }

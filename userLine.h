@@ -25,23 +25,7 @@ class userLine : public userLineDialog
 	public:
 		userLine( wxWindow* parent );
 
-		void userLineSetFrequency( double v );
-
-		double userLineGetAttenuation();
-		void userLineSetAttenuation( double v );
-
-		double userLineGetVelocityFactor();
-		void userLineSetVelocityFactor( double v );
-
-		double userLineGetCableResistance();
-		void userLineSetCableResistance( double v );
-
-		double userLineGetCableReactance();
-		void userLineSetCableReactance( double v );
-		void userLineRebuildEstimatedCableReactance();
-
-		double userLineGetCableVoltageLimit();
-		void userLineSetCableVoltageLimit( double v );
+		void Update();
 
 	private:
 		void onAttenuationSelected( wxCommandEvent& event );
@@ -58,9 +42,9 @@ class userLine : public userLineDialog
 		double m_attenuation;
 		double m_velocityFactor;
 		double m_cableResistance;
-		double m_cableReactance;
 		double m_cableReactanceEstimate;
-		double m_cableVoltageLimit;
+
+		wxString m_cableReactanceEstimateStr;
 };
 
 #endif // __userLine__

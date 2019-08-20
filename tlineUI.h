@@ -26,9 +26,9 @@
 #include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/frame.h>
+#include <wx/valtext.h>
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
-#include <wx/valtext.h>
 #include <wx/statbmp.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -170,6 +170,12 @@ class userLineDialog : public wxDialog
 
 
 	public:
+		wxString m_userLineFrequencyStr;
+		wxString m_userLineAttenuationStr;
+		wxString m_userLineVelocityFactorStr;
+		wxString m_userLineCableResistanceStr;
+		wxString m_userLineCableReactanceStr;
+		wxString m_userLineCableVoltageLimitStr;
 
 		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("User Defined Line"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~userLineDialog();

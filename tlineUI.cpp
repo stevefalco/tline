@@ -538,6 +538,8 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_frequencyStr->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	dl_frequencyStr->SetMinSize( wxSize( 150,-1 ) );
 
+	dl_frequencyStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineFrequencyStr ) );
+
 	gParameters->Add( dl_frequencyStr, 0, wxALL, 5 );
 
 
@@ -549,6 +551,8 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	dl_attenuationStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_attenuationStr->SetMinSize( wxSize( 150,-1 ) );
+
+	dl_attenuationStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineAttenuationStr ) );
 
 	gParameters->Add( dl_attenuationStr, 0, wxALL, 0 );
 
@@ -562,6 +566,8 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_velocityFactorStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_velocityFactorStr->SetMinSize( wxSize( 150,-1 ) );
 
+	dl_velocityFactorStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineVelocityFactorStr ) );
+
 	gParameters->Add( dl_velocityFactorStr, 0, wxALL, 0 );
 
 
@@ -574,9 +580,11 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_cableResistanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableResistanceStr->SetMinSize( wxSize( 150,-1 ) );
 
+	dl_cableResistanceStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableResistanceStr ) );
+
 	gParameters->Add( dl_cableResistanceStr, 0, wxALL, 0 );
 
-	dl_cableReactanceEstimatedTag = new wxStaticText( this, wxID_ANY, wxT("Estimated Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableReactanceEstimatedTag = new wxStaticText( this, wxID_ANY, wxT("Estimated Reactance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableReactanceEstimatedTag->Wrap( -1 );
 	gParameters->Add( dl_cableReactanceEstimatedTag, 0, wxALL, 5 );
 
@@ -586,6 +594,8 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	dl_cableReactanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableReactanceStr->SetMinSize( wxSize( 150,-1 ) );
+
+	dl_cableReactanceStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableReactanceStr ) );
 
 	gParameters->Add( dl_cableReactanceStr, 0, wxALL, 0 );
 
@@ -601,6 +611,8 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	dl_cableVoltageLimitStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableVoltageLimitStr->SetMinSize( wxSize( 150,-1 ) );
+
+	dl_cableVoltageLimitStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableVoltageLimitStr ) );
 
 	gParameters->Add( dl_cableVoltageLimitStr, 0, wxALL, 0 );
 

@@ -140,11 +140,11 @@ class tlineLogic : public tlineUI
 		wxString		m_tunerSourceResistanceStr;
 		wxString		m_tunerTopologyStr;
 
-		double			m_userLineAttenuation;
-		double			m_userLineCableReactance;
-		double			m_userLineCableResistance;
-		double			m_userLineCableVoltageLimit;
-		double			m_userLineVelocityFactor;
+		wxString		m_userLineAttenuationStr = _("0.0");
+		wxString		m_userLineCableReactanceStr = _("0.0");
+		wxString		m_userLineCableResistanceStr = _("0.0");
+		wxString		m_userLineCableVoltageLimitStr = _("0.0");
+		wxString		m_userLineVelocityFactorStr = _("0.0");
 
 		complex<double>		m_lossCoef;
 		complex<double>		m_rho;
