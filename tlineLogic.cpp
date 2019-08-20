@@ -63,6 +63,30 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 	// Remember when the tuner dialog has been opened at least once.
 	m_tunerInit = FALSE;
 
+	// Set our defaults.
+	m_powerStr = _("1500.0");
+	ui_power->ChangeValue(m_powerStr);
+
+	m_resistanceStr = _("50");
+	ui_resistance->ChangeValue(m_resistanceStr);
+
+	m_reactanceStr = _("0");
+	ui_reactance->ChangeValue(m_reactanceStr);
+
+	m_frequencyStr = _("7.00");
+	ui_frequency->ChangeValue(m_frequencyStr);
+
+	// Length is special because we allow a 'w' character to specify wavelength
+	// rather than feet or meters.
+	m_lengthStr = _("100");
+	wxTextValidator* txtValidator = wxDynamicCast(ui_cableLength->GetValidator(), wxTextValidator);
+	if(txtValidator) {
+		txtValidator->SetCharIncludes("0123456789.eE+-w");
+	}
+	ui_cableLength->ChangeValue(m_lengthStr);
+
+	// If a file was specified on the command line, read it now.  This has to be after
+	// all the above initializations.
 	if(fileName != "") {
 		loadFile(fileName);
 	}

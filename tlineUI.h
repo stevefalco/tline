@@ -23,10 +23,10 @@
 #include <wx/radiobox.h>
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
+#include <wx/valtext.h>
 #include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/frame.h>
-#include <wx/valtext.h>
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
 #include <wx/statbmp.h>
@@ -124,6 +124,11 @@ class tlineUI : public wxFrame
 
 
 	public:
+		wxString m_lengthStr;
+		wxString m_frequencyStr;
+		wxString m_powerStr;
+		wxString m_resistanceStr;
+		wxString m_reactanceStr;
 
 		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 850,570 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 

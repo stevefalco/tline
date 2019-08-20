@@ -120,6 +120,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane1RightUpper->Add( ui_cableLengthTag, 0, wxALL, 5 );
 
 	ui_cableLength = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("100"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_cableLength->SetValidator( wxTextValidator( wxFILTER_INCLUDE_CHAR_LIST, &m_lengthStr ) );
+
 	bPane1RightUpper->Add( ui_cableLength, 0, wxALL, 0 );
 
 	ui_lengthUnits = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Feet"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -146,6 +148,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane1RightUpper->Add( ui_frequencyTag, 0, wxALL, 5 );
 
 	ui_frequency = new wxTextCtrl( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("7.00"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_frequency->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_frequencyStr ) );
+
 	bPane1RightUpper->Add( ui_frequency, 0, wxALL, 0 );
 
 	ui_frequencyUnits = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("MHz"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -185,6 +189,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2LeftTop->Add( ui_powerTag, 0, wxALL, 5 );
 
 	ui_power = new wxTextCtrl( sbPane2Left->GetStaticBox(), wxID_ANY, wxT("1500"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_power->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_powerStr ) );
+
 	bPane2LeftTop->Add( ui_power, 0, wxALL, 0 );
 
 	ui_powerUnits = new wxStaticText( sbPane2Left->GetStaticBox(), wxID_ANY, wxT("Watts"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -238,6 +244,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2CenterRightTop->Add( ui_resistanceTag, 0, wxALL, 5 );
 
 	ui_resistance = new wxTextCtrl( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("50"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_resistance->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_resistanceStr ) );
+
 	bPane2CenterRightTop->Add( ui_resistance, 0, wxALL, 0 );
 
 	ui_resistanceUnits = new wxStaticText( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("Ω"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -255,6 +263,8 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane2CenterRightBottom->Add( ui_reactanceTag, 0, wxALL, 5 );
 
 	ui_reactance = new wxTextCtrl( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_reactance->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_reactanceStr ) );
+
 	bPane2CenterRightBottom->Add( ui_reactance, 0, wxALL, 0 );
 
 	ui_reactanceUnits = new wxStaticText( sbPane2Center->GetStaticBox(), wxID_ANY, wxT("Ω"), wxDefaultPosition, wxDefaultSize, 0 );
