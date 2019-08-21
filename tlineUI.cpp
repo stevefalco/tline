@@ -775,6 +775,17 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxGridSizer* gTunerParameters;
 	gTunerParameters = new wxGridSizer( 0, 2, 0, 0 );
 
+	dl_tunerFrequencyTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Frequency (MHz)"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerFrequencyTag->Wrap( -1 );
+	gTunerParameters->Add( dl_tunerFrequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerFrequency = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerFrequency->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	dl_tunerFrequency->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerFrequencyStr ) );
+
+	gTunerParameters->Add( dl_tunerFrequency, 0, wxALL, 5 );
+
 	dl_tunerSourceResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerSourceResistanceTag->Wrap( -1 );
 	gTunerParameters->Add( dl_tunerSourceResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
@@ -819,17 +830,6 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerQ->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerQStr ) );
 
 	gTunerParameters->Add( dl_tunerQ, 0, wxALL, 0 );
-
-	dl_tunerFrequencyTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Frequency (MHz)"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerFrequencyTag->Wrap( -1 );
-	gTunerParameters->Add( dl_tunerFrequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
-
-	dl_tunerFrequency = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerFrequency->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	dl_tunerFrequency->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerFrequencyStr ) );
-
-	gTunerParameters->Add( dl_tunerFrequency, 0, wxALL, 5 );
 
 
 	sbTunerParameterContainer->Add( gTunerParameters, 1, wxEXPAND|wxSHAPED, 5 );

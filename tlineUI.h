@@ -241,6 +241,8 @@ class tunerDialog : public wxDialog
 	private:
 
 	protected:
+		wxStaticText* dl_tunerFrequencyTag;
+		wxTextCtrl* dl_tunerFrequency;
 		wxStaticText* dl_tunerSourceResistanceTag;
 		wxTextCtrl* dl_tunerSourceResistance;
 		wxStaticText* dl_tunerSourceReactanceTag;
@@ -251,8 +253,6 @@ class tunerDialog : public wxDialog
 		wxTextCtrl* dl_tunerLoadReactance;
 		wxStaticText* dl_tunerQtag;
 		wxTextCtrl* dl_tunerQ;
-		wxStaticText* dl_tunerFrequencyTag;
-		wxTextCtrl* dl_tunerFrequency;
 		wxStaticText* dl_tunerResultTag1;
 		wxTextCtrl* dl_tunerResult1;
 		wxStaticText* dl_tunerResultTag2;
@@ -279,12 +279,12 @@ class tunerDialog : public wxDialog
 
 
 	public:
+		wxString m_tunerFrequencyStr;
 		wxString m_tunerSourceResistanceStr;
 		wxString m_tunerSourceReactanceStr;
 		wxString m_tunerLoadResistanceStr;
 		wxString m_tunerLoadReactanceStr;
 		wxString m_tunerQStr;
-		wxString m_tunerFrequencyStr;
 
 		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();

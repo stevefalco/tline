@@ -186,6 +186,9 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 
 void tuner::LCHP()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lchp);
 
 	if ( bmp.IsOk() ) {
@@ -301,6 +304,9 @@ void tuner::LCHP()
 
 void tuner::CLLP()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_cllp);
 
 	if ( bmp.IsOk() ) {
@@ -399,6 +405,9 @@ void tuner::CLLP()
 
 void tuner::LCLP()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lclp);
 
 	if ( bmp.IsOk() ) {
@@ -497,6 +506,9 @@ void tuner::LCLP()
 
 void tuner::CLHP()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_clhp);
 
 	if ( bmp.IsOk() ) {
@@ -612,6 +624,9 @@ void tuner::CLHP()
 
 void tuner::HPPI()
 {
+	dl_tunerQtag->Show();
+	dl_tunerQ->Show();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hppi);
 
 	if ( bmp.IsOk() ) {
@@ -742,6 +757,9 @@ void tuner::HPPI()
 
 void tuner::LPPI()
 {
+	dl_tunerQtag->Show();
+	dl_tunerQ->Show();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lppi);
 
 	if ( bmp.IsOk() ) {
@@ -872,6 +890,9 @@ void tuner::LPPI()
 
 void tuner::HPT()
 {
+	dl_tunerQtag->Show();
+	dl_tunerQ->Show();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hpt);
 
 	if ( bmp.IsOk() ) {
@@ -994,6 +1015,9 @@ void tuner::HPT()
 
 void tuner::LPT()
 {
+	dl_tunerQtag->Show();
+	dl_tunerQ->Show();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lpt);
 
 	if ( bmp.IsOk() ) {
@@ -1116,6 +1140,9 @@ void tuner::LPT()
 
 void tuner::HP1LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hp1ll);
 
 	if ( bmp.IsOk() ) {
@@ -1230,6 +1257,9 @@ void tuner::HP1LL()
 
 void tuner::HP2LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hp2ll);
 
 	if ( bmp.IsOk() ) {
@@ -1344,6 +1374,9 @@ void tuner::HP2LL()
 
 void tuner::LP1LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lp1ll);
 
 	if ( bmp.IsOk() ) {
@@ -1442,6 +1475,9 @@ void tuner::LP1LL()
 
 void tuner::LP2LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lp2ll);
 
 	if ( bmp.IsOk() ) {
@@ -1540,6 +1576,9 @@ void tuner::LP2LL()
 
 void tuner::BP1LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp1ll);
 
 	if ( bmp.IsOk() ) {
@@ -1645,6 +1684,9 @@ void tuner::BP1LL()
 
 void tuner::BP2LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp2ll);
 
 	if ( bmp.IsOk() ) {
@@ -1750,6 +1792,9 @@ void tuner::BP2LL()
 
 void tuner::BP3LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp3ll);
 
 	if ( bmp.IsOk() ) {
@@ -1857,6 +1902,9 @@ void tuner::BP3LL()
 
 void tuner::BP4LL()
 {
+	dl_tunerQtag->Hide();
+	dl_tunerQ->Hide();
+
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp4ll);
 
 	if ( bmp.IsOk() ) {
