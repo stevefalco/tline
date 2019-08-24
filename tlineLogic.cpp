@@ -944,7 +944,7 @@ void tlineLogic::recalculate()
 		// Find the complex impedance of the coax.  There are several ways to
 		// do this, and they each give different answers.  This is the best
 		// method that I've found...
-		m_cableResistivePart = sqrt(sq(m_impedance) / (1.0 + sq(m_attenNepersPerUnitLength) / sq(m_phase)));
+		m_cableResistivePart = m_impedance * sqrt(1.0 / (1.0 + sq(m_attenNepersPerUnitLength / m_phase)));
 		m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
 	}
 	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
