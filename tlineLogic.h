@@ -136,6 +136,7 @@ class tlineLogic : public tlineUI
 		wxString		m_tunerTopologyStr;
 
 		wxString		m_userLineAttenuationStr = _("0.0");
+		wxString		m_userLineCableImpedanceStr = _("0.0");
 		wxString		m_userLineCableReactanceStr = _("0.0");
 		wxString		m_userLineCableResistanceStr = _("0.0");
 		wxString		m_userLineCableVoltageLimitStr = _("0.0");

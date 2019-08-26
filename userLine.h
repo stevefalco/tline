@@ -30,21 +30,27 @@ class userLine : public userLineDialog
 	private:
 		void onAttenuationSelected( wxCommandEvent& event );
 		void onVelocityFactorSelected( wxCommandEvent& event );
+		void onCableImpedanceSelected( wxCommandEvent& event );
 		void onCableResistanceSelected( wxCommandEvent& event );
 		void onCableReactanceSelected( wxCommandEvent& event );
 		void onCableVoltageLimitSelected( wxCommandEvent& event );
 
 		void onOkClicked( wxCommandEvent& event );
 		void onCancelClicked( wxCommandEvent& event );
-		void onUseEstimatedReactanceClicked( wxCommandEvent& event );
+
+		void ResistanceReactanceFromImpedance();
+		void ImpedanceFromResistanceReactance();
+
+		inline double sq( double v ) {
+			return v * v;
+		}
 
 		double m_frequency;
 		double m_attenuation;
 		double m_velocityFactor;
+		double m_cableImpedance;
 		double m_cableResistance;
-		double m_cableReactanceEstimate;
-
-		wxString m_cableReactanceEstimateStr;
+		double m_cableReactance;
 };
 
 #endif // __userLine__

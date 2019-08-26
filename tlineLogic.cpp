@@ -230,6 +230,11 @@ void tlineLogic::loadFile( wxString path )
 			m_userLineInit = 1;
 		}
 
+		if(strcmp(buffer, "m_userLineCableImpedance") == 0) {
+			m_userLineCableImpedanceStr = p;
+			m_userLineInit = 1;
+		}
+
 		if(strcmp(buffer, "m_userLineCableResistance") == 0) {
 			m_userLineCableResistanceStr = p;
 			m_userLineInit = 1;
@@ -296,6 +301,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	if(m_userLineInit) {
 		fprintf(fp, "m_userLineAttenuation=%s\n",	(const char *)m_userLineAttenuationStr.mb_str());
 		fprintf(fp, "m_userLineVelocityFactor=%s\n",	(const char *)m_userLineVelocityFactorStr.mb_str());
+		fprintf(fp, "m_userLineCableImpedance=%s\n",	(const char *)m_userLineCableImpedanceStr.mb_str());
 		fprintf(fp, "m_userLineCableResistance=%s\n",	(const char *)m_userLineCableResistanceStr.mb_str());
 		fprintf(fp, "m_userLineCableReactance=%s\n",	(const char *)m_userLineCableReactanceStr.mb_str());
 		fprintf(fp, "m_userLineCableVoltageLimit=%s\n",	(const char *)m_userLineCableVoltageLimitStr.mb_str());
@@ -845,6 +851,7 @@ void tlineLogic::recalculate()
 			dialog->m_userLineFrequencyStr = m_frequencyStr;
 			dialog->m_userLineAttenuationStr = m_userLineAttenuationStr;
 			dialog->m_userLineVelocityFactorStr = m_userLineVelocityFactorStr;
+			dialog->m_userLineCableImpedanceStr = m_userLineCableImpedanceStr;
 			dialog->m_userLineCableResistanceStr = m_userLineCableResistanceStr;
 			dialog->m_userLineCableReactanceStr = m_userLineCableReactanceStr;
 			dialog->m_userLineCableVoltageLimitStr = m_userLineCableVoltageLimitStr;
@@ -854,6 +861,7 @@ void tlineLogic::recalculate()
 				// Save the new user values.
 				m_userLineAttenuationStr = dialog->m_userLineAttenuationStr;
 				m_userLineVelocityFactorStr = dialog->m_userLineVelocityFactorStr;
+				m_userLineCableImpedanceStr = dialog->m_userLineCableImpedanceStr;
 				m_userLineCableResistanceStr = dialog->m_userLineCableResistanceStr;
 				m_userLineCableReactanceStr = dialog->m_userLineCableReactanceStr;
 				m_userLineCableVoltageLimitStr = dialog->m_userLineCableVoltageLimitStr;

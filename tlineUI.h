@@ -150,26 +150,26 @@ class userLineDialog : public wxDialog
 		wxTextCtrl* dl_attenuationStr;
 		wxStaticText* dl_velocityFactorTag;
 		wxTextCtrl* dl_velocityFactorStr;
+		wxStaticText* dl_cableImpedanceTag;
+		wxTextCtrl* dl_cableImpedanceStr;
 		wxStaticText* dl_cableResistanceTag;
 		wxTextCtrl* dl_cableResistanceStr;
-		wxStaticText* dl_cableReactanceEstimatedTag;
 		wxStaticText* dl_cableReactanceTag;
 		wxTextCtrl* dl_cableReactanceStr;
-		wxTextCtrl* dl_cableReactanceEstimatedStr;
 		wxStaticText* dl_cableVoltageLimitTag;
 		wxTextCtrl* dl_cableVoltageLimitStr;
-		wxButton* dl_useEstimatedReactanceButton;
 		wxStaticText* dl_hiddenPad;
 		wxButton* dl_okButton;
 		wxButton* dl_cancelButton;
+		wxStaticText* dl_help;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onAttenuationSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onVelocityFactorSelected( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onCableImpedanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableResistanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableReactanceSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableVoltageLimitSelected( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onUseEstimatedReactanceClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onOkClicked( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCancelClicked( wxCommandEvent& event ) { event.Skip(); }
 
@@ -178,11 +178,12 @@ class userLineDialog : public wxDialog
 		wxString m_userLineFrequencyStr;
 		wxString m_userLineAttenuationStr;
 		wxString m_userLineVelocityFactorStr;
+		wxString m_userLineCableImpedanceStr;
 		wxString m_userLineCableResistanceStr;
 		wxString m_userLineCableReactanceStr;
 		wxString m_userLineCableVoltageLimitStr;
 
-		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("User Defined Line"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
+		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("User Defined Line"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 750,450 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~userLineDialog();
 
 };

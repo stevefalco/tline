@@ -534,11 +534,14 @@ tlineUI::~tlineUI()
 
 userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 750,350 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( -1,-1 ), wxDefaultSize );
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
+	wxBoxSizer* bUserLineOuter;
+	bUserLineOuter = new wxBoxSizer( wxVERTICAL );
+
 	wxGridSizer* gParameters;
-	gParameters = new wxGridSizer( 7, 3, 0, 0 );
+	gParameters = new wxGridSizer( 0, 2, 0, 0 );
 
 	dl_frequencyTag = new wxStaticText( this, wxID_ANY, wxT("Frequency (MHz)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_frequencyTag->Wrap( -1 );
@@ -552,9 +555,6 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	gParameters->Add( dl_frequencyStr, 0, wxALL, 5 );
 
-
-	gParameters->Add( 0, 0, 1, wxEXPAND, 5 );
-
 	dl_attenuationTag = new wxStaticText( this, wxID_ANY, wxT("Attenuation (dB/100 feet)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_attenuationTag->Wrap( -1 );
 	gParameters->Add( dl_attenuationTag, 0, wxALIGN_RIGHT|wxALL, 5 );
@@ -565,9 +565,6 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_attenuationStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineAttenuationStr ) );
 
 	gParameters->Add( dl_attenuationStr, 0, wxALL, 0 );
-
-
-	gParameters->Add( 0, 0, 1, wxEXPAND, 5 );
 
 	dl_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor (0.00 to 1.00)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_velocityFactorTag->Wrap( -1 );
@@ -580,8 +577,16 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	gParameters->Add( dl_velocityFactorStr, 0, wxALL, 0 );
 
+	dl_cableImpedanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Impedance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableImpedanceTag->Wrap( -1 );
+	gParameters->Add( dl_cableImpedanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
-	gParameters->Add( 0, 0, 1, wxEXPAND, 5 );
+	dl_cableImpedanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableImpedanceStr->SetMinSize( wxSize( 150,-1 ) );
+
+	dl_cableImpedanceStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableImpedanceStr ) );
+
+	gParameters->Add( dl_cableImpedanceStr, 0, wxALL, 0 );
 
 	dl_cableResistanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Resistance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableResistanceTag->Wrap( -1 );
@@ -594,10 +599,6 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	gParameters->Add( dl_cableResistanceStr, 0, wxALL, 0 );
 
-	dl_cableReactanceEstimatedTag = new wxStaticText( this, wxID_ANY, wxT("Estimated Reactance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_cableReactanceEstimatedTag->Wrap( -1 );
-	gParameters->Add( dl_cableReactanceEstimatedTag, 0, wxALL, 5 );
-
 	dl_cableReactanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Reactance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableReactanceTag->Wrap( -1 );
 	gParameters->Add( dl_cableReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
@@ -609,12 +610,6 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	gParameters->Add( dl_cableReactanceStr, 0, wxALL, 0 );
 
-	dl_cableReactanceEstimatedStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_cableReactanceEstimatedStr->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	dl_cableReactanceEstimatedStr->SetMinSize( wxSize( 200,-1 ) );
-
-	gParameters->Add( dl_cableReactanceEstimatedStr, 0, wxALL, 5 );
-
 	dl_cableVoltageLimitTag = new wxStaticText( this, wxID_ANY, wxT("Cable Voltage Limit (Volts)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableVoltageLimitTag->Wrap( -1 );
 	gParameters->Add( dl_cableVoltageLimitTag, 0, wxALIGN_RIGHT|wxALL, 5 );
@@ -625,9 +620,6 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	dl_cableVoltageLimitStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableVoltageLimitStr ) );
 
 	gParameters->Add( dl_cableVoltageLimitStr, 0, wxALL, 0 );
-
-	dl_useEstimatedReactanceButton = new wxButton( this, wxID_ANY, wxT("Use Estimated Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
-	gParameters->Add( dl_useEstimatedReactanceButton, 0, wxALL, 5 );
 
 	dl_hiddenPad = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_hiddenPad->Wrap( -1 );
@@ -648,19 +640,31 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	gParameters->Add( bButtons, 1, wxEXPAND, 5 );
 
 
-	this->SetSizer( gParameters );
+	bUserLineOuter->Add( gParameters, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bUserLineBottom;
+	bUserLineBottom = new wxBoxSizer( wxVERTICAL );
+
+	dl_help = new wxStaticText( this, wxID_ANY, wxT("Note: When you enter the Cable Characteristic Impedance, the cable characteristic resistance and reactance will be estimated.  You can override the estimates, in which case the corresponding cable impedance will be recalculated."), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_help->Wrap( 750 );
+	bUserLineBottom->Add( dl_help, 0, wxALL, 5 );
+
+
+	bUserLineOuter->Add( bUserLineBottom, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( bUserLineOuter );
 	this->Layout();
-	gParameters->Fit( this );
 
 	this->Centre( wxBOTH );
 
 	// Connect Events
 	dl_attenuationStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onAttenuationSelected ), NULL, this );
 	dl_velocityFactorStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onVelocityFactorSelected ), NULL, this );
+	dl_cableImpedanceStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableImpedanceSelected ), NULL, this );
 	dl_cableResistanceStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableResistanceSelected ), NULL, this );
 	dl_cableReactanceStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableReactanceSelected ), NULL, this );
 	dl_cableVoltageLimitStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableVoltageLimitSelected ), NULL, this );
-	dl_useEstimatedReactanceButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onUseEstimatedReactanceClicked ), NULL, this );
 	dl_okButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onOkClicked ), NULL, this );
 	dl_cancelButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onCancelClicked ), NULL, this );
 }
@@ -670,10 +674,10 @@ userLineDialog::~userLineDialog()
 	// Disconnect Events
 	dl_attenuationStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onAttenuationSelected ), NULL, this );
 	dl_velocityFactorStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onVelocityFactorSelected ), NULL, this );
+	dl_cableImpedanceStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableImpedanceSelected ), NULL, this );
 	dl_cableResistanceStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableResistanceSelected ), NULL, this );
 	dl_cableReactanceStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableReactanceSelected ), NULL, this );
 	dl_cableVoltageLimitStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( userLineDialog::onCableVoltageLimitSelected ), NULL, this );
-	dl_useEstimatedReactanceButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onUseEstimatedReactanceClicked ), NULL, this );
 	dl_okButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onOkClicked ), NULL, this );
 	dl_cancelButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( userLineDialog::onCancelClicked ), NULL, this );
 

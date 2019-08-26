@@ -28,85 +28,130 @@ void userLine::onAttenuationSelected( wxCommandEvent& event )
 {
 	m_userLineAttenuationStr = event.GetString();
 
-	Update();
+	// This event will be triggered by user input or by programmed changes
+	// to the text.  We only want to recalculate on user input.  Otherwise,
+	// previous settings won't replay correctly when reopening this dialog.
+	if(dl_attenuationStr->IsModified()) {
+		ResistanceReactanceFromImpedance();
+	}
 }
 
 void userLine::onVelocityFactorSelected( wxCommandEvent& event )
 {
 	m_userLineVelocityFactorStr = event.GetString();
 
-	Update();
+	// This event will be triggered by user input or by programmed changes
+	// to the text.  We only want to recalculate on user input.  Otherwise,
+	// previous settings won't replay correctly when reopening this dialog.
+	if(dl_velocityFactorStr->IsModified()) {
+		ResistanceReactanceFromImpedance();
+	}
+}
+
+void userLine::onCableImpedanceSelected( wxCommandEvent& event )
+{
+	m_userLineCableImpedanceStr = event.GetString();
+
+	// This event will be triggered by user input or by programmed changes
+	// to the text.  We only want to recalculate on user input.  Otherwise,
+	// previous settings won't replay correctly when reopening this dialog.
+	if(dl_cableImpedanceStr->IsModified()) {
+		ResistanceReactanceFromImpedance();
+	}
 }
 
 void userLine::onCableResistanceSelected( wxCommandEvent& event )
 {
 	m_userLineCableResistanceStr = event.GetString();
 
-	Update();
+	// This event will be triggered by user input or by programmed changes
+	// to the text.  We only want to recalculate on user input.  Otherwise,
+	// previous settings won't replay correctly when reopening this dialog.
+	if(dl_cableResistanceStr->IsModified()) {
+		ImpedanceFromResistanceReactance();
+	}
 }
 
 void userLine::onCableReactanceSelected( wxCommandEvent& event )
 {
 	m_userLineCableReactanceStr = event.GetString();
 
-	Update();
+	// This event will be triggered by user input or by programmed changes
+	// to the text.  We only want to recalculate on user input.  Otherwise,
+	// previous settings won't replay correctly when reopening this dialog.
+	if(dl_cableReactanceStr->IsModified()) {
+		ImpedanceFromResistanceReactance();
+	}
 }
 
 void userLine::onCableVoltageLimitSelected( wxCommandEvent& event )
 {
 	m_userLineCableVoltageLimitStr = event.GetString();
-
-	Update();
-}
-
-void userLine::onUseEstimatedReactanceClicked( wxCommandEvent& event )
-{
-	m_userLineCableReactanceStr = m_cableReactanceEstimateStr;
-
-	Update();
 }
 
 void userLine::onOkClicked( wxCommandEvent& event )
 {
-	if ( Validate() )
-	{
+	if(Validate()) {
 		EndModal( wxID_OK );
 	}
 }
 
 void userLine::onCancelClicked( wxCommandEvent& event )
 {
-	if ( Validate() )
-	{
+	if(Validate()) {
 		EndModal( wxID_CANCEL );
 	}
 }
 
-void userLine::Update()
+void userLine::ResistanceReactanceFromImpedance()
 {
 	double			attenuation;
 	double			wavelength;
 	double			phase;
 
-	// Convert those parameters that we need for estimating reactance.
 	m_frequency = atof(m_userLineFrequencyStr) * 1.0E6;
 	m_attenuation = atof(m_userLineAttenuationStr);
 	m_velocityFactor = atof(m_userLineVelocityFactorStr);
-	m_cableResistance = atof(m_userLineCableResistanceStr);
+	m_cableImpedance = atof(m_userLineCableImpedanceStr);
 
-	// Compute the estimated reactance, and convert to string format.
 	wavelength = m_velocityFactor * SPEED_OF_LIGHT_F / m_frequency;
 	phase = (2.0 * PI) / wavelength;
 	attenuation = DB_TO_NEPERS * m_attenuation / 100.0;
-	m_cableReactanceEstimate = -m_cableResistance * (attenuation / phase);
-	m_cableReactanceEstimateStr = wxString::Format(wxT("%.2f"), m_cableReactanceEstimate);
 
-	// Update all the displayed values.
+	// Compute the estimated resistance, and convert to string format.
+	m_cableResistance = m_cableImpedance * sqrt(1.0 / (1.0 + sq(attenuation / phase)));
+	m_userLineCableResistanceStr = wxString::Format(wxT("%.2f"), m_cableResistance);
+	dl_cableResistanceStr->ChangeValue(m_userLineCableResistanceStr);
+	
+	// Compute the estimated reactance, and convert to string format.
+	m_cableReactance = -m_cableResistance * (attenuation / phase);
+	m_userLineCableReactanceStr = wxString::Format(wxT("%.2f"), m_cableReactance);
+	dl_cableReactanceStr->ChangeValue(m_userLineCableReactanceStr);
+}
+
+void userLine::ImpedanceFromResistanceReactance()
+{
+	m_cableResistance = atof(m_userLineCableResistanceStr);
+	m_cableReactance = atof(m_userLineCableReactanceStr);
+
+	m_cableImpedance = sqrt(sq(m_cableResistance) + sq(m_cableReactance));
+	m_userLineCableImpedanceStr = wxString::Format(wxT("%.2f"), m_cableImpedance);
+	dl_cableImpedanceStr->ChangeValue(m_userLineCableImpedanceStr);
+}
+
+void userLine::Update()
+{
 	dl_frequencyStr->ChangeValue(m_userLineFrequencyStr);
+
+	// Changing these values here will cause unwanted events.  The
+	// events happen long after this code runs, so cannot use flags
+	// to disambiguate wanted events from unwanted events.  Instead,
+	// we have to use an IsModified() test in the event handlers to
+	// reject the unwanted events.
 	dl_attenuationStr->ChangeValue(m_userLineAttenuationStr);
 	dl_velocityFactorStr->ChangeValue(m_userLineVelocityFactorStr);
+	dl_cableImpedanceStr->ChangeValue(m_userLineCableImpedanceStr);
 	dl_cableResistanceStr->ChangeValue(m_userLineCableResistanceStr);
 	dl_cableReactanceStr->ChangeValue(m_userLineCableReactanceStr);
-	dl_cableReactanceEstimatedStr->ChangeValue(m_cableReactanceEstimateStr);
 	dl_cableVoltageLimitStr->ChangeValue(m_userLineCableVoltageLimitStr);
 }
