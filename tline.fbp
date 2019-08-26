@@ -56,7 +56,7 @@
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
             <property name="xrc_skip_sizer">1</property>
-            <object class="wxMenuBar" expanded="0">
+            <object class="wxMenuBar" expanded="1">
                 <property name="bg">255,255,255</property>
                 <property name="context_help"></property>
                 <property name="context_menu">1</property>

@@ -501,9 +501,6 @@ ATTENUATION W7FG_TLL[] = {
 	{ 99999E6,  0.0  }
 };
 
-
-
-
 CABLE_PROPERTIES cableProperties[] = {
 	{ "RG-6 (Belden 8215)",				BELDEN_8215,	0.66,    75.0,   2700.0 },
 	{ "RG-8 (TMS LMR400)",				TMS_LMR400,	0.84,    50.0,    600.0 },

@@ -518,17 +518,17 @@ complex<double> tlineLogic::impedanceAtInput(double distance)
 	return m_zCable * (
 			(m_zLoad * cosh(m_lossCoef * distance) + m_zCable * sinh(m_lossCoef * distance))
 			/
-			(m_zLoad * sinh(m_lossCoef * distance) + m_zCable * cosh(m_lossCoef * distance))
+			(m_zCable * cosh(m_lossCoef * distance) + m_zLoad * sinh(m_lossCoef * distance))
 		       );
 }
 
 // Return complex impedance at load of cable for a given length and input.
 complex<double> tlineLogic::impedanceAtLoad(double distance)
 {
-	return -m_zCable * (
+	return m_zCable * (
 			(m_zInput * cosh(m_lossCoef * distance) - m_zCable * sinh(m_lossCoef * distance))
 			/
-			(m_zInput * sinh(m_lossCoef * distance) - m_zCable * cosh(m_lossCoef * distance))
+			(m_zCable * cosh(m_lossCoef * distance) - m_zInput * sinh(m_lossCoef * distance))
 		       );
 }
 
