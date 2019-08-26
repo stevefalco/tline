@@ -1,6 +1,7 @@
 build*
 generated-resources
 .*.sw?
+.~lock*
 
 # Ignore most .exe files, but include the gnuplot installer.
 *.exe
