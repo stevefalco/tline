@@ -69,6 +69,8 @@ void tuner::Update()
 		dl_topology->SetSelection(USE_HPT);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
 		dl_topology->SetSelection(USE_LPT);
+#if 0
+		// These don't seem to work correctly.
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser Lpar Cser)") == 0) {
 		dl_topology->SetSelection(USE_HP1LL);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar Cser Lpar)") == 0) {
@@ -85,6 +87,7 @@ void tuner::Update()
 		dl_topology->SetSelection(USE_BP3LL);
 	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
 		dl_topology->SetSelection(USE_BP4LL);
+#endif
 	}
 
 	recalculate();
@@ -157,6 +160,8 @@ void tuner::recalculate()
 		HPT();
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
 		LPT();
+#if 0
+		// These don't seem to work correctly.
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser Lpar Cser)") == 0) {
 		HP1LL();
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar Cser Lpar)") == 0) {
@@ -173,6 +178,7 @@ void tuner::recalculate()
 		BP3LL();
 	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
 		BP4LL();
+#endif
 	}
 }
 
@@ -1138,6 +1144,8 @@ void tuner::LPT()
 	Layout();
 }
 
+#if 0
+// These don't seem to work correctly.
 void tuner::HP1LL()
 {
 	dl_tunerQtag->Hide();
@@ -2009,3 +2017,4 @@ void tuner::BP4LL()
 
 	Layout();
 }
+#endif

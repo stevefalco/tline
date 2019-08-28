@@ -898,7 +898,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bTunerCenter;
 	bTunerCenter = new wxBoxSizer( wxVERTICAL );
 
-	wxString dl_topologyChoices[] = { wxT("High Pass (Lpar Cser)"), wxT("Low Pass (Cpar Lser)"), wxT("Low Pass (Lser Cpar)"), wxT("High Pass (Cser Lpar)"), wxT("High Pass PI (Lpar Cser Lpar)"), wxT("Low Pass PI (Cpar Lser Cpar)"), wxT("High Pass T (Cser Lpar Cser)"), wxT("Low Pass T (Lser Cpar Lser)"), wxT("High Pass (Lpar Cser Lpar Cser)"), wxT("High Pass (Cser Lpar Cser Lpar)"), wxT("Low Pass (Cpar Lser Cpar Lser)"), wxT("Low Pass (Lser Cpar Lser Cpar)"), wxT("Band Pass (Lpar Cser Cpar Lser)"), wxT("Band Pass (Lser Cpar Cser Lpar)"), wxT("Band Pass (Cpar Lser Lpar Cser)"), wxT("Band Pass (Cser Lpar Lser Cpar)") };
+	wxString dl_topologyChoices[] = { wxT("High Pass (Lpar Cser)"), wxT("Low Pass (Cpar Lser)"), wxT("Low Pass (Lser Cpar)"), wxT("High Pass (Cser Lpar)"), wxT("High Pass PI (Lpar Cser Lpar)"), wxT("Low Pass PI (Cpar Lser Cpar)"), wxT("High Pass T (Cser Lpar Cser)"), wxT("Low Pass T (Lser Cpar Lser)") };
 	int dl_topologyNChoices = sizeof( dl_topologyChoices ) / sizeof( wxString );
 	dl_topology = new wxRadioBox( this, wxID_ANY, wxT("Topology"), wxDefaultPosition, wxDefaultSize, dl_topologyNChoices, dl_topologyChoices, 1, wxRA_SPECIFY_COLS );
 	dl_topology->SetSelection( 0 );
