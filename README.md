@@ -35,5 +35,7 @@ different network topology.
 If you are curious as to the source of the equations that **_tline_** uses to perform its calculations, most of them are taken from the
 "ARRL Antenna Book (23rd Edition)".  See also "Reference Data For Radio Engineers (6th Edition)" by ITT.
 
+Finally, a discussion of the equations may be found in the [equations.pdf](doc/equations.pdf) file in the doc directory.
+
 73 de AC2XM
 
