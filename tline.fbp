@@ -6951,7 +6951,7 @@
                                         <property name="caption"></property>
                                         <property name="caption_visible">1</property>
                                         <property name="center_pane">0</property>
-                                        <property name="choices">&quot;Two Cap (Cpar Cser)&quot; &quot;Two Cap (Cser Cpar)&quot; &quot;Two Coil (Lpar Lser)&quot; &quot;Two Coil (Lser Lpar)&quot; &quot;High Pass (Lpar Cser)&quot; &quot;Low Pass (Cpar Lser)&quot; &quot;Low Pass (Lser Cpar)&quot; &quot;High Pass (Cser Lpar)&quot; &quot;High Pass PI (Lpar Cser Lpar)&quot; &quot;Low Pass PI (Cpar Lser Cpar)&quot; &quot;Low Pass (Cpar Lser)&quot; &quot;Low Pass T (Lser Cpar Lser)&quot;</property>
+                                        <property name="choices">&quot;Two Cap (Cpar Cser)&quot; &quot;Two Cap (Cser Cpar)&quot; &quot;Two Coil (Lpar Lser)&quot; &quot;Two Coil (Lser Lpar)&quot; &quot;High Pass (Lpar Cser)&quot; &quot;Low Pass (Cpar Lser)&quot; &quot;Low Pass (Lser Cpar)&quot; &quot;High Pass (Cser Lpar)&quot; &quot;High Pass PI (Lpar Cser Lpar)&quot; &quot;Low Pass PI (Cpar Lser Cpar)&quot; &quot;High Pass T (Cser Lpar Cser)&quot; &quot;Low Pass T (Lser Cpar Lser)&quot;</property>
                                         <property name="close_button">1</property>
                                         <property name="context_help"></property>
                                         <property name="context_menu">1</property>

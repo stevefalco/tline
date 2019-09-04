@@ -303,6 +303,13 @@ void tuner::walkley()
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) - imag(right)) < 1E-10) {
 		// This solution is good.  Print the component values.
 		walkleyShow(w, x1a, x2a, 0);
+
+		// Find the network Q.
+		if(m_rA > m_rB) {
+			m_walkleySolnQ[m_useSlot][0] = sqrt((m_rA / m_rB) - 1.0);
+		} else {
+			m_walkleySolnQ[m_useSlot][0] = sqrt((m_rB / m_rA) - 1.0);
+		}
 	}
 
 	// Solution 2.
@@ -318,6 +325,13 @@ void tuner::walkley()
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) - imag(right)) < 1E-10) {
 		// This solution is good.  Print the component values.
 		walkleyShow(w, x1b, x2b, 1);
+
+		// Find the network Q.
+		if(m_rA > m_rB) {
+			m_walkleySolnQ[m_useSlot][1] = sqrt((m_rA / m_rB) - 1.0);
+		} else {
+			m_walkleySolnQ[m_useSlot][1] = sqrt((m_rB / m_rA) - 1.0);
+		}
 	}
 }
 
@@ -356,12 +370,13 @@ void tuner::walkleyDisplay(
 	for(i = 0; i < 2; i++) {
 		for(j = 0; j < 2; j++) {
 			if(m_walkleySolnType[i][j] == type) {
+				// Found the solution.  Display it.
 				dl_tunerResult1->Show();
 				dl_tunerResultTag1->Show();
 				dl_tunerResult2->Show();
 				dl_tunerResultTag2->Show();
-				dl_tunerResult3->Hide();
-				dl_tunerResultTag3->Hide();
+				dl_tunerResult3->Show();
+				dl_tunerResultTag3->Show();
 				dl_tunerResult4->Hide();
 				dl_tunerResultTag4->Hide();
 
@@ -371,13 +386,16 @@ void tuner::walkleyDisplay(
 				dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
 				dl_tunerResultTag2->SetLabel(loadLabel);
 
+				dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_walkleySolnQ[i][j]));
+				dl_tunerResultTag3->SetLabel("Q Value");
+
 				Layout();
 				return;
 			}
 		}
 	}
 
-	// Invalid
+	// Invalid - no solution found.
 	dl_tunerResult1->Hide();
 	dl_tunerResultTag1->Show();
 	dl_tunerResult2->Hide();

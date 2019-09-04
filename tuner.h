@@ -108,6 +108,7 @@ class tuner : public tunerDialog
 		double		m_frequency;
 
 		int		m_walkleySolnType[2][2];
+		double		m_walkleySolnQ[2][2];
 		char		m_walkleySolnParIs[2][2];
 		double		m_walkleySolnPar[2][2];
 		char		m_walkleySolnSerIs[2][2];
