@@ -325,11 +325,7 @@ void tuner::lnetAlgorithm()
 		findLnetComponentValues(w, x1a, x2a, 0);
 
 		// Find the network Q.
-		if(m_rA > m_rB) {
-			m_walkleySolnQ[m_useSlot][0] = sqrt((m_rA / m_rB) - 1.0);
-		} else {
-			m_walkleySolnQ[m_useSlot][0] = sqrt((m_rB / m_rA) - 1.0);
-		}
+		m_walkleySolnQ[m_useSlot][0] = fabs((m_xA + x1) / m_rA);
 	}
 
 	// Solution 2.
@@ -344,17 +340,13 @@ void tuner::lnetAlgorithm()
 	// The real parts should be equal, and the imaginary parts should have
 	// opposite signs, since we expect a conjugate match.
 	left = complex<double>(m_rA, m_xA + x1);
-		right = 1.0 / complex<double>(gB, bB + b2);
+	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
 		// This solution is good.  Store the component values.
 		findLnetComponentValues(w, x1b, x2b, 1);
 
 		// Find the network Q.
-		if(m_rA > m_rB) {
-			m_walkleySolnQ[m_useSlot][1] = sqrt((m_rA / m_rB) - 1.0);
-		} else {
-			m_walkleySolnQ[m_useSlot][1] = sqrt((m_rB / m_rA) - 1.0);
-		}
+		m_walkleySolnQ[m_useSlot][1] = fabs((m_xA + x1) / m_rA);
 	}
 }
 
