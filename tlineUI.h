@@ -270,6 +270,7 @@ class tunerDialog : public wxDialog
 		wxStaticText* dl_tunerCredit;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void onFrequency( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onSourceResistance( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onSourceReactance( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLoadResistance( wxCommandEvent& event ) { event.Skip(); }

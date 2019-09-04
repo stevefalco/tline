@@ -105,6 +105,13 @@ void tuner::Update()
 	recalculate();
 }
 
+void tuner::onFrequency( wxCommandEvent& event )
+{
+	m_tunerFrequencyStr = event.GetString();
+
+	recalculate();
+}
+
 void tuner::onSourceResistance( wxCommandEvent& event )
 {
 	m_tunerSourceResistanceStr = event.GetString();

@@ -55,6 +55,7 @@ class tuner : public tunerDialog
 		wxString	m_tunerTopologyStr = "High Pass (Lpar Cser)";
 
 	protected:
+		void		onFrequency( wxCommandEvent& event );
 		void		onSourceResistance( wxCommandEvent& event );
 		void		onSourceReactance( wxCommandEvent& event );
 		void		onLoadResistance( wxCommandEvent& event );

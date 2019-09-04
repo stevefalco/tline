@@ -783,12 +783,12 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerFrequencyTag->Wrap( -1 );
 	gTunerParameters->Add( dl_tunerFrequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
-	dl_tunerFrequency = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerFrequency = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerFrequency->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	dl_tunerFrequency->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerFrequencyStr ) );
 
-	gTunerParameters->Add( dl_tunerFrequency, 0, wxALL, 5 );
+	gTunerParameters->Add( dl_tunerFrequency, 0, wxALL, 0 );
 
 	dl_tunerSourceResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerSourceResistanceTag->Wrap( -1 );
@@ -944,6 +944,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	dl_tunerFrequency->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onFrequency ), NULL, this );
 	dl_tunerSourceResistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
 	dl_tunerSourceReactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerLoadResistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
@@ -960,6 +961,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 tunerDialog::~tunerDialog()
 {
 	// Disconnect Events
+	dl_tunerFrequency->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onFrequency ), NULL, this );
 	dl_tunerSourceResistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
 	dl_tunerSourceReactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerLoadResistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
