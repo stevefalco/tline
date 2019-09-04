@@ -18,25 +18,32 @@
 #ifndef __tuner__
 #define __tuner__
 
+#include <complex>
+using namespace std;
+
 #include "tlineUI.h"
 
 // WARNING: These assigments must match the order in the GUI.
-#define USE_LCHP		0
-#define USE_CLLP		1
-#define USE_LCLP		2
-#define USE_CLHP		3
-#define USE_HPPI		4
-#define USE_LPPI		5
-#define USE_HPT			6
-#define USE_LPT			7
-#define USE_HP1LL		8
-#define USE_HP2LL		9
-#define USE_LP1LL		10
-#define USE_LP2LL		11
-#define USE_BP1LL		12
-#define USE_BP2LL		13
-#define USE_BP3LL		14
-#define USE_BP4LL		15
+#define USE_CPCS		0
+#define USE_CSCP		1
+#define USE_LPLS		2
+#define USE_LSLP		3
+#define USE_LCHP		4
+#define USE_CLLP		5
+#define USE_LCLP		6
+#define USE_CLHP		7
+#define USE_HPPI		8
+#define USE_LPPI		9
+#define USE_HPT			10
+#define USE_LPT			11
+#define USE_HP1LL		12
+#define USE_HP2LL		13
+#define USE_LP1LL		14
+#define USE_LP2LL		15
+#define USE_BP1LL		16
+#define USE_BP2LL		17
+#define USE_BP3LL		18
+#define USE_BP4LL		19
 
 class tuner : public tunerDialog
 {
@@ -59,6 +66,23 @@ class tuner : public tunerDialog
 	private:
 		void		recalculate();
 
+		void		walkleyShow(double w, double x1, double x2, int item);
+		void		walkley();
+		void		walkleyPrep1();
+		void		walkleyPrep2();
+		void		walkleyDisplay(
+					int type,
+					double sourceVar[2][2],
+					const char *sourceLabel,
+					double loadVar[2][2],
+					const char *loadLabel
+					);
+		bool		walkleySetup(wxBitmap bmp);
+
+		void		CPCS();
+		void		CSCP();
+		void		LPLS();
+		void		LSLP();
 		void		LCHP();
 		void		CLLP();
 		void		LCLP();
@@ -82,6 +106,18 @@ class tuner : public tunerDialog
 		double		m_loadReactance;
 		double		m_desiredQ;
 		double		m_frequency;
+
+		int		m_walkleySolnType[2][2];
+		char		m_walkleySolnParIs[2][2];
+		double		m_walkleySolnPar[2][2];
+		char		m_walkleySolnSerIs[2][2];
+		double		m_walkleySolnSer[2][2];
+
+		int		m_useSlot;
+		double		m_rA;
+		double		m_xA;
+		double		m_rB;
+		double		m_xB;
 };
 
 #endif // __tuner__

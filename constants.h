@@ -18,6 +18,8 @@
 #ifndef __constants__
 #define __constants__
 
+#define SQ(a)			((a) * (a))
+
 #define SPEED_OF_LIGHT_F	983571056.4304	// ft/sec
 #define SPEED_OF_LIGHT_M	299792458.0000	// m/sec
 #define DB_TO_NEPERS		0.11512925464970228420

@@ -38,6 +38,10 @@
 #include "nt_lp1ll.h"
 #include "nt_lpt.h"
 #include "nt_lppi.h"
+#include "nt_cc1.h"
+#include "nt_cc2.h"
+#include "nt_ll1.h"
+#include "nt_ll2.h"
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
@@ -53,7 +57,15 @@ void tuner::Update()
 	dl_tunerLoadReactance->ChangeValue(m_tunerLoadReactanceStr);
 	dl_tunerQ->ChangeValue(m_tunerQStr);
 
-	if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
+	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
+		dl_topology->SetSelection(USE_CPCS);
+	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
+		dl_topology->SetSelection(USE_CSCP);
+	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
+		dl_topology->SetSelection(USE_LPLS);
+	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
+		dl_topology->SetSelection(USE_LSLP);
+	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
 		dl_topology->SetSelection(USE_LCHP);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
 		dl_topology->SetSelection(USE_CLLP);
@@ -144,7 +156,15 @@ void tuner::recalculate()
 	m_loadReactance = atof(m_tunerLoadReactanceStr);
 	m_desiredQ = atof(m_tunerQStr);
 
-	if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
+	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
+		CPCS();
+	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
+		CSCP();
+	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
+		LPLS();
+	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
+		LSLP();
+	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
 		LCHP();
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
 		CLLP();
@@ -190,442 +210,335 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 	}
 }
 
-void tuner::LCHP()
+void
+tuner::walkleyShow(double w, double x1, double x2, int item)
 {
+	double value;
+
+	if(x1 >= 0) {
+		// Series Inductor
+		value = x1 / w;
+		value *= 1E9; // nH
+		m_walkleySolnSerIs[m_useSlot][item] = 'L';
+		m_walkleySolnSer[m_useSlot][item] = value;
+	} else {
+		// Series Capacitor
+		value = 1.0 / (-x1 * w);
+		value *= 1E12; // pF
+		m_walkleySolnSerIs[m_useSlot][item] = 'C';
+		m_walkleySolnSer[m_useSlot][item] = value;
+	}
+
+	if(x2 >= 0) {
+		// Parallel Inductor
+		value = x2 / w;
+		value *= 1E9; // nH
+		m_walkleySolnParIs[m_useSlot][item] = 'L';
+		m_walkleySolnPar[m_useSlot][item] = value;
+	} else {
+		// Parallel Capacitor
+		value = 1.0 / (-x2 * w);
+		value *= 1E12; // pF
+		m_walkleySolnParIs[m_useSlot][item] = 'C';
+		m_walkleySolnPar[m_useSlot][item] = value;
+	}
+
+	if(m_useSlot == 0) {
+		// Source is on the left (series), load is on the right (parallel).
+		if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
+			m_walkleySolnType[m_useSlot][item] = USE_LSLP;
+		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
+			m_walkleySolnType[m_useSlot][item] = USE_CSCP;
+		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
+			m_walkleySolnType[m_useSlot][item] = USE_LCLP;
+		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
+			m_walkleySolnType[m_useSlot][item] = USE_CLHP;
+		}
+	} else {
+		// Source is on the right (parallel), load is on the left (series).
+		if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
+			m_walkleySolnType[m_useSlot][item] = USE_LPLS;
+		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
+			m_walkleySolnType[m_useSlot][item] = USE_CPCS;
+		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
+			m_walkleySolnType[m_useSlot][item] = USE_CLLP;
+		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
+			m_walkleySolnType[m_useSlot][item] = USE_LCHP;
+		}
+	}
+}
+
+void tuner::walkley()
+{
+	double w = 2.0 * PI * m_frequency;
+
+	double x1a;
+	double x1b;
+
+	double x2a;
+	double x2b;
+
+	double x1;
+	double b2;
+
+	double den = SQ(m_rB) + SQ(m_xB);
+	double gB =  m_rB / den;
+	double bB = -m_xB / den;
+
+	double sqrtTerm = sqrt((1.0 / (m_rA * gB)) - 1.0);
+
+	complex<double> left;
+	complex<double> right;
+
+	// Solution 1.
+	x1 = -m_xA + m_rA * sqrtTerm;
+	b2 = -bB + gB * sqrtTerm;
+	x1a = x1;
+	x2a = -1.0 / b2;
+
+	// Check solution 1, as it may be bogus because of failures to overlap
+	// the resistance/admittance circles.
+	left = complex<double>(m_rA, m_xA + x1);
+	right = (1.0 / complex<double>(gB, -(bB + b2))) * (complex<double>(gB, bB + b2) / complex<double>(gB, bB + b2));
+	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) - imag(right)) < 1E-10) {
+		// This solution is good.  Print the component values.
+		walkleyShow(w, x1a, x2a, 0);
+	}
+
+	// Solution 2.
+	x1 = -m_xA - m_rA * sqrtTerm;
+	b2 = -bB - gB * sqrtTerm;
+	x1b = x1;
+	x2b = -1.0 / b2;
+
+	// Check solution 2, as it may be bogus because of failures to overlap
+	// the resistance/admittance circles.
+	left = complex<double>(m_rA, m_xA + x1);
+	right = (1.0 / complex<double>(gB, -(bB + b2))) * (complex<double>(gB, bB + b2) / complex<double>(gB, bB + b2));
+	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) - imag(right)) < 1E-10) {
+		// This solution is good.  Print the component values.
+		walkleyShow(w, x1b, x2b, 1);
+	}
+}
+
+void tuner::walkleyPrep1()
+{
+	m_useSlot = 0;
+	m_rA = m_sourceResistance;
+	m_xA = m_sourceReactance;
+	m_rB = m_loadResistance;
+	m_xB = m_loadReactance;
+	walkley();
+}
+
+void tuner::walkleyPrep2()
+{
+	m_useSlot = 1;
+	m_rB = m_sourceResistance;
+	m_xB = m_sourceReactance;
+	m_rA = m_loadResistance;
+	m_xA = m_loadReactance;
+	walkley();
+}
+
+void tuner::walkleyDisplay(
+		int type,
+		double sourceVar[2][2],
+		const char *sourceLabel,
+		double loadVar[2][2],
+		const char *loadLabel
+		)
+{
+	int i;
+	int j;
+
+	// See if this topology is among the solutions.
+	for(i = 0; i < 2; i++) {
+		for(j = 0; j < 2; j++) {
+			if(m_walkleySolnType[i][j] == type) {
+				dl_tunerResult1->Show();
+				dl_tunerResultTag1->Show();
+				dl_tunerResult2->Show();
+				dl_tunerResultTag2->Show();
+				dl_tunerResult3->Hide();
+				dl_tunerResultTag3->Hide();
+				dl_tunerResult4->Hide();
+				dl_tunerResultTag4->Hide();
+
+				dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), sourceVar[i][j]));
+				dl_tunerResultTag1->SetLabel(sourceLabel);
+
+				dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
+				dl_tunerResultTag2->SetLabel(loadLabel);
+
+				Layout();
+				return;
+			}
+		}
+	}
+
+	// Invalid
+	dl_tunerResult1->Hide();
+	dl_tunerResultTag1->Show();
+	dl_tunerResult2->Hide();
+	dl_tunerResultTag2->Hide();
+	dl_tunerResult3->Hide();
+	dl_tunerResultTag3->Hide();
+	dl_tunerResult4->Hide();
+	dl_tunerResultTag4->Hide();
+
+	dl_tunerResultTag1->SetLabel("No Match Found");
+
+	Layout();
+}
+
+bool tuner::walkleySetup(wxBitmap bmp)
+{
+	int i;
+	int j;
+
 	dl_tunerQtag->Hide();
 	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lchp);
 
 	if ( bmp.IsOk() ) {
 		dl_bitmap->SetBitmap(bmp);
 	} else {
 		wxLogError("bad png?");
-		return;
+		return FALSE;
 	}
 
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double rp;
-	double qs;
-	double lp;
-	double c;
-	double l;
-	double cs;
-	double c1;
-	double l1;
-	double Q;
-
-	double lchpcval;
-	double lchpqval;
-	double lchplval;
-
-	if((m_sourceResistance == m_loadResistance) && (m_sourceReactance == -m_loadReactance)) {
-		lchpcval = 0.0;
-		lchpqval = m_sourceReactance / m_sourceResistance;
-		lchplval = 0.0;
-	} else {
-		w = 2.0 * PI * f;
-		qs = xs / rs;
-		c1 = -1.0 / w / xl;
-		l1 = (1.0 + qs * qs) * xs / w / qs / qs;
-		rp = (1.0 + qs * qs) * rs;
-		rs = rl;
-		if(rs > rp) {
-			lchpcval = NAN;
-			lchpqval = NAN;
-			lchplval = NAN;
-		} else {
-			Q = sqrt(rp / rs - 1.0);
-			lp = rp / w / Q;
-			cs = 1.0 / Q / w / rs;
-			if(xl == 0.0) {
-				c = cs * 1.0e12;
-			} else {
-				if(c1 == cs) {
-					c = INFINITY;
-				} else {
-					c = c1 * cs / (c1 - cs) * 1.0e12;
-				}
-			}
-			if(xs == 0.0) {
-				l = lp * 1.0e9;
-			} else {
-				if(l1 == lp) {
-					l = INFINITY;
-				} else {
-					l = lp * l1 / (l1 - lp) * 1.0e9;
-				}
-			}
-			lchpcval = c;
-			lchpqval = fabs(Q);
-			lchplval = l;
+	// Clear old status.
+	for(i = 0; i < 2; i++) {
+		for(j = 0; j < 2; j++) {
+			m_walkleySolnType[i][j] = -1;
 		}
 	}
 
-	if(!isfinite(lchplval) || !isfinite(lchpcval) || !isfinite(lchpqval) ||
-			lchplval < 0.0 || lchpcval < 0.0 || lchpqval < 0.0 ||
-			lchplval > 1e7 || lchpcval > 1e7 || lchpqval > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
+	// Find all solutions.
+	walkleyPrep1();
+	walkleyPrep2();
 
-		dl_tunerResultTag1->SetLabel("No Match Found");
+	return TRUE;
+}
 
-		Layout();
+void tuner::CPCS()
+{
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_cc1))) {
 		return;
 	}
 
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
+	walkleyDisplay(
+			USE_CPCS,
+			m_walkleySolnPar,
+			"CS Value (pF)",
+			m_walkleySolnSer,
+			"CL Value (pF)"
+			);
+}
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), lchplval));
-	dl_tunerResultTag1->SetLabel("L Value (nH)");
+void tuner::CSCP()
+{
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_cc2))) {
+		return;
+	}
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), lchpcval));
-	dl_tunerResultTag2->SetLabel("C Value (pF)");
+	walkleyDisplay(
+			USE_CSCP,
+			m_walkleySolnSer,
+			"CS Value (pF)",
+			m_walkleySolnPar,
+			"CL Value (pF)"
+			);
+}
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), lchpqval));
-	dl_tunerResultTag3->SetLabel("Q Value");
+void tuner::LPLS()
+{
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_ll1))) {
+		return;
+	}
 
-	Layout();
+	walkleyDisplay(
+			USE_LPLS,
+			m_walkleySolnPar,
+			"LS Value (nH)",
+			m_walkleySolnSer,
+			"LL Value (nH)"
+			);
+}
+
+void tuner::LSLP()
+{
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_ll2))) {
+		return;
+	}
+
+	walkleyDisplay(
+			USE_LSLP,
+			m_walkleySolnSer,
+			"LS Value (nH)",
+			m_walkleySolnPar,
+			"LL Value (nH)"
+			);
+}
+
+void tuner::LCHP()
+{
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_lchp))) {
+		return;
+	}
+
+	walkleyDisplay(
+			USE_LCHP,
+			m_walkleySolnPar,
+			"L Value (nH)",
+			m_walkleySolnSer,
+			"C Value (pF)"
+			);
 }
 
 void tuner::CLLP()
 {
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_cllp);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_cllp))) {
 		return;
 	}
 
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double rp;
-	double qs;
-	double c;
-	double l;
-	double cp;
-	double c1;
-	double l1;
-	double Q;
-	double ls;
-
-	double cllpcval;
-	double cllpqval;
-	double cllplval;
-
-	if((m_sourceResistance == m_loadResistance) && (m_sourceReactance == -m_loadReactance)) {
-		cllpcval = 0.0;
-		cllpqval = m_sourceReactance / m_sourceResistance;
-		cllplval = 0.0;
-	} else {
-		w = 2.0 * PI * f;
-		qs = -xs / rs;
-		rp = rs * (1.0 + qs * qs);
-		c1 = qs / rp / w;
-		l1 = xl / w;
-		if(rl > rp) {
-			cllpcval = NAN;
-			cllpqval = NAN;
-			cllplval = NAN;
-		} else {
-			Q = sqrt(rp / rl - 1.0);
-			cp = Q / rp / w;
-			c = (cp - c1) * 1.0e12;
-			ls = Q * rl / w;
-			l = (ls - l1) * 1.0e9;
-			cllpcval = c;
-			cllpqval = fabs(Q);
-			cllplval = l;
-		}
-	}
-
-	if(!isfinite(cllplval) || !isfinite(cllpcval) || !isfinite(cllpqval) ||
-			cllplval < 0.0 || cllpcval < 0.0 || cllpqval < 0.0 ||
-			cllplval > 1e7 || cllpcval > 1e7 || cllpqval > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), cllplval));
-	dl_tunerResultTag1->SetLabel("L Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), cllpcval));
-	dl_tunerResultTag2->SetLabel("C Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), cllpqval));
-	dl_tunerResultTag3->SetLabel("Q Value");
-
-	Layout();
+	walkleyDisplay(
+			USE_CLLP,
+			m_walkleySolnPar,
+			"C Value (pF)",
+			m_walkleySolnSer,
+			"L Value (nH)"
+			);
 }
 
 void tuner::LCLP()
 {
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lclp);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_lclp))) {
 		return;
 	}
 
-	double rs = m_loadResistance;
-	double xs = m_loadReactance;
-	double rl = m_sourceResistance;
-	double xl = m_sourceReactance;
-	double f  = m_frequency;
-
-	double w;
-	double rp;
-	double qs;
-	double c;
-	double l;
-	double cp;
-	double c1;
-	double l1;
-	double Q;
-	double ls;
-
-	double lclpcval;
-	double lclpqval;
-	double lclplval;
-
-	if((m_sourceResistance == m_loadResistance) && (m_sourceReactance == -m_loadReactance)) {
-		lclpcval = 0.0;
-		lclpqval = m_sourceReactance / m_sourceResistance;
-		lclplval = 0.0;
-	} else {
-		w = 2.0 * PI * f;
-		qs = -xs / rs;
-		rp = rs * (1.0 + qs * qs);
-		c1 = qs / rp / w;
-		l1 = xl / w;
-		if(rl > rp) {
-			lclpcval = NAN;
-			lclpqval = NAN;
-			lclplval = NAN;
-		} else {
-			Q = sqrt(rp / rl - 1.0);
-			cp = Q / rp / w;
-			c = (cp - c1) * 1.0e12;
-			ls = Q * rl / w;
-			l = (ls - l1) * 1.0e9;
-			lclpcval = c;
-			lclpqval = fabs(Q);
-			lclplval = l;
-		}
-	}
-
-	if(!isfinite(lclplval) || !isfinite(lclpcval) || !isfinite(lclpqval) ||
-			lclplval < 0.0 || lclpcval < 0.0 || lclpqval < 0.0 ||
-			lclplval > 1e7 || lclpcval > 1e7 || lclpqval > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), lclplval));
-	dl_tunerResultTag1->SetLabel("L Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), lclpcval));
-	dl_tunerResultTag2->SetLabel("C Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), lclpqval));
-	dl_tunerResultTag3->SetLabel("Q Value");
-
-	Layout();
+	walkleyDisplay(
+			USE_LCLP,
+			m_walkleySolnSer,
+			"L Value (nH)",
+			m_walkleySolnPar,
+			"C Value (pF)"
+			);
 }
 
 void tuner::CLHP()
 {
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_clhp);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
+	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_clhp))) {
 		return;
 	}
 
-	double rs = m_loadResistance;
-	double xs = m_loadReactance;
-	double rl = m_sourceResistance;
-	double xl = m_sourceReactance;
-	double f  = m_frequency;
-
-	double w;
-	double rp;
-	double qs;
-	double lp;
-	double c;
-	double l;
-	double cs;
-	double c1;
-	double l1;
-	double Q;
-
-	double clhpcval;
-	double clhpqval;
-	double clhplval;
-
-	if((m_sourceResistance == m_loadResistance) && (m_sourceReactance == -m_loadReactance)) {
-		clhpcval = 0.0;
-		clhpqval = m_sourceReactance / m_sourceResistance;
-		clhplval = 0.0;
-	} else {
-		w = 2.0 * PI * f;
-		qs = xs / rs;
-		c1 = -1.0 / w / xl;
-		l1 = (1.0 + qs * qs) * xs / w / qs / qs;
-		rp = (1.0 + qs * qs) * rs;
-		rs = rl;
-		if(rs > rp) {
-			clhpcval = NAN;
-			clhpqval = NAN;
-			clhplval = NAN;
-		} else {
-			Q = sqrt(rp / rs - 1.0);
-			lp = rp / w / Q;
-			cs = 1.0 / Q / w / rs;
-			if(xl == 0.0) {
-				c = cs * 1.0e12;
-			} else {
-				if(c1 == cs) {
-					c = INFINITY;
-				} else {
-					c = c1 * cs / (c1 - cs) * 1.0e12;
-				}
-			}
-			if(xs == 0.0) {
-				l = lp * 1.0e9;
-			} else {
-				if(l1 == lp) {
-					l = INFINITY;
-				} else {
-					l = lp * l1 / (l1 - lp) * 1.0e9;
-				}
-			}
-			clhpcval = c;
-			clhpqval = fabs(Q);
-			clhplval = l;
-		}
-	}
-
-	if(!isfinite(clhplval) || !isfinite(clhpcval) || !isfinite(clhpqval) ||
-			clhplval < 0.0 || clhpcval < 0.0 || clhpqval < 0.0 ||
-			clhplval > 1e7 || clhpcval > 1e7 || clhpqval > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), clhplval));
-	dl_tunerResultTag1->SetLabel("L Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), clhpcval));
-	dl_tunerResultTag2->SetLabel("C Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), clhpqval));
-	dl_tunerResultTag3->SetLabel("Q Value");
-
-	Layout();
+	walkleyDisplay(
+			USE_CLHP,
+			m_walkleySolnSer,
+			"C Value (pF)",
+			m_walkleySolnPar,
+			"L Value (nH)"
+			);
 }
 
 void tuner::HPPI()

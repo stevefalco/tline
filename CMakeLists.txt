@@ -24,6 +24,10 @@ set(TOPOLOGIES
 	nt_lp2ll.png
 	nt_lppi.png
 	nt_lpt.png
+	nt_cc1.png
+	nt_cc2.png
+	nt_ll1.png
+	nt_ll2.png
 	)
 
 foreach(VAR IN LISTS TOPOLOGIES)
