@@ -218,10 +218,13 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 }
 
 void
-tuner::walkleyShow(double w, double x1, double x2, int item)
+tuner::findLnetComponentValues(double w, double x1, double x2, int item)
 {
 	double value;
 
+	// Convert the reactances to L and C as appropriate.  The x1 side
+	// is always "series-connected" and the x2 side is always
+	// "parallel-connected".
 	if(x1 >= 0) {
 		// Series Inductor
 		value = x1 / w;
@@ -250,6 +253,7 @@ tuner::walkleyShow(double w, double x1, double x2, int item)
 		m_walkleySolnPar[m_useSlot][item] = value;
 	}
 
+	// Now that we have the component values, assign a topology that matches.
 	if(m_useSlot == 0) {
 		// Source is on the left (series), load is on the right (parallel).
 		if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
@@ -275,7 +279,7 @@ tuner::walkleyShow(double w, double x1, double x2, int item)
 	}
 }
 
-void tuner::walkley()
+void tuner::lnetAlgorithm()
 {
 	double w = 2.0 * PI * m_frequency;
 
@@ -297,6 +301,12 @@ void tuner::walkley()
 	complex<double> left;
 	complex<double> right;
 
+	// See equations.odt (or equations.pdf) for the derivation of the
+	// equations used here.
+	//
+	// Basically, this method comes from a paper: "Impedance-Matching
+	// Networks Of The L Type" by P. B. Walkley, May 1978.
+
 	// Solution 1.
 	x1 = -m_xA + m_rA * sqrtTerm;
 	b2 = -bB + gB * sqrtTerm;
@@ -305,11 +315,14 @@ void tuner::walkley()
 
 	// Check solution 1, as it may be bogus because of failures to overlap
 	// the resistance/admittance circles.
+	//
+	// The real parts should be equal, and the imaginary parts should have
+	// opposite signs, since we expect a conjugate match.
 	left = complex<double>(m_rA, m_xA + x1);
-	right = (1.0 / complex<double>(gB, -(bB + b2))) * (complex<double>(gB, bB + b2) / complex<double>(gB, bB + b2));
-	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) - imag(right)) < 1E-10) {
-		// This solution is good.  Print the component values.
-		walkleyShow(w, x1a, x2a, 0);
+	right = 1.0 / complex<double>(gB, bB + b2);
+	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
+		// This solution is good.  Store the component values.
+		findLnetComponentValues(w, x1a, x2a, 0);
 
 		// Find the network Q.
 		if(m_rA > m_rB) {
@@ -327,11 +340,14 @@ void tuner::walkley()
 
 	// Check solution 2, as it may be bogus because of failures to overlap
 	// the resistance/admittance circles.
+	//
+	// The real parts should be equal, and the imaginary parts should have
+	// opposite signs, since we expect a conjugate match.
 	left = complex<double>(m_rA, m_xA + x1);
-	right = (1.0 / complex<double>(gB, -(bB + b2))) * (complex<double>(gB, bB + b2) / complex<double>(gB, bB + b2));
-	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) - imag(right)) < 1E-10) {
-		// This solution is good.  Print the component values.
-		walkleyShow(w, x1b, x2b, 1);
+		right = 1.0 / complex<double>(gB, bB + b2);
+	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
+		// This solution is good.  Store the component values.
+		findLnetComponentValues(w, x1b, x2b, 1);
 
 		// Find the network Q.
 		if(m_rA > m_rB) {
@@ -342,27 +358,7 @@ void tuner::walkley()
 	}
 }
 
-void tuner::walkleyPrep1()
-{
-	m_useSlot = 0;
-	m_rA = m_sourceResistance;
-	m_xA = m_sourceReactance;
-	m_rB = m_loadResistance;
-	m_xB = m_loadReactance;
-	walkley();
-}
-
-void tuner::walkleyPrep2()
-{
-	m_useSlot = 1;
-	m_rB = m_sourceResistance;
-	m_xB = m_sourceReactance;
-	m_rA = m_loadResistance;
-	m_xA = m_loadReactance;
-	walkley();
-}
-
-void tuner::walkleyDisplay(
+void tuner::lnetDisplay(
 		int type,
 		double sourceVar[2][2],
 		const char *sourceLabel,
@@ -373,11 +369,13 @@ void tuner::walkleyDisplay(
 	int i;
 	int j;
 
-	// See if this topology is among the solutions.
+	// There are four solution slots.  We search the slots to see if the
+	// requested topology is among the solutions.
 	for(i = 0; i < 2; i++) {
 		for(j = 0; j < 2; j++) {
 			if(m_walkleySolnType[i][j] == type) {
-				// Found the solution.  Display it.
+				// Found a solution for the requested topology.
+				// Display it.
 				dl_tunerResult1->Show();
 				dl_tunerResultTag1->Show();
 				dl_tunerResult2->Show();
@@ -402,7 +400,7 @@ void tuner::walkleyDisplay(
 		}
 	}
 
-	// Invalid - no solution found.
+	// Invalid - no solution found for the requested topology.
 	dl_tunerResult1->Hide();
 	dl_tunerResultTag1->Show();
 	dl_tunerResult2->Hide();
@@ -417,14 +415,17 @@ void tuner::walkleyDisplay(
 	Layout();
 }
 
-bool tuner::walkleySetup(wxBitmap bmp)
+bool tuner::lnetDriver(wxBitmap bmp)
 {
 	int i;
 	int j;
 
+	// Set up - we don't ask for a Q parameter for L-networks,
+	// so hide that field.
 	dl_tunerQtag->Hide();
 	dl_tunerQ->Hide();
 
+	// Display the network topology schematic.
 	if ( bmp.IsOk() ) {
 		dl_bitmap->SetBitmap(bmp);
 	} else {
@@ -432,27 +433,44 @@ bool tuner::walkleySetup(wxBitmap bmp)
 		return FALSE;
 	}
 
-	// Clear old status.
+	// Clear old status.  Only some solutions will be viable.
 	for(i = 0; i < 2; i++) {
 		for(j = 0; j < 2; j++) {
 			m_walkleySolnType[i][j] = -1;
 		}
 	}
 
-	// Find all solutions.
-	walkleyPrep1();
-	walkleyPrep2();
+	// Find all the possible solutions for a given set of impedances.
+	// We will always get at least two solutions, but in some cases
+	// we will get four solutions.
+	//
+	// Start with the source impedance as the "A" parameters, and
+	// the load impedance as the "B" parameters.
+	m_useSlot = 0;
+	m_rA = m_sourceResistance;
+	m_xA = m_sourceReactance;
+	m_rB = m_loadResistance;
+	m_xB = m_loadReactance;
+	lnetAlgorithm();
+
+	// Now try again, with the source and load reversed.
+	m_useSlot = 1;
+	m_rB = m_sourceResistance;
+	m_xB = m_sourceReactance;
+	m_rA = m_loadResistance;
+	m_xA = m_loadReactance;
+	lnetAlgorithm();
 
 	return TRUE;
 }
 
 void tuner::CPCS()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_cc1))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_cc1))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_CPCS,
 			m_walkleySolnPar,
 			"CS Value (pF)",
@@ -463,11 +481,11 @@ void tuner::CPCS()
 
 void tuner::CSCP()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_cc2))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_cc2))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_CSCP,
 			m_walkleySolnSer,
 			"CS Value (pF)",
@@ -478,11 +496,11 @@ void tuner::CSCP()
 
 void tuner::LPLS()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_ll1))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_ll1))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_LPLS,
 			m_walkleySolnPar,
 			"LS Value (nH)",
@@ -493,11 +511,11 @@ void tuner::LPLS()
 
 void tuner::LSLP()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_ll2))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_ll2))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_LSLP,
 			m_walkleySolnSer,
 			"LS Value (nH)",
@@ -508,11 +526,11 @@ void tuner::LSLP()
 
 void tuner::LCHP()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_lchp))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_lchp))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_LCHP,
 			m_walkleySolnPar,
 			"L Value (nH)",
@@ -523,11 +541,11 @@ void tuner::LCHP()
 
 void tuner::CLLP()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_cllp))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_cllp))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_CLLP,
 			m_walkleySolnPar,
 			"C Value (pF)",
@@ -538,11 +556,11 @@ void tuner::CLLP()
 
 void tuner::LCLP()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_lclp))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_lclp))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_LCLP,
 			m_walkleySolnSer,
 			"L Value (nH)",
@@ -553,11 +571,11 @@ void tuner::LCLP()
 
 void tuner::CLHP()
 {
-	if(!walkleySetup(wxBITMAP_PNG_FROM_DATA(nt_clhp))) {
+	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_clhp))) {
 		return;
 	}
 
-	walkleyDisplay(
+	lnetDisplay(
 			USE_CLHP,
 			m_walkleySolnSer,
 			"C Value (pF)",

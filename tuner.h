@@ -67,18 +67,16 @@ class tuner : public tunerDialog
 	private:
 		void		recalculate();
 
-		void		walkleyShow(double w, double x1, double x2, int item);
-		void		walkley();
-		void		walkleyPrep1();
-		void		walkleyPrep2();
-		void		walkleyDisplay(
+		void		findLnetComponentValues(double w, double x1, double x2, int item);
+		void		lnetAlgorithm();
+		void		lnetDisplay(
 					int type,
 					double sourceVar[2][2],
 					const char *sourceLabel,
 					double loadVar[2][2],
 					const char *loadLabel
 					);
-		bool		walkleySetup(wxBitmap bmp);
+		bool		lnetDriver(wxBitmap bmp);
 
 		void		CPCS();
 		void		CSCP();
