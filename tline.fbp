@@ -7163,7 +7163,7 @@
                                         <property name="gripper">0</property>
                                         <property name="hidden">0</property>
                                         <property name="id">wxID_ANY</property>
-                                        <property name="label">Topology note: The radio buttons list the filter components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.  The circuit schematic of the selected radio button is shown at left.&#x0A;&#x0A;Some combinations of Parameters and Topologies will result in invalid component values, and this will be indicated in the results.  In this case, try selecting a different topology.&#x0A;</property>
+                                        <property name="label">Topology note: The radio buttons list the filter components in order, from source to load, where Lpar is a parallel inductor, Cpar is a parallel capacitor, Lser is a series inductor, and Cser is a series capacitor.  The circuit schematic of the selected radio button is shown at left.&#x0A;&#x0A;Some combinations of Parameters and Topologies will result in invalid component values.  This will be indicated in the results, and invalid topology choices will be grayed out.  In this case, try selecting a different topology.&#x0A;</property>
                                         <property name="markup">0</property>
                                         <property name="max_size"></property>
                                         <property name="maximize_button">0</property>
@@ -7301,7 +7301,7 @@
                         <property name="gripper">0</property>
                         <property name="hidden">0</property>
                         <property name="id">wxID_ANY</property>
-                        <property name="label">PI and T calculations are based on a Javascript implementation by John Wetherell:&#x0A;&#x0A;http://home.sandiego.edu/~ekim/e194rfs01/jwmatcher/matcher2.html</property>
+                        <property name="label">PI and T calculations are based on a Javascript implementation by John Wetherell:&#x0A;&#x0A;http://www.ee.oulu.fi/~timor/javaa/matcher2.html</property>
                         <property name="markup">0</property>
                         <property name="max_size"></property>
                         <property name="maximize_button">0</property>
