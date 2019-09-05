@@ -316,8 +316,6 @@ void tuner::recalculateHPPI()
 	double ql;
 	double rps;
 	double rpl;
-	double cps;
-	double cpl;
 	double q;
 	double cs;
 	double ls;
@@ -348,14 +346,6 @@ void tuner::recalculateHPPI()
 				ql = -xl / rl;
 				rps = rs * (1.0 + qs * qs);  
 				rpl = rl * (1.0 + ql * ql);
-				cps = qs / rps / w;
-				cpl = ql / rpl / w;
-				q = sqrt(rps / rv - 1.0);
-				cs = q / w / rps - cps;
-				ls = q * rv / w;
-				q = sqrt(rpl / rv - 1.0);
-				cl = q / w / rpl - cpl;
-				ll = q * rv / w;
 				q = sqrt(rps / rv - 1.0);
 				ls = rps / w / q;
 				if(qs != 0.0) {
@@ -410,8 +400,6 @@ void tuner::recalculateLPPI()
 	double cl;
 	double ll;
 	double l;
-	double lps;
-	double lpl;
 
 	if(Q < 0.0) {
 		m_cspi = NAN;
@@ -446,20 +434,6 @@ void tuner::recalculateLPPI()
 				ll = q * rv / w;
 				l = ls + ll;
 				m_lpi = l * 1.0e9;
-				q = sqrt(rps / rv - 1.0);
-				ls = rps / w / q;
-				if(qs != 0.0) {
-					lps = rps / qs / w;
-					ls = ls * lps / (ls - lps);
-				}
-				cs = 1.0 / w / q / rv;
-				q = sqrt(rpl / rv - 1.0);
-				ll = rpl / w / q;
-				if(ql != 0.0) {
-					lpl = rpl / ql / w;
-					ll = ll * lpl / (ll - lpl);
-				}
-				cl = 1.0 / w / q / rv;
 			}
 		}
 	}
@@ -532,12 +506,6 @@ void tuner::recalculateHPT()
 				ll = rv / w / q;
 				l = ll * ls / (ll + ls);
 				m_lt = l * 1.0e9;
-				q = sqrt(rv / rs - 1.0);
-				ls = q * rs / w - xs / w;
-				cs = q / w / rv;
-				q = sqrt(rv / rl - 1.0);
-				ll = q * rl / w - xl / w;
-				cl = q / w / rv;
 			}
 		}
 	}
@@ -586,26 +554,6 @@ void tuner::recalculateLPT()
 			} else {
 				rv = std::min(rs, rl) * (Q * Q + 1.0);
 				w = 2.0 * PI * f;
-				q = sqrt(rv / rs - 1.0);
-				cs = 1.0 / w / rs / q;
-				if(xs != 0.0) {
-					if(cs==(-1.0 / w / xs)) {
-						cs = INFINITY;
-					} else {
-						cs = cs * (-1.0 / w / xs) / (cs + 1.0 / w / xs);
-					}
-				}
-				ls = rv / w / q;
-				q = sqrt(rv / rl - 1.0);
-				cl = 1.0 / w / rl / q;
-				if(xl != 0.0) {
-					if(cl==(-1.0 / w / xs)) {
-						cl = INFINITY;
-					} else {
-						cl = cl * (-1.0 / w / xs) / (cl + 1.0 / w / xs);
-					}
-				}
-				ll = rv / w / q;
 				q = sqrt(rv / rs - 1.0);
 				ls = q * rs / w - xs / w;
 				m_lst = ls * 1.0e9;
