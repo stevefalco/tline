@@ -238,7 +238,9 @@ void tuner::lnetAlgorithm()
 	left = complex<double>(m_rA, m_xA + x1);
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
-		// This solution is good.  Store the component values.
+		// This solution is good.  Store the reactances and component values.
+		m_walkleySolnX1[m_useSlot][0] = x1a;
+		m_walkleySolnX2[m_useSlot][0] = x2a;
 		findLnetComponentValues(w, x1a, x2a, 0);
 
 		// Find the network Q.
@@ -259,7 +261,9 @@ void tuner::lnetAlgorithm()
 	left = complex<double>(m_rA, m_xA + x1);
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
-		// This solution is good.  Store the component values.
+		// This solution is good.  Store the reactances and component values.
+		m_walkleySolnX1[m_useSlot][1] = x1b;
+		m_walkleySolnX2[m_useSlot][1] = x2b;
 		findLnetComponentValues(w, x1b, x2b, 1);
 
 		// Find the network Q.
@@ -521,6 +525,125 @@ void tuner::recalculateHPT()
 
 void tuner::recalculateLPT()
 {
+	int i;
+	int j;
+
+	double w = 2.0 * PI * m_frequency;
+
+	double xTotal;
+	double xAdded;
+	double value;
+
+	if(fabs(m_sourceReactance / m_sourceResistance) > m_desiredQ ||
+			fabs(m_loadReactance / m_loadResistance) > m_desiredQ) {
+		// Can't have a solution, as the fixed points are already out of bounds.
+		m_lptValid = FALSE;
+		return;
+	}
+
+	// Arbitrarily pick one side to have the desired Q.
+	xTotal= m_sourceResistance * m_desiredQ;
+	xAdded= xTotal- m_sourceReactance;
+
+	// What component type would we be adding on the left?  It has to be an
+	// inductor for an LPT.
+	if(xAdded >= 0.0) {
+		// It is an inductor; proceed.
+		value = (xAdded * 1E9) / w;
+		for(i = 0; i < 2; i++) {
+			for(j = 0; j < 2; j++) {
+				m_walkleySolnType[i][j] = -1;
+			}
+		}
+
+		// Try to find solutions.  Because this is a T-network, the source and
+		// load points must be on the series side.
+		m_useSlot = 1;
+		m_rB = m_sourceResistance;
+		m_xB = xTotal;
+		m_rA = m_loadResistance;
+		m_xA = m_loadReactance;
+		lnetAlgorithm();
+		for(j = 0; j < 2; j++) {
+			if(m_walkleySolnType[m_useSlot][j] != -1) {
+				// Test this solution.
+				if(((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
+					// This solution is ok from a Q perspective.  However, the
+					// component types may or may not be correct.
+					//
+					// The series component must be an inductor, and the parallel
+					// component must be a capacitor.
+					if((m_walkleySolnSerIs[m_useSlot][j] == 'L') &&
+							(m_walkleySolnParIs[m_useSlot][j] == 'C')) {
+						// Good component types.
+						//wxLogError("1: LS=%f C=%f LL=%f", value, m_walkleySolnPar[m_useSlot][j], m_walkleySolnSer[m_useSlot][j]);
+						m_lst = value;
+						m_ct = m_walkleySolnPar[m_useSlot][j];
+						m_llt = m_walkleySolnSer[m_useSlot][j];
+						m_lptValid = TRUE;
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	// Didn't get a solution by forcing the Q on the left, so let's try forcing it on the right.
+	// Arbitrarily pick one side to have the desired Q.
+	xTotal = m_loadResistance * m_desiredQ;
+	xAdded = xTotal - m_loadReactance;
+
+	// What component type would we be adding on the right?  It has to be an
+	// inductor for an LPT.
+	if(xAdded >= 0.0) {
+		// It is an inductor; proceed.
+		value = (xAdded * 1E9) / w;
+		for(i = 0; i < 2; i++) {
+			for(j = 0; j < 2; j++) {
+				m_walkleySolnType[i][j] = -1;
+			}
+		}
+
+		// Try to find solutions.  Because this is a T-network, the source and
+		// load points must be on the series side.
+		m_useSlot = 0;
+		m_rA = m_sourceResistance;
+		m_xA = m_sourceReactance;
+		m_rB = m_loadResistance;
+		m_xB = xTotal;
+		lnetAlgorithm();
+		for(j = 0; j < 2; j++) {
+			if(m_walkleySolnType[m_useSlot][j] != -1) {
+				// Test this solution.
+				if(((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
+					// This solution is ok from a Q perspective.  However, the
+					// component types may or may not be correct.
+					//
+					// The series component must be an inductor, and the parallel
+					// component must be a capacitor.
+					if((m_walkleySolnSerIs[m_useSlot][j] == 'L') &&
+							(m_walkleySolnParIs[m_useSlot][j] == 'C')) {
+						// Good component types.
+						//wxLogError("0: LS=%f C=%f LL=%f", m_walkleySolnSer[m_useSlot][j], m_walkleySolnPar[m_useSlot][j], value);
+						m_lst = m_walkleySolnSer[m_useSlot][j];
+						m_ct = m_walkleySolnPar[m_useSlot][j];
+						m_llt = value;
+						m_lptValid = TRUE;
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	// Still no joy.
+	m_lptValid = FALSE;
+	//wxLogError("no solution");
+}
+
+#if 0
+void tuner::recalculateLPT()
+{
 	double rs = m_sourceResistance;
 	double xs = m_sourceReactance;
 	double rl = m_loadResistance;
@@ -576,6 +699,7 @@ void tuner::recalculateLPT()
 		m_lptValid = TRUE;
 	}
 }
+#endif
 
 void tuner::recalculate()
 {

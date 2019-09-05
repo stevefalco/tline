@@ -100,8 +100,10 @@ class tuner : public tunerDialog
 		double		m_walkleySolnQ[2][2];
 		char		m_walkleySolnParIs[2][2];
 		double		m_walkleySolnPar[2][2];
+		double		m_walkleySolnX2[2][2];
 		char		m_walkleySolnSerIs[2][2];
 		double		m_walkleySolnSer[2][2];
+		double		m_walkleySolnX1[2][2];
 
 		int		m_useSlot;
 		double		m_rA;
