@@ -20,9 +20,9 @@ line:
 
 <img src="screenshots/user_specified_line.png" >
 
-Please note that all transmission lines have an impedance with both real and imaginary parts, where the imaginary part is capacitive (i.e. a negative number like -j0.2 ohms).  Usually, the imaginary part is small, and cable manufacturers just specify a single number like "50 Ohms".  **_tline_** can estimate the imaginary part of the complex impedance for user-specified lines, or if you have measured the line and know what value you want to use, you can enter that instead.
+Please note that all transmission lines have an impedance with both real and imaginary parts, where the imaginary part is capacitive (i.e. a negative number like -j0.2 ohms).  Usually, the imaginary part is small, and cable manufacturers just specify a single number like "50 Ohms".  **_tline_** can estimate the real and imaginary parts of the complex impedance for user-specified lines, or if you have measured the line and know what values you want to use, you can enter them instead.
 
-**_tline_** can help design a matching circuit between a source impedance and a load impedance.  The calculations are based on a Javascript implementation by John Wetherell.  Please follow this [link]( http://home.sandiego.edu/~ekim/e194rfs01/jwmatcher/matcher2.html) for his implementation.
+**_tline_** can help design a matching circuit between a source impedance and a load impedance.  The calculations are based on a Javascript implementation by John Wetherell.  Please follow this [link](http://www.ee.oulu.fi/~timor/javaa/matcher2.html) for his implementation.
 
 Here is a screenshot of the matching calculator:
 

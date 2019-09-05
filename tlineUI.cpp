@@ -131,7 +131,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	bPane1RightUpper->Add( 40, 0, 1, wxALL, 5 );
 
-	ui_lambdaTag = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Lambda:"), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_lambdaTag = new wxStaticText( sbPane1Right->GetStaticBox(), wxID_ANY, wxT("Length (λ):"), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_lambdaTag->Wrap( -1 );
 	bPane1RightUpper->Add( ui_lambdaTag, 0, wxALL, 5 );
 
