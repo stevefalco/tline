@@ -22,7 +22,7 @@ line:
 
 Please note that all transmission lines have an impedance with both real and imaginary parts, where the imaginary part is capacitive (i.e. a negative number like -j0.2 ohms).  Usually, the imaginary part is small, and cable manufacturers just specify a single number like "50 Ohms".  **_tline_** can estimate the real and imaginary parts of the complex impedance for user-specified lines, or if you have measured the line and know what values you want to use, you can enter them instead.
 
-**_tline_** can help design a matching circuit between a source impedance and a load impedance.  The calculations are based on a Javascript implementation by John Wetherell.  Please follow this [link](http://www.ee.oulu.fi/~timor/javaa/matcher2.html) for his implementation.
+**_tline_** can help design a matching circuit between a source impedance and a load impedance.  The L-network calculations are based on a paper: "Impedance-Matching Networks of the L Type" by P. B. Walkley, May 1978.  Please follow this [link](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=10&ved=2ahUKEwiI6cDPi7rkAhWic98KHVSECGQQFjAJegQIABAC&url=https%3A%2F%2Fapps.dtic.mil%2Fdtic%2Ftr%2Ffulltext%2Fu2%2Fa061057.pdf&usg=AOvVaw3-Vaz-O--3FMTQ_gs0PFkE) for the paper.  The PI and T calculations are based on a Javascript implementation by John Wetherell.  Please follow this [link](http://www.ee.oulu.fi/~timor/javaa/matcher2.html) for his implementation.
 
 Here is a screenshot of the matching calculator:
 
