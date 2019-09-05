@@ -36,14 +36,7 @@ using namespace std;
 #define USE_LPPI		9
 #define USE_HPT			10
 #define USE_LPT			11
-#define USE_HP1LL		12
-#define USE_HP2LL		13
-#define USE_LP1LL		14
-#define USE_LP2LL		15
-#define USE_BP1LL		16
-#define USE_BP2LL		17
-#define USE_BP3LL		18
-#define USE_BP4LL		19
+#define USE_LAST		12
 
 class tuner : public tunerDialog
 {
@@ -52,7 +45,7 @@ class tuner : public tunerDialog
 
 		void		Update();
 
-		wxString	m_tunerTopologyStr = "High Pass (Lpar Cser)";
+		wxString	m_tunerTopologyStr;
 
 	protected:
 		void		onFrequency( wxCommandEvent& event );
@@ -65,18 +58,23 @@ class tuner : public tunerDialog
 		void		onTunerOKclicked( wxCommandEvent& event );
 
 	private:
+		void		recalculateHPPI();
+		void		recalculateLPPI();
+		void		recalculateHPT();
+		void		recalculateLPT();
+		void		recalculateLnet();
 		void		recalculate();
 
 		void		findLnetComponentValues(double w, double x1, double x2, int item);
 		void		lnetAlgorithm();
-		void		lnetDisplay(
+		void		lnetDisplayValues(
 					int type,
 					double sourceVar[2][2],
 					const char *sourceLabel,
 					double loadVar[2][2],
 					const char *loadLabel
 					);
-		bool		lnetDriver(wxBitmap bmp);
+		bool		lnetSetBitmap(wxBitmap bmp);
 
 		void		CPCS();
 		void		CSCP();
@@ -90,14 +88,6 @@ class tuner : public tunerDialog
 		void		LPPI();
 		void		HPT();
 		void		LPT();
-		void		HP1LL();
-		void		HP2LL();
-		void		LP1LL();
-		void		LP2LL();
-		void		BP1LL();
-		void		BP2LL();
-		void		BP3LL();
-		void		BP4LL();
 
 		double		m_sourceResistance;
 		double		m_sourceReactance;
@@ -118,6 +108,26 @@ class tuner : public tunerDialog
 		double		m_xA;
 		double		m_rB;
 		double		m_xB;
+
+		double		m_lspi;
+		double		m_llpi;
+		double		m_cpi;
+		bool		m_hppiValid;
+
+		double		m_cspi;
+		double		m_clpi;
+		double		m_lpi;
+		bool		m_lppiValid;
+
+		double		m_cst;
+		double		m_clt;
+		double		m_lt;
+		bool		m_hptValid;
+
+		double		m_lst;
+		double		m_llt;
+		double		m_ct;
+		bool		m_lptValid;
 };
 
 #endif // __tuner__

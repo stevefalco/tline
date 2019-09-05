@@ -22,26 +22,18 @@
 #include "tuner.h"
 
 // Generated images from PNG files.
-#include "nt_bp1ll.h"
-#include "nt_bp2ll.h"
-#include "nt_bp3ll.h"
-#include "nt_clhp.h"
-#include "nt_bp4ll.h"
-#include "nt_hppi.h"
-#include "nt_hp2ll.h"
-#include "nt_hp1ll.h"
-#include "nt_cllp.h"
-#include "nt_hpt.h"
-#include "nt_lclp.h"
-#include "nt_lchp.h"
-#include "nt_lp2ll.h"
-#include "nt_lp1ll.h"
-#include "nt_lpt.h"
-#include "nt_lppi.h"
 #include "nt_cc1.h"
 #include "nt_cc2.h"
 #include "nt_ll1.h"
 #include "nt_ll2.h"
+#include "nt_lchp.h"
+#include "nt_cllp.h"
+#include "nt_lclp.h"
+#include "nt_clhp.h"
+#include "nt_hppi.h"
+#include "nt_lppi.h"
+#include "nt_hpt.h"
+#include "nt_lpt.h"
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
@@ -81,25 +73,6 @@ void tuner::Update()
 		dl_topology->SetSelection(USE_HPT);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
 		dl_topology->SetSelection(USE_LPT);
-#if 0
-		// These don't seem to work correctly.
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser Lpar Cser)") == 0) {
-		dl_topology->SetSelection(USE_HP1LL);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar Cser Lpar)") == 0) {
-		dl_topology->SetSelection(USE_HP2LL);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
-		dl_topology->SetSelection(USE_LP1LL);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
-		dl_topology->SetSelection(USE_LP2LL);
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
-		dl_topology->SetSelection(USE_BP1LL);
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
-		dl_topology->SetSelection(USE_BP2LL);
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
-		dl_topology->SetSelection(USE_BP3LL);
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
-		dl_topology->SetSelection(USE_BP4LL);
-#endif
 	}
 
 	recalculate();
@@ -154,61 +127,6 @@ void tuner::onTunerTopologySelected( wxCommandEvent& event )
 	recalculate();
 }
 
-void tuner::recalculate()
-{
-	m_frequency = atof(m_tunerFrequencyStr) * 1.0E6;
-	m_sourceResistance = atof(m_tunerSourceResistanceStr);
-	m_sourceReactance = atof(m_tunerSourceReactanceStr);
-	m_loadResistance = atof(m_tunerLoadResistanceStr);
-	m_loadReactance = atof(m_tunerLoadReactanceStr);
-	m_desiredQ = atof(m_tunerQStr);
-
-	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
-		CPCS();
-	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
-		CSCP();
-	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
-		LPLS();
-	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
-		LSLP();
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
-		LCHP();
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
-		CLLP();
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar)") == 0) {
-		LCLP();
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar)") == 0) {
-		CLHP();
-	} else if(strcmp(m_tunerTopologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
-		HPPI();
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
-		LPPI();
-	} else if(strcmp(m_tunerTopologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
-		HPT();
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
-		LPT();
-#if 0
-		// These don't seem to work correctly.
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser Lpar Cser)") == 0) {
-		HP1LL();
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar Cser Lpar)") == 0) {
-		HP2LL();
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser Cpar Lser)") == 0) {
-		LP1LL();
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar Lser Cpar)") == 0) {
-		LP2LL();
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Lpar Cser Cpar Lser)") == 0) {
-		BP1LL();
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Lser Cpar Cser Lpar)") == 0) {
-		BP2LL();
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Cpar Lser Lpar Cser)") == 0) {
-		BP3LL();
-	} else if(strcmp(m_tunerTopologyStr, "Band Pass (Cser Lpar Lser Cpar)") == 0) {
-		BP4LL();
-#endif
-	}
-}
-
 void tuner::onTunerOKclicked( wxCommandEvent& event )
 {
 	if ( Validate() )
@@ -217,8 +135,7 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 	}
 }
 
-void
-tuner::findLnetComponentValues(double w, double x1, double x2, int item)
+void tuner::findLnetComponentValues(double w, double x1, double x2, int item)
 {
 	double value;
 
@@ -350,7 +267,439 @@ void tuner::lnetAlgorithm()
 	}
 }
 
-void tuner::lnetDisplay(
+void tuner::recalculateLnet()
+{
+	int i;
+	int j;
+
+	// Clear old status.  Only some solutions will be viable.
+	for(i = 0; i < 2; i++) {
+		for(j = 0; j < 2; j++) {
+			m_walkleySolnType[i][j] = -1;
+		}
+	}
+
+	// Find all the possible solutions for a given set of impedances.
+	// We will always get at least two solutions, but in some cases
+	// we will get four solutions.
+	//
+	// Start with the source impedance as the "A" parameters, and
+	// the load impedance as the "B" parameters.
+	m_useSlot = 0;
+	m_rA = m_sourceResistance;
+	m_xA = m_sourceReactance;
+	m_rB = m_loadResistance;
+	m_xB = m_loadReactance;
+	lnetAlgorithm();
+
+	// Now try again, with the source and load reversed.
+	m_useSlot = 1;
+	m_rB = m_sourceResistance;
+	m_xB = m_sourceReactance;
+	m_rA = m_loadResistance;
+	m_xA = m_loadReactance;
+	lnetAlgorithm();
+}
+
+void tuner::recalculateHPPI()
+{
+	double rs = m_sourceResistance;
+	double xs = m_sourceReactance;
+	double rl = m_loadResistance;
+	double xl = m_loadReactance;
+	double Q  = m_desiredQ;
+	double f  = m_frequency;
+
+	double rv;
+	double w;
+	double qs;
+	double ql;
+	double rps;
+	double rpl;
+	double cps;
+	double cpl;
+	double q;
+	double cs;
+	double ls;
+	double cl;
+	double ll;
+	double lps;
+	double lpl;
+	double c;
+
+	if(Q < 0.0) {
+		m_lspi = NAN;
+		m_llpi = NAN;
+		m_cpi = NAN;
+	} else {
+		if(Q == 0.0 && rs == rl) {
+			m_lspi = 0.0;
+			m_llpi = 0.0;
+			m_cpi = 0.0;
+		} else { 
+			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
+				m_lspi = NAN;
+				m_llpi = NAN;
+				m_cpi = NAN;
+			} else {
+				rv = std::max(rs, rl) / (Q * Q + 1.0);
+				w = 2.0 * PI * f;
+				qs = -xs / rs;
+				ql = -xl / rl;
+				rps = rs * (1.0 + qs * qs);  
+				rpl = rl * (1.0 + ql * ql);
+				cps = qs / rps / w;
+				cpl = ql / rpl / w;
+				q = sqrt(rps / rv - 1.0);
+				cs = q / w / rps - cps;
+				ls = q * rv / w;
+				q = sqrt(rpl / rv - 1.0);
+				cl = q / w / rpl - cpl;
+				ll = q * rv / w;
+				q = sqrt(rps / rv - 1.0);
+				ls = rps / w / q;
+				if(qs != 0.0) {
+					lps = rps / qs / w;
+					ls = ls * lps / (ls - lps);
+				}
+				m_lspi = ls * 1.0e9;
+				cs = 1.0 / w / q / rv;
+				q = sqrt(rpl / rv - 1.0);
+				ll = rpl / w / q;
+				if(ql != 0.0) {
+					lpl = rpl / ql / w;
+					ll = ll * lpl / (ll - lpl);
+				}
+				m_llpi = ll * 1.0e9;
+				cl = 1.0 / w / q / rv;
+				c = cl * cs / (cl + cs);
+				m_cpi = c * 1.0e12;
+			}
+		}
+	}
+
+	if(!isfinite(m_cpi) || !isfinite(m_lspi) || !isfinite(m_llpi) ||
+			m_cpi < 0.0 || m_lspi < 0.0 || m_llpi < 0.0 ||
+			m_cpi > 1e7 || m_lspi > 1e7 || m_llpi > 1e7) {
+		m_hppiValid = FALSE;
+	} else {
+		m_hppiValid = TRUE;
+	}
+}
+
+void tuner::recalculateLPPI()
+{
+	double rs = m_sourceResistance;
+	double xs = m_sourceReactance;
+	double rl = m_loadResistance;
+	double xl = m_loadReactance;
+	double Q  = m_desiredQ;
+	double f  = m_frequency;
+
+	double rv;
+	double w;
+	double qs;
+	double ql;
+	double rps;
+	double rpl;
+	double cps;
+	double cpl;
+	double q;
+	double cs;
+	double ls;
+	double cl;
+	double ll;
+	double l;
+	double lps;
+	double lpl;
+
+	if(Q < 0.0) {
+		m_cspi = NAN;
+		m_clpi = NAN;
+		m_lpi = NAN;
+	} else {
+		if(Q == 0.0 && rs == rl) {
+			m_cspi = 0.0;
+			m_clpi = 0.0;
+			m_lpi = 0.0;
+		} else { 
+			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
+				m_cspi = NAN;
+				m_clpi = NAN;
+				m_lpi = NAN;
+			} else {
+				rv = std::max(rs, rl) / (Q * Q + 1.0);
+				w = 2.0 * PI * f;
+				qs = -xs / rs;
+				ql = -xl / rl;
+				rps = rs * (1.0 + qs * qs);  
+				rpl = rl * (1.0 + ql * ql);
+				cps = qs / rps / w;
+				cpl = ql / rpl / w;
+				q = sqrt(rps / rv - 1.0);
+				cs = q / w / rps - cps;
+				m_cspi = cs * 1.0e12;
+				ls = q * rv / w;
+				q = sqrt(rpl / rv - 1.0);
+				cl = q / w / rpl - cpl;
+				m_clpi = cl * 1.0e12;
+				ll = q * rv / w;
+				l = ls + ll;
+				m_lpi = l * 1.0e9;
+				q = sqrt(rps / rv - 1.0);
+				ls = rps / w / q;
+				if(qs != 0.0) {
+					lps = rps / qs / w;
+					ls = ls * lps / (ls - lps);
+				}
+				cs = 1.0 / w / q / rv;
+				q = sqrt(rpl / rv - 1.0);
+				ll = rpl / w / q;
+				if(ql != 0.0) {
+					lpl = rpl / ql / w;
+					ll = ll * lpl / (ll - lpl);
+				}
+				cl = 1.0 / w / q / rv;
+			}
+		}
+	}
+
+	if(!isfinite(m_lpi) || !isfinite(m_cspi) || !isfinite(m_clpi) ||
+			m_lpi < 0.0 || m_cspi < 0.0 || m_clpi < 0.0 ||
+			m_lpi > 1e7 || m_cspi > 1e7 || m_clpi > 1e7) {
+		m_lppiValid = FALSE;
+	} else {
+		m_lppiValid = TRUE;
+	}
+}
+
+void tuner::recalculateHPT()
+{
+	double rs = m_sourceResistance;
+	double xs = m_sourceReactance;
+	double rl = m_loadResistance;
+	double xl = m_loadReactance;
+	double Q  = m_desiredQ;
+	double f  = m_frequency;
+
+	double rv;
+	double w;
+	double q;
+	double cs;
+	double ls;
+	double cl;
+	double ll;
+	double l;
+
+	if(Q < 0.0) {
+		m_cst = NAN;
+		m_clt = NAN;
+		m_lt = NAN;
+	} else {
+		if(Q == 0.0 && rs == rl) {
+			m_cst = 0.0;
+			m_clt = 0.0;
+			m_lt = 0.0;
+		} else {
+			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
+				m_cst = NAN;
+				m_clt = NAN;
+				m_lt = NAN;
+			} else {
+				rv = std::min(rs, rl) * (Q * Q + 1.0);
+				w = 2.0 * PI * f;
+				q = sqrt(rv / rs - 1.0);
+				cs = 1.0 / w / rs / q;
+				if(xs != 0.0) {
+					if(cs==(-1.0 / w / xs)) {
+						cs = INFINITY;
+					} else {
+						cs = cs * (-1.0 / w / xs) / (cs + 1.0 / w / xs);
+					}
+				}
+				m_cst = cs * 1.0e12;
+				ls = rv / w / q;
+				q = sqrt(rv / rl - 1.0);
+				cl = 1.0 / w / rl / q;
+				if(xl != 0.0) {
+					if(cl==(-1.0 / w / xs)) {
+						cl = INFINITY;
+					} else {
+						cl = cl * (-1.0 / w / xs) / (cl + 1.0 / w / xs);
+					}
+				}
+				m_clt = cl * 1.0e12;
+				ll = rv / w / q;
+				l = ll * ls / (ll + ls);
+				m_lt = l * 1.0e9;
+				q = sqrt(rv / rs - 1.0);
+				ls = q * rs / w - xs / w;
+				cs = q / w / rv;
+				q = sqrt(rv / rl - 1.0);
+				ll = q * rl / w - xl / w;
+				cl = q / w / rv;
+			}
+		}
+	}
+
+	if(!isfinite(m_lt) || !isfinite(m_cst) || !isfinite(m_clt) ||
+			m_lt < 0.0 || m_cst < 0.0 || m_clt < 0.0 ||
+			m_lt > 1e7 || m_cst > 1e7 || m_clt > 1e7) {
+		m_hptValid = FALSE;
+	} else {
+		m_hptValid = TRUE;
+	}
+}
+
+void tuner::recalculateLPT()
+{
+	double rs = m_sourceResistance;
+	double xs = m_sourceReactance;
+	double rl = m_loadResistance;
+	double xl = m_loadReactance;
+	double Q  = m_desiredQ;
+	double f  = m_frequency;
+
+	double rv;
+	double w;
+	double q;
+	double cs;
+	double ls;
+	double cl;
+	double ll;
+	double c;
+
+	if(Q < 0.0) {
+		m_lst = NAN;
+		m_llt = NAN;
+		m_ct = NAN;
+	} else {
+		if(Q == 0.0 && rs == rl) {
+			m_lst = 0.0;
+			m_llt = 0.0;
+			m_ct = 0.0;
+		} else {
+			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
+				m_lst = NAN;
+				m_llt = NAN;
+				m_ct = NAN;
+			} else {
+				rv = std::min(rs, rl) * (Q * Q + 1.0);
+				w = 2.0 * PI * f;
+				q = sqrt(rv / rs - 1.0);
+				cs = 1.0 / w / rs / q;
+				if(xs != 0.0) {
+					if(cs==(-1.0 / w / xs)) {
+						cs = INFINITY;
+					} else {
+						cs = cs * (-1.0 / w / xs) / (cs + 1.0 / w / xs);
+					}
+				}
+				ls = rv / w / q;
+				q = sqrt(rv / rl - 1.0);
+				cl = 1.0 / w / rl / q;
+				if(xl != 0.0) {
+					if(cl==(-1.0 / w / xs)) {
+						cl = INFINITY;
+					} else {
+						cl = cl * (-1.0 / w / xs) / (cl + 1.0 / w / xs);
+					}
+				}
+				ll = rv / w / q;
+				q = sqrt(rv / rs - 1.0);
+				ls = q * rs / w - xs / w;
+				m_lst = ls * 1.0e9;
+				cs = q / w / rv;
+				q = sqrt(rv / rl - 1.0);
+				ll = q * rl / w - xl / w;
+				m_llt = ll * 1.0e9;
+				cl = q / w / rv;
+				c = cs + cl;
+				m_ct = c * 1.0e12;
+			}
+		}
+	}
+
+	if(!isfinite(m_ct) || !isfinite(m_lst) || !isfinite(m_llt) ||
+			m_ct < 0.0 || m_lst < 0.0 || m_llt < 0.0 ||
+			m_ct > 1e7 || m_lst > 1e7 || m_llt > 1e7) {
+		m_lptValid = FALSE;
+	} else {
+		m_lptValid = TRUE;
+	}
+}
+
+void tuner::recalculate()
+{
+	int i;
+	int j;
+	bool arry[USE_LAST];
+
+	m_frequency = atof(m_tunerFrequencyStr) * 1.0E6;
+	m_sourceResistance = atof(m_tunerSourceResistanceStr);
+	m_sourceReactance = atof(m_tunerSourceReactanceStr);
+	m_loadResistance = atof(m_tunerLoadResistanceStr);
+	m_loadReactance = atof(m_tunerLoadReactanceStr);
+	m_desiredQ = atof(m_tunerQStr);
+
+	recalculateLnet();
+	recalculateHPPI();
+	recalculateLPPI();
+	recalculateHPT();
+	recalculateLPT();
+
+	// Gray out invalid radio buttons.  First handle the eight L-match
+	// cases.
+	for(i = 0; i < USE_LAST; i++) {
+		arry[i] = FALSE;
+	}
+	for(i = 0; i < 2; i++) {
+		for(j = 0; j < 2; j++) {
+			if(m_walkleySolnType[i][j] != -1) {
+				arry[m_walkleySolnType[i][j]] = TRUE;
+			}
+		}
+	}
+	for(i = USE_CPCS; i <= USE_CLHP; i++) {
+		dl_topology->Enable(i, arry[i]);
+	}
+
+	// Gray out invalid radio buttons.  Handle the PI and T match
+	// cases.
+	dl_topology->Enable(USE_HPPI, m_hppiValid);
+	dl_topology->Enable(USE_LPPI, m_lppiValid);
+	dl_topology->Enable(USE_HPT, m_hptValid);
+	dl_topology->Enable(USE_LPT, m_lptValid);
+
+	// Display the appropriate results.
+	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
+		CPCS();
+	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
+		CSCP();
+	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
+		LPLS();
+	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
+		LSLP();
+	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
+		LCHP();
+	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
+		CLLP();
+	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar)") == 0) {
+		LCLP();
+	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar)") == 0) {
+		CLHP();
+	} else if(strcmp(m_tunerTopologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
+		HPPI();
+	} else if(strcmp(m_tunerTopologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+		LPPI();
+	} else if(strcmp(m_tunerTopologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
+		HPT();
+	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
+		LPT();
+	}
+}
+
+void tuner::lnetDisplayValues(
 		int type,
 		double sourceVar[2][2],
 		const char *sourceLabel,
@@ -407,15 +756,10 @@ void tuner::lnetDisplay(
 	Layout();
 }
 
-bool tuner::lnetDriver(wxBitmap bmp)
+bool tuner::lnetSetBitmap(wxBitmap bmp)
 {
 	int i;
 	int j;
-
-	// Set up - we don't ask for a Q parameter for L-networks,
-	// so hide that field.
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
 
 	// Display the network topology schematic.
 	if ( bmp.IsOk() ) {
@@ -425,44 +769,16 @@ bool tuner::lnetDriver(wxBitmap bmp)
 		return FALSE;
 	}
 
-	// Clear old status.  Only some solutions will be viable.
-	for(i = 0; i < 2; i++) {
-		for(j = 0; j < 2; j++) {
-			m_walkleySolnType[i][j] = -1;
-		}
-	}
-
-	// Find all the possible solutions for a given set of impedances.
-	// We will always get at least two solutions, but in some cases
-	// we will get four solutions.
-	//
-	// Start with the source impedance as the "A" parameters, and
-	// the load impedance as the "B" parameters.
-	m_useSlot = 0;
-	m_rA = m_sourceResistance;
-	m_xA = m_sourceReactance;
-	m_rB = m_loadResistance;
-	m_xB = m_loadReactance;
-	lnetAlgorithm();
-
-	// Now try again, with the source and load reversed.
-	m_useSlot = 1;
-	m_rB = m_sourceResistance;
-	m_xB = m_sourceReactance;
-	m_rA = m_loadResistance;
-	m_xA = m_loadReactance;
-	lnetAlgorithm();
-
 	return TRUE;
 }
 
 void tuner::CPCS()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_cc1))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_cc1))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_CPCS,
 			m_walkleySolnPar,
 			"CS Value (pF)",
@@ -473,11 +789,11 @@ void tuner::CPCS()
 
 void tuner::CSCP()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_cc2))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_cc2))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_CSCP,
 			m_walkleySolnSer,
 			"CS Value (pF)",
@@ -488,11 +804,11 @@ void tuner::CSCP()
 
 void tuner::LPLS()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_ll1))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_ll1))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_LPLS,
 			m_walkleySolnPar,
 			"LS Value (nH)",
@@ -503,11 +819,11 @@ void tuner::LPLS()
 
 void tuner::LSLP()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_ll2))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_ll2))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_LSLP,
 			m_walkleySolnSer,
 			"LS Value (nH)",
@@ -518,11 +834,11 @@ void tuner::LSLP()
 
 void tuner::LCHP()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_lchp))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_lchp))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_LCHP,
 			m_walkleySolnPar,
 			"L Value (nH)",
@@ -533,11 +849,11 @@ void tuner::LCHP()
 
 void tuner::CLLP()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_cllp))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_cllp))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_CLLP,
 			m_walkleySolnPar,
 			"C Value (pF)",
@@ -548,11 +864,11 @@ void tuner::CLLP()
 
 void tuner::LCLP()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_lclp))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_lclp))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_LCLP,
 			m_walkleySolnSer,
 			"L Value (nH)",
@@ -563,11 +879,11 @@ void tuner::LCLP()
 
 void tuner::CLHP()
 {
-	if(!lnetDriver(wxBITMAP_PNG_FROM_DATA(nt_clhp))) {
+	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_clhp))) {
 		return;
 	}
 
-	lnetDisplay(
+	lnetDisplayValues(
 			USE_CLHP,
 			m_walkleySolnSer,
 			"C Value (pF)",
@@ -578,9 +894,6 @@ void tuner::CLHP()
 
 void tuner::HPPI()
 {
-	dl_tunerQtag->Show();
-	dl_tunerQ->Show();
-
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hppi);
 
 	if ( bmp.IsOk() ) {
@@ -590,88 +903,7 @@ void tuner::HPPI()
 		return;
 	}
 
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double qs;
-	double ql;
-	double rps;
-	double rpl;
-	double cps;
-	double cpl;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double lps;
-	double lpl;
-	double c;
-
-	double lspi;
-	double llpi;
-	double cpi;
-
-	if(Q < 0.0) {
-		lspi = NAN;
-		llpi = NAN;
-		cpi = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			lspi = 0.0;
-			llpi = 0.0;
-			cpi = 0.0;
-		} else { 
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				lspi = NAN;
-				llpi = NAN;
-				cpi = NAN;
-			} else {
-				rv = std::max(rs, rl) / (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				qs = -xs / rs;
-				ql = -xl / rl;
-				rps = rs * (1.0 + qs * qs);  
-				rpl = rl * (1.0 + ql * ql);
-				cps = qs / rps / w;
-				cpl = ql / rpl / w;
-				q = sqrt(rps / rv - 1.0);
-				cs = q / w / rps - cps;
-				ls = q * rv / w;
-				q = sqrt(rpl / rv - 1.0);
-				cl = q / w / rpl - cpl;
-				ll = q * rv / w;
-				q = sqrt(rps / rv - 1.0);
-				ls = rps / w / q;
-				if(qs != 0.0) {
-					lps = rps / qs / w;
-					ls = ls * lps / (ls - lps);
-				}
-				lspi = ls * 1.0e9;
-				cs = 1.0 / w / q / rv;
-				q = sqrt(rpl / rv - 1.0);
-				ll = rpl / w / q;
-				if(ql != 0.0) {
-					lpl = rpl / ql / w;
-					ll = ll * lpl / (ll - lpl);
-				}
-				llpi = ll * 1.0e9;
-				cl = 1.0 / w / q / rv;
-				c = cl * cs / (cl + cs);
-				cpi = c * 1.0e12;
-			}
-		}
-	}
-
-	if(!isfinite(cpi) || !isfinite(lspi) || !isfinite(llpi) ||
-			cpi < 0.0 || lspi < 0.0 || llpi < 0.0 ||
-			cpi > 1e7 || lspi > 1e7 || llpi > 1e7) {
+	if(!m_hppiValid) {
 		// Invalid
 		dl_tunerResult1->Hide();
 		dl_tunerResultTag1->Show();
@@ -697,13 +929,13 @@ void tuner::HPPI()
 	dl_tunerResult4->Hide();
 	dl_tunerResultTag4->Hide();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), cpi));
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cpi));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), lspi));
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_lspi));
 	dl_tunerResultTag2->SetLabel("LS Value (nH)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), llpi));
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_llpi));
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
 
 	Layout();
@@ -711,9 +943,6 @@ void tuner::HPPI()
 
 void tuner::LPPI()
 {
-	dl_tunerQtag->Show();
-	dl_tunerQ->Show();
-
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lppi);
 
 	if ( bmp.IsOk() ) {
@@ -723,88 +952,7 @@ void tuner::LPPI()
 		return;
 	}
 
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double qs;
-	double ql;
-	double rps;
-	double rpl;
-	double cps;
-	double cpl;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double l;
-	double lps;
-	double lpl;
-
-	double cspi;
-	double clpi;
-	double lpi;
-
-	if(Q < 0.0) {
-		cspi = NAN;
-		clpi = NAN;
-		lpi = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			cspi = 0.0;
-			clpi = 0.0;
-			lpi = 0.0;
-		} else { 
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				cspi = NAN;
-				clpi = NAN;
-				lpi = NAN;
-			} else {
-				rv = std::max(rs, rl) / (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				qs = -xs / rs;
-				ql = -xl / rl;
-				rps = rs * (1.0 + qs * qs);  
-				rpl = rl * (1.0 + ql * ql);
-				cps = qs / rps / w;
-				cpl = ql / rpl / w;
-				q = sqrt(rps / rv - 1.0);
-				cs = q / w / rps - cps;
-				cspi = cs * 1.0e12;
-				ls = q * rv / w;
-				q = sqrt(rpl / rv - 1.0);
-				cl = q / w / rpl - cpl;
-				clpi = cl * 1.0e12;
-				ll = q * rv / w;
-				l = ls + ll;
-				lpi = l * 1.0e9;
-				q = sqrt(rps / rv - 1.0);
-				ls = rps / w / q;
-				if(qs != 0.0) {
-					lps = rps / qs / w;
-					ls = ls * lps / (ls - lps);
-				}
-				cs = 1.0 / w / q / rv;
-				q = sqrt(rpl / rv - 1.0);
-				ll = rpl / w / q;
-				if(ql != 0.0) {
-					lpl = rpl / ql / w;
-					ll = ll * lpl / (ll - lpl);
-				}
-				cl = 1.0 / w / q / rv;
-			}
-		}
-	}
-
-	if(!isfinite(lpi) || !isfinite(cspi) || !isfinite(clpi) ||
-			lpi < 0.0 || cspi < 0.0 || clpi < 0.0 ||
-			lpi > 1e7 || cspi > 1e7 || clpi > 1e7) {
+	if(!m_lppiValid) {
 		// Invalid
 		dl_tunerResult1->Hide();
 		dl_tunerResultTag1->Show();
@@ -830,13 +978,13 @@ void tuner::LPPI()
 	dl_tunerResult4->Hide();
 	dl_tunerResultTag4->Hide();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), lpi));
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), cspi));
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_cspi));
 	dl_tunerResultTag2->SetLabel("CS Value (pF)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), clpi));
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_clpi));
 	dl_tunerResultTag3->SetLabel("CL Value (pF)");
 
 	Layout();
@@ -844,9 +992,6 @@ void tuner::LPPI()
 
 void tuner::HPT()
 {
-	dl_tunerQtag->Show();
-	dl_tunerQ->Show();
-
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hpt);
 
 	if ( bmp.IsOk() ) {
@@ -856,80 +1001,7 @@ void tuner::HPT()
 		return;
 	}
 
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double l;
-
-	double cst;
-	double clt;
-	double lt;
-
-	if(Q < 0.0) {
-		cst = NAN;
-		clt = NAN;
-		lt = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			cst = 0.0;
-			clt = 0.0;
-			lt = 0.0;
-		} else {
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				cst = NAN;
-				clt = NAN;
-				lt = NAN;
-			} else {
-				rv = std::min(rs, rl) * (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				q = sqrt(rv / rs - 1.0);
-				cs = 1.0 / w / rs / q;
-				if(xs != 0.0) {
-					if(cs==(-1.0 / w / xs)) {
-						cs = INFINITY;
-					} else {
-						cs = cs * (-1.0 / w / xs) / (cs + 1.0 / w / xs);
-					}
-				}
-				cst = cs * 1.0e12;
-				ls = rv / w / q;
-				q = sqrt(rv / rl - 1.0);
-				cl = 1.0 / w / rl / q;
-				if(xl != 0.0) {
-					if(cl==(-1.0 / w / xs)) {
-						cl = INFINITY;
-					} else {
-						cl = cl * (-1.0 / w / xs) / (cl + 1.0 / w / xs);
-					}
-				}
-				clt = cl * 1.0e12;
-				ll = rv / w / q;
-				l = ll * ls / (ll + ls);
-				lt = l * 1.0e9;
-				q = sqrt(rv / rs - 1.0);
-				ls = q * rs / w - xs / w;
-				cs = q / w / rv;
-				q = sqrt(rv / rl - 1.0);
-				ll = q * rl / w - xl / w;
-				cl = q / w / rv;
-			}
-		}
-	}
-
-	if(!isfinite(lt) || !isfinite(cst) || !isfinite(clt) ||
-			lt < 0.0 || cst < 0.0 || clt < 0.0 ||
-			lt > 1e7 || cst > 1e7 || clt > 1e7) {
+	if(!m_hptValid) {
 		// Invalid
 		dl_tunerResult1->Hide();
 		dl_tunerResultTag1->Show();
@@ -955,13 +1027,13 @@ void tuner::HPT()
 	dl_tunerResult4->Hide();
 	dl_tunerResultTag4->Hide();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), lt));
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lt));
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), cst));
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_cst));
 	dl_tunerResultTag2->SetLabel("CS Value (pF)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), clt));
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_clt));
 	dl_tunerResultTag3->SetLabel("CL Value (pF)");
 
 	Layout();
@@ -969,9 +1041,6 @@ void tuner::HPT()
 
 void tuner::LPT()
 {
-	dl_tunerQtag->Show();
-	dl_tunerQ->Show();
-
 	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lpt);
 
 	if ( bmp.IsOk() ) {
@@ -981,80 +1050,7 @@ void tuner::LPT()
 		return;
 	}
 
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double c;
-
-	double lst;
-	double llt;
-	double ct;
-
-	if(Q < 0.0) {
-		lst = NAN;
-		llt = NAN;
-		ct = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			lst = 0.0;
-			llt = 0.0;
-			ct = 0.0;
-		} else {
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				lst = NAN;
-				llt = NAN;
-				ct = NAN;
-			} else {
-				rv = std::min(rs, rl) * (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				q = sqrt(rv / rs - 1.0);
-				cs = 1.0 / w / rs / q;
-				if(xs != 0.0) {
-					if(cs==(-1.0 / w / xs)) {
-						cs = INFINITY;
-					} else {
-						cs = cs * (-1.0 / w / xs) / (cs + 1.0 / w / xs);
-					}
-				}
-				ls = rv / w / q;
-				q = sqrt(rv / rl - 1.0);
-				cl = 1.0 / w / rl / q;
-				if(xl != 0.0) {
-					if(cl==(-1.0 / w / xs)) {
-						cl = INFINITY;
-					} else {
-						cl = cl * (-1.0 / w / xs) / (cl + 1.0 / w / xs);
-					}
-				}
-				ll = rv / w / q;
-				q = sqrt(rv / rs - 1.0);
-				ls = q * rs / w - xs / w;
-				lst = ls * 1.0e9;
-				cs = q / w / rv;
-				q = sqrt(rv / rl - 1.0);
-				ll = q * rl / w - xl / w;
-				llt = ll * 1.0e9;
-				cl = q / w / rv;
-				c = cs + cl;
-				ct = c * 1.0e12;
-			}
-		}
-	}
-
-	if(!isfinite(ct) || !isfinite(lst) || !isfinite(llt) ||
-			ct < 0.0 || lst < 0.0 || llt < 0.0 ||
-			ct > 1e7 || lst > 1e7 || llt > 1e7) {
+	if(!m_lptValid) {
 		// Invalid
 		dl_tunerResult1->Hide();
 		dl_tunerResultTag1->Show();
@@ -1080,889 +1076,14 @@ void tuner::LPT()
 	dl_tunerResult4->Hide();
 	dl_tunerResultTag4->Hide();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), ct));
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_ct));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), lst));
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_lst));
 	dl_tunerResultTag2->SetLabel("LS Value (nH)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), llt));
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_llt));
 	dl_tunerResultTag3->SetLabel("LL Value (nH)");
 
 	Layout();
 }
-
-#if 0
-// These don't seem to work correctly.
-void tuner::HP1LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hp1ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double lp;
-	double c;
-	double l;
-	double cs;
-
-	double hp1cs;
-	double hp1ls;
-	double hp1cl;
-	double hp1ll;
-
-	w = 2.0 * PI * f;
-	q = xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		lp = rp / w / q;
-		c = 1.0 / w / rv / qs;
-		hp1cs = c * 1.0e12;
-		l = rp / w / qs;
-		if(xs != 0.0) {
-			if(lp == l) {
-				l = INFINITY;
-			} else {
-				l = 1.0 * lp / (lp - l);
-			}
-		}
-		hp1ls = l * 1.0e9;
-		cs = -1.0 / w / xl;
-		l = rv / w / ql;
-		hp1ll = l * 1.0e9;
-		c = 1.0 / w / rl / ql;
-		if(xl != 0.0) {
-			if(cs == c) {
-				c = INFINITY;
-			} else {
-				c = c * cs / (cs - c);
-		       	}
-		}
-		hp1cl = c * 1.0e12;
-	} else {
-		hp1cs = NAN;
-		hp1ls = NAN;
-		hp1cl = NAN;
-		hp1ll = NAN;
-	}
-
-	if(!isfinite(hp1ls) || !isfinite(hp1cs) || !isfinite(hp1ll) || !isfinite(hp1cl) ||
-			hp1ls < 0.0 || hp1cs < 0.0 || hp1ll < 0.0 || hp1cl < 0.0 ||
-			hp1ls > 1e7 || hp1cs > 1e7 || hp1ll > 1e7 || hp1cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), hp1ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), hp1cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), hp1ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), hp1cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-
-void tuner::HP2LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hp2ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rl = m_sourceResistance;
-	double xl = m_sourceReactance;
-	double rs = m_loadResistance;
-	double xs = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double lp;
-	double c;
-	double l;
-	double cs;
-
-	double hp2cs;
-	double hp2ls;
-	double hp2cl;
-	double hp2ll;
-
-	w = 2.0 * PI * f;
-	q = xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		lp = rp / w / q;
-		c = 1.0 / w / rv / qs;
-		hp2cs = c * 1.0e12;
-		l = rp / w / qs;
-		if(xs != 0.0) {
-			if(lp == l) {
-				l = INFINITY;
-			} else {
-				l = 1.0 * lp / (lp - l);
-			}
-		}
-		hp2ls = l * 1.0e9;
-		cs = -1.0 / w / xl;
-		l = rv / w / ql;
-		hp2ll = l * 1.0e9;
-		c = 1.0 / w / rl / ql;
-		if (xl != 0.0) {
-			if(cs == c) {
-				c = INFINITY;
-		       	} else {
-				c = c * cs / (cs - c);
-		       	}
-		}
-		hp2cl = c * 1.0e12;
-	} else {
-		hp2cs = NAN;
-		hp2ls = NAN;
-		hp2cl = NAN;
-		hp2ll = NAN;
-	}
-
-	if(!isfinite(hp2ls) || !isfinite(hp2cs) || !isfinite(hp2ll) || !isfinite(hp2cl) ||
-			hp2ls < 0.0 || hp2cs < 0.0 || hp2ll < 0.0 || hp2cl < 0.0 ||
-			hp2ls > 1e7 || hp2cs > 1e7 || hp2ll > 1e7 || hp2cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), hp2ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), hp2cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), hp2ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), hp2cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-
-void tuner::LP1LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lp1ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double cp;
-	double c;
-	double l;
-
-	double lp1cs;
-	double lp1ls;
-	double lp1cl;
-	double lp1ll;
-
-	w = 2.0 * PI * f;
-	q = -xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		cp = q / w / rp;
-		c = qs / w / rp - cp;
-		lp1cs = c * 1.0e12;
-		l = qs * rv / w;
-		lp1ls = l * 1.0e9;
-		l = rl * ql / w - xl / w;
-		lp1ll = l * 1.0e9;
-		c = ql / w / rv;
-		lp1cl = c * 1.0e12;
-	} else {
-		lp1cs = NAN;
-		lp1ls = NAN;
-		lp1cl = NAN;
-		lp1ll = NAN;
-	}
-
-	if(!isfinite(lp1ls) || !isfinite(lp1cs) || !isfinite(lp1ll) || !isfinite(lp1cl) ||
-			lp1ls < 0.0 || lp1cs < 0.0 || lp1ll < 0.0 || lp1cl < 0.0 ||
-			lp1ls > 1e7 || lp1cs > 1e7 || lp1ll > 1e7 || lp1cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), lp1ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), lp1cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), lp1ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), lp1cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-
-void tuner::LP2LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lp2ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rl = m_sourceResistance;
-	double xl = m_sourceReactance;
-	double rs = m_loadResistance;
-	double xs = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double cp;
-	double c;
-	double l;
-
-	double lp2cs;
-	double lp2ls;
-	double lp2cl;
-	double lp2ll;
-
-	w = 2.0 * PI * f;
-	q = -xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		cp = q / w / rp;
-		c = qs / w / rp - cp;
-		lp2cs = c * 1.0e12;
-		l = qs * rv / w;
-		lp2ls = l * 1.0e9;
-		l = rl * ql / w - xl / w;
-		lp2ll = l * 1.0e9;
-		c = ql / w / rv;
-		lp2cl = c * 1.0e12;
-	} else {
-		lp2cs = NAN;
-		lp2ls = NAN;
-		lp2cl = NAN;
-		lp2ll = NAN;
-	}
-
-	if(!isfinite(lp2ls) || !isfinite(lp2cs) || !isfinite(lp2ll) || !isfinite(lp2cl) ||
-			lp2ls < 0.0 || lp2cs < 0.0 || lp2ll < 0.0 || lp2cl < 0.0 ||
-			lp2ls > 1e7 || lp2cs > 1e7 || lp2ll > 1e7 || lp2cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), lp2ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), lp2cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), lp2ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), lp2cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-
-void tuner::BP1LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp1ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double lp;
-	double c;
-	double l;
-
-	double bp1cs;
-	double bp1ls;
-	double bp1cl;
-	double bp1ll;
-
-	w = 2.0 * PI * f;
-	q = xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		lp = rp / w / q;
-		c = 1.0 / w / rv / qs;
-		bp1cs = c * 1.0e12;
-		l = rp / w / qs;
-		if (xs != 0.0) {
-			if(lp == l) {
-				l = INFINITY;
-		       	} else {
-				l = 1.0 * lp / (lp - l);
-		       	}
-		}
-		bp1ls = l * 1.0e9;
-		l = ql * rl / w - xl / w;
-		bp1ll = l * 1.0e9;
-		c = ql / w / rv;
-		bp1cl = c * 1.0e12;
-	} else {
-		bp1cs = NAN;
-		bp1ls = NAN;
-		bp1cl = NAN;
-		bp1ll = NAN;
-	}
-	
-	if(!isfinite(bp1ls) || !isfinite(bp1cs) || !isfinite(bp1ll) || !isfinite(bp1cl) ||
-			bp1ls < 0.0 || bp1cs < 0.0 || bp1ll < 0.0 || bp1cl < 0.0 ||
-			bp1ls > 1e7 || bp1cs > 1e7 || bp1ll > 1e7 || bp1cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), bp1ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), bp1cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), bp1ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), bp1cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-
-void tuner::BP2LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp2ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rl = m_sourceResistance;
-	double xl = m_sourceReactance;
-	double rs = m_loadResistance;
-	double xs = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double lp;
-	double c;
-	double l;
-
-	double bp2cs;
-	double bp2ls;
-	double bp2cl;
-	double bp2ll;
-
-	w = 2.0 * PI * f;
-	q = xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		lp = rp / w / q;
-		c = 1.0 / w / rv / qs;
-		bp2cs = c * 1.0e12;
-		l = rp / w / qs;
-		if (xs != 0.0) {
-			if(lp == l) {
-				l = INFINITY;
-			} else {
-				l = 1.0 * lp / (lp - l);
-			}
-		}
-		bp2ls = l * 1.0e9;
-		l = ql * rl / w - xl / w;
-		bp2ll = l * 1.0e9;
-		c = ql / w / rv;
-		bp2cl = c * 1.0e12;
-	} else {
-		bp2cs = NAN;
-		bp2ls = NAN;
-		bp2cl = NAN;
-		bp2ll = NAN;
-	}
-
-	if(!isfinite(bp2ls) || !isfinite(bp2cs) || !isfinite(bp2ll) || !isfinite(bp2cl) ||
-			bp2ls < 0.0 || bp2cs < 0.0 || bp2ll < 0.0 || bp2cl < 0.0 ||
-			bp2ls > 1e7 || bp2cs > 1e7 || bp2ll > 1e7 || bp2cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), bp2ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), bp2cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), bp2ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), bp2cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-
-void tuner::BP3LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp3ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double c;
-	double l;
-	double cs;
-	double cp;
-
-	double bp3cs;
-	double bp3ls;
-	double bp3cl;
-	double bp3ll;
-
-	w = 2.0 * PI * f;
-	q = -xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		cp = q / w / rp;
-		c = qs / w / rp - cp;
-		bp3cs = c * 1.0e12;
-		l = qs * rv / w;
-		bp3ls = l * 1.0e9;
-		l = rv / w / ql;
-		bp3ll = l * 1.0e9;
-		cs = -1.0 / w / xl;
-		c = 1.0 / w / rl / ql;
-		if (xl != 0.0) {
-			if(cs == c) {
-				c = INFINITY;
-			} else {
-				c = c * cs / (cs - c);
-			}
-		}
-		bp3cl = c * 1.0e12;
-	} else {
-		bp3cs = NAN;
-		bp3ls = NAN;
-		bp3cl = NAN;
-		bp3ll = NAN;
-	}
-	
-	if(!isfinite(bp3ls) || !isfinite(bp3cs) || !isfinite(bp3ll) || !isfinite(bp3cl) ||
-			bp3ls < 0.0 || bp3cs < 0.0 || bp3ll < 0.0 || bp3cl < 0.0 ||
-			bp3ls > 1e7 || bp3cs > 1e7 || bp3ll > 1e7 || bp3cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), bp3ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), bp3cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), bp3ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), bp3cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-
-void tuner::BP4LL()
-{
-	dl_tunerQtag->Hide();
-	dl_tunerQ->Hide();
-
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_bp4ll);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	double rl = m_sourceResistance;
-	double xl = m_sourceReactance;
-	double rs = m_loadResistance;
-	double xs = m_loadReactance;
-	double f  = m_frequency;
-
-	double w;
-	double q;
-	double rp;
-	double rv;
-	double qs;
-	double ql;
-	double c;
-	double l;
-	double cs;
-	double cp;
-
-	double bp4cs;
-	double bp4ls;
-	double bp4cl;
-	double bp4ll;
-
-	w = 2.0 * PI * f;
-	q = -xs / rs;
-	rp = (1.0 + q * q) * rs;
-	rv = sqrt(rp * rl);
-	if(rp > rv) {
-		qs = sqrt(rp / rv - 1.0);
-		ql = sqrt(rv / rl - 1.0);
-		cp = q / w / rp;
-		c = qs / w / rp - cp;
-		bp4cs = c * 1.0e12;
-		l = qs * rv / w;
-		bp4ls = l * 1.0e9;
-		l = rv / w / ql;
-		bp4ll = l * 1.0e9;
-		cs = -1.0 / w / xl;
-		c = 1.0 / w / rl / ql;
-		if(xl != 0.0) {
-			if(cs == c) {
-				c = INFINITY;
-			} else {
-				c = c * cs / (cs - c);
-			}
-		}
-		bp4cl = c * 1.0e12;
-	} else {
-		bp4cs = NAN;
-		bp4ls = NAN;
-		bp4cl = NAN;
-		bp4ll = NAN;
-	}
-	
-	if(!isfinite(bp4ls) || !isfinite(bp4cs) || !isfinite(bp4ll) || !isfinite(bp4cl) ||
-			bp4ls < 0.0 || bp4cs < 0.0 || bp4ll < 0.0 || bp4cl < 0.0 ||
-			bp4ls > 1e7 || bp4cs > 1e7 || bp4ll > 1e7 || bp4cl > 1e7) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), bp4ls));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), bp4cs));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), bp4ll));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), bp4cl));
-	dl_tunerResultTag4->SetLabel("CL Value (pF)");
-
-	Layout();
-}
-#endif
