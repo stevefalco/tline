@@ -69,15 +69,18 @@ class tuner : public tunerDialog
 		void		onTunerOKclicked( wxCommandEvent& event );
 
 	private:
-		bool		tryHPPI(
+		bool		tryPI(
 					int slot,
 					double ra,
 					double xa,
 					double rb,
 					double xb,
-					double *la,
-					double *c,
-					double *lb
+					double *outA,
+					double *outB,
+					double *outC,
+					char expectSer,
+					char expectPar,
+					bool wantInductance
 					);
 
 		bool		tryT(

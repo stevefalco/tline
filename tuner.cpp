@@ -307,15 +307,18 @@ void tuner::recalculateLnet(LNET_RESULTS *result)
 	lnetAlgorithm(result);
 }
 
-bool tuner::tryHPPI(
+bool tuner::tryPI(
 		int slot,
 		double ra,
 		double xa,
 		double rb,
 		double xb,
-		double *la,
-		double *c,
-		double *lb
+		double *outA,
+		double *outB,
+		double *outC,
+		char expectSer,
+		char expectPar,
+		bool wantInductance
 		)
 {
 	LNET_RESULTS result;
@@ -338,12 +341,23 @@ bool tuner::tryHPPI(
 	complex<double> zCombined;
 
 	// How much reactance must we add to hit our Q target?
-	xAdded = 1.0 / (m_desiredQ * real(yA) + imag(yA));
+	if(wantInductance) {
+		xAdded = 1.0 / (m_desiredQ * real(yA) + imag(yA));
+	} else {
+		xAdded = 1.0 / (imag(yA) - m_desiredQ * real(yA));
+	}
 
-	// What component type would we be adding?  It has to be an inductor for an HPPI.
-	if(xAdded >= 0.0) {
-		// It is an inductor.  Calculate inductance in nH.
-		value = (xAdded * 1E9) / w;
+	// What component type would we be adding?  It has to be an inductor for an HPPI
+	// or a capacitor for an LPPI.
+	if((wantInductance == TRUE && xAdded >= 0.0) ||
+			(wantInductance == FALSE && xAdded <= 0.0)) {
+		// It is correct.  Calculate inductance in nH or capacitance in pF.
+		if(wantInductance == TRUE) {
+			value = 1E9 * (xAdded / w);
+		} else {
+			value = 1E12 / (w * -xAdded);
+		}
+		wxLogError("%c %c xAdded = %f, value %f", expectSer, expectPar, xAdded, value);
 
 		// Clear the lnet status.
 		for(i = 0; i < 2; i++) {
@@ -377,28 +391,29 @@ bool tuner::tryHPPI(
 					//
 					// The series component must be an inductor, and the parallel
 					// component must be a capacitor.
-					if((result.solnSerIs[slot][j] == 'C') &&
-							(result.solnParIs[slot][j] == 'L')) {
+					if((result.solnSerIs[slot][j] == expectSer) &&
+							(result.solnParIs[slot][j] == expectPar)) {
 						// Good component types.
-						*la = value;
-						*c = result.solnSer[slot][j];
-						*lb = result.solnPar[slot][j];
-						//wxLogError("%d is %c %c good!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						*outA = value;
+						*outB = result.solnSer[slot][j];
+						*outC = result.solnPar[slot][j];
+						wxLogError("%d is %c %c good!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 						return TRUE;
 					} else {
-						//wxLogError("%d is %c %c", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						wxLogError("%d is %c %c bad!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 					}
 				} else {
-					//wxLogError("%d wrong q %f vs %f", j, fabs(imag(zCombined) / real(zCombined)), m_desiredQ);
+					wxLogError("%c %c %d wrong q %f vs %f, comps %f %f %f",
+							expectSer, expectPar, j, fabs(imag(zCombined) / real(zCombined)), m_desiredQ,
+							value, result.solnSer[slot][j], result.solnPar[slot][j]);
 				}
 			} else {
-				//wxLogError("%d bad", j);
+				wxLogError("%c %c %d bad", expectSer, expectPar, j);
 			}
 		}
 	} else {
-		//wxLogError("not inductor");
+		wxLogError("%c %c wrong type %f", expectSer, expectPar, xAdded);
 	}
-	//wxLogError("failed");
 
 	return FALSE;
 }
@@ -408,12 +423,12 @@ void tuner::recalculateHPPI()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryHPPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lspi, &m_cpi, &m_llpi)) {
+	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lspi, &m_cpi, &m_llpi, 'C', 'L', TRUE)) {
 		m_hppiValid = TRUE;
 		return;
 	}
 
-	if(tryHPPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_llpi, &m_cpi, &m_lspi)) {
+	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_llpi, &m_cpi, &m_lspi, 'C', 'L', TRUE)) {
 		m_hppiValid = TRUE;
 		return;
 	}
@@ -423,72 +438,19 @@ void tuner::recalculateHPPI()
 
 void tuner::recalculateLPPI()
 {
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double qs;
-	double ql;
-	double rps;
-	double rpl;
-	double cps;
-	double cpl;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double l;
-
-	if(Q < 0.0) {
-		m_cspi = NAN;
-		m_clpi = NAN;
-		m_lpi = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			m_cspi = 0.0;
-			m_clpi = 0.0;
-			m_lpi = 0.0;
-		} else { 
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				m_cspi = NAN;
-				m_clpi = NAN;
-				m_lpi = NAN;
-			} else {
-				rv = std::max(rs, rl) / (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				qs = -xs / rs;
-				ql = -xl / rl;
-				rps = rs * (1.0 + qs * qs);  
-				rpl = rl * (1.0 + ql * ql);
-				cps = qs / rps / w;
-				cpl = ql / rpl / w;
-				q = sqrt(rps / rv - 1.0);
-				cs = q / w / rps - cps;
-				m_cspi = cs * 1.0e12;
-				ls = q * rv / w;
-				q = sqrt(rpl / rv - 1.0);
-				cl = q / w / rpl - cpl;
-				m_clpi = cl * 1.0e12;
-				ll = q * rv / w;
-				l = ls + ll;
-				m_lpi = l * 1.0e9;
-			}
-		}
-	}
-
-	if(!isfinite(m_lpi) || !isfinite(m_cspi) || !isfinite(m_clpi) ||
-			m_lpi < 0.0 || m_cspi < 0.0 || m_clpi < 0.0 ||
-			m_lpi > 1e7 || m_cspi > 1e7 || m_clpi > 1e7) {
-		m_lppiValid = FALSE;
-	} else {
+	// Because of the Q constraint, we have to try this two ways, and see
+	// which one works.
+	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_cspi, &m_lpi, &m_clpi, 'L', 'C', FALSE)) {
 		m_lppiValid = TRUE;
+		return;
 	}
+
+	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_clpi, &m_lpi, &m_cspi, 'L', 'C', FALSE)) {
+		m_lppiValid = TRUE;
+		return;
+	}
+
+	m_lppiValid = FALSE;
 }
 
 bool tuner::tryT(
