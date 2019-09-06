@@ -80,15 +80,18 @@ class tuner : public tunerDialog
 					double *lb
 					);
 
-		bool		tryLPT(
+		bool		tryT(
 					int slot,
 					double ra,
 					double xa,
 					double rb,
 					double xb,
-					double *la,
-					double *c,
-					double *lb
+					double *outA,
+					double *outB,
+					double *outC,
+					char expectSer,
+					char expectPar,
+					bool wantInductance
 					);
 
 		void		recalculateHPPI();

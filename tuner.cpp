@@ -491,87 +491,18 @@ void tuner::recalculateLPPI()
 	}
 }
 
-void tuner::recalculateHPT()
-{
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double l;
-
-	if(Q < 0.0) {
-		m_cst = NAN;
-		m_clt = NAN;
-		m_lt = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			m_cst = 0.0;
-			m_clt = 0.0;
-			m_lt = 0.0;
-		} else {
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				m_cst = NAN;
-				m_clt = NAN;
-				m_lt = NAN;
-			} else {
-				rv = std::min(rs, rl) * (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				q = sqrt(rv / rs - 1.0);
-				cs = 1.0 / w / rs / q;
-				if(xs != 0.0) {
-					if(cs==(-1.0 / w / xs)) {
-						cs = INFINITY;
-					} else {
-						cs = cs * (-1.0 / w / xs) / (cs + 1.0 / w / xs);
-					}
-				}
-				m_cst = cs * 1.0e12;
-				ls = rv / w / q;
-				q = sqrt(rv / rl - 1.0);
-				cl = 1.0 / w / rl / q;
-				if(xl != 0.0) {
-					if(cl==(-1.0 / w / xs)) {
-						cl = INFINITY;
-					} else {
-						cl = cl * (-1.0 / w / xs) / (cl + 1.0 / w / xs);
-					}
-				}
-				m_clt = cl * 1.0e12;
-				ll = rv / w / q;
-				l = ll * ls / (ll + ls);
-				m_lt = l * 1.0e9;
-			}
-		}
-	}
-
-	if(!isfinite(m_lt) || !isfinite(m_cst) || !isfinite(m_clt) ||
-			m_lt < 0.0 || m_cst < 0.0 || m_clt < 0.0 ||
-			m_lt > 1e7 || m_cst > 1e7 || m_clt > 1e7) {
-		m_hptValid = FALSE;
-	} else {
-		m_hptValid = TRUE;
-	}
-}
-
-bool tuner::tryLPT(
+bool tuner::tryT(
 		int slot,
 		double ra,
 		double xa,
 		double rb,
 		double xb,
-		double *la,
-		double *c,
-		double *lb
+		double *outA,
+		double *outB,
+		double *outC,
+		char expectSer,
+		char expectPar,
+		bool wantInductance
 		)
 {
 	LNET_RESULTS result;
@@ -586,13 +517,24 @@ bool tuner::tryLPT(
 	double value;
 
 	// How much reactance must we add to hit our Q target?
-	xTotal = ra * m_desiredQ;
+	if(wantInductance) {
+		xTotal = ra * m_desiredQ;
+	} else {
+		xTotal = -ra * m_desiredQ;
+	}
 	xAdded = xTotal - xa;
 
-	// What component type would we be adding?  It has to be an inductor for an LPT.
-	if(xAdded >= 0.0) {
-		// It is an inductor.  Calculate inductance in nH.
-		value = (xAdded * 1E9) / w;
+	// What component type would we be adding?  It has to be an inductor for an LPT
+	// or a capacitor for an HPT.
+	if((wantInductance == TRUE && xAdded >= 0.0) ||
+			(wantInductance == FALSE && xAdded <= 0.0)) {
+		// It is correct.  Calculate inductance in nH or capacitance in pF.
+		if(wantInductance == TRUE) {
+			value = 1E9 * (xAdded / w);
+		} else {
+			value = 1E12 / (w * -xAdded);
+		}
+		//wxLogError("%c %c right type %f", expectSer, expectPar, value);
 
 		// Clear the lnet status.
 		for(i = 0; i < 2; i++) {
@@ -622,33 +564,58 @@ bool tuner::tryLPT(
 					//
 					// The series component must be an inductor, and the parallel
 					// component must be a capacitor.
-					if((result.solnSerIs[slot][j] == 'L') &&
-							(result.solnParIs[slot][j] == 'C')) {
+					if((result.solnSerIs[slot][j] == expectSer) &&
+							(result.solnParIs[slot][j] == expectPar)) {
 						// Good component types.
-						//wxLogError("0: LS=%f C=%f LL=%f", result.solnSer[slot][j], result.solnPar[slot][j], value);
-						*la = value;
-						*c = result.solnPar[slot][j];
-						*lb = result.solnSer[slot][j];
+						//wxLogError("LS=%f C=%f LL=%f", result.solnSer[slot][j], result.solnPar[slot][j], value);
+						*outA = value;
+						*outB = result.solnPar[slot][j];
+						*outC = result.solnSer[slot][j];
 						return TRUE;
+					} else {
+						//wxLogError("bad types, want %c %c, got %c %c", expectSer, expectPar, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 					}
+				} else {
+					//wxLogError("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_desiredQ, fabs((m_xA + result.solnX1[slot][j]) / m_rA));
 				}
+			} else {
+				//wxLogError("%c %c %d invalid", expectSer, expectPar, j);
 			}
 		}
+	} else {
+		//wxLogError("%c %c wrong type %f", expectSer, expectPar, xAdded);
 	}
 
 	return FALSE;
+}
+
+void tuner::recalculateHPT()
+{
+	// Because of the Q constraint, we have to try this two ways, and see
+	// which one works.
+	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_cst, &m_lt, &m_clt, 'C', 'L', FALSE)) {
+		m_hptValid = TRUE;
+		return;
+	}
+
+	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_clt, &m_lt, &m_cst, 'C', 'L', FALSE)) {
+		m_hptValid = TRUE;
+		return;
+	}
+
+	m_hptValid = FALSE;
 }
 
 void tuner::recalculateLPT()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryLPT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lst, &m_ct, &m_llt)) {
+	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lst, &m_ct, &m_llt, 'L', 'C', TRUE)) {
 		m_lptValid = TRUE;
 		return;
 	}
 
-	if(tryLPT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_llt, &m_ct, &m_lst)) {
+	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_llt, &m_ct, &m_lst, 'L', 'C', TRUE)) {
 		m_lptValid = TRUE;
 		return;
 	}
