@@ -932,10 +932,6 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	bTunerOuter->Add( bTunerInner, 1, wxEXPAND, 5 );
 
-	dl_tunerCredit = new wxStaticText( this, wxID_ANY, wxT("PI and T calculations are based on a Javascript implementation by John Wetherell:\n\nhttp://www.ee.oulu.fi/~timor/javaa/matcher2.html"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerCredit->Wrap( -1 );
-	bTunerOuter->Add( dl_tunerCredit, 0, wxALL, 5 );
-
 
 	this->SetSizer( bTunerOuter );
 	this->Layout();

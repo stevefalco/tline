@@ -267,7 +267,6 @@ class tunerDialog : public wxDialog
 		wxStaticText* dl_tunerParameterNote;
 		wxStaticText* dl_tunerTopologyNote;
 		wxButton* dl_tunerOKbutton;
-		wxStaticText* dl_tunerCredit;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onFrequency( wxCommandEvent& event ) { event.Skip(); }
