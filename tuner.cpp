@@ -37,6 +37,22 @@
 #include "nt_hpt.h"
 #include "nt_lpt.h"
 
+#undef ENABLE_DEBUG_PI
+
+#ifdef ENABLE_DEBUG_PI
+    #define XDEBUG_PI(...) wxLogError(__VA_ARGS__)
+#else
+    #define XDEBUG_PI(...)  /**/
+#endif
+
+#undef ENABLE_DEBUG_T
+
+#ifdef ENABLE_DEBUG_T
+    #define XDEBUG_T(...) wxLogError(__VA_ARGS__)
+#else
+    #define XDEBUG_T(...)  /**/
+#endif
+
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
 	SetIcon(wxICON(aaaa));
@@ -357,7 +373,7 @@ bool tuner::tryPI(
 		} else {
 			value = 1E12 / (w * -xAdded);
 		}
-		wxLogError("%c %c xAdded = %f, value %f", expectSer, expectPar, xAdded, value);
+		XDEBUG_PI("%c %c xAdded = %f, value %f", expectSer, expectPar, xAdded, value);
 
 		// Clear the lnet status.
 		for(i = 0; i < 2; i++) {
@@ -397,22 +413,20 @@ bool tuner::tryPI(
 						*outA = value;
 						*outB = result.solnSer[slot][j];
 						*outC = result.solnPar[slot][j];
-						wxLogError("%d is %c %c good!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						XDEBUG_PI("%d is %c %c good!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 						return TRUE;
 					} else {
-						wxLogError("%d is %c %c bad!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						XDEBUG_PI("%d is %c %c bad!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 					}
 				} else {
-					wxLogError("%c %c %d wrong q %f vs %f, comps %f %f %f",
-							expectSer, expectPar, j, fabs(imag(zCombined) / real(zCombined)), m_desiredQ,
-							value, result.solnSer[slot][j], result.solnPar[slot][j]);
+					XDEBUG_PI("%c %c %d wrong q %f vs %f, comps %f %f %f", expectSer, expectPar, j, fabs(imag(zCombined) / real(zCombined)), m_desiredQ, value, result.solnSer[slot][j], result.solnPar[slot][j]);
 				}
 			} else {
-				wxLogError("%c %c %d bad", expectSer, expectPar, j);
+				XDEBUG_PI("%c %c %d bad", expectSer, expectPar, j);
 			}
 		}
 	} else {
-		wxLogError("%c %c wrong type %f", expectSer, expectPar, xAdded);
+		XDEBUG_PI("%c %c wrong type %f", expectSer, expectPar, xAdded);
 	}
 
 	return FALSE;
@@ -496,7 +510,7 @@ bool tuner::tryT(
 		} else {
 			value = 1E12 / (w * -xAdded);
 		}
-		//wxLogError("%c %c right type %f", expectSer, expectPar, value);
+		XDEBUG_T("%c %c right type %f", expectSer, expectPar, value);
 
 		// Clear the lnet status.
 		for(i = 0; i < 2; i++) {
@@ -529,23 +543,23 @@ bool tuner::tryT(
 					if((result.solnSerIs[slot][j] == expectSer) &&
 							(result.solnParIs[slot][j] == expectPar)) {
 						// Good component types.
-						//wxLogError("LS=%f C=%f LL=%f", result.solnSer[slot][j], result.solnPar[slot][j], value);
+						XDEBUG_T("LS=%f C=%f LL=%f", result.solnSer[slot][j], result.solnPar[slot][j], value);
 						*outA = value;
 						*outB = result.solnPar[slot][j];
 						*outC = result.solnSer[slot][j];
 						return TRUE;
 					} else {
-						//wxLogError("bad types, want %c %c, got %c %c", expectSer, expectPar, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						XDEBUG_T("bad types, want %c %c, got %c %c", expectSer, expectPar, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 					}
 				} else {
-					//wxLogError("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_desiredQ, fabs((m_xA + result.solnX1[slot][j]) / m_rA));
+					XDEBUG_T("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_desiredQ, fabs((m_xA + result.solnX1[slot][j]) / m_rA));
 				}
 			} else {
-				//wxLogError("%c %c %d invalid", expectSer, expectPar, j);
+				XDEBUG_T("%c %c %d invalid", expectSer, expectPar, j);
 			}
 		}
 	} else {
-		//wxLogError("%c %c wrong type %f", expectSer, expectPar, xAdded);
+		XDEBUG_T("%c %c wrong type %f", expectSer, expectPar, xAdded);
 	}
 
 	return FALSE;
