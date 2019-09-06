@@ -58,6 +58,17 @@ class tuner : public tunerDialog
 		void		onTunerOKclicked( wxCommandEvent& event );
 
 	private:
+		bool		tryHPPI(
+					int slot,
+					double ra,
+					double xa,
+					double rb,
+					double xb,
+					double *la,
+					double *c,
+					double *lb
+					);
+
 		void		recalculateHPPI();
 		void		recalculateLPPI();
 		void		recalculateHPT();
