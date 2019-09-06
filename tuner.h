@@ -69,6 +69,17 @@ class tuner : public tunerDialog
 					double *lb
 					);
 
+		bool		tryLPT(
+					int slot,
+					double ra,
+					double xa,
+					double rb,
+					double xb,
+					double *la,
+					double *c,
+					double *lb
+					);
+
 		void		recalculateHPPI();
 		void		recalculateLPPI();
 		void		recalculateHPT();

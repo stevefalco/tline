@@ -404,6 +404,8 @@ bool tuner::tryHPPI(
 
 void tuner::recalculateHPPI()
 {
+	// Because of the Q constraint, we have to try this two ways, and see
+	// which one works.
 	if(tryHPPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lspi, &m_cpi, &m_llpi)) {
 		m_hppiValid = TRUE;
 		return;
@@ -416,84 +418,6 @@ void tuner::recalculateHPPI()
 
 	m_hppiValid = FALSE;
 }
-
-#if 0
-void tuner::recalculateHPPI()
-{
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double qs;
-	double ql;
-	double rps;
-	double rpl;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double lps;
-	double lpl;
-	double c;
-
-	if(Q < 0.0) {
-		m_lspi = NAN;
-		m_llpi = NAN;
-		m_cpi = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			m_lspi = 0.0;
-			m_llpi = 0.0;
-			m_cpi = 0.0;
-		} else { 
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				m_lspi = NAN;
-				m_llpi = NAN;
-				m_cpi = NAN;
-			} else {
-				rv = std::max(rs, rl) / (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				qs = -xs / rs;
-				ql = -xl / rl;
-				rps = rs * (1.0 + qs * qs);  
-				rpl = rl * (1.0 + ql * ql);
-				q = sqrt(rps / rv - 1.0);
-				ls = rps / w / q;
-				if(qs != 0.0) {
-					lps = rps / qs / w;
-					ls = ls * lps / (ls - lps);
-				}
-				m_lspi = ls * 1.0e9;
-				cs = 1.0 / w / q / rv;
-				q = sqrt(rpl / rv - 1.0);
-				ll = rpl / w / q;
-				if(ql != 0.0) {
-					lpl = rpl / ql / w;
-					ll = ll * lpl / (ll - lpl);
-				}
-				m_llpi = ll * 1.0e9;
-				cl = 1.0 / w / q / rv;
-				c = cl * cs / (cl + cs);
-				m_cpi = c * 1.0e12;
-			}
-		}
-	}
-
-	if(!isfinite(m_cpi) || !isfinite(m_lspi) || !isfinite(m_llpi) ||
-			m_cpi < 0.0 || m_lspi < 0.0 || m_llpi < 0.0 ||
-			m_cpi > 1e7 || m_lspi > 1e7 || m_llpi > 1e7) {
-		m_hppiValid = FALSE;
-	} else {
-		m_hppiValid = TRUE;
-	}
-}
-#endif
 
 void tuner::recalculateLPPI()
 {
@@ -637,7 +561,16 @@ void tuner::recalculateHPT()
 	}
 }
 
-void tuner::recalculateLPT()
+bool tuner::tryLPT(
+		int slot,
+		double ra,
+		double xa,
+		double rb,
+		double xb,
+		double *la,
+		double *c,
+		double *lb
+		)
 {
 	int i;
 	int j;
@@ -648,15 +581,16 @@ void tuner::recalculateLPT()
 	double xAdded;
 	double value;
 
-	// Arbitrarily pick one side to have the desired Q.
-	xTotal = m_sourceResistance * m_desiredQ;
-	xAdded = xTotal - m_sourceReactance;
+	// How much reactance must we add to hit our Q target?
+	xTotal = ra * m_desiredQ;
+	xAdded = xTotal - xa;
 
-	// What component type would we be adding on the left?  It has to be an
-	// inductor for an LPT.
+	// What component type would we be adding?  It has to be an inductor for an LPT.
 	if(xAdded >= 0.0) {
-		// It is an inductor; proceed.
+		// It is an inductor.  Calculate inductance in nH.
 		value = (xAdded * 1E9) / w;
+
+		// Clear the lnet status.
 		for(i = 0; i < 2; i++) {
 			for(j = 0; j < 2; j++) {
 				m_walkleySolnType[i][j] = -1;
@@ -665,147 +599,58 @@ void tuner::recalculateLPT()
 
 		// Try to find solutions.  Because this is a T-network, the source and
 		// load points must be on the series side.
-		m_useSlot = 1;
-		m_rB = m_sourceResistance;
+		m_useSlot = slot;
+		m_rA = rb;
+		m_xA = xb;
+		m_rB = ra;
 		m_xB = xTotal;
-		m_rA = m_loadResistance;
-		m_xA = m_loadReactance;
+
+		// Run the L-net solver.
 		lnetAlgorithm();
+
+		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
-			if(m_walkleySolnType[m_useSlot][j] != -1) {
-				// Test this solution.
-				if(fabs((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
+			if(m_walkleySolnType[slot][j] != -1) {
+				// L-net found something.  Test this solution.
+				if(m_desiredQ - fabs((m_xA + m_walkleySolnX1[slot][j]) / m_rA) >= -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
 					//
 					// The series component must be an inductor, and the parallel
 					// component must be a capacitor.
-					if((m_walkleySolnSerIs[m_useSlot][j] == 'L') &&
-							(m_walkleySolnParIs[m_useSlot][j] == 'C')) {
+					if((m_walkleySolnSerIs[slot][j] == 'L') &&
+							(m_walkleySolnParIs[slot][j] == 'C')) {
 						// Good component types.
-						//wxLogError("1: LS=%f C=%f LL=%f", value, m_walkleySolnPar[m_useSlot][j], m_walkleySolnSer[m_useSlot][j]);
-						m_lst = value;
-						m_ct = m_walkleySolnPar[m_useSlot][j];
-						m_llt = m_walkleySolnSer[m_useSlot][j];
-						m_lptValid = TRUE;
-						return;
+						//wxLogError("0: LS=%f C=%f LL=%f", m_walkleySolnSer[slot][j], m_walkleySolnPar[slot][j], value);
+						*la = value;
+						*c = m_walkleySolnPar[slot][j];
+						*lb = m_walkleySolnSer[slot][j];
+						return TRUE;
 					}
 				}
 			}
 		}
 	}
 
-	// Didn't get a solution by forcing the Q on the left, so let's try forcing it on the right.
-	xTotal = m_loadResistance * m_desiredQ;
-	xAdded = xTotal - m_loadReactance;
-
-	// What component type would we be adding on the right?  It has to be an
-	// inductor for an LPT.
-	if(xAdded >= 0.0) {
-		// It is an inductor; proceed.
-		value = (xAdded * 1E9) / w;
-		for(i = 0; i < 2; i++) {
-			for(j = 0; j < 2; j++) {
-				m_walkleySolnType[i][j] = -1;
-			}
-		}
-
-		// Try to find solutions.  Because this is a T-network, the source and
-		// load points must be on the series side.
-		m_useSlot = 0;
-		m_rA = m_sourceResistance;
-		m_xA = m_sourceReactance;
-		m_rB = m_loadResistance;
-		m_xB = xTotal;
-		lnetAlgorithm();
-		for(j = 0; j < 2; j++) {
-			if(m_walkleySolnType[m_useSlot][j] != -1) {
-				// Test this solution.
-				if(fabs((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
-					// This solution is ok from a Q perspective.  However, the
-					// component types may or may not be correct.
-					//
-					// The series component must be an inductor, and the parallel
-					// component must be a capacitor.
-					if((m_walkleySolnSerIs[m_useSlot][j] == 'L') &&
-							(m_walkleySolnParIs[m_useSlot][j] == 'C')) {
-						// Good component types.
-						//wxLogError("0: LS=%f C=%f LL=%f", m_walkleySolnSer[m_useSlot][j], m_walkleySolnPar[m_useSlot][j], value);
-						m_lst = m_walkleySolnSer[m_useSlot][j];
-						m_ct = m_walkleySolnPar[m_useSlot][j];
-						m_llt = value;
-						m_lptValid = TRUE;
-						return;
-					}
-				}
-			}
-		}
-	}
-
-	// Still no joy.
-	m_lptValid = FALSE;
-	//wxLogError("no solution");
+	return FALSE;
 }
 
-#if 0
 void tuner::recalculateLPT()
 {
-	double rs = m_sourceResistance;
-	double xs = m_sourceReactance;
-	double rl = m_loadResistance;
-	double xl = m_loadReactance;
-	double Q  = m_desiredQ;
-	double f  = m_frequency;
-
-	double rv;
-	double w;
-	double q;
-	double cs;
-	double ls;
-	double cl;
-	double ll;
-	double c;
-
-	if(Q < 0.0) {
-		m_lst = NAN;
-		m_llt = NAN;
-		m_ct = NAN;
-	} else {
-		if(Q == 0.0 && rs == rl) {
-			m_lst = 0.0;
-			m_llt = 0.0;
-			m_ct = 0.0;
-		} else {
-			if(Q < sqrt(std::max(rs, rl) / std::min(rs, rl) - 1.0)) {
-				m_lst = NAN;
-				m_llt = NAN;
-				m_ct = NAN;
-			} else {
-				rv = std::min(rs, rl) * (Q * Q + 1.0);
-				w = 2.0 * PI * f;
-				q = sqrt(rv / rs - 1.0);
-				ls = q * rs / w - xs / w;
-				m_lst = ls * 1.0e9;
-				cs = q / w / rv;
-				q = sqrt(rv / rl - 1.0);
-				ll = q * rl / w - xl / w;
-				m_llt = ll * 1.0e9;
-				cl = q / w / rv;
-				c = cs + cl;
-				m_ct = c * 1.0e12;
-			}
-		}
-	}
-
-	if(!isfinite(m_ct) || !isfinite(m_lst) || !isfinite(m_llt) ||
-			m_ct < 0.0 || m_lst < 0.0 || m_llt < 0.0 ||
-			m_ct > 1e7 || m_lst > 1e7 || m_llt > 1e7) {
-		m_lptValid = FALSE;
-	} else {
+	// Because of the Q constraint, we have to try this two ways, and see
+	// which one works.
+	if(tryLPT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lst, &m_ct, &m_llt)) {
 		m_lptValid = TRUE;
+		return;
 	}
+
+	if(tryLPT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_llt, &m_ct, &m_lst)) {
+		m_lptValid = TRUE;
+		return;
+	}
+
+	m_lptValid = FALSE;
 }
-#endif
 
 void tuner::recalculate()
 {
@@ -820,11 +665,14 @@ void tuner::recalculate()
 	m_loadReactance = atof(m_tunerLoadReactanceStr);
 	m_desiredQ = atof(m_tunerQStr);
 
-	recalculateLnet();
 	recalculateHPPI();
 	recalculateLPPI();
 	recalculateHPT();
 	recalculateLPT();
+
+	// This has to be after the PI and T calculations, because PI and T
+	// overwrite the L-net solutions.
+	recalculateLnet();
 
 	// Gray out invalid radio buttons.  First handle the eight L-match
 	// cases.
