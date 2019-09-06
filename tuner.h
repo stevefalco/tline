@@ -38,6 +38,17 @@ using namespace std;
 #define USE_LPT			11
 #define USE_LAST		12
 
+typedef struct {
+		int		solnType[2][2];
+		double		solnQ[2][2];
+		char		solnParIs[2][2];
+		double		solnPar[2][2];
+		double		solnX2[2][2];
+		char		solnSerIs[2][2];
+		double		solnSer[2][2];
+		double		solnX1[2][2];
+} LNET_RESULTS;
+
 class tuner : public tunerDialog
 {
 	public:
@@ -84,11 +95,11 @@ class tuner : public tunerDialog
 		void		recalculateLPPI();
 		void		recalculateHPT();
 		void		recalculateLPT();
-		void		recalculateLnet();
+		void		recalculateLnet(LNET_RESULTS *result);
 		void		recalculate();
 
-		void		findLnetComponentValues(double w, double x1, double x2, int item);
-		void		lnetAlgorithm();
+		void		findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int item);
+		void		lnetAlgorithm(LNET_RESULTS *result);
 		void		lnetDisplayValues(
 					int type,
 					double sourceVar[2][2],
@@ -118,14 +129,7 @@ class tuner : public tunerDialog
 		double		m_desiredQ;
 		double		m_frequency;
 
-		int		m_walkleySolnType[2][2];
-		double		m_walkleySolnQ[2][2];
-		char		m_walkleySolnParIs[2][2];
-		double		m_walkleySolnPar[2][2];
-		double		m_walkleySolnX2[2][2];
-		char		m_walkleySolnSerIs[2][2];
-		double		m_walkleySolnSer[2][2];
-		double		m_walkleySolnX1[2][2];
+		LNET_RESULTS	m_lnet;
 
 		int		m_useSlot;
 		double		m_rA;

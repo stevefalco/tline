@@ -137,7 +137,7 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 	}
 }
 
-void tuner::findLnetComponentValues(double w, double x1, double x2, int item)
+void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int item)
 {
 	double value;
 
@@ -148,57 +148,57 @@ void tuner::findLnetComponentValues(double w, double x1, double x2, int item)
 		// Series Inductor
 		value = x1 / w;
 		value *= 1E9; // nH
-		m_walkleySolnSerIs[m_useSlot][item] = 'L';
-		m_walkleySolnSer[m_useSlot][item] = value;
+		result->solnSerIs[m_useSlot][item] = 'L';
+		result->solnSer[m_useSlot][item] = value;
 	} else {
 		// Series Capacitor
 		value = 1.0 / (-x1 * w);
 		value *= 1E12; // pF
-		m_walkleySolnSerIs[m_useSlot][item] = 'C';
-		m_walkleySolnSer[m_useSlot][item] = value;
+		result->solnSerIs[m_useSlot][item] = 'C';
+		result->solnSer[m_useSlot][item] = value;
 	}
 
 	if(x2 >= 0) {
 		// Parallel Inductor
 		value = x2 / w;
 		value *= 1E9; // nH
-		m_walkleySolnParIs[m_useSlot][item] = 'L';
-		m_walkleySolnPar[m_useSlot][item] = value;
+		result->solnParIs[m_useSlot][item] = 'L';
+		result->solnPar[m_useSlot][item] = value;
 	} else {
 		// Parallel Capacitor
 		value = 1.0 / (-x2 * w);
 		value *= 1E12; // pF
-		m_walkleySolnParIs[m_useSlot][item] = 'C';
-		m_walkleySolnPar[m_useSlot][item] = value;
+		result->solnParIs[m_useSlot][item] = 'C';
+		result->solnPar[m_useSlot][item] = value;
 	}
 
 	// Now that we have the component values, assign a topology that matches.
 	if(m_useSlot == 0) {
 		// Source is on the left (series), load is on the right (parallel).
-		if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
-			m_walkleySolnType[m_useSlot][item] = USE_LSLP;
-		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
-			m_walkleySolnType[m_useSlot][item] = USE_CSCP;
-		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
-			m_walkleySolnType[m_useSlot][item] = USE_LCLP;
-		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
-			m_walkleySolnType[m_useSlot][item] = USE_CLHP;
+		if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'L') {
+			result->solnType[m_useSlot][item] = USE_LSLP;
+		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'C') {
+			result->solnType[m_useSlot][item] = USE_CSCP;
+		} else if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'C') {
+			result->solnType[m_useSlot][item] = USE_LCLP;
+		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'L') {
+			result->solnType[m_useSlot][item] = USE_CLHP;
 		}
 	} else {
 		// Source is on the right (parallel), load is on the left (series).
-		if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
-			m_walkleySolnType[m_useSlot][item] = USE_LPLS;
-		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
-			m_walkleySolnType[m_useSlot][item] = USE_CPCS;
-		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'L' && m_walkleySolnParIs[m_useSlot][item] == 'C') {
-			m_walkleySolnType[m_useSlot][item] = USE_CLLP;
-		} else if(m_walkleySolnSerIs[m_useSlot][item] == 'C' && m_walkleySolnParIs[m_useSlot][item] == 'L') {
-			m_walkleySolnType[m_useSlot][item] = USE_LCHP;
+		if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'L') {
+			result->solnType[m_useSlot][item] = USE_LPLS;
+		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'C') {
+			result->solnType[m_useSlot][item] = USE_CPCS;
+		} else if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'C') {
+			result->solnType[m_useSlot][item] = USE_CLLP;
+		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'L') {
+			result->solnType[m_useSlot][item] = USE_LCHP;
 		}
 	}
 }
 
-void tuner::lnetAlgorithm()
+void tuner::lnetAlgorithm(LNET_RESULTS *result)
 {
 	double w = 2.0 * PI * m_frequency;
 
@@ -241,12 +241,12 @@ void tuner::lnetAlgorithm()
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
 		// This solution is good.  Store the reactances and component values.
-		m_walkleySolnX1[m_useSlot][0] = x1a;
-		m_walkleySolnX2[m_useSlot][0] = x2a;
-		findLnetComponentValues(w, x1a, x2a, 0);
+		result->solnX1[m_useSlot][0] = x1a;
+		result->solnX2[m_useSlot][0] = x2a;
+		findLnetComponentValues(result, w, x1a, x2a, 0);
 
 		// Find the network Q.
-		m_walkleySolnQ[m_useSlot][0] = fabs((m_xA + x1) / m_rA);
+		result->solnQ[m_useSlot][0] = fabs((m_xA + x1) / m_rA);
 	}
 
 	// Solution 2.
@@ -264,16 +264,16 @@ void tuner::lnetAlgorithm()
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
 		// This solution is good.  Store the reactances and component values.
-		m_walkleySolnX1[m_useSlot][1] = x1b;
-		m_walkleySolnX2[m_useSlot][1] = x2b;
-		findLnetComponentValues(w, x1b, x2b, 1);
+		result->solnX1[m_useSlot][1] = x1b;
+		result->solnX2[m_useSlot][1] = x2b;
+		findLnetComponentValues(result, w, x1b, x2b, 1);
 
 		// Find the network Q.
-		m_walkleySolnQ[m_useSlot][1] = fabs((m_xA + x1) / m_rA);
+		result->solnQ[m_useSlot][1] = fabs((m_xA + x1) / m_rA);
 	}
 }
 
-void tuner::recalculateLnet()
+void tuner::recalculateLnet(LNET_RESULTS *result)
 {
 	int i;
 	int j;
@@ -281,7 +281,7 @@ void tuner::recalculateLnet()
 	// Clear old status.  Only some solutions will be viable.
 	for(i = 0; i < 2; i++) {
 		for(j = 0; j < 2; j++) {
-			m_walkleySolnType[i][j] = -1;
+			result->solnType[i][j] = -1;
 		}
 	}
 
@@ -296,7 +296,7 @@ void tuner::recalculateLnet()
 	m_xA = m_sourceReactance;
 	m_rB = m_loadResistance;
 	m_xB = m_loadReactance;
-	lnetAlgorithm();
+	lnetAlgorithm(result);
 
 	// Now try again, with the source and load reversed.
 	m_useSlot = 1;
@@ -304,7 +304,7 @@ void tuner::recalculateLnet()
 	m_xB = m_sourceReactance;
 	m_rA = m_loadResistance;
 	m_xA = m_loadReactance;
-	lnetAlgorithm();
+	lnetAlgorithm(result);
 }
 
 bool tuner::tryHPPI(
@@ -318,6 +318,8 @@ bool tuner::tryHPPI(
 		double *lb
 		)
 {
+	LNET_RESULTS result;
+
 	int i;
 	int j;
 
@@ -346,7 +348,7 @@ bool tuner::tryHPPI(
 		// Clear the lnet status.
 		for(i = 0; i < 2; i++) {
 			for(j = 0; j < 2; j++) {
-				m_walkleySolnType[i][j] = -1;
+				result.solnType[i][j] = -1;
 			}
 		}
 
@@ -361,13 +363,13 @@ bool tuner::tryHPPI(
 		m_xB = xb;
 
 		// Run the L-net solver.
-		lnetAlgorithm();
+		lnetAlgorithm(&result);
 
 		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
-			if(m_walkleySolnType[slot][j] != -1) {
+			if(result.solnType[slot][j] != -1) {
 				// L-net found something.  Test this solution.
-				zAdded = complex<double>(0, m_walkleySolnX2[slot][j]);
+				zAdded = complex<double>(0, result.solnX2[slot][j]);
 				zCombined = 1.0 / ((1.0 / zB) + (1.0 / zAdded));
 				if((m_desiredQ - fabs(imag(zCombined) / real(zCombined))) > -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
@@ -375,16 +377,16 @@ bool tuner::tryHPPI(
 					//
 					// The series component must be an inductor, and the parallel
 					// component must be a capacitor.
-					if((m_walkleySolnSerIs[slot][j] == 'C') &&
-							(m_walkleySolnParIs[slot][j] == 'L')) {
+					if((result.solnSerIs[slot][j] == 'C') &&
+							(result.solnParIs[slot][j] == 'L')) {
 						// Good component types.
 						*la = value;
-						*c = m_walkleySolnSer[slot][j];
-						*lb = m_walkleySolnPar[slot][j];
-						//wxLogError("%d is %c %c good!", j, m_walkleySolnSerIs[slot][j], m_walkleySolnParIs[slot][j]);
+						*c = result.solnSer[slot][j];
+						*lb = result.solnPar[slot][j];
+						//wxLogError("%d is %c %c good!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 						return TRUE;
 					} else {
-						//wxLogError("%d is %c %c", j, m_walkleySolnSerIs[slot][j], m_walkleySolnParIs[slot][j]);
+						//wxLogError("%d is %c %c", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 					}
 				} else {
 					//wxLogError("%d wrong q %f vs %f", j, fabs(imag(zCombined) / real(zCombined)), m_desiredQ);
@@ -572,6 +574,8 @@ bool tuner::tryLPT(
 		double *lb
 		)
 {
+	LNET_RESULTS result;
+
 	int i;
 	int j;
 
@@ -593,7 +597,7 @@ bool tuner::tryLPT(
 		// Clear the lnet status.
 		for(i = 0; i < 2; i++) {
 			for(j = 0; j < 2; j++) {
-				m_walkleySolnType[i][j] = -1;
+				result.solnType[i][j] = -1;
 			}
 		}
 
@@ -606,25 +610,25 @@ bool tuner::tryLPT(
 		m_xB = xTotal;
 
 		// Run the L-net solver.
-		lnetAlgorithm();
+		lnetAlgorithm(&result);
 
 		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
-			if(m_walkleySolnType[slot][j] != -1) {
+			if(result.solnType[slot][j] != -1) {
 				// L-net found something.  Test this solution.
-				if(m_desiredQ - fabs((m_xA + m_walkleySolnX1[slot][j]) / m_rA) >= -1E-10) {
+				if(m_desiredQ - fabs((m_xA + result.solnX1[slot][j]) / m_rA) >= -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
 					//
 					// The series component must be an inductor, and the parallel
 					// component must be a capacitor.
-					if((m_walkleySolnSerIs[slot][j] == 'L') &&
-							(m_walkleySolnParIs[slot][j] == 'C')) {
+					if((result.solnSerIs[slot][j] == 'L') &&
+							(result.solnParIs[slot][j] == 'C')) {
 						// Good component types.
-						//wxLogError("0: LS=%f C=%f LL=%f", m_walkleySolnSer[slot][j], m_walkleySolnPar[slot][j], value);
+						//wxLogError("0: LS=%f C=%f LL=%f", result.solnSer[slot][j], result.solnPar[slot][j], value);
 						*la = value;
-						*c = m_walkleySolnPar[slot][j];
-						*lb = m_walkleySolnSer[slot][j];
+						*c = result.solnPar[slot][j];
+						*lb = result.solnSer[slot][j];
 						return TRUE;
 					}
 				}
@@ -665,14 +669,11 @@ void tuner::recalculate()
 	m_loadReactance = atof(m_tunerLoadReactanceStr);
 	m_desiredQ = atof(m_tunerQStr);
 
+	recalculateLnet(&m_lnet);
 	recalculateHPPI();
 	recalculateLPPI();
 	recalculateHPT();
 	recalculateLPT();
-
-	// This has to be after the PI and T calculations, because PI and T
-	// overwrite the L-net solutions.
-	recalculateLnet();
 
 	// Gray out invalid radio buttons.  First handle the eight L-match
 	// cases.
@@ -681,8 +682,8 @@ void tuner::recalculate()
 	}
 	for(i = 0; i < 2; i++) {
 		for(j = 0; j < 2; j++) {
-			if(m_walkleySolnType[i][j] != -1) {
-				arry[m_walkleySolnType[i][j]] = TRUE;
+			if(m_lnet.solnType[i][j] != -1) {
+				arry[m_lnet.solnType[i][j]] = TRUE;
 			}
 		}
 	}
@@ -740,7 +741,7 @@ void tuner::lnetDisplayValues(
 	// requested topology is among the solutions.
 	for(i = 0; i < 2; i++) {
 		for(j = 0; j < 2; j++) {
-			if(m_walkleySolnType[i][j] == type) {
+			if(m_lnet.solnType[i][j] == type) {
 				// Found a solution for the requested topology.
 				// Display it.
 				dl_tunerResult1->Show();
@@ -758,7 +759,7 @@ void tuner::lnetDisplayValues(
 				dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
 				dl_tunerResultTag2->SetLabel(loadLabel);
 
-				dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_walkleySolnQ[i][j]));
+				dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_lnet.solnQ[i][j]));
 				dl_tunerResultTag3->SetLabel("Q Value");
 
 				Layout();
@@ -806,9 +807,9 @@ void tuner::CPCS()
 
 	lnetDisplayValues(
 			USE_CPCS,
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"CS Value (pF)",
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"CL Value (pF)"
 			);
 }
@@ -821,9 +822,9 @@ void tuner::CSCP()
 
 	lnetDisplayValues(
 			USE_CSCP,
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"CS Value (pF)",
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"CL Value (pF)"
 			);
 }
@@ -836,9 +837,9 @@ void tuner::LPLS()
 
 	lnetDisplayValues(
 			USE_LPLS,
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"LS Value (nH)",
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"LL Value (nH)"
 			);
 }
@@ -851,9 +852,9 @@ void tuner::LSLP()
 
 	lnetDisplayValues(
 			USE_LSLP,
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"LS Value (nH)",
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"LL Value (nH)"
 			);
 }
@@ -866,9 +867,9 @@ void tuner::LCHP()
 
 	lnetDisplayValues(
 			USE_LCHP,
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"L Value (nH)",
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"C Value (pF)"
 			);
 }
@@ -881,9 +882,9 @@ void tuner::CLLP()
 
 	lnetDisplayValues(
 			USE_CLLP,
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"C Value (pF)",
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"L Value (nH)"
 			);
 }
@@ -896,9 +897,9 @@ void tuner::LCLP()
 
 	lnetDisplayValues(
 			USE_LCLP,
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"L Value (nH)",
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"C Value (pF)"
 			);
 }
@@ -911,9 +912,9 @@ void tuner::CLHP()
 
 	lnetDisplayValues(
 			USE_CLHP,
-			m_walkleySolnSer,
+			m_lnet.solnSer,
 			"C Value (pF)",
-			m_walkleySolnPar,
+			m_lnet.solnPar,
 			"L Value (nH)"
 			);
 }
