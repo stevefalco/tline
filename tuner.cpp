@@ -17,6 +17,8 @@
 
 #include <wx/log.h>
 
+#include <complex>
+
 #include "constants.h"
 #include "tlineIcon.h"
 #include "tuner.h"
@@ -305,6 +307,195 @@ void tuner::recalculateLnet()
 	lnetAlgorithm();
 }
 
+
+void tuner::recalculateHPPI()
+{
+	int i;
+	int j;
+
+	double w = 2.0 * PI * m_frequency;
+
+	complex<double> zSource;
+	complex<double> zLoad;
+
+	complex<double> ySource;
+	complex<double> yLoad;
+
+	complex<double> zAdded;
+	complex<double> zCombined;
+
+	complex<double> yAdded;
+	complex<double> yCombined;
+
+	complex<double> zTotal;
+	complex<double> yTotal;
+
+	complex<double> zDiff;
+	complex<double> yDiff;
+
+	double xTotal;
+	double xAdded;
+	double value;
+
+	// Arbitrarily pick one side to have the desired Q.
+	zSource = complex<double>(m_sourceResistance, m_sourceReactance);
+	ySource = 1.0 / zSource;
+	zLoad = complex<double>(m_loadResistance, m_loadReactance);
+	yLoad = 1.0 / zLoad;
+
+	xTotal = real(zSource) / m_desiredQ;
+	zTotal = complex<double>(real(zSource), xTotal);
+	yTotal = 1.0 / zTotal;
+	yDiff = yTotal - ySource;
+	zDiff = 1.0 / yDiff;
+
+	xAdded = imag(zDiff);
+
+	xAdded = 1.0 / (m_desiredQ * real(ySource) - imag(ySource));
+
+	wxLogError("tot on left %f, add on left %f", xTotal, xAdded);
+
+	// What component type would we be adding on the left?  It has to be an
+	// inductor for an HPPI.
+	if(xAdded >= 0.0) {
+		// It is an inductor; proceed.
+		value = (xAdded * 1E9) / w;
+		for(i = 0; i < 2; i++) {
+			for(j = 0; j < 2; j++) {
+				m_walkleySolnType[i][j] = -1;
+			}
+		}
+		wxLogError("value on left %f", value);
+
+		// Try to find solutions.  Because this is a PI-network, the source and
+		// load points must be on the parallel side.
+		m_useSlot = 0;
+		zAdded = complex<double>(0, xTotal);
+		zCombined = 1.0 / (1.0 / zSource + 1.0 / zAdded);
+		m_rA = m_loadResistance;
+		m_xA = m_loadReactance;
+		m_rB = real(zCombined);
+		m_xB = imag(zCombined);
+		wxLogError("setting %f %f", m_rB, m_xB);
+		lnetAlgorithm();
+		for(j = 0; j < 2; j++) {
+			if(m_walkleySolnType[m_useSlot][j] != -1) {
+				// Test this solution.
+				zAdded = complex<double>(0, m_walkleySolnX2[m_useSlot][j]);
+				zCombined = 1.0 / (1.0 / zLoad + 1.0 / zAdded);
+				wxLogError("%d %d is valid, %f %f Q=%f", m_useSlot, j, m_rA, m_walkleySolnX2[m_useSlot][j], imag(zCombined) / real(zCombined));
+				// Test this solution.
+				if(fabs(imag(zCombined) / real(zCombined)) <= m_desiredQ) {
+					// This solution is ok from a Q perspective.  However, the
+					// component types may or may not be correct.
+					//
+					// The series component must be an inductor, and the parallel
+					// component must be a capacitor.
+					if((m_walkleySolnSerIs[m_useSlot][j] == 'C') &&
+							(m_walkleySolnParIs[m_useSlot][j] == 'L')) {
+						// Good component types.
+						wxLogError("1: LS=%f C=%f LL=%f", m_walkleySolnPar[m_useSlot][j], m_walkleySolnSer[m_useSlot][j], value);
+						m_lspi = m_walkleySolnPar[m_useSlot][j];
+						m_cpi = m_walkleySolnSer[m_useSlot][j];
+						m_llpi = value;
+						m_hppiValid = TRUE;
+						return;
+					} else {
+						wxLogError("want C L, got %c %c", m_walkleySolnSerIs[m_useSlot][j], m_walkleySolnParIs[m_useSlot][j]);
+					}
+				}
+			} else {
+				wxLogError("%d %d not valid", m_useSlot, j);
+			}
+		}
+	}
+	
+	// Didn't get a solution by forcing the Q on the left, so let's try forcing it on the right.
+	zSource = complex<double>(m_sourceResistance, m_sourceReactance);
+	wxLogError("zSource %f %f", real(zSource), imag(zSource));
+	ySource = 1.0 / zSource;
+	wxLogError("ySource %f %f", real(ySource), imag(ySource));
+	zLoad = complex<double>(m_loadResistance, m_loadReactance);
+	wxLogError("zLoad %f %f", real(zLoad), imag(zLoad));
+	yLoad = 1.0 / zLoad;
+	wxLogError("yLoad %f %f", real(yLoad), imag(yLoad));
+
+	xTotal = real(zLoad) / m_desiredQ;
+	wxLogError("xTotal %f", xTotal);
+	zTotal = complex<double>(real(zLoad), xTotal);
+	wxLogError("zTotal %f %f", real(zTotal), imag(zTotal));
+	yTotal = 1.0 / zTotal;
+	wxLogError("yTotal %f %f", real(yTotal), imag(yTotal));
+	yDiff = yTotal - yLoad;
+	wxLogError("yDiff %f %f", real(yDiff), imag(yDiff));
+	zDiff = 1.0 / yDiff;
+	wxLogError("zDiff %f %f", real(zDiff), imag(zDiff));
+
+	xAdded = imag(zDiff);
+
+	xAdded = 1.0 / (m_desiredQ * real(yLoad) + imag(yLoad));
+	wxLogError("xAdded %f", xAdded);
+
+	// What component type would we be adding on the right?  It has to be an
+	// inductor for an HPPI.
+	if(xAdded >= 0.0) {
+		// It is an inductor; proceed.
+		value = (xAdded * 1E9) / w;
+		for(i = 0; i < 2; i++) {
+			for(j = 0; j < 2; j++) {
+				m_walkleySolnType[i][j] = -1;
+			}
+		}
+		wxLogError("value on right %f", value);
+
+		// Try to find solutions.  Because this is a PI-network, the source and
+		// load points must be on the parallel side.
+		m_useSlot = 1;
+		zAdded = complex<double>(0, xAdded);
+		zCombined = 1.0 / (1.0 / zLoad + 1.0 / zAdded);
+		m_rA = real(zCombined);
+		m_xA = imag(zCombined);
+		wxLogError("setting %f %f", m_rA, m_xA);
+		m_rB = m_sourceResistance;
+		m_xB = m_sourceReactance;
+		lnetAlgorithm();
+		for(j = 0; j < 2; j++) {
+			if(m_walkleySolnType[m_useSlot][j] != -1) {
+				zAdded = complex<double>(0, m_walkleySolnX2[m_useSlot][j]);
+				zCombined = 1.0 / (1.0 / zSource + 1.0 / zAdded);
+				wxLogError("%d %d is valid, %f %f Q=%f", m_useSlot, j, m_rB, m_walkleySolnX2[m_useSlot][j], imag(zCombined) / real(zCombined));
+				// Test this solution.
+				if(fabs(imag(zCombined) / real(zCombined)) <= m_desiredQ) {
+					// This solution is ok from a Q perspective.  However, the
+					// component types may or may not be correct.
+					//
+					// The series component must be an inductor, and the parallel
+					// component must be a capacitor.
+					if((m_walkleySolnSerIs[m_useSlot][j] == 'C') &&
+							(m_walkleySolnParIs[m_useSlot][j] == 'L')) {
+						// Good component types.
+						wxLogError("1: LS=%f C=%f LL=%f", m_walkleySolnPar[m_useSlot][j], m_walkleySolnSer[m_useSlot][j], value);
+						m_lspi = m_walkleySolnPar[m_useSlot][j];
+						m_cpi = m_walkleySolnSer[m_useSlot][j];
+						m_llpi = value;
+						m_hppiValid = TRUE;
+						return;
+					} else {
+						wxLogError("want C L, got %c %c", m_walkleySolnSerIs[m_useSlot][j], m_walkleySolnParIs[m_useSlot][j]);
+					}
+				}
+			} else {
+				wxLogError("%d %d not valid", m_useSlot, j);
+			}
+		}
+	}
+
+	// Still no joy.
+	m_hppiValid = FALSE;
+	wxLogError("no solution");
+}
+
+#if 0
 void tuner::recalculateHPPI()
 {
 	double rs = m_sourceResistance;
@@ -380,6 +571,7 @@ void tuner::recalculateHPPI()
 		m_hppiValid = TRUE;
 	}
 }
+#endif
 
 void tuner::recalculateLPPI()
 {
@@ -534,16 +726,9 @@ void tuner::recalculateLPT()
 	double xAdded;
 	double value;
 
-	if(fabs(m_sourceReactance / m_sourceResistance) > m_desiredQ ||
-			fabs(m_loadReactance / m_loadResistance) > m_desiredQ) {
-		// Can't have a solution, as the fixed points are already out of bounds.
-		m_lptValid = FALSE;
-		return;
-	}
-
 	// Arbitrarily pick one side to have the desired Q.
-	xTotal= m_sourceResistance * m_desiredQ;
-	xAdded= xTotal- m_sourceReactance;
+	xTotal = m_sourceResistance * m_desiredQ;
+	xAdded = xTotal - m_sourceReactance;
 
 	// What component type would we be adding on the left?  It has to be an
 	// inductor for an LPT.
@@ -567,7 +752,7 @@ void tuner::recalculateLPT()
 		for(j = 0; j < 2; j++) {
 			if(m_walkleySolnType[m_useSlot][j] != -1) {
 				// Test this solution.
-				if(((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
+				if(fabs((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
 					//
@@ -589,7 +774,6 @@ void tuner::recalculateLPT()
 	}
 
 	// Didn't get a solution by forcing the Q on the left, so let's try forcing it on the right.
-	// Arbitrarily pick one side to have the desired Q.
 	xTotal = m_loadResistance * m_desiredQ;
 	xAdded = xTotal - m_loadReactance;
 
@@ -615,7 +799,7 @@ void tuner::recalculateLPT()
 		for(j = 0; j < 2; j++) {
 			if(m_walkleySolnType[m_useSlot][j] != -1) {
 				// Test this solution.
-				if(((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
+				if(fabs((m_xA + m_walkleySolnX1[m_useSlot][j]) / m_rA) <= m_desiredQ) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
 					//
