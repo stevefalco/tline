@@ -636,8 +636,6 @@ static wxWindow* createMyExtraPanel(wxWindow *parent)
 // otherwise the backslashes are interpolated and the paths don't work.
 bool tlineLogic::setOutput( wxFFile* file )
 {
-	char			buffer[512];
-	char			*p;
 	const char		*q = "png";
 	wxString		fileName;
 

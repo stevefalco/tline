@@ -228,6 +228,20 @@ void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, d
 	}
 }
 
+void tuner::lnetInit(LNET_RESULTS *result)
+{
+	int i;
+	int j;
+
+	for(i = 0; i < 2; i++) {
+		for(j = 0; j < 2; j++) {
+			result->solnType[i][j] = -1;
+			result->solnParRes[i][j] = 1E+200;
+			result->solnSerRes[i][j] = 0.0;
+		}
+	}
+}
+
 void tuner::lnetAlgorithm(LNET_RESULTS *result)
 {
 	int slot;
@@ -356,20 +370,12 @@ double tuner::parRes(double a, double b)
 
 void tuner::recalculateLnet(LNET_RESULTS *result)
 {
-	int i;
-	int j;
 	int k;
 
 	// Clear old status, and start off with ideal initial components.
 	//
 	// Only some solutions will be viable.
-	for(i = 0; i < 2; i++) {
-		for(j = 0; j < 2; j++) {
-			result->solnType[i][j] = -1;
-			result->solnParRes[i][j] = 1E+200;
-			result->solnSerRes[i][j] = 0.0;
-		}
-	}
+	lnetInit(result);
 
 	// We run this in a loop, because we don't have a closed form solution
 	// that takes the Q of the components into accound.  Hence we have to
@@ -415,13 +421,13 @@ bool tuner::tryPI(
 		bool wantInductance
 		)
 {
-	LNET_RESULTS result;
-
-	int i;
 	int j;
+
+	LNET_RESULTS result;
 
 	double w = 2.0 * PI * m_frequency;
 
+	double rAdded;
 	double xAdded;
 	double value;
 
@@ -429,7 +435,6 @@ bool tuner::tryPI(
 	complex<double> zB = complex<double>(rb, xb);
 
 	complex<double> yA = 1.0 / zA;
-	complex<double> yB = 1.0 / zB;
 
 	complex<double> zAdded;
 	complex<double> zCombined;
@@ -448,27 +453,26 @@ bool tuner::tryPI(
 		// It is correct.  Calculate inductance in nH or capacitance in pF.
 		if(wantInductance == TRUE) {
 			value = 1E9 * (xAdded / w);
+			rAdded = m_inductorQ * xAdded;
 		} else {
 			value = 1E12 / (w * -xAdded);
+			rAdded = m_capacitorQ * -xAdded;
 		}
 		XDEBUG_PI("%c %c xAdded = %f, value %f", expectSer, expectPar, xAdded, value);
 
 		// Clear the lnet status.
-		for(i = 0; i < 2; i++) {
-			for(j = 0; j < 2; j++) {
-				result.solnType[i][j] = -1;
-			}
-		}
+		lnetInit(&result);
 
 		// Try to find solutions.  Because this is a PI-network, the source and
 		// load points must be on the parallel side.
 		zAdded = complex<double>(0, xAdded);
 		zCombined = 1.0 / (1.0 / zA + 1.0 / zAdded);
 		m_useSlot = slot;
-		m_rA = real(zCombined);
+		m_rA = parRes(real(zCombined), -rAdded);
 		m_xA = imag(zCombined);
 		m_rB = rb;
 		m_xB = xb;
+		XDEBUG_PI("rAdded=%g xAdded=%g zCombined=%g %g rA=%g xA=%g", rAdded, xAdded, real(zCombined), imag(zCombined), m_rA, m_xA);
 
 		// Run the L-net solver.
 		lnetAlgorithm(&result);
@@ -559,24 +563,28 @@ bool tuner::tryT(
 		bool wantInductance
 		)
 {
-	LNET_RESULTS result;
-
 	int i;
 	int j;
+
+	LNET_RESULTS result;
 
 	double w = 2.0 * PI * m_frequency;
 
 	double xTotal;
+	double rAdded;
 	double xAdded;
 	double value;
 
 	// How much reactance must we add to hit our Q target?
 	if(wantInductance) {
 		xTotal = ra * m_networkQ;
+		xAdded = xTotal - xa;
+		rAdded = xAdded / m_inductorQ;
 	} else {
 		xTotal = -ra * m_networkQ;
+		xAdded = xTotal - xa;
+		rAdded = -xAdded / m_capacitorQ;
 	}
-	xAdded = xTotal - xa;
 
 	// What component type would we be adding?  It has to be an inductor for an LPT
 	// or a capacitor for an HPT.
@@ -591,22 +599,20 @@ bool tuner::tryT(
 		XDEBUG_T("%c %c right type %f", expectSer, expectPar, value);
 
 		// Clear the lnet status.
-		for(i = 0; i < 2; i++) {
-			for(j = 0; j < 2; j++) {
-				result.solnType[i][j] = -1;
-			}
-		}
+		lnetInit(&result);
 
 		// Try to find solutions.  Because this is a T-network, the source and
 		// load points must be on the series side.
 		m_useSlot = slot;
 		m_rA = rb;
 		m_xA = xb;
-		m_rB = ra;
+		m_rB = ra - rAdded;
 		m_xB = xTotal;
 
 		// Run the L-net solver.
-		lnetAlgorithm(&result);
+		for(i = 0; i < 10; i++) {
+			lnetAlgorithm(&result);
+		}
 
 		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
@@ -808,9 +814,6 @@ void tuner::lnetDisplayValues(
 
 bool tuner::lnetSetBitmap(wxBitmap bmp)
 {
-	int i;
-	int j;
-
 	// Display the network topology schematic.
 	if ( bmp.IsOk() ) {
 		dl_bitmap->SetBitmap(bmp);

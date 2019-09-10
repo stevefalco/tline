@@ -110,6 +110,7 @@ class tuner : public tunerDialog
 
 		double		parRes(double a, double b);
 		void		findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int item);
+		void		lnetInit(LNET_RESULTS *result);
 		void		lnetAlgorithm(LNET_RESULTS *result);
 		void		lnetDisplayValues(
 					int type,
