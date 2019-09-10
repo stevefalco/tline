@@ -128,10 +128,12 @@ class tlineLogic : public tlineUI
 		double			m_voltageForPower;
 		double			m_wavelength;
 
+		wxString		m_tunerCapacitorQStr;
 		wxString		m_tunerFrequencyStr;
+		wxString		m_tunerInductorQStr;
 		wxString		m_tunerLoadReactanceStr;
 		wxString		m_tunerLoadResistanceStr;
-		wxString		m_tunerQStr;
+		wxString		m_tunerNetworkQStr;
 		wxString		m_tunerSourceReactanceStr;
 		wxString		m_tunerSourceResistanceStr;
 		wxString		m_tunerTopologyStr;

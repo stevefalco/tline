@@ -43,9 +43,11 @@ typedef struct {
 		double		solnQ[2][2];
 		char		solnParIs[2][2];
 		double		solnPar[2][2];
+		double		solnParRes[2][2];
 		double		solnX2[2][2];
 		char		solnSerIs[2][2];
 		double		solnSer[2][2];
+		double		solnSerRes[2][2];
 		double		solnX1[2][2];
 } LNET_RESULTS;
 
@@ -64,7 +66,9 @@ class tuner : public tunerDialog
 		void		onSourceReactance( wxCommandEvent& event );
 		void		onLoadResistance( wxCommandEvent& event );
 		void		onLoadReactance( wxCommandEvent& event );
-		void		onQ( wxCommandEvent& event );
+		void		onNetworkQ( wxCommandEvent& event );
+		void		onInductorQ( wxCommandEvent& event );
+		void		onCapacitorQ( wxCommandEvent& event );
 		void		onTunerTopologySelected( wxCommandEvent& event );
 		void		onTunerOKclicked( wxCommandEvent& event );
 
@@ -104,6 +108,7 @@ class tuner : public tunerDialog
 		void		recalculateLnet(LNET_RESULTS *result);
 		void		recalculate();
 
+		double		parRes(double a, double b);
 		void		findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int item);
 		void		lnetAlgorithm(LNET_RESULTS *result);
 		void		lnetDisplayValues(
@@ -132,7 +137,9 @@ class tuner : public tunerDialog
 		double		m_sourceReactance;
 		double		m_loadResistance;
 		double		m_loadReactance;
-		double		m_desiredQ;
+		double		m_networkQ;
+		double		m_inductorQ;
+		double		m_capacitorQ;
 		double		m_frequency;
 
 		LNET_RESULTS	m_lnet;

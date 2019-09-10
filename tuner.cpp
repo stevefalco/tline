@@ -17,8 +17,6 @@
 
 #include <wx/log.h>
 
-#include <complex>
-
 #include "constants.h"
 #include "tlineIcon.h"
 #include "tuner.h"
@@ -65,7 +63,9 @@ void tuner::Update()
 	dl_tunerSourceReactance->ChangeValue(m_tunerSourceReactanceStr);
 	dl_tunerLoadResistance->ChangeValue(m_tunerLoadResistanceStr);
 	dl_tunerLoadReactance->ChangeValue(m_tunerLoadReactanceStr);
-	dl_tunerQ->ChangeValue(m_tunerQStr);
+	dl_tunerNetworkQ->ChangeValue(m_tunerNetworkQStr);
+	dl_tunerInductorQ->ChangeValue(m_tunerInductorQStr);
+	dl_tunerCapacitorQ->ChangeValue(m_tunerCapacitorQStr);
 
 	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
 		dl_topology->SetSelection(USE_CPCS);
@@ -131,9 +131,23 @@ void tuner::onLoadReactance( wxCommandEvent& event )
 	recalculate();
 }
 
-void tuner::onQ( wxCommandEvent& event )
+void tuner::onNetworkQ( wxCommandEvent& event )
 {
-	m_tunerQStr = event.GetString();
+	m_tunerNetworkQStr = event.GetString();
+
+	recalculate();
+}
+
+void tuner::onInductorQ( wxCommandEvent& event )
+{
+	m_tunerInductorQStr = event.GetString();
+
+	recalculate();
+}
+
+void tuner::onCapacitorQ( wxCommandEvent& event )
+{
+	m_tunerCapacitorQStr = event.GetString();
 
 	recalculate();
 }
@@ -216,6 +230,8 @@ void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, d
 
 void tuner::lnetAlgorithm(LNET_RESULTS *result)
 {
+	int slot;
+
 	double w = 2.0 * PI * m_frequency;
 
 	double x1a;
@@ -227,14 +243,17 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	double x1;
 	double b2;
 
-	double den = SQ(m_rB) + SQ(m_xB);
-	double gB =  m_rB / den;
-	double bB = -m_xB / den;
-
-	double sqrtTerm = sqrt((1.0 / (m_rA * gB)) - 1.0);
-
 	complex<double> left;
 	complex<double> right;
+
+	double sqrtTerm;
+
+	double den;
+	double gB;
+	double bB;
+
+	double ra;
+	double rb;
 
 	// See equations.odt (or equations.pdf) for the derivation of the
 	// equations used here.
@@ -243,7 +262,14 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	// Networks Of The L Type" by P. B. Walkley, May 1978.
 
 	// Solution 1.
-	x1 = -m_xA + m_rA * sqrtTerm;
+	slot = 0;
+	ra = m_rA - result->solnSerRes[m_useSlot][slot];
+	rb = parRes(m_rB, -(result->solnParRes[m_useSlot][slot]));
+	den = SQ(rb) + SQ(m_xB);
+	gB =  rb / den;
+	bB = -m_xB / den;
+	sqrtTerm = sqrt((1.0 / (ra * gB)) - 1.0);
+	x1 = -m_xA + ra * sqrtTerm;
 	b2 = -bB + gB * sqrtTerm;
 	x1a = x1;
 	x2a = -1.0 / b2;
@@ -253,20 +279,40 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	//
 	// The real parts should be equal, and the imaginary parts should have
 	// opposite signs, since we expect a conjugate match.
-	left = complex<double>(m_rA, m_xA + x1);
+	left = complex<double>(ra, m_xA + x1);
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
 		// This solution is good.  Store the reactances and component values.
-		result->solnX1[m_useSlot][0] = x1a;
-		result->solnX2[m_useSlot][0] = x2a;
-		findLnetComponentValues(result, w, x1a, x2a, 0);
+		result->solnX1[m_useSlot][slot] = x1a;
+		result->solnX2[m_useSlot][slot] = x2a;
+		findLnetComponentValues(result, w, x1a, x2a, slot);
 
 		// Find the network Q.
-		result->solnQ[m_useSlot][0] = fabs((m_xA + x1) / m_rA);
+		result->solnQ[m_useSlot][slot] = fabs((m_xA + x1) / ra);
+
+		// Calculate the next values of the resistive part of the series
+		// and parallel components.
+		if(result->solnParIs[m_useSlot][slot] == 'C') {
+			result->solnParRes[m_useSlot][slot] = -m_capacitorQ * result->solnX2[m_useSlot][slot];
+		} else {
+			result->solnParRes[m_useSlot][slot] = m_inductorQ * result->solnX2[m_useSlot][slot];
+		}
+		if(result->solnSerIs[m_useSlot][slot] == 'C') {
+			result->solnSerRes[m_useSlot][slot] = -result->solnX1[m_useSlot][slot] / m_capacitorQ;
+		} else {
+			result->solnSerRes[m_useSlot][slot] = result->solnX1[m_useSlot][slot] / m_inductorQ;
+		}
 	}
 
 	// Solution 2.
-	x1 = -m_xA - m_rA * sqrtTerm;
+	slot = 1;
+	ra = m_rA - result->solnSerRes[m_useSlot][slot];
+	rb = parRes(m_rB, -(result->solnParRes[m_useSlot][slot]));
+	den = SQ(rb) + SQ(m_xB);
+	gB =  rb / den;
+	bB = -m_xB / den;
+	sqrtTerm = sqrt((1.0 / (ra * gB)) - 1.0);
+	x1 = -m_xA - ra * sqrtTerm;
 	b2 = -bB - gB * sqrtTerm;
 	x1b = x1;
 	x2b = -1.0 / b2;
@@ -276,51 +322,83 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	//
 	// The real parts should be equal, and the imaginary parts should have
 	// opposite signs, since we expect a conjugate match.
-	left = complex<double>(m_rA, m_xA + x1);
+	left = complex<double>(ra, m_xA + x1);
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
 		// This solution is good.  Store the reactances and component values.
-		result->solnX1[m_useSlot][1] = x1b;
-		result->solnX2[m_useSlot][1] = x2b;
-		findLnetComponentValues(result, w, x1b, x2b, 1);
+		result->solnX1[m_useSlot][slot] = x1b;
+		result->solnX2[m_useSlot][slot] = x2b;
+		findLnetComponentValues(result, w, x1b, x2b, slot);
 
 		// Find the network Q.
-		result->solnQ[m_useSlot][1] = fabs((m_xA + x1) / m_rA);
+		result->solnQ[m_useSlot][slot] = fabs((m_xA + x1) / ra);
+
+		// Calculate the next values of the resistive part of the series
+		// and parallel components.
+		if(result->solnParIs[m_useSlot][slot] == 'C') {
+			result->solnParRes[m_useSlot][slot] = -m_capacitorQ * result->solnX2[m_useSlot][slot];
+		} else {
+			result->solnParRes[m_useSlot][slot] = m_inductorQ * result->solnX2[m_useSlot][slot];
+		}
+		if(result->solnSerIs[m_useSlot][slot] == 'C') {
+			result->solnSerRes[m_useSlot][slot] = -result->solnX1[m_useSlot][slot] / m_capacitorQ;
+		} else {
+			result->solnSerRes[m_useSlot][slot] = result->solnX1[m_useSlot][slot] / m_inductorQ;
+		}
 	}
+}
+
+// Compute resistors in parallel.
+double tuner::parRes(double a, double b)
+{
+	return 1.0 / (1.0 / a + 1.0 / b);
 }
 
 void tuner::recalculateLnet(LNET_RESULTS *result)
 {
 	int i;
 	int j;
+	int k;
 
-	// Clear old status.  Only some solutions will be viable.
+	// Clear old status, and start off with ideal initial components.
+	//
+	// Only some solutions will be viable.
 	for(i = 0; i < 2; i++) {
 		for(j = 0; j < 2; j++) {
 			result->solnType[i][j] = -1;
+			result->solnParRes[i][j] = 1E+200;
+			result->solnSerRes[i][j] = 0.0;
 		}
 	}
 
-	// Find all the possible solutions for a given set of impedances.
-	// We will always get at least two solutions, but in some cases
-	// we will get four solutions.
-	//
-	// Start with the source impedance as the "A" parameters, and
-	// the load impedance as the "B" parameters.
-	m_useSlot = 0;
-	m_rA = m_sourceResistance;
-	m_xA = m_sourceReactance;
-	m_rB = m_loadResistance;
-	m_xB = m_loadReactance;
-	lnetAlgorithm(result);
+	// We run this in a loop, because we don't have a closed form solution
+	// that takes the Q of the components into accound.  Hence we have to
+	// run through a few times to converge the solution.  10 loops should
+	// be more than enough.
+	for(k = 0; k < 10; k++) {
+		// Find all the possible solutions for a given set of impedances.
+		// We will always get at least two solutions, but in some cases
+		// we will get four solutions.
+		//
+		// Start with the source impedance as the "A" parameters, and
+		// the load impedance as the "B" parameters.
+		m_useSlot = 0;
+		m_rA = m_sourceResistance;
+		m_xA = m_sourceReactance;
+		m_rB = m_loadResistance;
+		m_xB = m_loadReactance;
+		lnetAlgorithm(result);
+	}
 
-	// Now try again, with the source and load reversed.
-	m_useSlot = 1;
-	m_rB = m_sourceResistance;
-	m_xB = m_sourceReactance;
-	m_rA = m_loadResistance;
-	m_xA = m_loadReactance;
-	lnetAlgorithm(result);
+	for(k = 0; k < 10; k++) {
+		// Now try again, with the source and load reversed.
+		m_useSlot = 1;
+		m_rB = m_sourceResistance;
+		m_xB = m_sourceReactance;
+		m_rA = m_loadResistance;
+		m_xA = m_loadReactance;
+		lnetAlgorithm(result);
+	}
 }
 
 bool tuner::tryPI(
@@ -358,9 +436,9 @@ bool tuner::tryPI(
 
 	// How much reactance must we add to hit our Q target?
 	if(wantInductance) {
-		xAdded = 1.0 / (m_desiredQ * real(yA) + imag(yA));
+		xAdded = 1.0 / (m_networkQ * real(yA) + imag(yA));
 	} else {
-		xAdded = 1.0 / (imag(yA) - m_desiredQ * real(yA));
+		xAdded = 1.0 / (imag(yA) - m_networkQ * real(yA));
 	}
 
 	// What component type would we be adding?  It has to be an inductor for an HPPI
@@ -401,7 +479,7 @@ bool tuner::tryPI(
 				// L-net found something.  Test this solution.
 				zAdded = complex<double>(0, result.solnX2[slot][j]);
 				zCombined = 1.0 / ((1.0 / zB) + (1.0 / zAdded));
-				if((m_desiredQ - fabs(imag(zCombined) / real(zCombined))) > -1E-10) {
+				if((m_networkQ - fabs(imag(zCombined) / real(zCombined))) > -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
 					//
@@ -419,7 +497,7 @@ bool tuner::tryPI(
 						XDEBUG_PI("%d is %c %c bad!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 					}
 				} else {
-					XDEBUG_PI("%c %c %d wrong q %f vs %f, comps %f %f %f", expectSer, expectPar, j, fabs(imag(zCombined) / real(zCombined)), m_desiredQ, value, result.solnSer[slot][j], result.solnPar[slot][j]);
+					XDEBUG_PI("%c %c %d wrong q %f vs %f, comps %f %f %f", expectSer, expectPar, j, fabs(imag(zCombined) / real(zCombined)), m_networkQ, value, result.solnSer[slot][j], result.solnPar[slot][j]);
 				}
 			} else {
 				XDEBUG_PI("%c %c %d bad", expectSer, expectPar, j);
@@ -494,9 +572,9 @@ bool tuner::tryT(
 
 	// How much reactance must we add to hit our Q target?
 	if(wantInductance) {
-		xTotal = ra * m_desiredQ;
+		xTotal = ra * m_networkQ;
 	} else {
-		xTotal = -ra * m_desiredQ;
+		xTotal = -ra * m_networkQ;
 	}
 	xAdded = xTotal - xa;
 
@@ -534,7 +612,7 @@ bool tuner::tryT(
 		for(j = 0; j < 2; j++) {
 			if(result.solnType[slot][j] != -1) {
 				// L-net found something.  Test this solution.
-				if(m_desiredQ - fabs((m_xA + result.solnX1[slot][j]) / m_rA) >= -1E-10) {
+				if(m_networkQ - fabs((m_xA + result.solnX1[slot][j]) / m_rA) >= -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
 					//
@@ -552,7 +630,7 @@ bool tuner::tryT(
 						XDEBUG_T("bad types, want %c %c, got %c %c", expectSer, expectPar, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
 					}
 				} else {
-					XDEBUG_T("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_desiredQ, fabs((m_xA + result.solnX1[slot][j]) / m_rA));
+					XDEBUG_T("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_networkQ, fabs((m_xA + result.solnX1[slot][j]) / m_rA));
 				}
 			} else {
 				XDEBUG_T("%c %c %d invalid", expectSer, expectPar, j);
@@ -610,7 +688,9 @@ void tuner::recalculate()
 	m_sourceReactance = atof(m_tunerSourceReactanceStr);
 	m_loadResistance = atof(m_tunerLoadResistanceStr);
 	m_loadReactance = atof(m_tunerLoadReactanceStr);
-	m_desiredQ = atof(m_tunerQStr);
+	m_networkQ = atof(m_tunerNetworkQStr);
+	m_inductorQ = atof(m_tunerInductorQStr);
+	m_capacitorQ = atof(m_tunerCapacitorQStr);
 
 	recalculateLnet(&m_lnet);
 	recalculateHPPI();

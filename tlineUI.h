@@ -252,8 +252,12 @@ class tunerDialog : public wxDialog
 		wxTextCtrl* dl_tunerLoadResistance;
 		wxStaticText* dl_tunerLoadReactanceTag;
 		wxTextCtrl* dl_tunerLoadReactance;
-		wxStaticText* dl_tunerQtag;
-		wxTextCtrl* dl_tunerQ;
+		wxStaticText* dl_tunerNetworkQTag;
+		wxTextCtrl* dl_tunerNetworkQ;
+		wxStaticText* dl_tunerInductorQTag;
+		wxTextCtrl* dl_tunerInductorQ;
+		wxStaticText* dl_tunerCapacitorQTag;
+		wxTextCtrl* dl_tunerCapacitorQ;
 		wxStaticText* dl_tunerResultTag1;
 		wxTextCtrl* dl_tunerResult1;
 		wxStaticText* dl_tunerResultTag2;
@@ -274,7 +278,9 @@ class tunerDialog : public wxDialog
 		virtual void onSourceReactance( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLoadResistance( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLoadReactance( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onQ( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onNetworkQ( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onInductorQ( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onCapacitorQ( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerTopologySelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerOKclicked( wxCommandEvent& event ) { event.Skip(); }
 
@@ -285,7 +291,9 @@ class tunerDialog : public wxDialog
 		wxString m_tunerSourceReactanceStr;
 		wxString m_tunerLoadResistanceStr;
 		wxString m_tunerLoadReactanceStr;
-		wxString m_tunerQStr;
+		wxString m_tunerNetworkQStr;
+		wxString m_tunerInductorQStr;
+		wxString m_tunerCapacitorQStr;
 
 		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();

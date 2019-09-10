@@ -826,14 +826,32 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	gTunerParameters->Add( dl_tunerLoadReactance, 0, wxALL, 0 );
 
-	dl_tunerQtag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Desired Q"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerQtag->Wrap( -1 );
-	gTunerParameters->Add( dl_tunerQtag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	dl_tunerNetworkQTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Desired Network Q"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerNetworkQTag->Wrap( -1 );
+	gTunerParameters->Add( dl_tunerNetworkQTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
-	dl_tunerQ = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_tunerQ->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerQStr ) );
+	dl_tunerNetworkQ = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerNetworkQ->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerNetworkQStr ) );
 
-	gTunerParameters->Add( dl_tunerQ, 0, wxALL, 0 );
+	gTunerParameters->Add( dl_tunerNetworkQ, 0, wxALL, 0 );
+
+	dl_tunerInductorQTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Actual Inductor Q"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerInductorQTag->Wrap( -1 );
+	gTunerParameters->Add( dl_tunerInductorQTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerInductorQ = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerInductorQ->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerInductorQStr ) );
+
+	gTunerParameters->Add( dl_tunerInductorQ, 0, wxALL, 0 );
+
+	dl_tunerCapacitorQTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Actual Capacitor Q"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerCapacitorQTag->Wrap( -1 );
+	gTunerParameters->Add( dl_tunerCapacitorQTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+
+	dl_tunerCapacitorQ = new wxTextCtrl( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerCapacitorQ->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_tunerCapacitorQStr ) );
+
+	gTunerParameters->Add( dl_tunerCapacitorQ, 0, wxALL, 0 );
 
 
 	sbTunerParameterContainer->Add( gTunerParameters, 1, wxEXPAND|wxSHAPED, 5 );
@@ -915,7 +933,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bTunerRight;
 	bTunerRight = new wxBoxSizer( wxVERTICAL );
 
-	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 Ω transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the \"Parameters\" box at left.\n\nRegarding the \"Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10 for the Q.  The Q parameter is only used for the PI and T topologies, and is an upper bound.\n"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerParameterNote = new wxStaticText( this, wxID_ANY, wxT("Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 Ω transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the \"Parameters\" box at left.\n\nRegarding the \"Desired Network Q\" parameter, typically, one will specify a fairly low Q.  Try a value less than 10.  The Network Q parameter is only used for the PI and T topologies, and is an upper bound.\n\nThe Actual Inductor and Capacitor Q default to 200 and 2000 respectively, but can be overridden as desired.\n"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerParameterNote->Wrap( 300 );
 	bTunerRight->Add( dl_tunerParameterNote, 0, wxALL, 5 );
 
@@ -945,7 +963,9 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	dl_tunerSourceReactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerLoadResistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
 	dl_tunerLoadReactance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
-	dl_tunerQ->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onQ ), NULL, this );
+	dl_tunerNetworkQ->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onNetworkQ ), NULL, this );
+	dl_tunerInductorQ->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onInductorQ ), NULL, this );
+	dl_tunerCapacitorQ->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onCapacitorQ ), NULL, this );
 	dl_tunerResult1->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
 	dl_tunerResult2->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerResult3->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
@@ -962,7 +982,9 @@ tunerDialog::~tunerDialog()
 	dl_tunerSourceReactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerLoadResistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
 	dl_tunerLoadReactance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadReactance ), NULL, this );
-	dl_tunerQ->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onQ ), NULL, this );
+	dl_tunerNetworkQ->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onNetworkQ ), NULL, this );
+	dl_tunerInductorQ->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onInductorQ ), NULL, this );
+	dl_tunerCapacitorQ->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onCapacitorQ ), NULL, this );
 	dl_tunerResult1->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceResistance ), NULL, this );
 	dl_tunerResult2->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onSourceReactance ), NULL, this );
 	dl_tunerResult3->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( tunerDialog::onLoadResistance ), NULL, this );
