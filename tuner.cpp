@@ -36,6 +36,8 @@
 #include "nt_lpt.h"
 
 #undef ENABLE_DEBUG_PI
+#undef ENABLE_DEBUG_T
+#undef ENABLE_DEBUG_L
 
 #ifdef ENABLE_DEBUG_PI
     #define XDEBUG_PI(...) wxLogError(__VA_ARGS__)
@@ -43,12 +45,16 @@
     #define XDEBUG_PI(...)  /**/
 #endif
 
-#undef ENABLE_DEBUG_T
-
 #ifdef ENABLE_DEBUG_T
     #define XDEBUG_T(...) wxLogError(__VA_ARGS__)
 #else
     #define XDEBUG_T(...)  /**/
+#endif
+
+#ifdef ENABLE_DEBUG_L
+    #define XDEBUG_L(...) wxLogError(__VA_ARGS__)
+#else
+    #define XDEBUG_L(...)  /**/
 #endif
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
@@ -59,6 +65,7 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 void tuner::Update()
 {
 	dl_tunerFrequency->ChangeValue(m_tunerFrequencyStr);
+	dl_tunerPower->ChangeValue(m_tunerPowerStr);
 	dl_tunerSourceResistance->ChangeValue(m_tunerSourceResistanceStr);
 	dl_tunerSourceReactance->ChangeValue(m_tunerSourceReactanceStr);
 	dl_tunerLoadResistance->ChangeValue(m_tunerLoadResistanceStr);
@@ -96,56 +103,63 @@ void tuner::Update()
 	recalculate();
 }
 
-void tuner::onFrequency( wxCommandEvent& event )
+void tuner::onTunerFrequency( wxCommandEvent& event )
 {
 	m_tunerFrequencyStr = event.GetString();
 
 	recalculate();
 }
 
-void tuner::onSourceResistance( wxCommandEvent& event )
+void tuner::onTunerPower( wxCommandEvent& event )
+{
+	m_tunerPowerStr = event.GetString();
+
+	recalculate();
+}
+
+void tuner::onTunerSourceResistance( wxCommandEvent& event )
 {
 	m_tunerSourceResistanceStr = event.GetString();
 
 	recalculate();
 }
 
-void tuner::onSourceReactance( wxCommandEvent& event )
+void tuner::onTunerSourceReactance( wxCommandEvent& event )
 {
 	m_tunerSourceReactanceStr = event.GetString();
 
 	recalculate();
 }
 
-void tuner::onLoadResistance( wxCommandEvent& event )
+void tuner::onTunerLoadResistance( wxCommandEvent& event )
 {
 	m_tunerLoadResistanceStr = event.GetString();
 
 	recalculate();
 }
 
-void tuner::onLoadReactance( wxCommandEvent& event )
+void tuner::onTunerLoadReactance( wxCommandEvent& event )
 {
 	m_tunerLoadReactanceStr = event.GetString();
 
 	recalculate();
 }
 
-void tuner::onNetworkQ( wxCommandEvent& event )
+void tuner::onTunerNetworkQ( wxCommandEvent& event )
 {
 	m_tunerNetworkQStr = event.GetString();
 
 	recalculate();
 }
 
-void tuner::onInductorQ( wxCommandEvent& event )
+void tuner::onTunerInductorQ( wxCommandEvent& event )
 {
 	m_tunerInductorQStr = event.GetString();
 
 	recalculate();
 }
 
-void tuner::onCapacitorQ( wxCommandEvent& event )
+void tuner::onTunerCapacitorQ( wxCommandEvent& event )
 {
 	m_tunerCapacitorQStr = event.GetString();
 
@@ -167,7 +181,7 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 	}
 }
 
-void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int item)
+void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int slot)
 {
 	double value;
 
@@ -178,52 +192,52 @@ void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, d
 		// Series Inductor
 		value = x1 / w;
 		value *= 1E9; // nH
-		result->solnSerIs[m_useSlot][item] = 'L';
-		result->solnSer[m_useSlot][item] = value;
+		result->solnSerIs[m_useSlot][slot] = 'L';
+		result->solnSer[m_useSlot][slot] = value;
 	} else {
 		// Series Capacitor
 		value = 1.0 / (-x1 * w);
 		value *= 1E12; // pF
-		result->solnSerIs[m_useSlot][item] = 'C';
-		result->solnSer[m_useSlot][item] = value;
+		result->solnSerIs[m_useSlot][slot] = 'C';
+		result->solnSer[m_useSlot][slot] = value;
 	}
 
 	if(x2 >= 0) {
 		// Parallel Inductor
 		value = x2 / w;
 		value *= 1E9; // nH
-		result->solnParIs[m_useSlot][item] = 'L';
-		result->solnPar[m_useSlot][item] = value;
+		result->solnParIs[m_useSlot][slot] = 'L';
+		result->solnPar[m_useSlot][slot] = value;
 	} else {
 		// Parallel Capacitor
 		value = 1.0 / (-x2 * w);
 		value *= 1E12; // pF
-		result->solnParIs[m_useSlot][item] = 'C';
-		result->solnPar[m_useSlot][item] = value;
+		result->solnParIs[m_useSlot][slot] = 'C';
+		result->solnPar[m_useSlot][slot] = value;
 	}
 
 	// Now that we have the component values, assign a topology that matches.
 	if(m_useSlot == 0) {
 		// Source is on the left (series), load is on the right (parallel).
-		if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'L') {
-			result->solnType[m_useSlot][item] = USE_LSLP;
-		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'C') {
-			result->solnType[m_useSlot][item] = USE_CSCP;
-		} else if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'C') {
-			result->solnType[m_useSlot][item] = USE_LCLP;
-		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'L') {
-			result->solnType[m_useSlot][item] = USE_CLHP;
+		if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'L') {
+			result->solnType[m_useSlot][slot] = USE_LSLP;
+		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'C') {
+			result->solnType[m_useSlot][slot] = USE_CSCP;
+		} else if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'C') {
+			result->solnType[m_useSlot][slot] = USE_LCLP;
+		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'L') {
+			result->solnType[m_useSlot][slot] = USE_CLHP;
 		}
 	} else {
 		// Source is on the right (parallel), load is on the left (series).
-		if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'L') {
-			result->solnType[m_useSlot][item] = USE_LPLS;
-		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'C') {
-			result->solnType[m_useSlot][item] = USE_CPCS;
-		} else if(result->solnSerIs[m_useSlot][item] == 'L' && result->solnParIs[m_useSlot][item] == 'C') {
-			result->solnType[m_useSlot][item] = USE_CLLP;
-		} else if(result->solnSerIs[m_useSlot][item] == 'C' && result->solnParIs[m_useSlot][item] == 'L') {
-			result->solnType[m_useSlot][item] = USE_LCHP;
+		if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'L') {
+			result->solnType[m_useSlot][slot] = USE_LPLS;
+		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'C') {
+			result->solnType[m_useSlot][slot] = USE_CPCS;
+		} else if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'C') {
+			result->solnType[m_useSlot][slot] = USE_CLLP;
+		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'L') {
+			result->solnType[m_useSlot][slot] = USE_LCHP;
 		}
 	}
 }
@@ -316,6 +330,13 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 		} else {
 			result->solnSerRes[m_useSlot][slot] = result->solnX1[m_useSlot][slot] / m_inductorQ;
 		}
+		XDEBUG_L("%d %d: %cpar=%g parRes=%g %cser=%g serRes=%g", m_useSlot, slot,
+				result->solnParIs[m_useSlot][slot],
+				result->solnPar[m_useSlot][slot],
+				result->solnParRes[m_useSlot][slot],
+				result->solnSerIs[m_useSlot][slot],
+				result->solnSer[m_useSlot][slot],
+				result->solnSerRes[m_useSlot][slot]);
 	}
 
 	// Solution 2.
@@ -359,6 +380,13 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 		} else {
 			result->solnSerRes[m_useSlot][slot] = result->solnX1[m_useSlot][slot] / m_inductorQ;
 		}
+		XDEBUG_L("%d %d: %cpar=%g parRes=%g %cser=%g serRes=%g", m_useSlot, slot,
+				result->solnParIs[m_useSlot][slot],
+				result->solnPar[m_useSlot][slot],
+				result->solnParRes[m_useSlot][slot],
+				result->solnSerIs[m_useSlot][slot],
+				result->solnSer[m_useSlot][slot],
+				result->solnSerRes[m_useSlot][slot]);
 	}
 }
 
@@ -683,6 +711,13 @@ void tuner::recalculateLPT()
 	m_lptValid = FALSE;
 }
 
+void tuner::recalculatePower()
+{
+	m_sourceImpedance = complex<double>(m_sourceResistance, m_sourceReactance);
+	m_voltageForPower = sqrt(m_power * m_sourceImpedance);
+	m_currentForPower = sqrt(m_power / m_sourceImpedance);
+}
+
 void tuner::recalculate()
 {
 	int i;
@@ -690,6 +725,7 @@ void tuner::recalculate()
 	bool arry[USE_LAST];
 
 	m_frequency = atof(m_tunerFrequencyStr) * 1.0E6;
+	m_power = atof(m_tunerPowerStr);
 	m_sourceResistance = atof(m_tunerSourceResistanceStr);
 	m_sourceReactance = atof(m_tunerSourceReactanceStr);
 	m_loadResistance = atof(m_tunerLoadResistanceStr);
@@ -698,6 +734,7 @@ void tuner::recalculate()
 	m_inductorQ = atof(m_tunerInductorQStr);
 	m_capacitorQ = atof(m_tunerCapacitorQStr);
 
+	recalculatePower();
 	recalculateLnet(&m_lnet);
 	recalculateHPPI();
 	recalculateLPPI();
@@ -757,10 +794,14 @@ void tuner::recalculate()
 
 void tuner::lnetDisplayValues(
 		int type,
+		int sourceConnect,
 		double sourceVar[2][2],
-		const char *sourceLabel,
+		double sourceRes[2][2],
+		wxString sourceLabel,
+		int loadConnect,
 		double loadVar[2][2],
-		const char *loadLabel
+		double loadRes[2][2],
+		wxString loadLabel
 		)
 {
 	int i;
@@ -779,17 +820,57 @@ void tuner::lnetDisplayValues(
 				dl_tunerResultTag2->Show();
 				dl_tunerResult3->Show();
 				dl_tunerResultTag3->Show();
-				dl_tunerResult4->Hide();
-				dl_tunerResultTag4->Hide();
+				dl_tunerResult4->Show();
+				dl_tunerResultTag4->Show();
+				dl_tunerResult5->Show();
+				dl_tunerResultTag5->Show();
+				dl_tunerResult6->Show();
+				dl_tunerResultTag6->Show();
+				dl_tunerResult7->Show();
+				dl_tunerResultTag7->Show();
+				dl_tunerResult8->Hide();
+				dl_tunerResultTag8->Hide();
+				dl_tunerResult9->Hide();
+				dl_tunerResultTag9->Hide();
+				dl_tunerResult10->Hide();
+				dl_tunerResultTag10->Hide();
 
 				dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), sourceVar[i][j]));
-				dl_tunerResultTag1->SetLabel(sourceLabel);
+				if(sourceLabel.at(0) == 'C') {
+					dl_tunerResultTag1->SetLabel(sourceLabel + " Value (pF)");
+				} else {
+					dl_tunerResultTag1->SetLabel(sourceLabel + " Value (nH)");
+				}
 
-				dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
-				dl_tunerResultTag2->SetLabel(loadLabel);
+				if(sourceConnect == IS_PAR) {
+					// Use voltage for loss.
+					dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), sourceVar[i][j]));
+					dl_tunerResultTag2->SetLabel(sourceLabel + " Voltage");
+				} else {
+					// Use current for loss.
+					dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), sourceVar[i][j]));
+					dl_tunerResultTag2->SetLabel(sourceLabel + " Current");
+				}
 
-				dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_lnet.solnQ[i][j]));
-				dl_tunerResultTag3->SetLabel("Q Value");
+				dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
+				if(loadLabel.at(0) == 'C') {
+					dl_tunerResultTag4->SetLabel(loadLabel + " Value (pF)");
+				} else {
+					dl_tunerResultTag4->SetLabel(loadLabel + " Value (nH)");
+				}
+
+				if(loadConnect == IS_PAR) {
+					// Use voltage for loss.
+					dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
+					dl_tunerResultTag5->SetLabel(loadLabel + " Voltage");
+				} else {
+					// Use current for loss.
+					dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
+					dl_tunerResultTag5->SetLabel(loadLabel + " Current");
+				}
+
+				dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_lnet.solnQ[i][j]));
+				dl_tunerResultTag7->SetLabel("Q Value");
 
 				Layout();
 				return;
@@ -806,6 +887,18 @@ void tuner::lnetDisplayValues(
 	dl_tunerResultTag3->Hide();
 	dl_tunerResult4->Hide();
 	dl_tunerResultTag4->Hide();
+	dl_tunerResult5->Hide();
+	dl_tunerResultTag5->Hide();
+	dl_tunerResult6->Hide();
+	dl_tunerResultTag6->Hide();
+	dl_tunerResult7->Hide();
+	dl_tunerResultTag7->Hide();
+	dl_tunerResult8->Hide();
+	dl_tunerResultTag8->Hide();
+	dl_tunerResult9->Hide();
+	dl_tunerResultTag9->Hide();
+	dl_tunerResult10->Hide();
+	dl_tunerResultTag10->Hide();
 
 	dl_tunerResultTag1->SetLabel("No Match Found");
 
@@ -833,10 +926,16 @@ void tuner::CPCS()
 
 	lnetDisplayValues(
 			USE_CPCS,
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"CS Value (pF)",
+			m_lnet.solnParRes,
+			"CS",
+
+			IS_SER,
 			m_lnet.solnSer,
-			"CL Value (pF)"
+			m_lnet.solnSerRes,
+			"CL"
 			);
 }
 
@@ -848,10 +947,16 @@ void tuner::CSCP()
 
 	lnetDisplayValues(
 			USE_CSCP,
+
+			IS_SER,
 			m_lnet.solnSer,
-			"CS Value (pF)",
+			m_lnet.solnSerRes,
+			"CS",
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"CL Value (pF)"
+			m_lnet.solnParRes,
+			"CL"
 			);
 }
 
@@ -863,10 +968,16 @@ void tuner::LPLS()
 
 	lnetDisplayValues(
 			USE_LPLS,
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"LS Value (nH)",
+			m_lnet.solnParRes,
+			"LS",
+
+			IS_SER,
 			m_lnet.solnSer,
-			"LL Value (nH)"
+			m_lnet.solnSerRes,
+			"LL"
 			);
 }
 
@@ -878,10 +989,16 @@ void tuner::LSLP()
 
 	lnetDisplayValues(
 			USE_LSLP,
+
+			IS_SER,
 			m_lnet.solnSer,
-			"LS Value (nH)",
+			m_lnet.solnSerRes,
+			"LS",
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"LL Value (nH)"
+			m_lnet.solnParRes,
+			"LL"
 			);
 }
 
@@ -893,10 +1010,16 @@ void tuner::LCHP()
 
 	lnetDisplayValues(
 			USE_LCHP,
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"L Value (nH)",
+			m_lnet.solnParRes,
+			"L",
+
+			IS_SER,
 			m_lnet.solnSer,
-			"C Value (pF)"
+			m_lnet.solnSerRes,
+			"C"
 			);
 }
 
@@ -908,10 +1031,16 @@ void tuner::CLLP()
 
 	lnetDisplayValues(
 			USE_CLLP,
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"C Value (pF)",
+			m_lnet.solnParRes,
+			"C",
+
+			IS_SER,
 			m_lnet.solnSer,
-			"L Value (nH)"
+			m_lnet.solnSerRes,
+			"L"
 			);
 }
 
@@ -923,10 +1052,16 @@ void tuner::LCLP()
 
 	lnetDisplayValues(
 			USE_LCLP,
+
+			IS_SER,
 			m_lnet.solnSer,
-			"L Value (nH)",
+			m_lnet.solnSerRes,
+			"L",
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"C Value (pF)"
+			m_lnet.solnParRes,
+			"C"
 			);
 }
 
@@ -938,10 +1073,16 @@ void tuner::CLHP()
 
 	lnetDisplayValues(
 			USE_CLHP,
+
+			IS_SER,
 			m_lnet.solnSer,
-			"C Value (pF)",
+			m_lnet.solnSerRes,
+			"C",
+
+			IS_PAR,
 			m_lnet.solnPar,
-			"L Value (nH)"
+			m_lnet.solnParRes,
+			"L"
 			);
 }
 
@@ -966,6 +1107,18 @@ void tuner::HPPI()
 		dl_tunerResultTag3->Hide();
 		dl_tunerResult4->Hide();
 		dl_tunerResultTag4->Hide();
+		dl_tunerResult5->Hide();
+		dl_tunerResultTag5->Hide();
+		dl_tunerResult6->Hide();
+		dl_tunerResultTag6->Hide();
+		dl_tunerResult7->Hide();
+		dl_tunerResultTag7->Hide();
+		dl_tunerResult8->Hide();
+		dl_tunerResultTag8->Hide();
+		dl_tunerResult9->Hide();
+		dl_tunerResultTag9->Hide();
+		dl_tunerResult10->Hide();
+		dl_tunerResultTag10->Hide();
 
 		dl_tunerResultTag1->SetLabel("No Match Found");
 
@@ -979,17 +1132,29 @@ void tuner::HPPI()
 	dl_tunerResultTag2->Show();
 	dl_tunerResult3->Show();
 	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+	dl_tunerResult5->Show();
+	dl_tunerResultTag5->Show();
+	dl_tunerResult6->Show();
+	dl_tunerResultTag6->Show();
+	dl_tunerResult7->Show();
+	dl_tunerResultTag7->Show();
+	dl_tunerResult8->Show();
+	dl_tunerResultTag8->Show();
+	dl_tunerResult9->Show();
+	dl_tunerResultTag9->Show();
+	dl_tunerResult10->Hide();
+	dl_tunerResultTag10->Hide();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cpi));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_lspi));
-	dl_tunerResultTag2->SetLabel("LS Value (nH)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lspi));
+	dl_tunerResultTag4->SetLabel("LS Value (nH)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_llpi));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
+	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_llpi));
+	dl_tunerResultTag7->SetLabel("LL Value (nH)");
 
 	Layout();
 }
@@ -1015,6 +1180,18 @@ void tuner::LPPI()
 		dl_tunerResultTag3->Hide();
 		dl_tunerResult4->Hide();
 		dl_tunerResultTag4->Hide();
+		dl_tunerResult5->Hide();
+		dl_tunerResultTag5->Hide();
+		dl_tunerResult6->Hide();
+		dl_tunerResultTag6->Hide();
+		dl_tunerResult7->Hide();
+		dl_tunerResultTag7->Hide();
+		dl_tunerResult8->Hide();
+		dl_tunerResultTag8->Hide();
+		dl_tunerResult9->Hide();
+		dl_tunerResultTag9->Hide();
+		dl_tunerResult10->Hide();
+		dl_tunerResultTag10->Hide();
 
 		dl_tunerResultTag1->SetLabel("No Match Found");
 
@@ -1028,17 +1205,29 @@ void tuner::LPPI()
 	dl_tunerResultTag2->Show();
 	dl_tunerResult3->Show();
 	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+	dl_tunerResult5->Show();
+	dl_tunerResultTag5->Show();
+	dl_tunerResult6->Show();
+	dl_tunerResultTag6->Show();
+	dl_tunerResult7->Show();
+	dl_tunerResultTag7->Show();
+	dl_tunerResult8->Show();
+	dl_tunerResultTag8->Show();
+	dl_tunerResult9->Show();
+	dl_tunerResultTag9->Show();
+	dl_tunerResult10->Hide();
+	dl_tunerResultTag10->Hide();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_cspi));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cspi));
+	dl_tunerResultTag4->SetLabel("CS Value (pF)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_clpi));
-	dl_tunerResultTag3->SetLabel("CL Value (pF)");
+	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clpi));
+	dl_tunerResultTag7->SetLabel("CL Value (pF)");
 
 	Layout();
 }
@@ -1064,6 +1253,18 @@ void tuner::HPT()
 		dl_tunerResultTag3->Hide();
 		dl_tunerResult4->Hide();
 		dl_tunerResultTag4->Hide();
+		dl_tunerResult5->Hide();
+		dl_tunerResultTag5->Hide();
+		dl_tunerResult6->Hide();
+		dl_tunerResultTag6->Hide();
+		dl_tunerResult7->Hide();
+		dl_tunerResultTag7->Hide();
+		dl_tunerResult8->Hide();
+		dl_tunerResultTag8->Hide();
+		dl_tunerResult9->Hide();
+		dl_tunerResultTag9->Hide();
+		dl_tunerResult10->Hide();
+		dl_tunerResultTag10->Hide();
 
 		dl_tunerResultTag1->SetLabel("No Match Found");
 
@@ -1077,17 +1278,29 @@ void tuner::HPT()
 	dl_tunerResultTag2->Show();
 	dl_tunerResult3->Show();
 	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+	dl_tunerResult5->Show();
+	dl_tunerResultTag5->Show();
+	dl_tunerResult6->Show();
+	dl_tunerResultTag6->Show();
+	dl_tunerResult7->Show();
+	dl_tunerResultTag7->Show();
+	dl_tunerResult8->Show();
+	dl_tunerResultTag8->Show();
+	dl_tunerResult9->Show();
+	dl_tunerResultTag9->Show();
+	dl_tunerResult10->Hide();
+	dl_tunerResultTag10->Hide();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lt));
 	dl_tunerResultTag1->SetLabel("L Value (nH)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_cst));
-	dl_tunerResultTag2->SetLabel("CS Value (pF)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cst));
+	dl_tunerResultTag4->SetLabel("CS Value (pF)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_clt));
-	dl_tunerResultTag3->SetLabel("CL Value (pF)");
+	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clt));
+	dl_tunerResultTag7->SetLabel("CL Value (pF)");
 
 	Layout();
 }
@@ -1113,6 +1326,18 @@ void tuner::LPT()
 		dl_tunerResultTag3->Hide();
 		dl_tunerResult4->Hide();
 		dl_tunerResultTag4->Hide();
+		dl_tunerResult5->Hide();
+		dl_tunerResultTag5->Hide();
+		dl_tunerResult6->Hide();
+		dl_tunerResultTag6->Hide();
+		dl_tunerResult7->Hide();
+		dl_tunerResultTag7->Hide();
+		dl_tunerResult8->Hide();
+		dl_tunerResultTag8->Hide();
+		dl_tunerResult9->Hide();
+		dl_tunerResultTag9->Hide();
+		dl_tunerResult10->Hide();
+		dl_tunerResultTag10->Hide();
 
 		dl_tunerResultTag1->SetLabel("No Match Found");
 
@@ -1126,17 +1351,29 @@ void tuner::LPT()
 	dl_tunerResultTag2->Show();
 	dl_tunerResult3->Show();
 	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Hide();
-	dl_tunerResultTag4->Hide();
+	dl_tunerResult4->Show();
+	dl_tunerResultTag4->Show();
+	dl_tunerResult5->Show();
+	dl_tunerResultTag5->Show();
+	dl_tunerResult6->Show();
+	dl_tunerResultTag6->Show();
+	dl_tunerResult7->Show();
+	dl_tunerResultTag7->Show();
+	dl_tunerResult8->Show();
+	dl_tunerResultTag8->Show();
+	dl_tunerResult9->Show();
+	dl_tunerResultTag9->Show();
+	dl_tunerResult10->Hide();
+	dl_tunerResultTag10->Hide();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_ct));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
 
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), m_lst));
-	dl_tunerResultTag2->SetLabel("LS Value (nH)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lst));
+	dl_tunerResultTag4->SetLabel("LS Value (nH)");
 
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), m_llt));
-	dl_tunerResultTag3->SetLabel("LL Value (nH)");
+	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_llt));
+	dl_tunerResultTag7->SetLabel("LL Value (nH)");
 
 	Layout();
 }

@@ -194,6 +194,11 @@ void tlineLogic::loadFile( wxString path )
 			m_tunerInit = TRUE;
 		}
 
+		if(strcmp(buffer, "m_tunerPower") == 0) {
+			m_tunerPowerStr = p;
+			m_tunerInit = TRUE;
+		}
+
 		if(strcmp(buffer, "m_tunerSourceResistance") == 0) {
 			m_tunerSourceResistanceStr = p;
 			m_tunerInit = TRUE;
@@ -305,6 +310,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	// Save tuner parameters
 	if(m_tunerInit) {
 		fprintf(fp, "m_tunerFrequency=%s\n",		(const char *)m_tunerFrequencyStr.mb_str());
+		fprintf(fp, "m_tunerPower=%s\n",		(const char *)m_tunerPowerStr.mb_str());
 		fprintf(fp, "m_tunerSourceResistance=%s\n",	(const char *)m_tunerSourceResistanceStr.mb_str());
 		fprintf(fp, "m_tunerSourceReactance=%s\n",	(const char *)m_tunerSourceReactanceStr.mb_str());
 		fprintf(fp, "m_tunerLoadResistance=%s\n",	(const char *)m_tunerLoadResistanceStr.mb_str());
@@ -487,6 +493,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 	if(m_tunerInit == FALSE) {
 		// Start the tuner off with reasonable values.
 		m_tunerFrequencyStr = m_frequencyStr;
+		m_tunerPowerStr = m_powerStr;
 		m_tunerSourceResistanceStr = "50.0";
 		m_tunerSourceReactanceStr = "0.0";
 		m_tunerLoadResistanceStr = wxString::Format(wxT("%.2f"), real(m_zInput));
@@ -500,6 +507,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 	}
 
 	dialog->m_tunerFrequencyStr = m_tunerFrequencyStr;
+	dialog->m_tunerPowerStr = m_tunerPowerStr;
 	dialog->m_tunerSourceResistanceStr = m_tunerSourceResistanceStr;
 	dialog->m_tunerSourceReactanceStr = m_tunerSourceReactanceStr;
 	dialog->m_tunerLoadResistanceStr = m_tunerLoadResistanceStr;
@@ -512,6 +520,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 
 	if (dialog->ShowModal() == wxID_OK) {
 		m_tunerFrequencyStr = dialog->m_tunerFrequencyStr;
+		m_tunerPowerStr = dialog->m_tunerPowerStr;
 		m_tunerSourceResistanceStr = dialog->m_tunerSourceResistanceStr;
 		m_tunerSourceReactanceStr = dialog->m_tunerSourceReactanceStr;
 		m_tunerLoadResistanceStr = dialog->m_tunerLoadResistanceStr;

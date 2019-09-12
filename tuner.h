@@ -38,6 +38,9 @@ using namespace std;
 #define USE_LPT			11
 #define USE_LAST		12
 
+#define IS_PAR			1
+#define IS_SER			2
+
 typedef struct {
 		int		solnType[2][2];
 		double		solnQ[2][2];
@@ -61,14 +64,15 @@ class tuner : public tunerDialog
 		wxString	m_tunerTopologyStr;
 
 	protected:
-		void		onFrequency( wxCommandEvent& event );
-		void		onSourceResistance( wxCommandEvent& event );
-		void		onSourceReactance( wxCommandEvent& event );
-		void		onLoadResistance( wxCommandEvent& event );
-		void		onLoadReactance( wxCommandEvent& event );
-		void		onNetworkQ( wxCommandEvent& event );
-		void		onInductorQ( wxCommandEvent& event );
-		void		onCapacitorQ( wxCommandEvent& event );
+		void		onTunerFrequency( wxCommandEvent& event );
+		void		onTunerPower( wxCommandEvent& event );
+		void		onTunerSourceResistance( wxCommandEvent& event );
+		void		onTunerSourceReactance( wxCommandEvent& event );
+		void		onTunerLoadResistance( wxCommandEvent& event );
+		void		onTunerLoadReactance( wxCommandEvent& event );
+		void		onTunerNetworkQ( wxCommandEvent& event );
+		void		onTunerInductorQ( wxCommandEvent& event );
+		void		onTunerCapacitorQ( wxCommandEvent& event );
 		void		onTunerTopologySelected( wxCommandEvent& event );
 		void		onTunerOKclicked( wxCommandEvent& event );
 
@@ -101,6 +105,7 @@ class tuner : public tunerDialog
 					bool wantInductance
 					);
 
+		void		recalculatePower();
 		void		recalculateHPPI();
 		void		recalculateLPPI();
 		void		recalculateHPT();
@@ -109,9 +114,22 @@ class tuner : public tunerDialog
 		void		recalculate();
 
 		double		parRes(double a, double b);
-		void		findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int item);
+		void		findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int slot);
 		void		lnetInit(LNET_RESULTS *result);
 		void		lnetAlgorithm(LNET_RESULTS *result);
+
+		void		lnetDisplayValues(
+					int type,
+					int sourceConnect,
+					double sourceVar[2][2],
+					double sourceRes[2][2],
+					wxString sourceLabel,
+					int loadConnect,
+					double loadVar[2][2],
+					double loadRes[2][2],
+					wxString loadLabel
+				);
+
 		void		lnetDisplayValues(
 					int type,
 					double sourceVar[2][2],
@@ -142,6 +160,11 @@ class tuner : public tunerDialog
 		double		m_inductorQ;
 		double		m_capacitorQ;
 		double		m_frequency;
+		double		m_power;
+
+		complex<double>	m_sourceImpedance;
+		complex<double>	m_voltageForPower;
+		complex<double>	m_currentForPower;
 
 		LNET_RESULTS	m_lnet;
 

@@ -134,6 +134,7 @@ class tlineLogic : public tlineUI
 		wxString		m_tunerLoadReactanceStr;
 		wxString		m_tunerLoadResistanceStr;
 		wxString		m_tunerNetworkQStr;
+		wxString		m_tunerPowerStr;
 		wxString		m_tunerSourceReactanceStr;
 		wxString		m_tunerSourceResistanceStr;
 		wxString		m_tunerTopologyStr;
