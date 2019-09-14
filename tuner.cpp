@@ -183,7 +183,11 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 
 void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int slot)
 {
+	SOLUTION *p;
+
 	double value;
+
+	p = &result->s[m_useSlot][slot];
 
 	// Convert the reactances to L and C as appropriate.  The x1 side
 	// is always "series-connected" and the x2 side is always
@@ -192,66 +196,70 @@ void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, d
 		// Series Inductor
 		value = x1 / w;
 		value *= 1E9; // nH
-		result->solnSerIs[m_useSlot][slot] = 'L';
-		result->solnSer[m_useSlot][slot] = value;
+		p->seriesComponentType = 'L';
+		p->seriesComponentValue = value;
 	} else {
 		// Series Capacitor
 		value = 1.0 / (-x1 * w);
 		value *= 1E12; // pF
-		result->solnSerIs[m_useSlot][slot] = 'C';
-		result->solnSer[m_useSlot][slot] = value;
+		p->seriesComponentType = 'C';
+		p->seriesComponentValue = value;
 	}
 
 	if(x2 >= 0) {
 		// Parallel Inductor
 		value = x2 / w;
 		value *= 1E9; // nH
-		result->solnParIs[m_useSlot][slot] = 'L';
-		result->solnPar[m_useSlot][slot] = value;
+		p->parallelComponentType = 'L';
+		p->parallelComponentValue = value;
 	} else {
 		// Parallel Capacitor
 		value = 1.0 / (-x2 * w);
 		value *= 1E12; // pF
-		result->solnParIs[m_useSlot][slot] = 'C';
-		result->solnPar[m_useSlot][slot] = value;
+		p->parallelComponentType = 'C';
+		p->parallelComponentValue = value;
 	}
 
 	// Now that we have the component values, assign a topology that matches.
 	if(m_useSlot == 0) {
 		// Source is on the left (series), load is on the right (parallel).
-		if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'L') {
-			result->solnType[m_useSlot][slot] = USE_LSLP;
-		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'C') {
-			result->solnType[m_useSlot][slot] = USE_CSCP;
-		} else if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'C') {
-			result->solnType[m_useSlot][slot] = USE_LCLP;
-		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'L') {
-			result->solnType[m_useSlot][slot] = USE_CLHP;
+		if(p->seriesComponentType == 'L' && p->parallelComponentType == 'L') {
+			p->type = USE_LSLP;
+		} else if(p->seriesComponentType == 'C' && p->parallelComponentType == 'C') {
+			p->type = USE_CSCP;
+		} else if(p->seriesComponentType == 'L' && p->parallelComponentType == 'C') {
+			p->type = USE_LCLP;
+		} else if(p->seriesComponentType == 'C' && p->parallelComponentType == 'L') {
+			p->type = USE_CLHP;
 		}
 	} else {
 		// Source is on the right (parallel), load is on the left (series).
-		if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'L') {
-			result->solnType[m_useSlot][slot] = USE_LPLS;
-		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'C') {
-			result->solnType[m_useSlot][slot] = USE_CPCS;
-		} else if(result->solnSerIs[m_useSlot][slot] == 'L' && result->solnParIs[m_useSlot][slot] == 'C') {
-			result->solnType[m_useSlot][slot] = USE_CLLP;
-		} else if(result->solnSerIs[m_useSlot][slot] == 'C' && result->solnParIs[m_useSlot][slot] == 'L') {
-			result->solnType[m_useSlot][slot] = USE_LCHP;
+		if(p->seriesComponentType == 'L' && p->parallelComponentType == 'L') {
+			p->type = USE_LPLS;
+		} else if(p->seriesComponentType == 'C' && p->parallelComponentType == 'C') {
+			p->type = USE_CPCS;
+		} else if(p->seriesComponentType == 'L' && p->parallelComponentType == 'C') {
+			p->type = USE_CLLP;
+		} else if(p->seriesComponentType == 'C' && p->parallelComponentType == 'L') {
+			p->type = USE_LCHP;
 		}
 	}
 }
 
 void tuner::lnetInit(LNET_RESULTS *result)
 {
-	int i;
 	int j;
+	int k;
 
-	for(i = 0; i < 2; i++) {
-		for(j = 0; j < 2; j++) {
-			result->solnType[i][j] = -1;
-			result->solnParRes[i][j] = 1E+200;
-			result->solnSerRes[i][j] = 0.0;
+	SOLUTION *p;
+
+	// Start off with "no solution" and ideal components.
+	for(j = 0; j < 2; j++) {
+		for(k = 0; k < 2; k++) {
+			p = &result->s[j][k];
+			p->type = -1;
+			p->parallelComponentResistance = 1E+200;
+			p->seriesComponentResistance = 0.0;
 		}
 	}
 }
@@ -283,6 +291,8 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	double ra;
 	double rb;
 
+	SOLUTION *p;
+
 	// See equations.odt (or equations.pdf) for the derivation of the
 	// equations used here.
 	//
@@ -291,8 +301,9 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 
 	// Solution 1.
 	slot = 0;
-	ra = m_rA - result->solnSerRes[m_useSlot][slot];
-	rb = parRes(m_rB, -(result->solnParRes[m_useSlot][slot]));
+	p = &result->s[m_useSlot][slot];
+	ra = m_rA - p->seriesComponentResistance;
+	rb = parRes(m_rB, -(p->parallelComponentResistance));
 	den = SQ(rb) + SQ(m_xB);
 	gB =  rb / den;
 	bB = -m_xB / den;
@@ -311,38 +322,39 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
 		// This solution is good.  Store the reactances and component values.
-		result->solnX1[m_useSlot][slot] = x1a;
-		result->solnX2[m_useSlot][slot] = x2a;
+		p->seriesComponentReactance = x1a;
+		p->parallelComponentReactance = x2a;
 		findLnetComponentValues(result, w, x1a, x2a, slot);
 
 		// Find the network Q.
-		result->solnQ[m_useSlot][slot] = fabs((m_xA + x1) / ra);
+		p->qualityFactor = fabs((m_xA + x1) / ra);
 
 		// Calculate the next values of the resistive part of the series
 		// and parallel components.
-		if(result->solnParIs[m_useSlot][slot] == 'C') {
-			result->solnParRes[m_useSlot][slot] = -m_capacitorQ * result->solnX2[m_useSlot][slot];
+		if(p->parallelComponentType == 'C') {
+			p->parallelComponentResistance = -m_capacitorQ * p->parallelComponentReactance;
 		} else {
-			result->solnParRes[m_useSlot][slot] = m_inductorQ * result->solnX2[m_useSlot][slot];
+			p->parallelComponentResistance = m_inductorQ * p->parallelComponentReactance;
 		}
-		if(result->solnSerIs[m_useSlot][slot] == 'C') {
-			result->solnSerRes[m_useSlot][slot] = -result->solnX1[m_useSlot][slot] / m_capacitorQ;
+		if(p->seriesComponentType == 'C') {
+			p->seriesComponentResistance = -p->seriesComponentReactance / m_capacitorQ;
 		} else {
-			result->solnSerRes[m_useSlot][slot] = result->solnX1[m_useSlot][slot] / m_inductorQ;
+			p->seriesComponentResistance = p->seriesComponentReactance / m_inductorQ;
 		}
 		XDEBUG_L("%d %d: %cpar=%g parRes=%g %cser=%g serRes=%g", m_useSlot, slot,
-				result->solnParIs[m_useSlot][slot],
-				result->solnPar[m_useSlot][slot],
-				result->solnParRes[m_useSlot][slot],
-				result->solnSerIs[m_useSlot][slot],
-				result->solnSer[m_useSlot][slot],
-				result->solnSerRes[m_useSlot][slot]);
+				p->parallelComponentType,
+				p->parallelComponentValue,
+				p->parallelComponentResistance;
+				p->seriesComponentType,
+				p->seriesComponentValue,
+				p->seriesComponentResistance);
 	}
 
 	// Solution 2.
 	slot = 1;
-	ra = m_rA - result->solnSerRes[m_useSlot][slot];
-	rb = parRes(m_rB, -(result->solnParRes[m_useSlot][slot]));
+	p = &result->s[m_useSlot][slot];
+	ra = m_rA - p->seriesComponentResistance;
+	rb = parRes(m_rB, -(p->parallelComponentResistance));
 	den = SQ(rb) + SQ(m_xB);
 	gB =  rb / den;
 	bB = -m_xB / den;
@@ -361,32 +373,32 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	right = 1.0 / complex<double>(gB, bB + b2);
 	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
 		// This solution is good.  Store the reactances and component values.
-		result->solnX1[m_useSlot][slot] = x1b;
-		result->solnX2[m_useSlot][slot] = x2b;
+		p->seriesComponentReactance = x1b;
+		p->parallelComponentReactance = x2b;
 		findLnetComponentValues(result, w, x1b, x2b, slot);
 
 		// Find the network Q.
-		result->solnQ[m_useSlot][slot] = fabs((m_xA + x1) / ra);
+		p->qualityFactor = fabs((m_xA + x1) / ra);
 
 		// Calculate the next values of the resistive part of the series
 		// and parallel components.
-		if(result->solnParIs[m_useSlot][slot] == 'C') {
-			result->solnParRes[m_useSlot][slot] = -m_capacitorQ * result->solnX2[m_useSlot][slot];
+		if(p->parallelComponentType == 'C') {
+			p->parallelComponentResistance = -m_capacitorQ * p->parallelComponentReactance;
 		} else {
-			result->solnParRes[m_useSlot][slot] = m_inductorQ * result->solnX2[m_useSlot][slot];
+			p->parallelComponentResistance = m_inductorQ * p->parallelComponentReactance;
 		}
-		if(result->solnSerIs[m_useSlot][slot] == 'C') {
-			result->solnSerRes[m_useSlot][slot] = -result->solnX1[m_useSlot][slot] / m_capacitorQ;
+		if(p->seriesComponentType == 'C') {
+			p->seriesComponentResistance = -p->seriesComponentReactance / m_capacitorQ;
 		} else {
-			result->solnSerRes[m_useSlot][slot] = result->solnX1[m_useSlot][slot] / m_inductorQ;
+			p->seriesComponentResistance = p->seriesComponentReactance / m_inductorQ;
 		}
 		XDEBUG_L("%d %d: %cpar=%g parRes=%g %cser=%g serRes=%g", m_useSlot, slot,
-				result->solnParIs[m_useSlot][slot],
-				result->solnPar[m_useSlot][slot],
-				result->solnParRes[m_useSlot][slot],
-				result->solnSerIs[m_useSlot][slot],
-				result->solnSer[m_useSlot][slot],
-				result->solnSerRes[m_useSlot][slot]);
+				p->parallelComponentType,
+				p->parallelComponentValue,
+				p->parallelComponentResistance;
+				p->seriesComponentType,
+				p->seriesComponentValue,
+				p->seriesComponentResistance);
 	}
 }
 
@@ -442,8 +454,14 @@ bool tuner::tryPI(
 		double rb,
 		double xb,
 		double *outA,
+		double *outAR,
+		double *outAX,
 		double *outB,
+		double *outBR,
+		double *outBX,
 		double *outC,
+		double *outCR,
+		double *outCX,
 		char expectSer,
 		char expectPar,
 		bool wantInductance
@@ -452,6 +470,7 @@ bool tuner::tryPI(
 	int j;
 
 	LNET_RESULTS result;
+	SOLUTION *p;
 
 	double w = 2.0 * PI * m_frequency;
 
@@ -507,9 +526,10 @@ bool tuner::tryPI(
 
 		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
-			if(result.solnType[slot][j] != -1) {
+			p = &result.s[slot][j];
+			if(p->type != -1) {
 				// L-net found something.  Test this solution.
-				zAdded = complex<double>(0, result.solnX2[slot][j]);
+				zAdded = complex<double>(0, p->parallelComponentReactance);
 				zCombined = 1.0 / ((1.0 / zB) + (1.0 / zAdded));
 				if((m_networkQ - fabs(imag(zCombined) / real(zCombined))) > -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
@@ -517,19 +537,25 @@ bool tuner::tryPI(
 					//
 					// The series component must be an inductor, and the parallel
 					// component must be a capacitor.
-					if((result.solnSerIs[slot][j] == expectSer) &&
-							(result.solnParIs[slot][j] == expectPar)) {
+					if((p->seriesComponentType == expectSer) &&
+							(p->parallelComponentType == expectPar)) {
 						// Good component types.
 						*outA = value;
-						*outB = result.solnSer[slot][j];
-						*outC = result.solnPar[slot][j];
-						XDEBUG_PI("%d is %c %c good!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						*outAR = rAdded;
+						*outAX = xAdded;
+						*outB = p->seriesComponentValue;
+						*outBR = p->seriesComponentResistance;
+						*outBX = p->seriesComponentReactance;
+						*outC = p->parallelComponentValue;
+						*outCR = p->parallelComponentResistance;
+						*outCX = p->parallelComponentReactance;
+						XDEBUG_PI("%d is %c %c good!", j, p->seriesComponentType, p->parallelComponentType);
 						return TRUE;
 					} else {
-						XDEBUG_PI("%d is %c %c bad!", j, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						XDEBUG_PI("%d is %c %c bad!", j, p->seriesComponentType, p->parallelComponentType);
 					}
 				} else {
-					XDEBUG_PI("%c %c %d wrong q %f vs %f, comps %f %f %f", expectSer, expectPar, j, fabs(imag(zCombined) / real(zCombined)), m_networkQ, value, result.solnSer[slot][j], result.solnPar[slot][j]);
+					XDEBUG_PI("%c %c %d wrong q %f vs %f, comps %f %f %f", expectSer, expectPar, j, fabs(imag(zCombined) / real(zCombined)), m_networkQ, value, p->seriesComponentValue, p->parallelComponentValue);
 				}
 			} else {
 				XDEBUG_PI("%c %c %d bad", expectSer, expectPar, j);
@@ -547,12 +573,32 @@ void tuner::recalculateHPPI()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lspi, &m_cpi, &m_llpi, 'C', 'L', TRUE)) {
+	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+				&m_lspi,
+				&m_lspiR,
+				&m_lspiX,
+				&m_cpi,
+				&m_cpiR,
+				&m_cpiX,
+				&m_llpi,
+				&m_llpiR,
+				&m_llpiX,
+				'C', 'L', TRUE)) {
 		m_hppiValid = TRUE;
 		return;
 	}
 
-	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_llpi, &m_cpi, &m_lspi, 'C', 'L', TRUE)) {
+	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+				&m_llpi,
+				&m_llpiR,
+				&m_llpiX,
+				&m_cpi,
+				&m_cpiR,
+				&m_cpiX,
+				&m_lspi,
+				&m_lspiR,
+				&m_lspiX,
+				'C', 'L', TRUE)) {
 		m_hppiValid = TRUE;
 		return;
 	}
@@ -564,12 +610,32 @@ void tuner::recalculateLPPI()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_cspi, &m_lpi, &m_clpi, 'L', 'C', FALSE)) {
+	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+				&m_cspi,
+				&m_cspiR,
+				&m_cspiX,
+				&m_lpi,
+				&m_lpiR,
+				&m_lpiX,
+				&m_clpi,
+				&m_clpiR,
+				&m_clpiX,
+				'L', 'C', FALSE)) {
 		m_lppiValid = TRUE;
 		return;
 	}
 
-	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_clpi, &m_lpi, &m_cspi, 'L', 'C', FALSE)) {
+	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+				&m_clpi,
+				&m_clpiR,
+				&m_clpiX,
+				&m_lpi,
+				&m_lpiR,
+				&m_lpiX,
+				&m_cspi,
+				&m_cspiR,
+				&m_cspiX,
+				'L', 'C', FALSE)) {
 		m_lppiValid = TRUE;
 		return;
 	}
@@ -584,8 +650,14 @@ bool tuner::tryT(
 		double rb,
 		double xb,
 		double *outA,
+		double *outAR,
+		double *outAX,
 		double *outB,
+		double *outBR,
+		double *outBX,
 		double *outC,
+		double *outCR,
+		double *outCX,
 		char expectSer,
 		char expectPar,
 		bool wantInductance
@@ -595,6 +667,7 @@ bool tuner::tryT(
 	int j;
 
 	LNET_RESULTS result;
+	SOLUTION *p;
 
 	double w = 2.0 * PI * m_frequency;
 
@@ -644,27 +717,34 @@ bool tuner::tryT(
 
 		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
-			if(result.solnType[slot][j] != -1) {
+			p = &result.s[slot][j];
+			if(p->type != -1) {
 				// L-net found something.  Test this solution.
-				if(m_networkQ - fabs((m_xA + result.solnX1[slot][j]) / m_rA) >= -1E-10) {
+				if(m_networkQ - fabs((m_xA + p->seriesComponentReactance) / m_rA) >= -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
 					//
 					// The series component must be an inductor, and the parallel
 					// component must be a capacitor.
-					if((result.solnSerIs[slot][j] == expectSer) &&
-							(result.solnParIs[slot][j] == expectPar)) {
+					if((p->seriesComponentType == expectSer) &&
+							(p->parallelComponentType == expectPar)) {
 						// Good component types.
-						XDEBUG_T("LS=%f C=%f LL=%f", result.solnSer[slot][j], result.solnPar[slot][j], value);
+						XDEBUG_T("LS=%f C=%f LL=%f", p->seriesComponentValue, p->parallelComponentValue, value);
 						*outA = value;
-						*outB = result.solnPar[slot][j];
-						*outC = result.solnSer[slot][j];
+						*outAR = rAdded;
+						*outAX = xAdded;
+						*outB = p->parallelComponentValue;
+						*outBR = p->parallelComponentResistance;
+						*outBX = p->parallelComponentReactance;
+						*outC = p->seriesComponentValue;
+						*outCR = p->seriesComponentResistance;
+						*outCX = p->seriesComponentReactance;
 						return TRUE;
 					} else {
-						XDEBUG_T("bad types, want %c %c, got %c %c", expectSer, expectPar, result.solnSerIs[slot][j], result.solnParIs[slot][j]);
+						XDEBUG_T("bad types, want %c %c, got %c %c", expectSer, expectPar, p->seriesComponentType, p->parallelComponentType);
 					}
 				} else {
-					XDEBUG_T("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_networkQ, fabs((m_xA + result.solnX1[slot][j]) / m_rA));
+					XDEBUG_T("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_networkQ, fabs((m_xA + p->seriesComponentReactance) / m_rA));
 				}
 			} else {
 				XDEBUG_T("%c %c %d invalid", expectSer, expectPar, j);
@@ -681,12 +761,32 @@ void tuner::recalculateHPT()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_cst, &m_lt, &m_clt, 'C', 'L', FALSE)) {
+	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+				&m_cst,
+				&m_cstR,
+				&m_cstX,
+				&m_lt,
+				&m_ltR,
+				&m_ltX,
+				&m_clt,
+				&m_cltR,
+				&m_cltX,
+				'C', 'L', FALSE)) {
 		m_hptValid = TRUE;
 		return;
 	}
 
-	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_clt, &m_lt, &m_cst, 'C', 'L', FALSE)) {
+	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+				&m_clt,
+				&m_cltR,
+				&m_cltX,
+				&m_lt,
+				&m_ltR,
+				&m_ltX,
+				&m_cst,
+				&m_cstR,
+				&m_cstX,
+				'C', 'L', FALSE)) {
 		m_hptValid = TRUE;
 		return;
 	}
@@ -698,12 +798,32 @@ void tuner::recalculateLPT()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance, &m_lst, &m_ct, &m_llt, 'L', 'C', TRUE)) {
+	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+				&m_lst,
+				&m_lstR,
+				&m_lstX,
+				&m_ct,
+				&m_ctR,
+				&m_ctX,
+				&m_llt,
+				&m_lltR,
+				&m_lltX,
+				'L', 'C', TRUE)) {
 		m_lptValid = TRUE;
 		return;
 	}
 
-	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance, &m_llt, &m_ct, &m_lst, 'L', 'C', TRUE)) {
+	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+				&m_llt,
+				&m_lltR,
+				&m_lltX,
+				&m_ct,
+				&m_ctR,
+				&m_ctX,
+				&m_lst,
+				&m_lstR,
+				&m_lstX,
+				'L', 'C', TRUE)) {
 		m_lptValid = TRUE;
 		return;
 	}
@@ -718,12 +838,375 @@ void tuner::recalculatePower()
 	m_currentForPower = sqrt(m_power / m_sourceImpedance);
 }
 
-void tuner::recalculate()
+void tuner::buildCPCS(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'C';
+	c->label = "CS";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+
+	c = &d->component[1];
+	c->type = 'C';
+	c->label = "CL";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+}
+
+void tuner::buildCSCP(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'C';
+	c->label = "CS";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+
+	c = &d->component[1];
+	c->type = 'C';
+	c->label = "CL";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+}
+
+void tuner::buildLPLS(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'L';
+	c->label = "LS";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+
+	c = &d->component[1];
+	c->type = 'L';
+	c->label = "LL";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+}
+
+void tuner::buildLSLP(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'L';
+	c->label = "LS";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+
+	c = &d->component[1];
+	c->type = 'L';
+	c->label = "LL";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+}
+
+void tuner::buildLCHP(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'L';
+	c->label = "L";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+
+	c = &d->component[1];
+	c->type = 'C';
+	c->label = "C";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+}
+
+void tuner::buildCLLP(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'C';
+	c->label = "C";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+
+	c = &d->component[1];
+	c->type = 'L';
+	c->label = "L";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+}
+
+void tuner::buildLCLP(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'L';
+	c->label = "L";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+
+	c = &d->component[1];
+	c->type = 'C';
+	c->label = "C";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+}
+
+void tuner::buildCLHP(DISPLAYED_RESULTS *d, SOLUTION *s)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'C';
+	c->label = "C";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = s->seriesComponentResistance;
+	c->reactance = s->seriesComponentReactance;
+	c->value = s->seriesComponentValue;
+
+	c = &d->component[1];
+	c->type = 'L';
+	c->label = "L";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = s->parallelComponentResistance;
+	c->reactance = s->parallelComponentReactance;
+	c->value = s->parallelComponentValue;
+}
+
+void tuner::buildHPPI(DISPLAYED_RESULTS *d)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'L';
+	c->label = "LS";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = m_lspiR;
+	c->reactance = m_lspiX;
+	c->value = m_lspi;
+
+	c = &d->component[1];
+	c->type = 'C';
+	c->label = "C";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = m_cpiR;
+	c->reactance = m_cpiX;
+	c->value = m_cpi;
+
+	c = &d->component[2];
+	c->type = 'L';
+	c->label = "LL";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = m_llpiR;
+	c->reactance = m_llpiX;
+	c->value = m_llpi;
+}
+
+void tuner::buildLPPI(DISPLAYED_RESULTS *d)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'C';
+	c->label = "CS";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = m_cspiR;
+	c->reactance = m_cspiX;
+	c->value = m_cspi;
+
+	c = &d->component[1];
+	c->type = 'L';
+	c->label = "L";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = m_lpiR;
+	c->reactance = m_lpiX;
+	c->value = m_lpi;
+
+	c = &d->component[2];
+	c->type = 'C';
+	c->label = "CL";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = m_clpiR;
+	c->reactance = m_clpiX;
+	c->value = m_clpi;
+}
+
+void tuner::buildHPT(DISPLAYED_RESULTS *d)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'C';
+	c->label = "CS";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = m_cstR;
+	c->reactance = m_cstX;
+	c->value = m_cst;
+
+	c = &d->component[1];
+	c->type = 'L';
+	c->label = "L";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = m_ltR;
+	c->reactance = m_ltX;
+	c->value = m_lt;
+
+	c = &d->component[2];
+	c->type = 'C';
+	c->label = "CL";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = m_cltR;
+	c->reactance = m_cltX;
+	c->value = m_clt;
+}
+
+void tuner::buildLPT(DISPLAYED_RESULTS *d)
+{
+	ONE_COMPONENT *c;
+
+	c = &d->component[0];
+	c->type = 'L';
+	c->label = "LS";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = m_lstR;
+	c->reactance = m_lstX;
+	c->value = m_lst;
+
+	c = &d->component[1];
+	c->type = 'C';
+	c->label = "C";
+	c->arrangement = IS_PAR;
+	c->qualityFactor = m_capacitorQ;
+	c->resistance = m_ctR;
+	c->reactance = m_ctX;
+	c->value = m_ct;
+
+	c = &d->component[2];
+	c->type = 'L';
+	c->label = "LL";
+	c->arrangement = IS_SER;
+	c->qualityFactor = m_inductorQ;
+	c->resistance = m_lltR;
+	c->reactance = m_lltX;
+	c->value = m_llt;
+}
+
+void tuner::buildResults()
 {
 	int i;
 	int j;
-	bool arry[USE_LAST];
+	int k;
 
+	SOLUTION *s;
+	DISPLAYED_RESULTS *d;
+
+	// See if we have a valid solution for each type.
+	for(i = 0; i < USE_LAST; i++) {
+		d = &m_results[i];
+
+		if(i >= USE_CPCS && i <= USE_CLHP) {
+			// For the L-network cases, we have to search the solution arrays.
+			// There are eight possible L-networks, but no more than four
+			// solutions.  Start off by assuming this case is invalid, then
+			// search for a valid solution.
+			d->validSolution = FALSE;
+			for(j = 0; j < 2; j++) {
+				for(k = 0; k < 2; k++) {
+					s = &m_lnet.s[j][k];
+					if(s->type == i) {
+						// Set the common parameters.
+						d->validSolution = TRUE;
+						d->networkQ = s->qualityFactor;
+						d->component[2].type = ' ';
+
+						// Set the specific parameters.
+						switch(i) {
+							case USE_CPCS: buildCPCS(d, s); break;
+							case USE_CSCP: buildCSCP(d, s); break;
+							case USE_LPLS: buildLPLS(d, s); break;
+							case USE_LSLP: buildLSLP(d, s); break;
+							case USE_LCHP: buildLCHP(d, s); break;
+							case USE_CLLP: buildCLLP(d, s); break;
+							case USE_LCLP: buildLCLP(d, s); break;
+							case USE_CLHP: buildCLHP(d, s); break;
+						}
+					}
+				}
+			}
+		} else {
+			// For the PI and T network cases, we've already broken down
+			// the solutions.
+			switch(i) {
+				case USE_HPPI: buildHPPI(d);
+				case USE_LPPI: buildLPPI(d);
+				case USE_HPT: buildHPT(d);
+				case USE_LPT: buildLPT(d);
+			}
+		}
+	}
+}
+
+void tuner::recalculate()
+{
 	m_frequency = atof(m_tunerFrequencyStr) * 1.0E6;
 	m_power = atof(m_tunerPowerStr);
 	m_sourceResistance = atof(m_tunerSourceResistanceStr);
@@ -741,28 +1224,7 @@ void tuner::recalculate()
 	recalculateHPT();
 	recalculateLPT();
 
-	// Gray out invalid radio buttons.  First handle the eight L-match
-	// cases.
-	for(i = 0; i < USE_LAST; i++) {
-		arry[i] = FALSE;
-	}
-	for(i = 0; i < 2; i++) {
-		for(j = 0; j < 2; j++) {
-			if(m_lnet.solnType[i][j] != -1) {
-				arry[m_lnet.solnType[i][j]] = TRUE;
-			}
-		}
-	}
-	for(i = USE_CPCS; i <= USE_CLHP; i++) {
-		dl_topology->Enable(i, arry[i]);
-	}
-
-	// Gray out invalid radio buttons.  Handle the PI and T match
-	// cases.
-	dl_topology->Enable(USE_HPPI, m_hppiValid);
-	dl_topology->Enable(USE_LPPI, m_lppiValid);
-	dl_topology->Enable(USE_HPT, m_hptValid);
-	dl_topology->Enable(USE_LPT, m_lptValid);
+	buildResults();
 
 	// Display the appropriate results.
 	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
@@ -792,90 +1254,96 @@ void tuner::recalculate()
 	}
 }
 
-void tuner::lnetDisplayValues(
-		int type,
-		int sourceConnect,
-		double sourceVar[2][2],
-		double sourceRes[2][2],
-		wxString sourceLabel,
-		int loadConnect,
-		double loadVar[2][2],
-		double loadRes[2][2],
-		wxString loadLabel
-		)
+void tuner::lnetDisplayValues(int type)
 {
-	int i;
-	int j;
+	DISPLAYED_RESULTS *d;
+	ONE_COMPONENT *c;
 
-	// There are four solution slots.  We search the slots to see if the
-	// requested topology is among the solutions.
-	for(i = 0; i < 2; i++) {
-		for(j = 0; j < 2; j++) {
-			if(m_lnet.solnType[i][j] == type) {
-				// Found a solution for the requested topology.
-				// Display it.
-				dl_tunerResult1->Show();
-				dl_tunerResultTag1->Show();
-				dl_tunerResult2->Show();
-				dl_tunerResultTag2->Show();
-				dl_tunerResult3->Show();
-				dl_tunerResultTag3->Show();
-				dl_tunerResult4->Show();
-				dl_tunerResultTag4->Show();
-				dl_tunerResult5->Show();
-				dl_tunerResultTag5->Show();
-				dl_tunerResult6->Show();
-				dl_tunerResultTag6->Show();
-				dl_tunerResult7->Show();
-				dl_tunerResultTag7->Show();
-				dl_tunerResult8->Hide();
-				dl_tunerResultTag8->Hide();
-				dl_tunerResult9->Hide();
-				dl_tunerResultTag9->Hide();
-				dl_tunerResult10->Hide();
-				dl_tunerResultTag10->Hide();
+	d = &m_results[type];
+	if(d->validSolution) {
+		// Display the solution.
+		dl_tunerResult1->Show();
+		dl_tunerResultTag1->Show();
+		dl_tunerResult2->Show();
+		dl_tunerResultTag2->Show();
+		dl_tunerResult3->Show();
+		dl_tunerResultTag3->Show();
+		dl_tunerResult4->Show();
+		dl_tunerResultTag4->Show();
+		dl_tunerResult5->Show();
+		dl_tunerResultTag5->Show();
+		dl_tunerResult6->Show();
+		dl_tunerResultTag6->Show();
+		dl_tunerResult7->Show();
+		dl_tunerResultTag7->Show();
+		dl_tunerResult8->Hide();
+		dl_tunerResultTag8->Hide();
+		dl_tunerResult9->Hide();
+		dl_tunerResultTag9->Hide();
+		dl_tunerResult10->Hide();
+		dl_tunerResultTag10->Hide();
 
-				dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), sourceVar[i][j]));
-				if(sourceLabel.at(0) == 'C') {
-					dl_tunerResultTag1->SetLabel(sourceLabel + " Value (pF)");
-				} else {
-					dl_tunerResultTag1->SetLabel(sourceLabel + " Value (nH)");
-				}
-
-				if(sourceConnect == IS_PAR) {
-					// Use voltage for loss.
-					dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), sourceVar[i][j]));
-					dl_tunerResultTag2->SetLabel(sourceLabel + " Voltage");
-				} else {
-					// Use current for loss.
-					dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), sourceVar[i][j]));
-					dl_tunerResultTag2->SetLabel(sourceLabel + " Current");
-				}
-
-				dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
-				if(loadLabel.at(0) == 'C') {
-					dl_tunerResultTag4->SetLabel(loadLabel + " Value (pF)");
-				} else {
-					dl_tunerResultTag4->SetLabel(loadLabel + " Value (nH)");
-				}
-
-				if(loadConnect == IS_PAR) {
-					// Use voltage for loss.
-					dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
-					dl_tunerResultTag5->SetLabel(loadLabel + " Voltage");
-				} else {
-					// Use current for loss.
-					dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), loadVar[i][j]));
-					dl_tunerResultTag5->SetLabel(loadLabel + " Current");
-				}
-
-				dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_lnet.solnQ[i][j]));
-				dl_tunerResultTag7->SetLabel("Q Value");
-
-				Layout();
-				return;
-			}
+		c = &d->component[0];
+		dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
+		if(c->type == 'C') {
+			dl_tunerResultTag1->SetLabel(c->label + " Value (pF)");
+		} else {
+			dl_tunerResultTag1->SetLabel(c->label + " Value (nH)");
 		}
+
+		if(c->arrangement == IS_PAR) {
+			// Use voltage for loss.
+			dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag2->SetLabel(c->label + " Voltage");
+		} else {
+			// Use current for loss.
+			dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag2->SetLabel(c->label + " Current");
+		}
+
+		if(c->arrangement == IS_PAR) {
+			// Use voltage for loss.
+			dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag3->SetLabel(c->label + " Watts");
+		} else {
+			// Use current for loss.
+			dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag3->SetLabel(c->label + " Watts");
+		}
+
+		c = &d->component[1];
+		dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
+		if(c->type == 'C') {
+			dl_tunerResultTag4->SetLabel(c->label + " Value (pF)");
+		} else {
+			dl_tunerResultTag4->SetLabel(c->label + " Value (nH)");
+		}
+
+		if(c->arrangement == IS_PAR) {
+			// Use voltage for loss.
+			dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag5->SetLabel(c->label + " Voltage");
+		} else {
+			// Use current for loss.
+			dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag5->SetLabel(c->label + " Current");
+		}
+
+		if(c->arrangement == IS_PAR) {
+			// Use voltage for loss.
+			dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag6->SetLabel(c->label + " Watts");
+		} else {
+			// Use current for loss.
+			dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResultTag6->SetLabel(c->label + " Watts");
+		}
+
+		dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
+		dl_tunerResultTag7->SetLabel("Q Value");
+
+		Layout();
+		return;
 	}
 
 	// Invalid - no solution found for the requested topology.
@@ -924,19 +1392,7 @@ void tuner::CPCS()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_CPCS,
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"CS",
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"CL"
-			);
+	lnetDisplayValues(USE_CPCS);
 }
 
 void tuner::CSCP()
@@ -945,19 +1401,7 @@ void tuner::CSCP()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_CSCP,
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"CS",
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"CL"
-			);
+	lnetDisplayValues(USE_CSCP);
 }
 
 void tuner::LPLS()
@@ -966,19 +1410,7 @@ void tuner::LPLS()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_LPLS,
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"LS",
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"LL"
-			);
+	lnetDisplayValues(USE_LPLS);
 }
 
 void tuner::LSLP()
@@ -987,19 +1419,7 @@ void tuner::LSLP()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_LSLP,
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"LS",
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"LL"
-			);
+	lnetDisplayValues(USE_LSLP);
 }
 
 void tuner::LCHP()
@@ -1008,19 +1428,7 @@ void tuner::LCHP()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_LCHP,
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"L",
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"C"
-			);
+	lnetDisplayValues(USE_LCHP);
 }
 
 void tuner::CLLP()
@@ -1029,19 +1437,7 @@ void tuner::CLLP()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_CLLP,
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"C",
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"L"
-			);
+	lnetDisplayValues(USE_CLLP);
 }
 
 void tuner::LCLP()
@@ -1050,19 +1446,7 @@ void tuner::LCLP()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_LCLP,
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"L",
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"C"
-			);
+	lnetDisplayValues(USE_LCLP);
 }
 
 void tuner::CLHP()
@@ -1071,19 +1455,7 @@ void tuner::CLHP()
 		return;
 	}
 
-	lnetDisplayValues(
-			USE_CLHP,
-
-			IS_SER,
-			m_lnet.solnSer,
-			m_lnet.solnSerRes,
-			"C",
-
-			IS_PAR,
-			m_lnet.solnPar,
-			m_lnet.solnParRes,
-			"L"
-			);
+	lnetDisplayValues(USE_CLHP);
 }
 
 void tuner::HPPI()
@@ -1150,11 +1522,29 @@ void tuner::HPPI()
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cpi));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
 
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag2->SetLabel("C Voltage");
+
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag3->SetLabel("C Watts");
+
 	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lspi));
 	dl_tunerResultTag4->SetLabel("LS Value (nH)");
 
+	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag5->SetLabel("LS Voltage");
+
+	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag6->SetLabel("LS Watts");
+
 	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_llpi));
 	dl_tunerResultTag7->SetLabel("LL Value (nH)");
+
+	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag8->SetLabel("LL Voltage");
+
+	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag9->SetLabel("LL Watts");
 
 	Layout();
 }
@@ -1221,13 +1611,31 @@ void tuner::LPPI()
 	dl_tunerResultTag10->Hide();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
-	dl_tunerResultTag1->SetLabel("L Value (nH)");
+	dl_tunerResultTag1->SetLabel("C Value (pF)");
+
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag2->SetLabel("C Voltage");
+
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag3->SetLabel("C Watts");
 
 	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cspi));
-	dl_tunerResultTag4->SetLabel("CS Value (pF)");
+	dl_tunerResultTag4->SetLabel("LS Value (nH)");
 
-	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clpi));
-	dl_tunerResultTag7->SetLabel("CL Value (pF)");
+	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag5->SetLabel("LS Voltage");
+
+	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag6->SetLabel("LS Watts");
+
+	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
+	dl_tunerResultTag7->SetLabel("LL Value (nH)");
+
+	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag8->SetLabel("LL Voltage");
+
+	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag9->SetLabel("LL Watts");
 
 	Layout();
 }
@@ -1294,13 +1702,31 @@ void tuner::HPT()
 	dl_tunerResultTag10->Hide();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lt));
-	dl_tunerResultTag1->SetLabel("L Value (nH)");
+	dl_tunerResultTag1->SetLabel("C Value (pF)");
+
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag2->SetLabel("C Voltage");
+
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag3->SetLabel("C Watts");
 
 	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cst));
-	dl_tunerResultTag4->SetLabel("CS Value (pF)");
+	dl_tunerResultTag4->SetLabel("LS Value (nH)");
+
+	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag5->SetLabel("LS Voltage");
+
+	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag6->SetLabel("LS Watts");
 
 	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clt));
-	dl_tunerResultTag7->SetLabel("CL Value (pF)");
+	dl_tunerResultTag7->SetLabel("LL Value (nH)");
+
+	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag8->SetLabel("LL Voltage");
+
+	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag9->SetLabel("LL Watts");
 
 	Layout();
 }
@@ -1369,11 +1795,29 @@ void tuner::LPT()
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_ct));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
 
+	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag2->SetLabel("C Voltage");
+
+	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag3->SetLabel("C Watts");
+
 	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lst));
 	dl_tunerResultTag4->SetLabel("LS Value (nH)");
 
+	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag5->SetLabel("LS Voltage");
+
+	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag6->SetLabel("LS Watts");
+
 	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_llt));
 	dl_tunerResultTag7->SetLabel("LL Value (nH)");
+
+	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag8->SetLabel("LL Voltage");
+
+	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+	dl_tunerResultTag9->SetLabel("LL Watts");
 
 	Layout();
 }

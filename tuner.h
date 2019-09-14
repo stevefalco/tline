@@ -41,17 +41,41 @@ using namespace std;
 #define IS_PAR			1
 #define IS_SER			2
 
+#define MAX_COMPONENTS		3
+
 typedef struct {
-		int		solnType[2][2];
-		double		solnQ[2][2];
-		char		solnParIs[2][2];
-		double		solnPar[2][2];
-		double		solnParRes[2][2];
-		double		solnX2[2][2];
-		char		solnSerIs[2][2];
-		double		solnSer[2][2];
-		double		solnSerRes[2][2];
-		double		solnX1[2][2];
+	char			type;				// 'L', 'C', or ' '
+	wxString		label;				// "LS". "CL", etc.
+	int			arrangement;			// IS_PAR or IS_SER
+	double			qualityFactor;
+	double			resistance;
+	double			reactance;
+	double			value;				// pF for capacitors, nH for inductors
+} ONE_COMPONENT;
+
+typedef struct {
+	bool			validSolution;
+	double			networkQ;			// 0 if N/A
+	ONE_COMPONENT		component[MAX_COMPONENTS];	// Ordered from source to load
+} DISPLAYED_RESULTS;
+
+// The left index iterates over the order of the source and load.
+// The right index iterates over the two solutions of the equations.
+typedef struct {
+	int			type;				// CPCS through CLHP
+	double			qualityFactor;
+	char			parallelComponentType;		// 'L' or 'C'
+	double			parallelComponentValue;		// pF for capacitors, nH for inductors
+	double			parallelComponentResistance;
+	double			parallelComponentReactance;
+	char			seriesComponentType;		// 'L' or 'C'
+	double			seriesComponentValue;		// pF for capacitors, nH for inductor
+	double			seriesComponentResistance;
+	double			seriesComponentReactance;
+} SOLUTION;
+
+typedef struct {
+	SOLUTION		s[2][2];
 } LNET_RESULTS;
 
 class tuner : public tunerDialog
@@ -84,8 +108,14 @@ class tuner : public tunerDialog
 					double rb,
 					double xb,
 					double *outA,
+					double *outAR,
+					double *outAX,
 					double *outB,
+					double *outBR,
+					double *outBX,
 					double *outC,
+					double *outCR,
+					double *outCX,
 					char expectSer,
 					char expectPar,
 					bool wantInductance
@@ -98,8 +128,14 @@ class tuner : public tunerDialog
 					double rb,
 					double xb,
 					double *outA,
+					double *outAR,
+					double *outAX,
 					double *outB,
+					double *outBR,
+					double *outBX,
 					double *outC,
+					double *outCR,
+					double *outCX,
 					char expectSer,
 					char expectPar,
 					bool wantInductance
@@ -117,27 +153,23 @@ class tuner : public tunerDialog
 		void		findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int slot);
 		void		lnetInit(LNET_RESULTS *result);
 		void		lnetAlgorithm(LNET_RESULTS *result);
-
-		void		lnetDisplayValues(
-					int type,
-					int sourceConnect,
-					double sourceVar[2][2],
-					double sourceRes[2][2],
-					wxString sourceLabel,
-					int loadConnect,
-					double loadVar[2][2],
-					double loadRes[2][2],
-					wxString loadLabel
-				);
-
-		void		lnetDisplayValues(
-					int type,
-					double sourceVar[2][2],
-					const char *sourceLabel,
-					double loadVar[2][2],
-					const char *loadLabel
-					);
+		void		lnetDisplayValues(int type);
 		bool		lnetSetBitmap(wxBitmap bmp);
+
+		void		buildCPCS(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildCSCP(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildLPLS(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildLSLP(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildLCHP(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildCLLP(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildLCLP(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildCLHP(DISPLAYED_RESULTS *d, SOLUTION *s);
+		void		buildHPPI(DISPLAYED_RESULTS *d);
+		void		buildLPPI(DISPLAYED_RESULTS *d);
+		void		buildHPT(DISPLAYED_RESULTS *d);
+		void		buildLPT(DISPLAYED_RESULTS *d);
+
+		void		buildResults();
 
 		void		CPCS();
 		void		CSCP();
@@ -175,24 +207,50 @@ class tuner : public tunerDialog
 		double		m_xB;
 
 		double		m_lspi;
+		double		m_lspiR;
+		double		m_lspiX;
 		double		m_llpi;
+		double		m_llpiR;
+		double		m_llpiX;
 		double		m_cpi;
+		double		m_cpiR;
+		double		m_cpiX;
 		bool		m_hppiValid;
 
 		double		m_cspi;
+		double		m_cspiR;
+		double		m_cspiX;
 		double		m_clpi;
+		double		m_clpiR;
+		double		m_clpiX;
 		double		m_lpi;
+		double		m_lpiR;
+		double		m_lpiX;
 		bool		m_lppiValid;
 
 		double		m_cst;
+		double		m_cstR;
+		double		m_cstX;
 		double		m_clt;
+		double		m_cltR;
+		double		m_cltX;
 		double		m_lt;
+		double		m_ltR;
+		double		m_ltX;
 		bool		m_hptValid;
 
 		double		m_lst;
+		double		m_lstR;
+		double		m_lstX;
 		double		m_llt;
+		double		m_lltR;
+		double		m_lltX;
 		double		m_ct;
+		double		m_ctR;
+		double		m_ctX;
 		bool		m_lptValid;
+
+		DISPLAYED_RESULTS	m_results[USE_LAST];
 };
 
 #endif // __tuner__
