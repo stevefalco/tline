@@ -37,7 +37,8 @@
 
 #undef ENABLE_DEBUG_PI
 #undef ENABLE_DEBUG_T
-#undef ENABLE_DEBUG_L
+#define ENABLE_DEBUG_L
+#undef ENABLE_DEBUG_DISP
 
 #ifdef ENABLE_DEBUG_PI
     #define XDEBUG_PI(...) wxLogError(__VA_ARGS__)
@@ -55,6 +56,12 @@
     #define XDEBUG_L(...) wxLogError(__VA_ARGS__)
 #else
     #define XDEBUG_L(...)  /**/
+#endif
+
+#ifdef ENABLE_DEBUG_DISP
+    #define XDEBUG_DISP(...) wxLogError(__VA_ARGS__)
+#else
+    #define XDEBUG_DISP(...)  /**/
 #endif
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
@@ -258,13 +265,13 @@ void tuner::lnetInit(LNET_RESULTS *result)
 		for(k = 0; k < 2; k++) {
 			p = &result->s[j][k];
 			p->type = -1;
-			p->parallelComponentResistance = 1E+200;
+			p->parallelComponentResistance = 0.0;
 			p->seriesComponentResistance = 0.0;
 		}
 	}
 }
 
-void tuner::lnetAlgorithm(LNET_RESULTS *result)
+void tuner::lnetAlgorithm(wxString where, LNET_RESULTS *result)
 {
 	int slot;
 
@@ -284,7 +291,8 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 
 	double sqrtTerm;
 
-	double den;
+	complex<double> z;
+	complex<double> y;
 	double gB;
 	double bB;
 
@@ -303,10 +311,11 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 	slot = 0;
 	p = &result->s[m_useSlot][slot];
 	ra = m_rA - p->seriesComponentResistance;
-	rb = parRes(m_rB, -(p->parallelComponentResistance));
-	den = SQ(rb) + SQ(m_xB);
-	gB =  rb / den;
-	bB = -m_xB / den;
+	rb = m_rB - p->parallelComponentResistance;
+	z = complex<double>(rb, m_xB);
+	y = 1.0 / z;
+	gB = real(y);
+	bB = imag(y);
 	sqrtTerm = sqrt((1.0 / (ra * gB)) - 1.0);
 	x1 = -m_xA + ra * sqrtTerm;
 	b2 = -bB + gB * sqrtTerm;
@@ -332,32 +341,38 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 		// Calculate the next values of the resistive part of the series
 		// and parallel components.
 		if(p->parallelComponentType == 'C') {
-			p->parallelComponentResistance = -m_capacitorQ * p->parallelComponentReactance;
+			p->parallelComponentResistance = -p->parallelComponentReactance / m_capacitorQ;
 		} else {
-			p->parallelComponentResistance = m_inductorQ * p->parallelComponentReactance;
+			p->parallelComponentResistance = p->parallelComponentReactance / m_inductorQ;
 		}
 		if(p->seriesComponentType == 'C') {
 			p->seriesComponentResistance = -p->seriesComponentReactance / m_capacitorQ;
 		} else {
 			p->seriesComponentResistance = p->seriesComponentReactance / m_inductorQ;
 		}
-		XDEBUG_L("%d %d: %cpar=%g parRes=%g %cser=%g serRes=%g", m_useSlot, slot,
+		XDEBUG_L("%s %d %d: ra=%g rb=%g %cpar=%g parR=%g parX=%g %cser=%g serR=%g serX=%g",
+				where,
+				m_useSlot, slot,
+				ra, rb,
 				p->parallelComponentType,
 				p->parallelComponentValue,
-				p->parallelComponentResistance;
+				p->parallelComponentResistance,
+				p->parallelComponentReactance,
 				p->seriesComponentType,
 				p->seriesComponentValue,
-				p->seriesComponentResistance);
+				p->seriesComponentResistance,
+				p->seriesComponentReactance);
 	}
 
 	// Solution 2.
 	slot = 1;
 	p = &result->s[m_useSlot][slot];
 	ra = m_rA - p->seriesComponentResistance;
-	rb = parRes(m_rB, -(p->parallelComponentResistance));
-	den = SQ(rb) + SQ(m_xB);
-	gB =  rb / den;
-	bB = -m_xB / den;
+	rb = m_rB - p->parallelComponentResistance;
+	z = complex<double>(rb, m_xB);
+	y = 1.0 / z;
+	gB = real(y);
+	bB = imag(y);
 	sqrtTerm = sqrt((1.0 / (ra * gB)) - 1.0);
 	x1 = -m_xA - ra * sqrtTerm;
 	b2 = -bB - gB * sqrtTerm;
@@ -383,22 +398,27 @@ void tuner::lnetAlgorithm(LNET_RESULTS *result)
 		// Calculate the next values of the resistive part of the series
 		// and parallel components.
 		if(p->parallelComponentType == 'C') {
-			p->parallelComponentResistance = -m_capacitorQ * p->parallelComponentReactance;
+			p->parallelComponentResistance = -p->parallelComponentReactance / m_capacitorQ;
 		} else {
-			p->parallelComponentResistance = m_inductorQ * p->parallelComponentReactance;
+			p->parallelComponentResistance = p->parallelComponentReactance / m_inductorQ;
 		}
 		if(p->seriesComponentType == 'C') {
 			p->seriesComponentResistance = -p->seriesComponentReactance / m_capacitorQ;
 		} else {
 			p->seriesComponentResistance = p->seriesComponentReactance / m_inductorQ;
 		}
-		XDEBUG_L("%d %d: %cpar=%g parRes=%g %cser=%g serRes=%g", m_useSlot, slot,
+		XDEBUG_L("%s %d %d: ra=%g rb=%g %cpar=%g parR=%g parX=%g %cser=%g serR=%g serX=%g",
+				where,
+			       	m_useSlot, slot,
+				ra, rb,
 				p->parallelComponentType,
 				p->parallelComponentValue,
-				p->parallelComponentResistance;
+				p->parallelComponentResistance,
+				p->parallelComponentReactance,
 				p->seriesComponentType,
 				p->seriesComponentValue,
-				p->seriesComponentResistance);
+				p->seriesComponentResistance,
+				p->seriesComponentReactance);
 	}
 }
 
@@ -433,7 +453,7 @@ void tuner::recalculateLnet(LNET_RESULTS *result)
 		m_xA = m_sourceReactance;
 		m_rB = m_loadResistance;
 		m_xB = m_loadReactance;
-		lnetAlgorithm(result);
+		lnetAlgorithm("L1", result);
 	}
 
 	for(k = 0; k < 10; k++) {
@@ -443,7 +463,7 @@ void tuner::recalculateLnet(LNET_RESULTS *result)
 		m_xB = m_sourceReactance;
 		m_rA = m_loadResistance;
 		m_xA = m_loadReactance;
-		lnetAlgorithm(result);
+		lnetAlgorithm("L2", result);
 	}
 }
 
@@ -522,7 +542,7 @@ bool tuner::tryPI(
 		XDEBUG_PI("rAdded=%g xAdded=%g zCombined=%g %g rA=%g xA=%g", rAdded, xAdded, real(zCombined), imag(zCombined), m_rA, m_xA);
 
 		// Run the L-net solver.
-		lnetAlgorithm(&result);
+		lnetAlgorithm("PI", &result);
 
 		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
@@ -712,7 +732,7 @@ bool tuner::tryT(
 
 		// Run the L-net solver.
 		for(i = 0; i < 10; i++) {
-			lnetAlgorithm(&result);
+			lnetAlgorithm("T", &result);
 		}
 
 		// See if we found a valid solution.
@@ -1259,6 +1279,24 @@ void tuner::lnetDisplayValues(int type)
 	DISPLAYED_RESULTS *d;
 	ONE_COMPONENT *c;
 
+	complex<double> zComp0;
+	complex<double> yComp0;
+
+	complex<double> zComp1;
+	complex<double> yComp1;
+
+	complex<double> zSource = complex<double>(m_sourceResistance, m_sourceReactance);
+	complex<double> ySource = 1.0 / zSource;
+
+	complex<double> zLoad = complex<double>(m_loadResistance, m_loadReactance);;
+	complex<double> yLoad = 1.0 / zLoad;
+
+	complex<double> zCombined;
+	complex<double> yCombined;
+
+	complex<double> voltage;
+	complex<double> current;
+
 	d = &m_results[type];
 	if(d->validSolution) {
 		// Display the solution.
@@ -1291,23 +1329,21 @@ void tuner::lnetDisplayValues(int type)
 			dl_tunerResultTag1->SetLabel(c->label + " Value (nH)");
 		}
 
+		zComp0 = complex<double>(c->resistance, c->reactance);
+		yComp0 = 1.0 / zComp0;
 		if(c->arrangement == IS_PAR) {
 			// Use voltage for loss.
-			dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
 			dl_tunerResultTag2->SetLabel(c->label + " Voltage");
-		} else {
-			// Use current for loss.
-			dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-			dl_tunerResultTag2->SetLabel(c->label + " Current");
-		}
 
-		if(c->arrangement == IS_PAR) {
-			// Use voltage for loss.
-			dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(m_voltageForPower) / c->resistance)));
 			dl_tunerResultTag3->SetLabel(c->label + " Watts");
 		} else {
 			// Use current for loss.
-			dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_currentForPower)));
+			dl_tunerResultTag2->SetLabel(c->label + " Current");
+
+			dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(m_currentForPower) * c->resistance)));
 			dl_tunerResultTag3->SetLabel(c->label + " Watts");
 		}
 
@@ -1319,23 +1355,31 @@ void tuner::lnetDisplayValues(int type)
 			dl_tunerResultTag4->SetLabel(c->label + " Value (nH)");
 		}
 
+		zComp1 = complex<double>(c->resistance, c->reactance);
+		yComp1 = 1.0 / zComp1;
 		if(c->arrangement == IS_PAR) {
-			// Use voltage for loss.
-			dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-			dl_tunerResultTag5->SetLabel(c->label + " Voltage");
-		} else {
-			// Use current for loss.
-			dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-			dl_tunerResultTag5->SetLabel(c->label + " Current");
-		}
+			yCombined = yComp1 + yLoad;
+			zCombined = 1.0 / yCombined;
+			voltage = m_currentForPower * zCombined;
+			XDEBUG_DISP("load %g %g %g %g", real(zLoad), imag(zLoad), real(yLoad), imag(yLoad));
+			XDEBUG_DISP("comp %g %g %g %g", real(zComp1), imag(zComp1), real(yComp1), imag(yComp1));
+			XDEBUG_DISP("comp || load %g %g %g %g", real(zCombined), imag(zCombined), real(yCombined), imag(yCombined));
 
-		if(c->arrangement == IS_PAR) {
 			// Use voltage for loss.
-			dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage)));
+			dl_tunerResultTag5->SetLabel(c->label + " Voltage");
+
+			dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(voltage) * real(yComp1))));
 			dl_tunerResultTag6->SetLabel(c->label + " Watts");
 		} else {
+			zCombined = zComp1 + zLoad;
+			current = m_voltageForPower / zCombined;
+
 			// Use current for loss.
-			dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
+			dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current)));
+			dl_tunerResultTag5->SetLabel(c->label + " Current");
+
+			dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(current) * real(zComp1))));
 			dl_tunerResultTag6->SetLabel(c->label + " Watts");
 		}
 
