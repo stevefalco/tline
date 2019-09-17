@@ -37,7 +37,7 @@
 
 #undef ENABLE_DEBUG_PI
 #undef ENABLE_DEBUG_T
-#define ENABLE_DEBUG_L
+#undef ENABLE_DEBUG_L
 #undef ENABLE_DEBUG_DISP
 
 #ifdef ENABLE_DEBUG_PI
@@ -430,44 +430,35 @@ double tuner::parRes(double a, double b)
 
 void tuner::recalculateLnet(LNET_RESULTS *result)
 {
-	int k;
-
 	// Clear old status, and start off with ideal initial components.
 	//
 	// Only some solutions will be viable.
 	lnetInit(result);
 
-	// We run this in a loop, because we don't have a closed form solution
-	// that takes the Q of the components into accound.  Hence we have to
-	// run through a few times to converge the solution.  10 loops should
-	// be more than enough.
-	for(k = 0; k < 10; k++) {
-		// Find all the possible solutions for a given set of impedances.
-		// We will always get at least two solutions, but in some cases
-		// we will get four solutions.
-		//
-		// Start with the source impedance as the "A" parameters, and
-		// the load impedance as the "B" parameters.
-		m_useSlot = 0;
-		m_rA = m_sourceResistance;
-		m_xA = m_sourceReactance;
-		m_rB = m_loadResistance;
-		m_xB = m_loadReactance;
-		lnetAlgorithm("L1", result);
-	}
+	// Find all the possible solutions for a given set of impedances.
+	// We will always get at least two solutions, but in some cases
+	// we will get four solutions.
+	//
+	// Start with the source impedance as the "A" parameters, and
+	// the load impedance as the "B" parameters.
+	m_useSlot = 0;
+	m_rA = m_sourceResistance;
+	m_xA = m_sourceReactance;
+	m_rB = m_loadResistance;
+	m_xB = m_loadReactance;
+	lnetAlgorithm("L1", result);
 
-	for(k = 0; k < 10; k++) {
-		// Now try again, with the source and load reversed.
-		m_useSlot = 1;
-		m_rB = m_sourceResistance;
-		m_xB = m_sourceReactance;
-		m_rA = m_loadResistance;
-		m_xA = m_loadReactance;
-		lnetAlgorithm("L2", result);
-	}
+	// Now try again, with the source and load reversed.
+	m_useSlot = 1;
+	m_rB = m_sourceResistance;
+	m_xB = m_sourceReactance;
+	m_rA = m_loadResistance;
+	m_xA = m_loadReactance;
+	lnetAlgorithm("L2", result);
 }
 
 bool tuner::tryPI(
+		wxString where,
 		int slot,
 		double ra,
 		double xa,
@@ -542,7 +533,7 @@ bool tuner::tryPI(
 		XDEBUG_PI("rAdded=%g xAdded=%g zCombined=%g %g rA=%g xA=%g", rAdded, xAdded, real(zCombined), imag(zCombined), m_rA, m_xA);
 
 		// Run the L-net solver.
-		lnetAlgorithm("PI", &result);
+		lnetAlgorithm(where, &result);
 
 		// See if we found a valid solution.
 		for(j = 0; j < 2; j++) {
@@ -593,7 +584,7 @@ void tuner::recalculateHPPI()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+	if(tryPI("HPPI", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_lspi,
 				&m_lspiR,
 				&m_lspiX,
@@ -608,7 +599,7 @@ void tuner::recalculateHPPI()
 		return;
 	}
 
-	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+	if(tryPI("HPPI", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_llpi,
 				&m_llpiR,
 				&m_llpiX,
@@ -630,7 +621,7 @@ void tuner::recalculateLPPI()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryPI(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+	if(tryPI("LPPI", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_cspi,
 				&m_cspiR,
 				&m_cspiX,
@@ -645,7 +636,7 @@ void tuner::recalculateLPPI()
 		return;
 	}
 
-	if(tryPI(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+	if(tryPI("LPPI", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_clpi,
 				&m_clpiR,
 				&m_clpiX,
@@ -664,6 +655,7 @@ void tuner::recalculateLPPI()
 }
 
 bool tuner::tryT(
+		wxString where,
 		int slot,
 		double ra,
 		double xa,
@@ -684,7 +676,6 @@ bool tuner::tryT(
 		)
 {
 	int i;
-	int j;
 
 	LNET_RESULTS result;
 	SOLUTION *p;
@@ -731,13 +722,11 @@ bool tuner::tryT(
 		m_xB = xTotal;
 
 		// Run the L-net solver.
-		for(i = 0; i < 10; i++) {
-			lnetAlgorithm("T", &result);
-		}
+		lnetAlgorithm(where, &result);
 
 		// See if we found a valid solution.
-		for(j = 0; j < 2; j++) {
-			p = &result.s[slot][j];
+		for(i = 0; i < 2; i++) {
+			p = &result.s[slot][i];
 			if(p->type != -1) {
 				// L-net found something.  Test this solution.
 				if(m_networkQ - fabs((m_xA + p->seriesComponentReactance) / m_rA) >= -1E-10) {
@@ -764,10 +753,10 @@ bool tuner::tryT(
 						XDEBUG_T("bad types, want %c %c, got %c %c", expectSer, expectPar, p->seriesComponentType, p->parallelComponentType);
 					}
 				} else {
-					XDEBUG_T("%c %c %d bad Q %f %f", expectSer, expectPar, j, m_networkQ, fabs((m_xA + p->seriesComponentReactance) / m_rA));
+					XDEBUG_T("%c %c %d bad Q %f %f", expectSer, expectPar, i, m_networkQ, fabs((m_xA + p->seriesComponentReactance) / m_rA));
 				}
 			} else {
-				XDEBUG_T("%c %c %d invalid", expectSer, expectPar, j);
+				XDEBUG_T("%c %c %d invalid", expectSer, expectPar, i);
 			}
 		}
 	} else {
@@ -781,7 +770,7 @@ void tuner::recalculateHPT()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+	if(tryT("HPT", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_cst,
 				&m_cstR,
 				&m_cstX,
@@ -796,7 +785,7 @@ void tuner::recalculateHPT()
 		return;
 	}
 
-	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+	if(tryT("HPT", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_clt,
 				&m_cltR,
 				&m_cltX,
@@ -818,7 +807,7 @@ void tuner::recalculateLPT()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
-	if(tryT(0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
+	if(tryT("LPT", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_lst,
 				&m_lstR,
 				&m_lstX,
@@ -833,7 +822,7 @@ void tuner::recalculateLPT()
 		return;
 	}
 
-	if(tryT(1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
+	if(tryT("LPT", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_llt,
 				&m_lltR,
 				&m_lltX,
@@ -1314,8 +1303,8 @@ void tuner::lnetDisplayValues(int type)
 		dl_tunerResultTag6->Show();
 		dl_tunerResult7->Show();
 		dl_tunerResultTag7->Show();
-		dl_tunerResult8->Hide();
-		dl_tunerResultTag8->Hide();
+		dl_tunerResult8->Show();
+		dl_tunerResultTag8->Show();
 		dl_tunerResult9->Hide();
 		dl_tunerResultTag9->Hide();
 		dl_tunerResult10->Hide();
@@ -1385,6 +1374,9 @@ void tuner::lnetDisplayValues(int type)
 
 		dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
 		dl_tunerResultTag7->SetLabel("Q Value");
+
+		dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+		dl_tunerResultTag8->SetLabel("Source Voltage");
 
 		Layout();
 		return;
@@ -1560,8 +1552,8 @@ void tuner::HPPI()
 	dl_tunerResultTag8->Show();
 	dl_tunerResult9->Show();
 	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Hide();
-	dl_tunerResultTag10->Hide();
+	dl_tunerResult10->Show();
+	dl_tunerResultTag10->Show();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cpi));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
@@ -1589,6 +1581,9 @@ void tuner::HPPI()
 
 	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
 	dl_tunerResultTag9->SetLabel("LL Watts");
+
+	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+	dl_tunerResultTag10->SetLabel("Source Voltage");
 
 	Layout();
 }
@@ -1651,8 +1646,8 @@ void tuner::LPPI()
 	dl_tunerResultTag8->Show();
 	dl_tunerResult9->Show();
 	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Hide();
-	dl_tunerResultTag10->Hide();
+	dl_tunerResult10->Show();
+	dl_tunerResultTag10->Show();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
@@ -1680,6 +1675,9 @@ void tuner::LPPI()
 
 	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
 	dl_tunerResultTag9->SetLabel("LL Watts");
+
+	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+	dl_tunerResultTag10->SetLabel("Source Voltage");
 
 	Layout();
 }
@@ -1742,8 +1740,8 @@ void tuner::HPT()
 	dl_tunerResultTag8->Show();
 	dl_tunerResult9->Show();
 	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Hide();
-	dl_tunerResultTag10->Hide();
+	dl_tunerResult10->Show();
+	dl_tunerResultTag10->Show();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lt));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
@@ -1771,6 +1769,9 @@ void tuner::HPT()
 
 	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
 	dl_tunerResultTag9->SetLabel("LL Watts");
+
+	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+	dl_tunerResultTag10->SetLabel("Source Voltage");
 
 	Layout();
 }
@@ -1833,8 +1834,8 @@ void tuner::LPT()
 	dl_tunerResultTag8->Show();
 	dl_tunerResult9->Show();
 	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Hide();
-	dl_tunerResultTag10->Hide();
+	dl_tunerResult10->Show();
+	dl_tunerResultTag10->Show();
 
 	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_ct));
 	dl_tunerResultTag1->SetLabel("C Value (pF)");
@@ -1862,6 +1863,9 @@ void tuner::LPT()
 
 	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
 	dl_tunerResultTag9->SetLabel("LL Watts");
+
+	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+	dl_tunerResultTag10->SetLabel("Source Voltage");
 
 	Layout();
 }

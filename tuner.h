@@ -102,6 +102,7 @@ class tuner : public tunerDialog
 
 	private:
 		bool		tryPI(
+					wxString where,
 					int slot,
 					double ra,
 					double xa,
@@ -122,6 +123,7 @@ class tuner : public tunerDialog
 					);
 
 		bool		tryT(
+					wxString where,
 					int slot,
 					double ra,
 					double xa,
