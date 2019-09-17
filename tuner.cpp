@@ -1555,23 +1555,23 @@ void tuner::HPPI()
 	dl_tunerResult10->Show();
 	dl_tunerResultTag10->Show();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cpi));
-	dl_tunerResultTag1->SetLabel("C Value (pF)");
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lspi));
+	dl_tunerResultTag1->SetLabel("LS Value (nH)");
 
 	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag2->SetLabel("C Voltage");
+	dl_tunerResultTag2->SetLabel("LS Voltage");
 
 	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag3->SetLabel("C Watts");
+	dl_tunerResultTag3->SetLabel("LS Watts");
 
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lspi));
-	dl_tunerResultTag4->SetLabel("LS Value (nH)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cpi));
+	dl_tunerResultTag4->SetLabel("C Value (pF)");
 
 	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag5->SetLabel("LS Voltage");
+	dl_tunerResultTag5->SetLabel("C Current");
 
 	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag6->SetLabel("LS Watts");
+	dl_tunerResultTag6->SetLabel("C Watts");
 
 	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_llpi));
 	dl_tunerResultTag7->SetLabel("LL Value (nH)");
@@ -1649,32 +1649,32 @@ void tuner::LPPI()
 	dl_tunerResult10->Show();
 	dl_tunerResultTag10->Show();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
-	dl_tunerResultTag1->SetLabel("C Value (pF)");
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cspi));
+	dl_tunerResultTag1->SetLabel("CS Value (nH)");
 
 	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag2->SetLabel("C Voltage");
+	dl_tunerResultTag2->SetLabel("CS Voltage");
 
 	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag3->SetLabel("C Watts");
+	dl_tunerResultTag3->SetLabel("CS Watts");
 
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cspi));
-	dl_tunerResultTag4->SetLabel("LS Value (nH)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
+	dl_tunerResultTag4->SetLabel("L Value (pF)");
 
 	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag5->SetLabel("LS Voltage");
+	dl_tunerResultTag5->SetLabel("L Current");
 
 	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag6->SetLabel("LS Watts");
+	dl_tunerResultTag6->SetLabel("L Watts");
 
-	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
-	dl_tunerResultTag7->SetLabel("LL Value (nH)");
+	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clpi));
+	dl_tunerResultTag7->SetLabel("CL Value (nH)");
 
 	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag8->SetLabel("LL Voltage");
+	dl_tunerResultTag8->SetLabel("CL Voltage");
 
 	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag9->SetLabel("LL Watts");
+	dl_tunerResultTag9->SetLabel("CL Watts");
 
 	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
 	dl_tunerResultTag10->SetLabel("Source Voltage");
@@ -1743,32 +1743,32 @@ void tuner::HPT()
 	dl_tunerResult10->Show();
 	dl_tunerResultTag10->Show();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lt));
-	dl_tunerResultTag1->SetLabel("C Value (pF)");
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cst));
+	dl_tunerResultTag1->SetLabel("CS Value (nH)");
 
 	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag2->SetLabel("C Voltage");
+	dl_tunerResultTag2->SetLabel("CS Current");
 
 	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag3->SetLabel("C Watts");
+	dl_tunerResultTag3->SetLabel("CS Watts");
 
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cst));
-	dl_tunerResultTag4->SetLabel("LS Value (nH)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lt));
+	dl_tunerResultTag4->SetLabel("L Value (pF)");
 
 	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag5->SetLabel("LS Voltage");
+	dl_tunerResultTag5->SetLabel("L Voltage");
 
 	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag6->SetLabel("LS Watts");
+	dl_tunerResultTag6->SetLabel("L Watts");
 
 	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clt));
-	dl_tunerResultTag7->SetLabel("LL Value (nH)");
+	dl_tunerResultTag7->SetLabel("CL Value (nH)");
 
 	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag8->SetLabel("LL Voltage");
+	dl_tunerResultTag8->SetLabel("CL Current");
 
 	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag9->SetLabel("LL Watts");
+	dl_tunerResultTag9->SetLabel("CL Watts");
 
 	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
 	dl_tunerResultTag10->SetLabel("Source Voltage");
@@ -1837,29 +1837,29 @@ void tuner::LPT()
 	dl_tunerResult10->Show();
 	dl_tunerResultTag10->Show();
 
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_ct));
-	dl_tunerResultTag1->SetLabel("C Value (pF)");
+	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lst));
+	dl_tunerResultTag1->SetLabel("LS Value (nH)");
 
 	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag2->SetLabel("C Voltage");
+	dl_tunerResultTag2->SetLabel("LS Current");
 
 	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag3->SetLabel("C Watts");
+	dl_tunerResultTag3->SetLabel("LS Watts");
 
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lst));
-	dl_tunerResultTag4->SetLabel("LS Value (nH)");
+	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_ct));
+	dl_tunerResultTag4->SetLabel("C Value (pF)");
 
 	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag5->SetLabel("LS Voltage");
+	dl_tunerResultTag5->SetLabel("C Voltage");
 
 	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag6->SetLabel("LS Watts");
+	dl_tunerResultTag6->SetLabel("C Watts");
 
 	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_llt));
 	dl_tunerResultTag7->SetLabel("LL Value (nH)");
 
 	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag8->SetLabel("LL Voltage");
+	dl_tunerResultTag8->SetLabel("LL Current");
 
 	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
 	dl_tunerResultTag9->SetLabel("LL Watts");
