@@ -1802,8 +1802,8 @@ void tuner::LPT()
 	complex<double> zLoad = complex<double>(m_loadResistance, m_loadReactance);;
 	complex<double> yLoad = 1.0 / zLoad;
 
-	complex<double> zComp[MAX_COMPONENTS];
-	complex<double> yComp[MAX_COMPONENTS];
+	complex<double> zComp[MAX_COMPONENTS + 1];
+	complex<double> yComp[MAX_COMPONENTS + 1];
 
 	complex<double> zCombined[MAX_COMPONENTS + 1];
 	complex<double> yCombined[MAX_COMPONENTS + 1];
@@ -1874,6 +1874,8 @@ void tuner::LPT()
 	// Work backwards so we can solve for impedances/admittances.
 	zCombined[MAX_COMPONENTS] = zLoad;
 	yCombined[MAX_COMPONENTS] = yLoad;
+	zComp[MAX_COMPONENTS]=complex<double>(0.0,0.0);
+	yComp[MAX_COMPONENTS]=complex<double>(0.0,0.0);
 	for(i = (MAX_COMPONENTS - 1); i >= 0; i--) {
 		c = &d->component[i];
 		zComp[i] = complex<double>(c->resistance, c->reactance);
@@ -1895,10 +1897,28 @@ void tuner::LPT()
 		c = &d->component[i];
 
 		if(c->arrangement == IS_PAR) {
-			current[i + 1] = voltage[i] / zCombined[i];
+			current[i + 1] = voltage[i] / zCombined[i + 1];
 		} else {
-			voltage[i + 1] = current[i] * zCombined[i];
+			voltage[i + 1] = current[i] * zCombined[i + 1];
 		}
+	}
+
+	for(i = 0; i <= MAX_COMPONENTS; i++) {
+		c = &d->component[i];
+		wxLogError("arr=%s v=(%g,%g) i=(%g,%g) z=(%g,%g) y=(%g,%g) zc=(%g,%g) yc=(%g,%g)",
+				(c->arrangement == IS_PAR) ? "PAR" : "SER" ,
+				real(voltage[i]),
+				imag(voltage[i]),
+				real(current[i]),
+				imag(current[i]),
+				real(zComp[i]),
+				imag(zComp[i]),
+				real(yComp[i]),
+				imag(yComp[i]),
+				real(zCombined[i]),
+				imag(zCombined[i]),
+				real(yCombined[i]),
+				imag(yCombined[i]));
 	}
 
 	c = &d->component[0];
