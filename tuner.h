@@ -206,7 +206,7 @@ class tuner : public tunerDialog
 		void		HPT();
 		void		LPT();
 
-		void		show3Part(wxBitmap bmp, int type);
+		void		show3Part(wxBitmap bmp, int type, int count);
 
 		double		m_sourceResistance;
 		double		m_sourceReactance;

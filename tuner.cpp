@@ -94,10 +94,10 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 	m_r.component[3].box			= sbTunerResults4;
 	m_r.component[3].value			= dl_tunerResult10;
 	m_r.component[3].valueTag		= dl_tunerResultTag10;
-	m_r.component[3].voltageOrCurrent	= 0;
-	m_r.component[3].voltageOrCurrentTag	= 0;
-	m_r.component[3].power			= 0;
-	m_r.component[3].powerTag		= 0;
+	m_r.component[3].voltageOrCurrent	= dl_tunerResult11;
+	m_r.component[3].voltageOrCurrentTag	= dl_tunerResultTag11;
+	m_r.component[3].power			= dl_tunerResult12;
+	m_r.component[3].powerTag		= dl_tunerResultTag12;
 
 	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
 		m_r.component[i].box->GetStaticBox()->Hide();
@@ -1226,6 +1226,7 @@ void tuner::buildResults()
 
 	SOLUTION *s;
 	DISPLAYED_RESULTS *d;
+	ONE_COMPONENT *c;
 
 	// See if we have a valid solution for each type.
 	for(i = 0; i < USE_LAST; i++) {
@@ -1244,7 +1245,16 @@ void tuner::buildResults()
 						// Set the common parameters.
 						d->validSolution = TRUE;
 						d->networkQ = s->qualityFactor;
-						d->component[2].type = ' ';
+						
+						// The third component is not present.
+						c = &d->component[2];
+						c->type = ' ';
+						c->label = "";
+						c->arrangement = 0;
+						c->qualityFactor = 0.0;
+						c->resistance = 0.0;
+						c->reactance = 0.0;
+						c->value = 0.0;
 
 						// Set the specific parameters.
 						switch(i) {
@@ -1327,6 +1337,7 @@ void tuner::recalculate()
 	}
 }
 
+#if 1
 void tuner::lnetDisplayValues(int type)
 {
 	DISPLAYED_RESULTS *d;
@@ -1477,6 +1488,7 @@ void tuner::lnetDisplayValues(int type)
 
 	Layout();
 }
+#endif
 
 bool tuner::lnetSetBitmap(wxBitmap bmp)
 {
@@ -1556,16 +1568,12 @@ void tuner::LCLP()
 
 void tuner::CLHP()
 {
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_clhp))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_CLHP);
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
 }
 
-void tuner::show3Part(wxBitmap bmp, int type)
+void tuner::show3Part(wxBitmap bmp, int type, int count)
 {
-	DISPLAYED_RESULTS *d;
+	DISPLAYED_RESULTS *d = &m_results[type];
 	ONE_COMPONENT *c;
 	RESULT_MAP_COMPONENT *r;
 
@@ -1586,16 +1594,15 @@ void tuner::show3Part(wxBitmap bmp, int type)
 	complex<double> voltage[MAX_COMPONENTS + 1];
 	complex<double> current[MAX_COMPONENTS + 1];
 
-	if ( bmp.IsOk() ) {
+	if(bmp.IsOk()) {
 		dl_bitmap->SetBitmap(bmp);
 	} else {
 		wxLogError("bad png?");
 		return;
 	}
 
-	d = &m_results[type];
+	// Handle invalid case first.
 	if(!d->validSolution) {
-		// Invalid
 		for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
 			r = &m_r.component[i];
 			r->box->GetStaticBox()->Hide();
@@ -1617,12 +1624,45 @@ void tuner::show3Part(wxBitmap bmp, int type)
 		return;
 	}
 
+	// Set up to display the appropriate fields.
 	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
 		r = &m_r.component[i];
-		r->box->GetStaticBox()->Show();
-		r->value->Show();
-		r->valueTag->Show();
-		if(i != MAX_COMPONENTS) {
+		if(count == 2 && i == 2) {
+			// For simple L-networks, hide the third component
+			// completely.
+			r->box->GetStaticBox()->Hide();
+			r->value->Hide();
+			r->valueTag->Hide();
+			r->voltageOrCurrent->Hide();
+			r->voltageOrCurrentTag->Hide();
+			r->power->Hide();
+			r->powerTag->Hide();
+		} else if(count == 2 && i == 3) {
+			// For simple L-networks, we need two slots in the
+			// fourth component.
+			r->box->GetStaticBox()->Show();
+			r->value->Show();
+			r->valueTag->Show();
+			r->voltageOrCurrent->Show();
+			r->voltageOrCurrentTag->Show();
+			r->power->Hide();
+			r->powerTag->Hide();
+		} else if(count == 3 && i == 3) {
+			// For PI and T networks, we need one slot in the
+			// fourth component.
+			r->box->GetStaticBox()->Show();
+			r->value->Show();
+			r->valueTag->Show();
+			r->voltageOrCurrent->Hide();
+			r->voltageOrCurrentTag->Hide();
+			r->power->Hide();
+			r->powerTag->Hide();
+		} else {
+			// In all other cases, we need all three slots in
+			// the component.
+			r->box->GetStaticBox()->Show();
+			r->value->Show();
+			r->valueTag->Show();
 			r->voltageOrCurrent->Show();
 			r->voltageOrCurrentTag->Show();
 			r->power->Show();
@@ -1662,26 +1702,6 @@ void tuner::show3Part(wxBitmap bmp, int type)
 		}
 	}
 
-#if 0
-	for(i = 0; i <= MAX_COMPONENTS; i++) {
-		c = &d->component[i];
-		wxLogError("arr=%s v=(%g,%g) i=(%g,%g) z=(%g,%g) y=(%g,%g) zc=(%g,%g) yc=(%g,%g)",
-				(c->arrangement == IS_PAR) ? "PAR" : "SER" ,
-				real(voltage[i]),
-				imag(voltage[i]),
-				real(current[i]),
-				imag(current[i]),
-				real(zComp[i]),
-				imag(zComp[i]),
-				real(yComp[i]),
-				imag(yComp[i]),
-				real(zCombined[i]),
-				imag(zCombined[i]),
-				real(yCombined[i]),
-				imag(yCombined[i]));
-	}
-#endif
-
 	for(i = 0; i < MAX_COMPONENTS; i++) {
 		c = &d->component[i];
 		r = &m_r.component[i];
@@ -1716,25 +1736,30 @@ void tuner::show3Part(wxBitmap bmp, int type)
 	r->value->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
 	r->valueTag->SetLabel("Source Voltage");
 
+	if(count == 2) {
+		r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
+		r->voltageOrCurrentTag->SetLabel("Network Q");
+	}
+
 	Layout();
 }
 
 void tuner::HPPI()
 {
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI);
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI, 3);
 }
 
 void tuner::LPPI()
 {
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI);
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI, 3);
 }
 
 void tuner::HPT()
 {
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT);
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT, 3);
 }
 
 void tuner::LPT()
 {
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT);
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT, 3);
 }

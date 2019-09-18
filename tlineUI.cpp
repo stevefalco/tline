@@ -1013,6 +1013,24 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	gTunerResults4->Add( dl_tunerResult10, 0, wxALL, 0 );
 
+	dl_tunerResultTag11 = new wxStaticText( sbTunerResults4->GetStaticBox(), wxID_ANY, wxT("Result 11"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_tunerResultTag11->Wrap( -1 );
+	gTunerResults4->Add( dl_tunerResultTag11, 0, wxALIGN_RIGHT|wxALL, 0 );
+
+	dl_tunerResult11 = new wxTextCtrl( sbTunerResults4->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult11->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	gTunerResults4->Add( dl_tunerResult11, 0, wxALL, 0 );
+
+	dl_tunerResultTag12 = new wxStaticText( sbTunerResults4->GetStaticBox(), wxID_ANY, wxT("Result 12"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_tunerResultTag12->Wrap( -1 );
+	gTunerResults4->Add( dl_tunerResultTag12, 0, wxALIGN_RIGHT|wxALL, 0 );
+
+	dl_tunerResult12 = new wxTextCtrl( sbTunerResults4->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult12->SetBackgroundColour( wxColour( 255, 255, 255 ) );
+
+	gTunerResults4->Add( dl_tunerResult12, 0, wxALL, 0 );
+
 
 	sbTunerResults4->Add( gTunerResults4, 1, wxEXPAND, 5 );
 
