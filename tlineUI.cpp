@@ -876,101 +876,148 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxStaticBoxSizer* sbTunerResultsContainer;
 	sbTunerResultsContainer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Results") ), wxVERTICAL );
 
-	wxGridSizer* gTunerResults;
-	gTunerResults = new wxGridSizer( 0, 2, 0, 0 );
+	sbTunerResults1 = new wxStaticBoxSizer( new wxStaticBox( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("label") ), wxVERTICAL );
 
-	dl_tunerResultTag1 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 1"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxGridSizer* gTunerResults1;
+	gTunerResults1 = new wxGridSizer( 0, 2, 0, 0 );
+
+	dl_tunerResultTag1 = new wxStaticText( sbTunerResults1->GetStaticBox(), wxID_ANY, wxT("Result 1"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerResultTag1->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag1, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults1->Add( dl_tunerResultTag1, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult1 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult1 = new wxTextCtrl( sbTunerResults1->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult1->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult1, 0, wxALL, 0 );
+	gTunerResults1->Add( dl_tunerResult1, 0, wxALL, 0 );
 
-	dl_tunerResultTag2 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 2"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag2 = new wxStaticText( sbTunerResults1->GetStaticBox(), wxID_ANY, wxT("Result 2"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerResultTag2->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag2, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults1->Add( dl_tunerResultTag2, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult2 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult2 = new wxTextCtrl( sbTunerResults1->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult2->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult2, 0, wxALL, 0 );
+	gTunerResults1->Add( dl_tunerResult2, 0, wxALL, 0 );
 
-	dl_tunerResultTag3 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 3"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerResultTag3 = new wxStaticText( sbTunerResults1->GetStaticBox(), wxID_ANY, wxT("Result 3"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerResultTag3->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag3, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults1->Add( dl_tunerResultTag3, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult3 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult3 = new wxTextCtrl( sbTunerResults1->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult3->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult3, 0, wxALL, 0 );
+	gTunerResults1->Add( dl_tunerResult3, 0, wxALL, 0 );
 
-	dl_tunerResultTag4 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 4"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+
+	sbTunerResults1->Add( gTunerResults1, 1, wxEXPAND, 5 );
+
+
+	sbTunerResultsContainer->Add( sbTunerResults1, 1, wxEXPAND|wxLEFT|wxRIGHT, 10 );
+
+
+	sbTunerResultsContainer->Add( 0, 10, 0, 0, 0 );
+
+	sbTunerResults2 = new wxStaticBoxSizer( new wxStaticBox( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("label") ), wxVERTICAL );
+
+	wxGridSizer* gTunerResults2;
+	gTunerResults2 = new wxGridSizer( 0, 2, 0, 0 );
+
+	dl_tunerResultTag4 = new wxStaticText( sbTunerResults2->GetStaticBox(), wxID_ANY, wxT("Result 4"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerResultTag4->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag4, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults2->Add( dl_tunerResultTag4, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult4 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult4 = new wxTextCtrl( sbTunerResults2->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult4->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult4, 0, wxALL, 0 );
+	gTunerResults2->Add( dl_tunerResult4, 0, wxALL, 0 );
 
-	dl_tunerResultTag5 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 5"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_tunerResultTag5 = new wxStaticText( sbTunerResults2->GetStaticBox(), wxID_ANY, wxT("Result 5"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerResultTag5->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag5, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults2->Add( dl_tunerResultTag5, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult5 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult5 = new wxTextCtrl( sbTunerResults2->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult5->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult5, 0, wxALL, 0 );
+	gTunerResults2->Add( dl_tunerResult5, 0, wxALL, 0 );
 
-	dl_tunerResultTag6 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 6"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_tunerResultTag6 = new wxStaticText( sbTunerResults2->GetStaticBox(), wxID_ANY, wxT("Result 6"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerResultTag6->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag6, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults2->Add( dl_tunerResultTag6, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult6 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult6 = new wxTextCtrl( sbTunerResults2->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult6->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult6, 0, wxALL, 0 );
+	gTunerResults2->Add( dl_tunerResult6, 0, wxALL, 0 );
 
-	dl_tunerResultTag7 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 7"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+
+	sbTunerResults2->Add( gTunerResults2, 1, wxEXPAND, 5 );
+
+
+	sbTunerResultsContainer->Add( sbTunerResults2, 1, wxEXPAND|wxLEFT|wxRIGHT, 10 );
+
+
+	sbTunerResultsContainer->Add( 0, 10, 0, 0, 0 );
+
+	sbTunerResults3 = new wxStaticBoxSizer( new wxStaticBox( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("label") ), wxVERTICAL );
+
+	wxGridSizer* gTunerResults3;
+	gTunerResults3 = new wxGridSizer( 0, 2, 0, 0 );
+
+	dl_tunerResultTag7 = new wxStaticText( sbTunerResults3->GetStaticBox(), wxID_ANY, wxT("Result 7"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerResultTag7->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag7, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults3->Add( dl_tunerResultTag7, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult7 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult7 = new wxTextCtrl( sbTunerResults3->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult7->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult7, 0, wxALL, 0 );
+	gTunerResults3->Add( dl_tunerResult7, 0, wxALL, 0 );
 
-	dl_tunerResultTag8 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 8"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_tunerResultTag8 = new wxStaticText( sbTunerResults3->GetStaticBox(), wxID_ANY, wxT("Result 8"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerResultTag8->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag8, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults3->Add( dl_tunerResultTag8, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult8 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult8 = new wxTextCtrl( sbTunerResults3->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult8->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult8, 0, wxALL, 0 );
+	gTunerResults3->Add( dl_tunerResult8, 0, wxALL, 0 );
 
-	dl_tunerResultTag9 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 9"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_tunerResultTag9 = new wxStaticText( sbTunerResults3->GetStaticBox(), wxID_ANY, wxT("Result 9"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerResultTag9->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag9, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults3->Add( dl_tunerResultTag9, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult9 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult9 = new wxTextCtrl( sbTunerResults3->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult9->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult9, 0, wxALL, 0 );
+	gTunerResults3->Add( dl_tunerResult9, 0, wxALL, 0 );
 
-	dl_tunerResultTag10 = new wxStaticText( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("Result 10"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+
+	sbTunerResults3->Add( gTunerResults3, 1, wxEXPAND, 5 );
+
+
+	sbTunerResultsContainer->Add( sbTunerResults3, 1, wxEXPAND|wxLEFT|wxRIGHT, 10 );
+
+
+	sbTunerResultsContainer->Add( 0, 10, 0, 0, 0 );
+
+	sbTunerResults4 = new wxStaticBoxSizer( new wxStaticBox( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("label") ), wxVERTICAL );
+
+	wxGridSizer* gTunerResults4;
+	gTunerResults4 = new wxGridSizer( 0, 2, 0, 0 );
+
+	dl_tunerResultTag10 = new wxStaticText( sbTunerResults4->GetStaticBox(), wxID_ANY, wxT("Result 10"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerResultTag10->Wrap( -1 );
-	gTunerResults->Add( dl_tunerResultTag10, 0, wxALIGN_RIGHT|wxALL, 0 );
+	gTunerResults4->Add( dl_tunerResultTag10, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerResult10 = new wxTextCtrl( sbTunerResultsContainer->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
+	dl_tunerResult10 = new wxTextCtrl( sbTunerResults4->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_tunerResult10->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
-	gTunerResults->Add( dl_tunerResult10, 0, wxALL, 0 );
+	gTunerResults4->Add( dl_tunerResult10, 0, wxALL, 0 );
 
 
-	sbTunerResultsContainer->Add( gTunerResults, 1, wxEXPAND, 5 );
+	sbTunerResults4->Add( gTunerResults4, 1, wxEXPAND, 5 );
+
+
+	sbTunerResultsContainer->Add( sbTunerResults4, 1, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 10 );
 
 
 	bTunerLeft->Add( sbTunerResultsContainer, 1, wxALIGN_CENTER|wxEXPAND, 5 );
