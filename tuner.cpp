@@ -66,7 +66,42 @@
 
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
+	int i;
+
 	SetIcon(wxICON(aaaa));
+
+	m_r.component[0].box			= sbTunerResults1;
+	m_r.component[0].value			= dl_tunerResult1;
+	m_r.component[0].valueTag		= dl_tunerResultTag1;
+	m_r.component[0].voltageOrCurrent	= dl_tunerResult2;
+	m_r.component[0].voltageOrCurrentTag	= dl_tunerResultTag2;
+	m_r.component[0].power			= dl_tunerResult3;
+	m_r.component[0].powerTag		= dl_tunerResultTag3;
+	m_r.component[1].box			= sbTunerResults2;
+	m_r.component[1].value			= dl_tunerResult4;
+	m_r.component[1].valueTag		= dl_tunerResultTag4;
+	m_r.component[1].voltageOrCurrent	= dl_tunerResult5;
+	m_r.component[1].voltageOrCurrentTag	= dl_tunerResultTag5;
+	m_r.component[1].power			= dl_tunerResult6;
+	m_r.component[1].powerTag		= dl_tunerResultTag6;
+	m_r.component[2].box			= sbTunerResults3;
+	m_r.component[2].value			= dl_tunerResult7;
+	m_r.component[2].valueTag		= dl_tunerResultTag7;
+	m_r.component[2].voltageOrCurrent	= dl_tunerResult8;
+	m_r.component[2].voltageOrCurrentTag	= dl_tunerResultTag8;
+	m_r.component[2].power			= dl_tunerResult9;
+	m_r.component[2].powerTag		= dl_tunerResultTag9;
+	m_r.component[3].box			= sbTunerResults4;
+	m_r.component[3].value			= dl_tunerResult10;
+	m_r.component[3].valueTag		= dl_tunerResultTag10;
+	m_r.component[3].voltageOrCurrent	= 0;
+	m_r.component[3].voltageOrCurrentTag	= 0;
+	m_r.component[3].power			= 0;
+	m_r.component[3].powerTag		= 0;
+
+	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
+		m_r.component[i].box->GetStaticBox()->Hide();
+	}
 }
 
 void tuner::Update()
@@ -1794,10 +1829,27 @@ void tuner::HPT()
 	Layout();
 }
 
+double tuner::powerFromVoltage(
+		complex<double> voltage,
+		complex<double> admittance
+		)
+{
+	return real(voltage * conj(voltage) * admittance);
+}
+
+double tuner::powerFromCurrent(
+		complex<double> current,
+		complex<double> impedance
+		)
+{
+	return real(current * conj(current) * impedance);
+}
+
 void tuner::LPT()
 {
 	DISPLAYED_RESULTS *d;
 	ONE_COMPONENT *c;
+	RESULT_MAP_COMPONENT *r;
 
 	int i;
 
@@ -1828,53 +1880,39 @@ void tuner::LPT()
 	d = &m_results[USE_LPT];
 	if(!d->validSolution) {
 		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-		dl_tunerResult5->Hide();
-		dl_tunerResultTag5->Hide();
-		dl_tunerResult6->Hide();
-		dl_tunerResultTag6->Hide();
-		dl_tunerResult7->Hide();
-		dl_tunerResultTag7->Hide();
-		dl_tunerResult8->Hide();
-		dl_tunerResultTag8->Hide();
-		dl_tunerResult9->Hide();
-		dl_tunerResultTag9->Hide();
-		dl_tunerResult10->Hide();
-		dl_tunerResultTag10->Hide();
+		for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
+			r = &m_r.component[i];
+			r->box->GetStaticBox()->Hide();
+			r->value->Hide();
+			r->valueTag->Hide();
+			r->voltageOrCurrent->Hide();
+			r->voltageOrCurrentTag->Hide();
+			r->power->Hide();
+			r->powerTag->Hide();
+		}
 
-		dl_tunerResultTag1->SetLabel("No Match Found");
+		r = &m_r.component[0];
+		r->box->GetStaticBox()->Show();
+		r->box->GetStaticBox()->SetLabel("Invalid");
+		r->valueTag->Show();
+		r->valueTag->SetLabel("No Match Found");
 
 		Layout();
 		return;
 	}
 
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-	dl_tunerResult5->Show();
-	dl_tunerResultTag5->Show();
-	dl_tunerResult6->Show();
-	dl_tunerResultTag6->Show();
-	dl_tunerResult7->Show();
-	dl_tunerResultTag7->Show();
-	dl_tunerResult8->Show();
-	dl_tunerResultTag8->Show();
-	dl_tunerResult9->Show();
-	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Show();
-	dl_tunerResultTag10->Show();
+	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
+		r = &m_r.component[i];
+		r->box->GetStaticBox()->Show();
+		r->value->Show();
+		r->valueTag->Show();
+		if(i != MAX_COMPONENTS) {
+			r->voltageOrCurrent->Show();
+			r->voltageOrCurrentTag->Show();
+			r->power->Show();
+			r->powerTag->Show();
+		}
+	}
 
 	// Work backwards so we can solve for impedances/admittances.
 	zCombined[MAX_COMPONENTS] = zLoad;
@@ -1908,6 +1946,7 @@ void tuner::LPT()
 		}
 	}
 
+#if 0
 	for(i = 0; i <= MAX_COMPONENTS; i++) {
 		c = &d->component[i];
 		wxLogError("arr=%s v=(%g,%g) i=(%g,%g) z=(%g,%g) y=(%g,%g) zc=(%g,%g) yc=(%g,%g)",
@@ -1925,86 +1964,41 @@ void tuner::LPT()
 				real(yCombined[i]),
 				imag(yCombined[i]));
 	}
+#endif
 
-	c = &d->component[0];
-	sbTunerResults1->GetStaticBox()->SetLabel(c->label);
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
-	if(c->type == 'C') {
-		dl_tunerResultTag1->SetLabel("Value (pF)");
-	} else {
-		dl_tunerResultTag1->SetLabel("Value (nH)");
+	for(i = 0; i < MAX_COMPONENTS; i++) {
+		c = &d->component[i];
+		r = &m_r.component[i];
+		r->box->GetStaticBox()->SetLabel(c->label);
+		r->value->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
+		if(c->type == 'C') {
+			r->valueTag->SetLabel("Value (pF)");
+		} else {
+			r->valueTag->SetLabel("Value (nH)");
+		}
+
+		if(c->arrangement == IS_PAR) {
+			// Use voltage for loss.
+			r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i])));
+			r->voltageOrCurrentTag->SetLabel("Voltage");
+
+			r->power->ChangeValue(wxString::Format(wxT("%.2f"), powerFromVoltage(voltage[i], yComp[i])));
+			r->powerTag->SetLabel("Watts");
+		} else {
+			// Use current for loss.
+			r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i])));
+			r->voltageOrCurrentTag->SetLabel("Current");
+
+			r->power->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
+			r->powerTag->SetLabel("Watts");
+		}
 	}
 
-	if(c->arrangement == IS_PAR) {
-		// Use voltage for loss.
-		dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[0])));
-		dl_tunerResultTag2->SetLabel("Voltage");
-
-		dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(voltage[0]) * real(yComp[0]))));
-		dl_tunerResultTag3->SetLabel("Watts");
-	} else {
-		// Use current for loss.
-		dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[0])));
-		dl_tunerResultTag2->SetLabel("Current");
-
-		dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(current[0]) * real(zComp[0]))));
-		dl_tunerResultTag3->SetLabel("Watts");
-	}
-
-	c = &d->component[1];
-	sbTunerResults2->GetStaticBox()->SetLabel(c->label);
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
-	if(c->type == 'C') {
-		dl_tunerResultTag4->SetLabel("Value (pF)");
-	} else {
-		dl_tunerResultTag4->SetLabel("Value (nH)");
-	}
-
-	if(c->arrangement == IS_PAR) {
-		// Use voltage for loss.
-		dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[1])));
-		dl_tunerResultTag5->SetLabel("Voltage");
-
-		dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(voltage[1]) * real(yComp[1]))));
-		dl_tunerResultTag6->SetLabel("Watts");
-	} else {
-		// Use current for loss.
-		dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[1])));
-		dl_tunerResultTag5->SetLabel("Current");
-
-		dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(current[1]) * real(zComp[1]))));
-		dl_tunerResultTag6->SetLabel("Watts");
-	}
-
-	c = &d->component[2];
-	sbTunerResults3->GetStaticBox()->SetLabel(c->label);
-	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
-	if(c->type == 'C') {
-		dl_tunerResultTag7->SetLabel("Value (pF)");
-	} else {
-		dl_tunerResultTag7->SetLabel("Value (nH)");
-	}
-
-	if(c->arrangement == IS_PAR) {
-		// Use voltage for loss.
-		dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[2])));
-		dl_tunerResultTag8->SetLabel("Voltage");
-
-		dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(voltage[2]) * real(yComp[2]))));
-		dl_tunerResultTag9->SetLabel("Watts");
-	} else {
-		// Use current for loss.
-		dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[2])));
-		dl_tunerResultTag8->SetLabel("Current");
-
-		dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(current[2]) * real(zComp[2]))));
-		dl_tunerResultTag9->SetLabel("Watts");
-	}
-
-	sbTunerResults4->GetStaticBox()->Show();
-	sbTunerResults4->GetStaticBox()->SetLabel("Other");
-	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	dl_tunerResultTag10->SetLabel("Source Voltage");
+	r = &m_r.component[3];
+	r->box->GetStaticBox()->Show();
+	r->box->GetStaticBox()->SetLabel("Other");
+	r->value->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+	r->valueTag->SetLabel("Source Voltage");
 
 	Layout();
 }

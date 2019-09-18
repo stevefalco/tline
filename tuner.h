@@ -78,6 +78,23 @@ typedef struct {
 	SOLUTION		s[2][2];
 } LNET_RESULTS;
 
+typedef struct {
+	wxStaticBoxSizer*	box;
+
+	wxTextCtrl*		value;
+	wxStaticText*		valueTag;
+
+	wxTextCtrl*		voltageOrCurrent;
+	wxStaticText*		voltageOrCurrentTag;
+
+	wxTextCtrl*		power;
+	wxStaticText*		powerTag;
+} RESULT_MAP_COMPONENT;
+
+typedef struct {
+	RESULT_MAP_COMPONENT	component[MAX_COMPONENTS + 1];
+} RESULT_MAP;
+
 class tuner : public tunerDialog
 {
 	public:
@@ -101,6 +118,9 @@ class tuner : public tunerDialog
 		void		onTunerOKclicked( wxCommandEvent& event );
 
 	private:
+		double		powerFromVoltage(complex<double> voltage, complex<double> admittance);
+		double		powerFromCurrent(complex<double> current, complex<double> impedance);
+
 		bool		tryPI(
 					wxString where,
 					int slot,
@@ -253,6 +273,8 @@ class tuner : public tunerDialog
 		bool		m_lptValid;
 
 		DISPLAYED_RESULTS	m_results[USE_LAST];
+
+		RESULT_MAP	m_r;
 };
 
 #endif // __tuner__
