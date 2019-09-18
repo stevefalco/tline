@@ -1503,74 +1503,6 @@ bool tuner::lnetSetBitmap(wxBitmap bmp)
 	return TRUE;
 }
 
-void tuner::CPCS()
-{
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_cc1))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_CPCS);
-}
-
-void tuner::CSCP()
-{
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_cc2))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_CSCP);
-}
-
-void tuner::LPLS()
-{
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_ll1))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_LPLS);
-}
-
-void tuner::LSLP()
-{
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_ll2))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_LSLP);
-}
-
-void tuner::LCHP()
-{
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_lchp))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_LCHP);
-}
-
-void tuner::CLLP()
-{
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_cllp))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_CLLP);
-}
-
-void tuner::LCLP()
-{
-	if(!lnetSetBitmap(wxBITMAP_PNG_FROM_DATA(nt_lclp))) {
-		return;
-	}
-
-	lnetDisplayValues(USE_LCLP);
-}
-
-void tuner::CLHP()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
-}
-
 void tuner::show3Part(wxBitmap bmp, int type, int count)
 {
 	DISPLAYED_RESULTS *d = &m_results[type];
@@ -1742,6 +1674,46 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	}
 
 	Layout();
+}
+
+void tuner::CPCS()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc1), USE_CPCS, 2);
+}
+
+void tuner::CSCP()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc2), USE_CSCP, 2);
+}
+
+void tuner::LPLS()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll1), USE_LPLS, 2);
+}
+
+void tuner::LSLP()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll2), USE_LSLP, 2);
+}
+
+void tuner::LCHP()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lchp), USE_LCHP, 2);
+}
+
+void tuner::CLLP()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_cllp), USE_CLLP, 2);
+}
+
+void tuner::LCLP()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lclp), USE_LCLP, 2);
+}
+
+void tuner::CLHP()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
 }
 
 void tuner::HPPI()
