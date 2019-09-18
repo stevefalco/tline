@@ -223,6 +223,22 @@ void tuner::onTunerOKclicked( wxCommandEvent& event )
 	}
 }
 
+double tuner::powerFromVoltage(
+		complex<double> voltage,
+		complex<double> admittance
+		)
+{
+	return real(voltage * conj(voltage) * admittance);
+}
+
+double tuner::powerFromCurrent(
+		complex<double> current,
+		complex<double> impedance
+		)
+{
+	return real(current * conj(current) * impedance);
+}
+
 void tuner::findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int slot)
 {
 	SOLUTION *p;
@@ -1547,305 +1563,7 @@ void tuner::CLHP()
 	lnetDisplayValues(USE_CLHP);
 }
 
-void tuner::HPPI()
-{
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hppi);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	if(!m_hppiValid) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-		dl_tunerResult5->Hide();
-		dl_tunerResultTag5->Hide();
-		dl_tunerResult6->Hide();
-		dl_tunerResultTag6->Hide();
-		dl_tunerResult7->Hide();
-		dl_tunerResultTag7->Hide();
-		dl_tunerResult8->Hide();
-		dl_tunerResultTag8->Hide();
-		dl_tunerResult9->Hide();
-		dl_tunerResultTag9->Hide();
-		dl_tunerResult10->Hide();
-		dl_tunerResultTag10->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-	dl_tunerResult5->Show();
-	dl_tunerResultTag5->Show();
-	dl_tunerResult6->Show();
-	dl_tunerResultTag6->Show();
-	dl_tunerResult7->Show();
-	dl_tunerResultTag7->Show();
-	dl_tunerResult8->Show();
-	dl_tunerResultTag8->Show();
-	dl_tunerResult9->Show();
-	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Show();
-	dl_tunerResultTag10->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_lspi));
-	dl_tunerResultTag1->SetLabel("LS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	dl_tunerResultTag2->SetLabel("LS Voltage");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), fabs(SQ(m_voltageForPower) / m_lspiR)));
-	dl_tunerResultTag3->SetLabel("LS Watts");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_cpi));
-	dl_tunerResultTag4->SetLabel("C Value (pF)");
-
-	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), m_lspiR));
-	dl_tunerResultTag5->SetLabel("C Current");
-
-	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag6->SetLabel("C Watts");
-
-	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_llpi));
-	dl_tunerResultTag7->SetLabel("LL Value (nH)");
-
-	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag8->SetLabel("LL Voltage");
-
-	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag9->SetLabel("LL Watts");
-
-	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	dl_tunerResultTag10->SetLabel("Source Voltage");
-
-	Layout();
-}
-
-void tuner::LPPI()
-{
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lppi);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	if(!m_lppiValid) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-		dl_tunerResult5->Hide();
-		dl_tunerResultTag5->Hide();
-		dl_tunerResult6->Hide();
-		dl_tunerResultTag6->Hide();
-		dl_tunerResult7->Hide();
-		dl_tunerResultTag7->Hide();
-		dl_tunerResult8->Hide();
-		dl_tunerResultTag8->Hide();
-		dl_tunerResult9->Hide();
-		dl_tunerResultTag9->Hide();
-		dl_tunerResult10->Hide();
-		dl_tunerResultTag10->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-	dl_tunerResult5->Show();
-	dl_tunerResultTag5->Show();
-	dl_tunerResult6->Show();
-	dl_tunerResultTag6->Show();
-	dl_tunerResult7->Show();
-	dl_tunerResultTag7->Show();
-	dl_tunerResult8->Show();
-	dl_tunerResultTag8->Show();
-	dl_tunerResult9->Show();
-	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Show();
-	dl_tunerResultTag10->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cspi));
-	dl_tunerResultTag1->SetLabel("CS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	dl_tunerResultTag2->SetLabel("CS Voltage");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag3->SetLabel("CS Watts");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lpi));
-	dl_tunerResultTag4->SetLabel("L Value (pF)");
-
-	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag5->SetLabel("L Current");
-
-	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag6->SetLabel("L Watts");
-
-	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clpi));
-	dl_tunerResultTag7->SetLabel("CL Value (nH)");
-
-	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag8->SetLabel("CL Voltage");
-
-	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag9->SetLabel("CL Watts");
-
-	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	dl_tunerResultTag10->SetLabel("Source Voltage");
-
-	Layout();
-}
-
-void tuner::HPT()
-{
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_hpt);
-
-	if ( bmp.IsOk() ) {
-		dl_bitmap->SetBitmap(bmp);
-	} else {
-		wxLogError("bad png?");
-		return;
-	}
-
-	if(!m_hptValid) {
-		// Invalid
-		dl_tunerResult1->Hide();
-		dl_tunerResultTag1->Show();
-		dl_tunerResult2->Hide();
-		dl_tunerResultTag2->Hide();
-		dl_tunerResult3->Hide();
-		dl_tunerResultTag3->Hide();
-		dl_tunerResult4->Hide();
-		dl_tunerResultTag4->Hide();
-		dl_tunerResult5->Hide();
-		dl_tunerResultTag5->Hide();
-		dl_tunerResult6->Hide();
-		dl_tunerResultTag6->Hide();
-		dl_tunerResult7->Hide();
-		dl_tunerResultTag7->Hide();
-		dl_tunerResult8->Hide();
-		dl_tunerResultTag8->Hide();
-		dl_tunerResult9->Hide();
-		dl_tunerResultTag9->Hide();
-		dl_tunerResult10->Hide();
-		dl_tunerResultTag10->Hide();
-
-		dl_tunerResultTag1->SetLabel("No Match Found");
-
-		Layout();
-		return;
-	}
-
-	dl_tunerResult1->Show();
-	dl_tunerResultTag1->Show();
-	dl_tunerResult2->Show();
-	dl_tunerResultTag2->Show();
-	dl_tunerResult3->Show();
-	dl_tunerResultTag3->Show();
-	dl_tunerResult4->Show();
-	dl_tunerResultTag4->Show();
-	dl_tunerResult5->Show();
-	dl_tunerResultTag5->Show();
-	dl_tunerResult6->Show();
-	dl_tunerResultTag6->Show();
-	dl_tunerResult7->Show();
-	dl_tunerResultTag7->Show();
-	dl_tunerResult8->Show();
-	dl_tunerResultTag8->Show();
-	dl_tunerResult9->Show();
-	dl_tunerResultTag9->Show();
-	dl_tunerResult10->Show();
-	dl_tunerResultTag10->Show();
-
-	dl_tunerResult1->ChangeValue(wxString::Format(wxT("%.2f"), m_cst));
-	dl_tunerResultTag1->SetLabel("CS Value (nH)");
-
-	dl_tunerResult2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_currentForPower)));
-	dl_tunerResultTag2->SetLabel("CS Current");
-
-	dl_tunerResult3->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag3->SetLabel("CS Watts");
-
-	dl_tunerResult4->ChangeValue(wxString::Format(wxT("%.2f"), m_lt));
-	dl_tunerResultTag4->SetLabel("L Value (pF)");
-
-	dl_tunerResult5->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag5->SetLabel("L Voltage");
-
-	dl_tunerResult6->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag6->SetLabel("L Watts");
-
-	dl_tunerResult7->ChangeValue(wxString::Format(wxT("%.2f"), m_clt));
-	dl_tunerResultTag7->SetLabel("CL Value (nH)");
-
-	dl_tunerResult8->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag8->SetLabel("CL Current");
-
-	dl_tunerResult9->ChangeValue(wxString::Format(wxT("%.2f"), 0.0));
-	dl_tunerResultTag9->SetLabel("CL Watts");
-
-	dl_tunerResult10->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	dl_tunerResultTag10->SetLabel("Source Voltage");
-
-	Layout();
-}
-
-double tuner::powerFromVoltage(
-		complex<double> voltage,
-		complex<double> admittance
-		)
-{
-	return real(voltage * conj(voltage) * admittance);
-}
-
-double tuner::powerFromCurrent(
-		complex<double> current,
-		complex<double> impedance
-		)
-{
-	return real(current * conj(current) * impedance);
-}
-
-void tuner::LPT()
+void tuner::show3Part(wxBitmap bmp, int type)
 {
 	DISPLAYED_RESULTS *d;
 	ONE_COMPONENT *c;
@@ -1868,8 +1586,6 @@ void tuner::LPT()
 	complex<double> voltage[MAX_COMPONENTS + 1];
 	complex<double> current[MAX_COMPONENTS + 1];
 
-	wxBitmap bmp = wxBITMAP_PNG_FROM_DATA(nt_lpt);
-
 	if ( bmp.IsOk() ) {
 		dl_bitmap->SetBitmap(bmp);
 	} else {
@@ -1877,7 +1593,7 @@ void tuner::LPT()
 		return;
 	}
 
-	d = &m_results[USE_LPT];
+	d = &m_results[type];
 	if(!d->validSolution) {
 		// Invalid
 		for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
@@ -1980,17 +1696,17 @@ void tuner::LPT()
 		if(c->arrangement == IS_PAR) {
 			// Use voltage for loss.
 			r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i])));
-			r->voltageOrCurrentTag->SetLabel("Voltage");
+			r->voltageOrCurrentTag->SetLabel("Voltage Across");
 
 			r->power->ChangeValue(wxString::Format(wxT("%.2f"), powerFromVoltage(voltage[i], yComp[i])));
-			r->powerTag->SetLabel("Watts");
+			r->powerTag->SetLabel("Loss (Watts)");
 		} else {
 			// Use current for loss.
 			r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i])));
-			r->voltageOrCurrentTag->SetLabel("Current");
+			r->voltageOrCurrentTag->SetLabel("Current Through");
 
 			r->power->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
-			r->powerTag->SetLabel("Watts");
+			r->powerTag->SetLabel("Loss (Watts)");
 		}
 	}
 
@@ -2001,4 +1717,24 @@ void tuner::LPT()
 	r->valueTag->SetLabel("Source Voltage");
 
 	Layout();
+}
+
+void tuner::HPPI()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI);
+}
+
+void tuner::LPPI()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI);
+}
+
+void tuner::HPT()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT);
+}
+
+void tuner::LPT()
+{
+	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT);
 }
