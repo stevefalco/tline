@@ -81,14 +81,14 @@ typedef struct {
 typedef struct {
 	wxStaticBoxSizer*	box;
 
-	wxTextCtrl*		value;
-	wxStaticText*		valueTag;
+	wxTextCtrl*		line0;
+	wxStaticText*		line0Tag;
 
-	wxTextCtrl*		voltageOrCurrent;
-	wxStaticText*		voltageOrCurrentTag;
+	wxTextCtrl*		line1;
+	wxStaticText*		line1Tag;
 
-	wxTextCtrl*		power;
-	wxStaticText*		powerTag;
+	wxTextCtrl*		line2;
+	wxStaticText*		line2Tag;
 } RESULT_MAP_COMPONENT;
 
 typedef struct {

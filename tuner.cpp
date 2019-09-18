@@ -70,34 +70,34 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 
 	SetIcon(wxICON(aaaa));
 
-	m_r.component[0].box			= sbTunerResults1;
-	m_r.component[0].value			= dl_tunerResult1;
-	m_r.component[0].valueTag		= dl_tunerResultTag1;
-	m_r.component[0].voltageOrCurrent	= dl_tunerResult2;
-	m_r.component[0].voltageOrCurrentTag	= dl_tunerResultTag2;
-	m_r.component[0].power			= dl_tunerResult3;
-	m_r.component[0].powerTag		= dl_tunerResultTag3;
-	m_r.component[1].box			= sbTunerResults2;
-	m_r.component[1].value			= dl_tunerResult4;
-	m_r.component[1].valueTag		= dl_tunerResultTag4;
-	m_r.component[1].voltageOrCurrent	= dl_tunerResult5;
-	m_r.component[1].voltageOrCurrentTag	= dl_tunerResultTag5;
-	m_r.component[1].power			= dl_tunerResult6;
-	m_r.component[1].powerTag		= dl_tunerResultTag6;
-	m_r.component[2].box			= sbTunerResults3;
-	m_r.component[2].value			= dl_tunerResult7;
-	m_r.component[2].valueTag		= dl_tunerResultTag7;
-	m_r.component[2].voltageOrCurrent	= dl_tunerResult8;
-	m_r.component[2].voltageOrCurrentTag	= dl_tunerResultTag8;
-	m_r.component[2].power			= dl_tunerResult9;
-	m_r.component[2].powerTag		= dl_tunerResultTag9;
-	m_r.component[3].box			= sbTunerResults4;
-	m_r.component[3].value			= dl_tunerResult10;
-	m_r.component[3].valueTag		= dl_tunerResultTag10;
-	m_r.component[3].voltageOrCurrent	= dl_tunerResult11;
-	m_r.component[3].voltageOrCurrentTag	= dl_tunerResultTag11;
-	m_r.component[3].power			= dl_tunerResult12;
-	m_r.component[3].powerTag		= dl_tunerResultTag12;
+	m_r.component[0].box		= sbTunerResults1;
+	m_r.component[0].line0		= dl_tunerResult1;
+	m_r.component[0].line0Tag	= dl_tunerResultTag1;
+	m_r.component[0].line1		= dl_tunerResult2;
+	m_r.component[0].line1Tag	= dl_tunerResultTag2;
+	m_r.component[0].line2		= dl_tunerResult3;
+	m_r.component[0].line2Tag	= dl_tunerResultTag3;
+	m_r.component[1].box		= sbTunerResults2;
+	m_r.component[1].line0		= dl_tunerResult4;
+	m_r.component[1].line0Tag	= dl_tunerResultTag4;
+	m_r.component[1].line1		= dl_tunerResult5;
+	m_r.component[1].line1Tag	= dl_tunerResultTag5;
+	m_r.component[1].line2		= dl_tunerResult6;
+	m_r.component[1].line2Tag	= dl_tunerResultTag6;
+	m_r.component[2].box		= sbTunerResults3;
+	m_r.component[2].line0		= dl_tunerResult7;
+	m_r.component[2].line0Tag	= dl_tunerResultTag7;
+	m_r.component[2].line1		= dl_tunerResult8;
+	m_r.component[2].line1Tag	= dl_tunerResultTag8;
+	m_r.component[2].line2		= dl_tunerResult9;
+	m_r.component[2].line2Tag	= dl_tunerResultTag9;
+	m_r.component[3].box		= sbTunerResults4;
+	m_r.component[3].line0		= dl_tunerResult10;
+	m_r.component[3].line0Tag	= dl_tunerResultTag10;
+	m_r.component[3].line1		= dl_tunerResult11;
+	m_r.component[3].line1Tag	= dl_tunerResultTag11;
+	m_r.component[3].line2		= dl_tunerResult12;
+	m_r.component[3].line2Tag	= dl_tunerResultTag12;
 
 	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
 		m_r.component[i].box->GetStaticBox()->Hide();
@@ -1538,19 +1538,19 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 		for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
 			r = &m_r.component[i];
 			r->box->GetStaticBox()->Hide();
-			r->value->Hide();
-			r->valueTag->Hide();
-			r->voltageOrCurrent->Hide();
-			r->voltageOrCurrentTag->Hide();
-			r->power->Hide();
-			r->powerTag->Hide();
+			r->line0->Hide();
+			r->line0Tag->Hide();
+			r->line1->Hide();
+			r->line1Tag->Hide();
+			r->line2->Hide();
+			r->line2Tag->Hide();
 		}
 
 		r = &m_r.component[0];
 		r->box->GetStaticBox()->Show();
 		r->box->GetStaticBox()->SetLabel("Invalid");
-		r->valueTag->Show();
-		r->valueTag->SetLabel("No Match Found");
+		r->line0Tag->Show();
+		r->line0Tag->SetLabel("No Match Found");
 
 		Layout();
 		return;
@@ -1563,42 +1563,42 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			// For simple L-networks, hide the third component
 			// completely.
 			r->box->GetStaticBox()->Hide();
-			r->value->Hide();
-			r->valueTag->Hide();
-			r->voltageOrCurrent->Hide();
-			r->voltageOrCurrentTag->Hide();
-			r->power->Hide();
-			r->powerTag->Hide();
+			r->line0->Hide();
+			r->line0Tag->Hide();
+			r->line1->Hide();
+			r->line1Tag->Hide();
+			r->line2->Hide();
+			r->line2Tag->Hide();
 		} else if(count == 2 && i == 3) {
 			// For simple L-networks, we need two slots in the
 			// fourth component.
 			r->box->GetStaticBox()->Show();
-			r->value->Show();
-			r->valueTag->Show();
-			r->voltageOrCurrent->Show();
-			r->voltageOrCurrentTag->Show();
-			r->power->Hide();
-			r->powerTag->Hide();
+			r->line0->Show();
+			r->line0Tag->Show();
+			r->line1->Show();
+			r->line1Tag->Show();
+			r->line2->Hide();
+			r->line2Tag->Hide();
 		} else if(count == 3 && i == 3) {
 			// For PI and T networks, we need one slot in the
 			// fourth component.
 			r->box->GetStaticBox()->Show();
-			r->value->Show();
-			r->valueTag->Show();
-			r->voltageOrCurrent->Hide();
-			r->voltageOrCurrentTag->Hide();
-			r->power->Hide();
-			r->powerTag->Hide();
+			r->line0->Show();
+			r->line0Tag->Show();
+			r->line1->Hide();
+			r->line1Tag->Hide();
+			r->line2->Hide();
+			r->line2Tag->Hide();
 		} else {
 			// In all other cases, we need all three slots in
 			// the component.
 			r->box->GetStaticBox()->Show();
-			r->value->Show();
-			r->valueTag->Show();
-			r->voltageOrCurrent->Show();
-			r->voltageOrCurrentTag->Show();
-			r->power->Show();
-			r->powerTag->Show();
+			r->line0->Show();
+			r->line0Tag->Show();
+			r->line1->Show();
+			r->line1Tag->Show();
+			r->line2->Show();
+			r->line2Tag->Show();
 		}
 	}
 
@@ -1638,39 +1638,39 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 		c = &d->component[i];
 		r = &m_r.component[i];
 		r->box->GetStaticBox()->SetLabel(c->label);
-		r->value->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
+		r->line0->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
 		if(c->type == 'C') {
-			r->valueTag->SetLabel("Value (pF)");
+			r->line0Tag->SetLabel("Value (pF)");
 		} else {
-			r->valueTag->SetLabel("Value (nH)");
+			r->line0Tag->SetLabel("Value (nH)");
 		}
 
 		if(c->arrangement == IS_PAR) {
 			// Use voltage for loss.
-			r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i])));
-			r->voltageOrCurrentTag->SetLabel("Voltage Across");
+			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i])));
+			r->line1Tag->SetLabel("Voltage Across");
 
-			r->power->ChangeValue(wxString::Format(wxT("%.2f"), powerFromVoltage(voltage[i], yComp[i])));
-			r->powerTag->SetLabel("Loss (Watts)");
+			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), powerFromVoltage(voltage[i], yComp[i])));
+			r->line2Tag->SetLabel("Loss (Watts)");
 		} else {
 			// Use current for loss.
-			r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i])));
-			r->voltageOrCurrentTag->SetLabel("Current Through");
+			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i])));
+			r->line1Tag->SetLabel("Current Through");
 
-			r->power->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
-			r->powerTag->SetLabel("Loss (Watts)");
+			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
+			r->line2Tag->SetLabel("Loss (Watts)");
 		}
 	}
 
 	r = &m_r.component[3];
 	r->box->GetStaticBox()->Show();
 	r->box->GetStaticBox()->SetLabel("Other");
-	r->value->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	r->valueTag->SetLabel("Source Voltage");
+	r->line0->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+	r->line0Tag->SetLabel("Source Voltage");
 
 	if(count == 2) {
-		r->voltageOrCurrent->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
-		r->voltageOrCurrentTag->SetLabel("Network Q");
+		r->line1->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
+		r->line1Tag->SetLabel("Network Q");
 	}
 
 	Layout();
