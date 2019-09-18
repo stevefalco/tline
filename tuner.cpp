@@ -70,37 +70,40 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 
 	SetIcon(wxICON(aaaa));
 
-	m_r.component[0].box		= sbTunerResults1;
-	m_r.component[0].line0		= dl_tunerResult1;
-	m_r.component[0].line0Tag	= dl_tunerResultTag1;
-	m_r.component[0].line1		= dl_tunerResult2;
-	m_r.component[0].line1Tag	= dl_tunerResultTag2;
-	m_r.component[0].line2		= dl_tunerResult3;
-	m_r.component[0].line2Tag	= dl_tunerResultTag3;
-	m_r.component[1].box		= sbTunerResults2;
-	m_r.component[1].line0		= dl_tunerResult4;
-	m_r.component[1].line0Tag	= dl_tunerResultTag4;
-	m_r.component[1].line1		= dl_tunerResult5;
-	m_r.component[1].line1Tag	= dl_tunerResultTag5;
-	m_r.component[1].line2		= dl_tunerResult6;
-	m_r.component[1].line2Tag	= dl_tunerResultTag6;
-	m_r.component[2].box		= sbTunerResults3;
-	m_r.component[2].line0		= dl_tunerResult7;
-	m_r.component[2].line0Tag	= dl_tunerResultTag7;
-	m_r.component[2].line1		= dl_tunerResult8;
-	m_r.component[2].line1Tag	= dl_tunerResultTag8;
-	m_r.component[2].line2		= dl_tunerResult9;
-	m_r.component[2].line2Tag	= dl_tunerResultTag9;
-	m_r.component[3].box		= sbTunerResults4;
-	m_r.component[3].line0		= dl_tunerResult10;
-	m_r.component[3].line0Tag	= dl_tunerResultTag10;
-	m_r.component[3].line1		= dl_tunerResult11;
-	m_r.component[3].line1Tag	= dl_tunerResultTag11;
-	m_r.component[3].line2		= dl_tunerResult12;
-	m_r.component[3].line2Tag	= dl_tunerResultTag12;
+	// We need a convenient way to map from array indexing
+	// to the gui names.
+	m_r[0].box	= sbTunerResults1;
+	m_r[0].line0	= dl_tunerResult1;
+	m_r[0].line0Tag	= dl_tunerResultTag1;
+	m_r[0].line1	= dl_tunerResult2;
+	m_r[0].line1Tag	= dl_tunerResultTag2;
+	m_r[0].line2	= dl_tunerResult3;
+	m_r[0].line2Tag	= dl_tunerResultTag3;
+	m_r[1].box	= sbTunerResults2;
+	m_r[1].line0	= dl_tunerResult4;
+	m_r[1].line0Tag	= dl_tunerResultTag4;
+	m_r[1].line1	= dl_tunerResult5;
+	m_r[1].line1Tag	= dl_tunerResultTag5;
+	m_r[1].line2	= dl_tunerResult6;
+	m_r[1].line2Tag	= dl_tunerResultTag6;
+	m_r[2].box	= sbTunerResults3;
+	m_r[2].line0	= dl_tunerResult7;
+	m_r[2].line0Tag	= dl_tunerResultTag7;
+	m_r[2].line1	= dl_tunerResult8;
+	m_r[2].line1Tag	= dl_tunerResultTag8;
+	m_r[2].line2	= dl_tunerResult9;
+	m_r[2].line2Tag	= dl_tunerResultTag9;
+	m_r[3].box	= sbTunerResults4;
+	m_r[3].line0	= dl_tunerResult10;
+	m_r[3].line0Tag	= dl_tunerResultTag10;
+	m_r[3].line1	= dl_tunerResult11;
+	m_r[3].line1Tag	= dl_tunerResultTag11;
+	m_r[3].line2	= dl_tunerResult12;
+	m_r[3].line2Tag	= dl_tunerResultTag12;
 
+	// Start out with everything hidden.
 	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
-		m_r.component[i].box->GetStaticBox()->Hide();
+		m_r[i].box->GetStaticBox()->Hide();
 	}
 }
 
@@ -1341,7 +1344,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 {
 	DISPLAYED_RESULTS *d = &m_results[type];
 	ONE_COMPONENT *c;
-	RESULT_MAP_COMPONENT *r;
+	RESULT_MAP *r;
 
 	int i;
 
@@ -1370,7 +1373,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	// Handle invalid case first.
 	if(!d->validSolution) {
 		for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
-			r = &m_r.component[i];
+			r = &m_r[i];
 			r->box->GetStaticBox()->Hide();
 			r->line0->Hide();
 			r->line0Tag->Hide();
@@ -1380,7 +1383,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line2Tag->Hide();
 		}
 
-		r = &m_r.component[0];
+		r = &m_r[0];
 		r->box->GetStaticBox()->Show();
 		r->box->GetStaticBox()->SetLabel("Invalid");
 		r->line0Tag->Show();
@@ -1392,7 +1395,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 
 	// Set up to display the appropriate fields.
 	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
-		r = &m_r.component[i];
+		r = &m_r[i];
 		if(count == 2 && i == 2) {
 			// For simple L-networks, hide the third component
 			// completely.
@@ -1437,11 +1440,11 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	}
 
 	// Work backwards so we can solve for impedances/admittances.
-	zCombined[MAX_COMPONENTS] = zLoad;
-	yCombined[MAX_COMPONENTS] = yLoad;
-	zComp[MAX_COMPONENTS]=complex<double>(0.0,0.0);
-	yComp[MAX_COMPONENTS]=complex<double>(0.0,0.0);
-	for(i = (MAX_COMPONENTS - 1); i >= 0; i--) {
+	zCombined[count] = zLoad;
+	yCombined[count] = yLoad;
+	zComp[count]=complex<double>(0.0,0.0);
+	yComp[count]=complex<double>(0.0,0.0);
+	for(i = (count - 1); i >= 0; i--) {
 		c = &d->component[i];
 		zComp[i] = complex<double>(c->resistance, c->reactance);
 		yComp[i] = 1.0 / zComp[i];
@@ -1458,7 +1461,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	// Work forwards so we can solve for voltages/currents.
 	voltage[0] = m_voltageForPower;
 	current[0] = m_currentForPower;
-	for(i = 0; i < MAX_COMPONENTS; i++) {
+	for(i = 0; i < count; i++) {
 		c = &d->component[i];
 
 		if(c->arrangement == IS_PAR) {
@@ -1471,7 +1474,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	// We can now display the various components.
 	for(i = 0; i < count; i++) {
 		c = &d->component[i];
-		r = &m_r.component[i];
+		r = &m_r[i];
 		r->box->GetStaticBox()->SetLabel(c->label);
 		r->line0->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
 		if(c->type == 'C') {
@@ -1497,7 +1500,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 		}
 	}
 
-	r = &m_r.component[3];
+	r = &m_r[3];
 	r->box->GetStaticBox()->Show();
 	r->box->GetStaticBox()->SetLabel("Other");
 	r->line0->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));

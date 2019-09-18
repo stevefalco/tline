@@ -89,10 +89,6 @@ typedef struct {
 
 	wxTextCtrl*		line2;
 	wxStaticText*		line2Tag;
-} RESULT_MAP_COMPONENT;
-
-typedef struct {
-	RESULT_MAP_COMPONENT	component[MAX_COMPONENTS + 1];
 } RESULT_MAP;
 
 class tuner : public tunerDialog
@@ -272,9 +268,9 @@ class tuner : public tunerDialog
 		double		m_ctX;
 		bool		m_lptValid;
 
-		DISPLAYED_RESULTS	m_results[USE_LAST];
+		RESULT_MAP	m_r[MAX_COMPONENTS + 1];
 
-		RESULT_MAP	m_r;
+		DISPLAYED_RESULTS	m_results[USE_LAST];
 };
 
 #endif // __tuner__
