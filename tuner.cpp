@@ -1325,10 +1325,31 @@ void tuner::buildResults()
 		}
 	}
 
-	// Gray out any invalid solutions; enable all valid ones.
+	// Hide invalid solutions; show valid ones.
 	for(i = 0; i < USE_LAST; i++) {
 		d = &m_results[i];
-		dl_topology->Enable(i, d->validSolution);
+		dl_topology->Show(i, d->validSolution);
+	}
+
+	// If the current item is hidden, try pick the first valid one that we find.
+	if(!dl_topology->IsItemShown(dl_topology->GetSelection())) {
+		for(i = 0; i < USE_LAST; i++) {
+			d = &m_results[i];
+			if(d->validSolution) {
+				dl_topology->SetSelection(i);
+				m_tunerTopologyStr = dl_topology->GetString(i);
+				dl_bitmap->Show();
+				break;
+			}
+		}
+		if(i == USE_LAST) {
+			// There is no valid topology.  Hide the bitmap to avoid
+			// confusion.
+			dl_bitmap->Hide();
+		}
+	} else {
+		// The current item is shown, so show the bitmap too.
+		dl_bitmap->Show();
 	}
 }
 
