@@ -1446,7 +1446,19 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line3->Hide();
 			r->line3Tag->Hide();
 		} else if(count == 2 && i == 3) {
-			// For simple L-networks, we need two slots in the
+			// For simple L-networks, we need three slots in the
+			// fourth component.
+			r->box->GetStaticBox()->Show();
+			r->line0->Show();
+			r->line0Tag->Show();
+			r->line1->Show();
+			r->line1Tag->Show();
+			r->line2->Show();
+			r->line2Tag->Show();
+			r->line3->Hide();
+			r->line3Tag->Hide();
+		} else if(count == 3 && i == 3) {
+			// For PI and T networks, we need two slots in the
 			// fourth component.
 			r->box->GetStaticBox()->Show();
 			r->line0->Show();
@@ -1457,20 +1469,8 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line2Tag->Hide();
 			r->line3->Hide();
 			r->line3Tag->Hide();
-		} else if(count == 3 && i == 3) {
-			// For PI and T networks, we need one slot in the
-			// fourth component.
-			r->box->GetStaticBox()->Show();
-			r->line0->Show();
-			r->line0Tag->Show();
-			r->line1->Hide();
-			r->line1Tag->Hide();
-			r->line2->Hide();
-			r->line2Tag->Hide();
-			r->line3->Hide();
-			r->line3Tag->Hide();
 		} else {
-			// In all other cases, we need all three slots in
+			// In all other cases, we need all four slots in
 			// the component.
 			r->box->GetStaticBox()->Show();
 			r->line0->Show();
@@ -1511,8 +1511,10 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 
 		if(c->arrangement == IS_PAR) {
 			current[i + 1] = voltage[i] / zCombined[i + 1];
+			voltage[i + 1] = current[i + 1] * zCombined[i + 1];
 		} else {
 			voltage[i + 1] = current[i] * zCombined[i + 1];
+			current[i + 1] = voltage[i + 1] / zCombined[i + 1];
 		}
 	}
 
@@ -1529,31 +1531,41 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 		}
 
 		if(c->arrangement == IS_PAR) {
-			// Use voltage for loss.
 			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i])));
 			r->line1Tag->SetLabel("Voltage Across");
 
-			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), powerFromVoltage(voltage[i], yComp[i])));
-			r->line2Tag->SetLabel("Loss (Watts)");
-		} else {
-			// Use current for loss.
-			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i])));
-			r->line1Tag->SetLabel("Current Through");
+			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i + 1] - current[i])));
+			r->line2Tag->SetLabel("Current Through");
 
-			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
-			r->line2Tag->SetLabel("Loss (Watts)");
+			// Use voltage for loss.
+			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), powerFromVoltage(voltage[i], yComp[i])));
+			r->line3Tag->SetLabel("Loss (Watts)");
+		} else {
+			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i + 1] - voltage[i])));
+			r->line1Tag->SetLabel("Voltage Across");
+
+			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i])));
+			r->line2Tag->SetLabel("Current Through");
+
+			// Use current for loss.
+			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
+			r->line3Tag->SetLabel("Loss (Watts)");
 		}
 	}
 
 	r = &m_r[3];
 	r->box->GetStaticBox()->Show();
 	r->box->GetStaticBox()->SetLabel("Notes");
+
 	r->line0->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
 	r->line0Tag->SetLabel("Source Voltage");
 
+	r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[count])));
+	r->line1Tag->SetLabel("Load Voltage");
+
 	if(count == 2) {
-		r->line1->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
-		r->line1Tag->SetLabel("Network Q");
+		r->line2->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
+		r->line2Tag->SetLabel("Network Q");
 	}
 
 	Layout();
