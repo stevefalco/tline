@@ -389,9 +389,11 @@ void tuner::lnetAlgorithm(wxString where, LNET_RESULTS *result)
 	//
 	// The real parts should be equal, and the imaginary parts should have
 	// opposite signs, since we expect a conjugate match.
+	//
+	// Also, we want "normal" values for x1 and b2.  I.e., not NaN, inf, etc.
 	left = complex<double>(ra, m_xA + x1);
 	right = 1.0 / complex<double>(gB, bB + b2);
-	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
+	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10 && isnormal(x1) && isnormal(b2)) {
 		// This solution is good.  Store the reactances and component values.
 		p->seriesComponentReactance = x1a;
 		p->parallelComponentReactance = x2a;
@@ -446,9 +448,11 @@ void tuner::lnetAlgorithm(wxString where, LNET_RESULTS *result)
 	//
 	// The real parts should be equal, and the imaginary parts should have
 	// opposite signs, since we expect a conjugate match.
+	//
+	// Also, we want "normal" values for x1 and b2.  I.e., not NaN, inf, etc.
 	left = complex<double>(ra, m_xA + x1);
 	right = 1.0 / complex<double>(gB, bB + b2);
-	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10) {
+	if(fabs(real(left) - real(right)) < 1E-10 && fabs(imag(left) + imag(right)) < 1E-10 && isnormal(x1) && isnormal(b2)) {
 		// This solution is good.  Store the reactances and component values.
 		p->seriesComponentReactance = x1b;
 		p->parallelComponentReactance = x2b;
@@ -558,6 +562,9 @@ bool tuner::tryPI(
 		xAdded = 1.0 / (m_networkQ * real(yA) + imag(yA));
 	} else {
 		xAdded = 1.0 / (imag(yA) - m_networkQ * real(yA));
+	}
+	if(!isnormal(xAdded)) {
+		return FALSE;
 	}
 
 	// What component type would we be adding?  It has to be an inductor for an HPPI
@@ -760,6 +767,9 @@ bool tuner::tryT(
 		xTotal = -ra * m_networkQ;
 		xAdded = xTotal - xa;
 		rAdded = -xAdded / m_capacitorQ;
+	}
+	if(!isnormal(xAdded)) {
+		return FALSE;
 	}
 
 	// What component type would we be adding?  It has to be an inductor for an LPT
