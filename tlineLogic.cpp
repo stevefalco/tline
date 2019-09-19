@@ -194,6 +194,11 @@ void tlineLogic::loadFile( wxString path )
 			m_tunerInit = TRUE;
 		}
 
+		if(strcmp(buffer, "m_tunerPower") == 0) {
+			m_tunerPowerStr = p;
+			m_tunerInit = TRUE;
+		}
+
 		if(strcmp(buffer, "m_tunerSourceResistance") == 0) {
 			m_tunerSourceResistanceStr = p;
 			m_tunerInit = TRUE;
@@ -214,8 +219,18 @@ void tlineLogic::loadFile( wxString path )
 			m_tunerInit = TRUE;
 		}
 
-		if(strcmp(buffer, "m_tunerQ") == 0) {
-			m_tunerQStr = p;
+		if(strcmp(buffer, "m_tunerNetworkQ") == 0) {
+			m_tunerNetworkQStr = p;
+			m_tunerInit = TRUE;
+		}
+
+		if(strcmp(buffer, "m_tunerInductorQ") == 0) {
+			m_tunerInductorQStr = p;
+			m_tunerInit = TRUE;
+		}
+
+		if(strcmp(buffer, "m_tunerCapacitorQ") == 0) {
+			m_tunerCapacitorQStr = p;
 			m_tunerInit = TRUE;
 		}
 
@@ -295,11 +310,14 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	// Save tuner parameters
 	if(m_tunerInit) {
 		fprintf(fp, "m_tunerFrequency=%s\n",		(const char *)m_tunerFrequencyStr.mb_str());
+		fprintf(fp, "m_tunerPower=%s\n",		(const char *)m_tunerPowerStr.mb_str());
 		fprintf(fp, "m_tunerSourceResistance=%s\n",	(const char *)m_tunerSourceResistanceStr.mb_str());
 		fprintf(fp, "m_tunerSourceReactance=%s\n",	(const char *)m_tunerSourceReactanceStr.mb_str());
 		fprintf(fp, "m_tunerLoadResistance=%s\n",	(const char *)m_tunerLoadResistanceStr.mb_str());
 		fprintf(fp, "m_tunerLoadReactance=%s\n",	(const char *)m_tunerLoadReactanceStr.mb_str());
-		fprintf(fp, "m_tunerQ=%s\n",			(const char *)m_tunerQStr.mb_str());
+		fprintf(fp, "m_tunerNetworkQ=%s\n",		(const char *)m_tunerNetworkQStr.mb_str());
+		fprintf(fp, "m_tunerInductorQ=%s\n",		(const char *)m_tunerInductorQStr.mb_str());
+		fprintf(fp, "m_tunerCapacitorQ=%s\n",		(const char *)m_tunerCapacitorQStr.mb_str());
 		fprintf(fp, "m_tunerTopology=%s\n",		(const char *)m_tunerTopologyStr.mb_str());
 	}
 
@@ -475,32 +493,41 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 	if(m_tunerInit == FALSE) {
 		// Start the tuner off with reasonable values.
 		m_tunerFrequencyStr = m_frequencyStr;
+		m_tunerPowerStr = m_powerStr;
 		m_tunerSourceResistanceStr = "50.0";
 		m_tunerSourceReactanceStr = "0.0";
 		m_tunerLoadResistanceStr = wxString::Format(wxT("%.2f"), real(m_zInput));
 		m_tunerLoadReactanceStr = wxString::Format(wxT("%.2f"), imag(m_zInput));
-		m_tunerQStr= "1.0";
+		m_tunerNetworkQStr= "1.0";
+		m_tunerInductorQStr= "200.0";
+		m_tunerCapacitorQStr= "2000.0";
 		m_tunerTopologyStr = _("Two Cap (Cpar Cser)");
 
 		m_tunerInit = TRUE;
 	}
 
 	dialog->m_tunerFrequencyStr = m_tunerFrequencyStr;
+	dialog->m_tunerPowerStr = m_tunerPowerStr;
 	dialog->m_tunerSourceResistanceStr = m_tunerSourceResistanceStr;
 	dialog->m_tunerSourceReactanceStr = m_tunerSourceReactanceStr;
 	dialog->m_tunerLoadResistanceStr = m_tunerLoadResistanceStr;
 	dialog->m_tunerLoadReactanceStr = m_tunerLoadReactanceStr;
-	dialog->m_tunerQStr = m_tunerQStr;
+	dialog->m_tunerNetworkQStr = m_tunerNetworkQStr;
+	dialog->m_tunerInductorQStr = m_tunerInductorQStr;
+	dialog->m_tunerCapacitorQStr = m_tunerCapacitorQStr;
 	dialog->m_tunerTopologyStr = m_tunerTopologyStr;
 	dialog->Update();
 
 	if (dialog->ShowModal() == wxID_OK) {
 		m_tunerFrequencyStr = dialog->m_tunerFrequencyStr;
+		m_tunerPowerStr = dialog->m_tunerPowerStr;
 		m_tunerSourceResistanceStr = dialog->m_tunerSourceResistanceStr;
 		m_tunerSourceReactanceStr = dialog->m_tunerSourceReactanceStr;
 		m_tunerLoadResistanceStr = dialog->m_tunerLoadResistanceStr;
 		m_tunerLoadReactanceStr = dialog->m_tunerLoadReactanceStr;
-		m_tunerQStr = dialog->m_tunerQStr;
+		m_tunerNetworkQStr = dialog->m_tunerNetworkQStr;
+		m_tunerInductorQStr = dialog->m_tunerInductorQStr;
+		m_tunerCapacitorQStr = dialog->m_tunerCapacitorQStr;
 		m_tunerTopologyStr = dialog->m_tunerTopologyStr;
 	}
 }
@@ -618,8 +645,6 @@ static wxWindow* createMyExtraPanel(wxWindow *parent)
 // otherwise the backslashes are interpolated and the paths don't work.
 bool tlineLogic::setOutput( wxFFile* file )
 {
-	char			buffer[512];
-	char			*p;
 	const char		*q = "png";
 	wxString		fileName;
 

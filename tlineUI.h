@@ -244,6 +244,8 @@ class tunerDialog : public wxDialog
 	protected:
 		wxStaticText* dl_tunerFrequencyTag;
 		wxTextCtrl* dl_tunerFrequency;
+		wxStaticText* dl_tunerPowerTag;
+		wxTextCtrl* dl_tunerPower;
 		wxStaticText* dl_tunerSourceResistanceTag;
 		wxTextCtrl* dl_tunerSourceResistance;
 		wxStaticText* dl_tunerSourceReactanceTag;
@@ -252,8 +254,13 @@ class tunerDialog : public wxDialog
 		wxTextCtrl* dl_tunerLoadResistance;
 		wxStaticText* dl_tunerLoadReactanceTag;
 		wxTextCtrl* dl_tunerLoadReactance;
-		wxStaticText* dl_tunerQtag;
-		wxTextCtrl* dl_tunerQ;
+		wxStaticText* dl_tunerInductorQTag;
+		wxTextCtrl* dl_tunerInductorQ;
+		wxStaticText* dl_tunerCapacitorQTag;
+		wxTextCtrl* dl_tunerCapacitorQ;
+		wxStaticText* dl_tunerNetworkQTag;
+		wxTextCtrl* dl_tunerNetworkQ;
+		wxStaticBoxSizer* sbTunerResults1;
 		wxStaticText* dl_tunerResultTag1;
 		wxTextCtrl* dl_tunerResult1;
 		wxStaticText* dl_tunerResultTag2;
@@ -262,6 +269,33 @@ class tunerDialog : public wxDialog
 		wxTextCtrl* dl_tunerResult3;
 		wxStaticText* dl_tunerResultTag4;
 		wxTextCtrl* dl_tunerResult4;
+		wxStaticBoxSizer* sbTunerResults2;
+		wxStaticText* dl_tunerResultTag5;
+		wxTextCtrl* dl_tunerResult5;
+		wxStaticText* dl_tunerResultTag6;
+		wxTextCtrl* dl_tunerResult6;
+		wxStaticText* dl_tunerResultTag7;
+		wxTextCtrl* dl_tunerResult7;
+		wxStaticText* dl_tunerResultTag8;
+		wxTextCtrl* dl_tunerResult8;
+		wxStaticBoxSizer* sbTunerResults3;
+		wxStaticText* dl_tunerResultTag9;
+		wxTextCtrl* dl_tunerResult9;
+		wxStaticText* dl_tunerResultTag10;
+		wxTextCtrl* dl_tunerResult10;
+		wxStaticText* dl_tunerResultTag11;
+		wxTextCtrl* dl_tunerResult11;
+		wxStaticText* dl_tunerResultTag12;
+		wxTextCtrl* dl_tunerResult12;
+		wxStaticBoxSizer* sbTunerResults4;
+		wxStaticText* dl_tunerResultTag13;
+		wxTextCtrl* dl_tunerResult13;
+		wxStaticText* dl_tunerResultTag14;
+		wxTextCtrl* dl_tunerResult14;
+		wxStaticText* dl_tunerResultTag15;
+		wxTextCtrl* dl_tunerResult15;
+		wxStaticText* dl_tunerResultTag16;
+		wxTextCtrl* dl_tunerResult16;
 		wxRadioBox* dl_topology;
 		wxStaticBitmap* dl_bitmap;
 		wxStaticText* dl_tunerParameterNote;
@@ -269,23 +303,29 @@ class tunerDialog : public wxDialog
 		wxButton* dl_tunerOKbutton;
 
 		// Virtual event handlers, overide them in your derived class
-		virtual void onFrequency( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onSourceResistance( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onSourceReactance( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onLoadResistance( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onLoadReactance( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onQ( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerFrequency( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerPower( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerSourceResistance( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerSourceReactance( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerLoadResistance( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerLoadReactance( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerInductorQ( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerCapacitorQ( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onTunerNetworkQ( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerTopologySelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerOKclicked( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 		wxString m_tunerFrequencyStr;
+		wxString m_tunerPowerStr;
 		wxString m_tunerSourceResistanceStr;
 		wxString m_tunerSourceReactanceStr;
 		wxString m_tunerLoadResistanceStr;
 		wxString m_tunerLoadReactanceStr;
-		wxString m_tunerQStr;
+		wxString m_tunerInductorQStr;
+		wxString m_tunerCapacitorQStr;
+		wxString m_tunerNetworkQStr;
 
 		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();
