@@ -71,7 +71,7 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 	SetIcon(wxICON(aaaa));
 
 	// We need a convenient way to map from array indexing
-	// to the gui names.
+	// to the gui structures.
 	m_r[0].box	= sbTunerResults1;
 	m_r[0].line0	= dl_tunerResult1;
 	m_r[0].line0Tag	= dl_tunerResultTag1;
@@ -101,7 +101,7 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 	m_r[3].line2	= dl_tunerResult12;
 	m_r[3].line2Tag	= dl_tunerResultTag12;
 
-	// Start out with everything hidden.
+	// Start out with all results hidden.
 	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
 		m_r[i].box->GetStaticBox()->Hide();
 	}
@@ -377,7 +377,7 @@ void tuner::lnetAlgorithm(wxString where, LNET_RESULTS *result)
 	x2a = -1.0 / b2;
 
 	// Check solution 1, as it may be bogus because of failures to overlap
-	// the resistance/admittance circles.
+	// the impedance/admittance circles.
 	//
 	// The real parts should be equal, and the imaginary parts should have
 	// opposite signs, since we expect a conjugate match.
@@ -392,7 +392,7 @@ void tuner::lnetAlgorithm(wxString where, LNET_RESULTS *result)
 		// Find the network Q.
 		p->qualityFactor = fabs((m_xA + x1) / ra);
 
-		// Calculate the next values of the resistive part of the series
+		// Calculate the values of the resistive part of the series
 		// and parallel components.
 		if(p->parallelComponentType == 'C') {
 			p->parallelComponentResistance = -p->parallelComponentReactance / m_capacitorQ;
@@ -449,7 +449,7 @@ void tuner::lnetAlgorithm(wxString where, LNET_RESULTS *result)
 		// Find the network Q.
 		p->qualityFactor = fabs((m_xA + x1) / ra);
 
-		// Calculate the next values of the resistive part of the series
+		// Calculate the values of the resistive part of the series
 		// and parallel components.
 		if(p->parallelComponentType == 'C') {
 			p->parallelComponentResistance = -p->parallelComponentReactance / m_capacitorQ;
@@ -474,12 +474,6 @@ void tuner::lnetAlgorithm(wxString where, LNET_RESULTS *result)
 				p->seriesComponentResistance,
 				p->seriesComponentReactance);
 	}
-}
-
-// Compute resistors in parallel.
-double tuner::parRes(double a, double b)
-{
-	return 1.0 / (1.0 / a + 1.0 / b);
 }
 
 void tuner::recalculateLnet(LNET_RESULTS *result)
@@ -562,7 +556,9 @@ bool tuner::tryPI(
 	// or a capacitor for an LPPI.
 	if((wantInductance == TRUE && xAdded >= 0.0) ||
 			(wantInductance == FALSE && xAdded <= 0.0)) {
-		// It is correct.  Calculate inductance in nH or capacitance in pF.
+		// The component type is correct.  Calculate inductance in nH or
+		// capacitance in pF.  Also find the resistive value for the
+		// (lossy) components.
 		if(wantInductance == TRUE) {
 			value = 1E9 * (xAdded / w);
 			rAdded = xAdded / m_inductorQ;
@@ -593,15 +589,13 @@ bool tuner::tryPI(
 		for(j = 0; j < 2; j++) {
 			p = &result.s[slot][j];
 			if(p->type != -1) {
-				// L-net found something.  Test this solution.
+				// L-net found something.  Test this solution - we must
+				// be sure not to exceed the specified Q.
 				zAdded = complex<double>(0, p->parallelComponentReactance);
 				zCombined = 1.0 / ((1.0 / zB) + (1.0 / zAdded));
 				if((m_networkQ - fabs(imag(zCombined) / real(zCombined))) > -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
-					//
-					// The series component must be an inductor, and the parallel
-					// component must be a capacitor.
 					if((p->seriesComponentType == expectSer) &&
 							(p->parallelComponentType == expectPar)) {
 						// Good component types.
@@ -638,6 +632,8 @@ void tuner::recalculateHPPI()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
+	//
+	// Try source on the left and load on the right.
 	if(tryPI("HPPI", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_lspi,
 				&m_lspiR,
@@ -653,6 +649,7 @@ void tuner::recalculateHPPI()
 		return;
 	}
 
+	// Try load on the left and source on the right.
 	if(tryPI("HPPI", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_llpi,
 				&m_llpiR,
@@ -668,6 +665,7 @@ void tuner::recalculateHPPI()
 		return;
 	}
 
+	// Neither one is valid.
 	m_hppiValid = FALSE;
 }
 
@@ -675,6 +673,8 @@ void tuner::recalculateLPPI()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
+	//
+	// Try source on the left and load on the right.
 	if(tryPI("LPPI", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_cspi,
 				&m_cspiR,
@@ -690,6 +690,7 @@ void tuner::recalculateLPPI()
 		return;
 	}
 
+	// Try load on the left and source on the right.
 	if(tryPI("LPPI", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_clpi,
 				&m_clpiR,
@@ -705,6 +706,7 @@ void tuner::recalculateLPPI()
 		return;
 	}
 
+	// Neither one is valid.
 	m_lppiValid = FALSE;
 }
 
@@ -756,7 +758,9 @@ bool tuner::tryT(
 	// or a capacitor for an HPT.
 	if((wantInductance == TRUE && xAdded >= 0.0) ||
 			(wantInductance == FALSE && xAdded <= 0.0)) {
-		// It is correct.  Calculate inductance in nH or capacitance in pF.
+		// The component type is correct.  Calculate inductance in nH or
+		// capacitance in pF.  Also find the resistive value for the
+		// (lossy) components.
 		if(wantInductance == TRUE) {
 			value = 1E9 * (xAdded / w);
 		} else {
@@ -782,13 +786,11 @@ bool tuner::tryT(
 		for(i = 0; i < 2; i++) {
 			p = &result.s[slot][i];
 			if(p->type != -1) {
-				// L-net found something.  Test this solution.
+				// L-net found something.  Test this solution - we must
+				// be sure not to exceed the specified Q.
 				if(m_networkQ - fabs((m_xA + p->seriesComponentReactance) / m_rA) >= -1E-10) {
 					// This solution is ok from a Q perspective.  However, the
 					// component types may or may not be correct.
-					//
-					// The series component must be an inductor, and the parallel
-					// component must be a capacitor.
 					if((p->seriesComponentType == expectSer) &&
 							(p->parallelComponentType == expectPar)) {
 						// Good component types.
@@ -824,6 +826,8 @@ void tuner::recalculateHPT()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
+	//
+	// Try source on the left and load on the right.
 	if(tryT("HPT", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_cst,
 				&m_cstR,
@@ -839,6 +843,7 @@ void tuner::recalculateHPT()
 		return;
 	}
 
+	// Try load on the left and source on the right.
 	if(tryT("HPT", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_clt,
 				&m_cltR,
@@ -854,6 +859,7 @@ void tuner::recalculateHPT()
 		return;
 	}
 
+	// Neither one is valid.
 	m_hptValid = FALSE;
 }
 
@@ -861,6 +867,8 @@ void tuner::recalculateLPT()
 {
 	// Because of the Q constraint, we have to try this two ways, and see
 	// which one works.
+	//
+	// Try source on the left and load on the right.
 	if(tryT("LPT", 0, m_sourceResistance, m_sourceReactance, m_loadResistance, m_loadReactance,
 				&m_lst,
 				&m_lstR,
@@ -876,6 +884,7 @@ void tuner::recalculateLPT()
 		return;
 	}
 
+	// Try load on the left and source on the right.
 	if(tryT("LPT", 1, m_loadResistance, m_loadReactance, m_sourceResistance, m_sourceReactance,
 				&m_llt,
 				&m_lltR,
@@ -891,6 +900,7 @@ void tuner::recalculateLPT()
 		return;
 	}
 
+	// Neither one is valid.
 	m_lptValid = FALSE;
 }
 
@@ -1090,6 +1100,9 @@ void tuner::buildHPPI(DISPLAYED_RESULTS *d)
 	ONE_COMPONENT *c;
 
 	d->validSolution = m_hppiValid;
+	if(!d->validSolution) {
+		return;
+	}
 
 	c = &d->component[0];
 	c->type = 'L';
@@ -1124,6 +1137,9 @@ void tuner::buildLPPI(DISPLAYED_RESULTS *d)
 	ONE_COMPONENT *c;
 
 	d->validSolution = m_lppiValid;
+	if(!d->validSolution) {
+		return;
+	}
 
 	c = &d->component[0];
 	c->type = 'C';
@@ -1158,6 +1174,9 @@ void tuner::buildHPT(DISPLAYED_RESULTS *d)
 	ONE_COMPONENT *c;
 
 	d->validSolution = m_hptValid;
+	if(!d->validSolution) {
+		return;
+	}
 
 	c = &d->component[0];
 	c->type = 'C';
@@ -1192,6 +1211,9 @@ void tuner::buildLPT(DISPLAYED_RESULTS *d)
 	ONE_COMPONENT *c;
 
 	d->validSolution = m_lptValid;
+	if(!d->validSolution) {
+		return;
+	}
 
 	c = &d->component[0];
 	c->type = 'L';
@@ -1285,6 +1307,7 @@ void tuner::buildResults()
 		}
 	}
 
+	// Gray out any invalid solutions; enable all valid ones.
 	for(i = 0; i < USE_LAST; i++) {
 		d = &m_results[i];
 		dl_topology->Enable(i, d->validSolution);
@@ -1303,6 +1326,8 @@ void tuner::recalculate()
 	m_inductorQ = atof(m_tunerInductorQStr);
 	m_capacitorQ = atof(m_tunerCapacitorQStr);
 
+	// We always calculate every topology, so we can identify the
+	// valid solutions.
 	recalculatePower();
 	recalculateLnet(&m_lnet);
 	recalculateHPPI();
@@ -1312,31 +1337,36 @@ void tuner::recalculate()
 
 	buildResults();
 
-	// Display the appropriate results.
+	// Display the requested topology.  The user won't be able
+	// to select invalid topologies, but they can change a
+	// parameter such that a previously valid topology becomes
+	// invalid.  In that case, they can select away from the
+	// now invalid topology, but cannot go back to it until a
+	// parameter change makes it valid again.
 	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
-		CPCS();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc1), USE_CPCS, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
-		CSCP();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc2), USE_CSCP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
-		LPLS();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll1), USE_LPLS, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
-		LSLP();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll2), USE_LSLP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
-		LCHP();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lchp), USE_LCHP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
-		CLLP();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_cllp), USE_CLLP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar)") == 0) {
-		LCLP();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lclp), USE_LCLP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar)") == 0) {
-		CLHP();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
-		HPPI();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI, 3);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
-		LPPI();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI, 3);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
-		HPT();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT, 3);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
-		LPT();
+		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT, 3);
 	}
 }
 
@@ -1347,9 +1377,6 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	RESULT_MAP *r;
 
 	int i;
-
-	complex<double> zSource = complex<double>(m_sourceResistance, m_sourceReactance);
-	complex<double> ySource = 1.0 / zSource;
 
 	complex<double> zLoad = complex<double>(m_loadResistance, m_loadReactance);;
 	complex<double> yLoad = 1.0 / zLoad;
@@ -1502,7 +1529,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 
 	r = &m_r[3];
 	r->box->GetStaticBox()->Show();
-	r->box->GetStaticBox()->SetLabel("Other");
+	r->box->GetStaticBox()->SetLabel("Notes");
 	r->line0->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
 	r->line0Tag->SetLabel("Source Voltage");
 
@@ -1512,64 +1539,4 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	}
 
 	Layout();
-}
-
-void tuner::CPCS()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc1), USE_CPCS, 2);
-}
-
-void tuner::CSCP()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc2), USE_CSCP, 2);
-}
-
-void tuner::LPLS()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll1), USE_LPLS, 2);
-}
-
-void tuner::LSLP()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll2), USE_LSLP, 2);
-}
-
-void tuner::LCHP()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lchp), USE_LCHP, 2);
-}
-
-void tuner::CLLP()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_cllp), USE_CLLP, 2);
-}
-
-void tuner::LCLP()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lclp), USE_LCLP, 2);
-}
-
-void tuner::CLHP()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
-}
-
-void tuner::HPPI()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI, 3);
-}
-
-void tuner::LPPI()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI, 3);
-}
-
-void tuner::HPT()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT, 3);
-}
-
-void tuner::LPT()
-{
-	show3Part(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT, 3);
 }

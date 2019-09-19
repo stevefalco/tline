@@ -167,7 +167,6 @@ class tuner : public tunerDialog
 		void		recalculateLnet(LNET_RESULTS *result);
 		void		recalculate();
 
-		double		parRes(double a, double b);
 		void		findLnetComponentValues(LNET_RESULTS *result, double w, double x1, double x2, int slot);
 		void		lnetInit(LNET_RESULTS *result);
 		void		lnetAlgorithm(wxString where, LNET_RESULTS *result);
@@ -186,19 +185,6 @@ class tuner : public tunerDialog
 		void		buildLPT(DISPLAYED_RESULTS *d);
 
 		void		buildResults();
-
-		void		CPCS();
-		void		CSCP();
-		void		LPLS();
-		void		LSLP();
-		void		LCHP();
-		void		CLLP();
-		void		LCLP();
-		void		CLHP();
-		void		HPPI();
-		void		LPPI();
-		void		HPT();
-		void		LPT();
 
 		void		show3Part(wxBitmap bmp, int type, int count);
 
