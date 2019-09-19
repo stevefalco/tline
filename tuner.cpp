@@ -79,27 +79,35 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 	m_r[0].line1Tag	= dl_tunerResultTag2;
 	m_r[0].line2	= dl_tunerResult3;
 	m_r[0].line2Tag	= dl_tunerResultTag3;
+	m_r[0].line3	= dl_tunerResult4;
+	m_r[0].line3Tag	= dl_tunerResultTag4;
 	m_r[1].box	= sbTunerResults2;
-	m_r[1].line0	= dl_tunerResult4;
-	m_r[1].line0Tag	= dl_tunerResultTag4;
-	m_r[1].line1	= dl_tunerResult5;
-	m_r[1].line1Tag	= dl_tunerResultTag5;
-	m_r[1].line2	= dl_tunerResult6;
-	m_r[1].line2Tag	= dl_tunerResultTag6;
+	m_r[1].line0	= dl_tunerResult5;
+	m_r[1].line0Tag	= dl_tunerResultTag5;
+	m_r[1].line1	= dl_tunerResult6;
+	m_r[1].line1Tag	= dl_tunerResultTag6;
+	m_r[1].line2	= dl_tunerResult7;
+	m_r[1].line2Tag	= dl_tunerResultTag7;
+	m_r[1].line3	= dl_tunerResult8;
+	m_r[1].line3Tag	= dl_tunerResultTag8;
 	m_r[2].box	= sbTunerResults3;
-	m_r[2].line0	= dl_tunerResult7;
-	m_r[2].line0Tag	= dl_tunerResultTag7;
-	m_r[2].line1	= dl_tunerResult8;
-	m_r[2].line1Tag	= dl_tunerResultTag8;
-	m_r[2].line2	= dl_tunerResult9;
-	m_r[2].line2Tag	= dl_tunerResultTag9;
+	m_r[2].line0	= dl_tunerResult9;
+	m_r[2].line0Tag	= dl_tunerResultTag9;
+	m_r[2].line1	= dl_tunerResult10;
+	m_r[2].line1Tag	= dl_tunerResultTag10;
+	m_r[2].line2	= dl_tunerResult11;
+	m_r[2].line2Tag	= dl_tunerResultTag11;
+	m_r[2].line3	= dl_tunerResult12;
+	m_r[2].line3Tag	= dl_tunerResultTag12;
 	m_r[3].box	= sbTunerResults4;
-	m_r[3].line0	= dl_tunerResult10;
-	m_r[3].line0Tag	= dl_tunerResultTag10;
-	m_r[3].line1	= dl_tunerResult11;
-	m_r[3].line1Tag	= dl_tunerResultTag11;
-	m_r[3].line2	= dl_tunerResult12;
-	m_r[3].line2Tag	= dl_tunerResultTag12;
+	m_r[3].line0	= dl_tunerResult13;
+	m_r[3].line0Tag	= dl_tunerResultTag13;
+	m_r[3].line1	= dl_tunerResult14;
+	m_r[3].line1Tag	= dl_tunerResultTag14;
+	m_r[3].line2	= dl_tunerResult15;
+	m_r[3].line2Tag	= dl_tunerResultTag15;
+	m_r[3].line3	= dl_tunerResult16;
+	m_r[3].line3Tag	= dl_tunerResultTag16;
 
 	// Start out with all results hidden.
 	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
@@ -1408,6 +1416,8 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line1Tag->Hide();
 			r->line2->Hide();
 			r->line2Tag->Hide();
+			r->line3->Hide();
+			r->line3Tag->Hide();
 		}
 
 		r = &m_r[0];
@@ -1433,6 +1443,8 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line1Tag->Hide();
 			r->line2->Hide();
 			r->line2Tag->Hide();
+			r->line3->Hide();
+			r->line3Tag->Hide();
 		} else if(count == 2 && i == 3) {
 			// For simple L-networks, we need two slots in the
 			// fourth component.
@@ -1443,6 +1455,8 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line1Tag->Show();
 			r->line2->Hide();
 			r->line2Tag->Hide();
+			r->line3->Hide();
+			r->line3Tag->Hide();
 		} else if(count == 3 && i == 3) {
 			// For PI and T networks, we need one slot in the
 			// fourth component.
@@ -1453,6 +1467,8 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line1Tag->Hide();
 			r->line2->Hide();
 			r->line2Tag->Hide();
+			r->line3->Hide();
+			r->line3Tag->Hide();
 		} else {
 			// In all other cases, we need all three slots in
 			// the component.
@@ -1463,6 +1479,8 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line1Tag->Show();
 			r->line2->Show();
 			r->line2Tag->Show();
+			r->line3->Show();
+			r->line3Tag->Show();
 		}
 	}
 

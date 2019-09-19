@@ -89,6 +89,9 @@ typedef struct {
 
 	wxTextCtrl*		line2;
 	wxStaticText*		line2Tag;
+
+	wxTextCtrl*		line3;
+	wxStaticText*		line3Tag;
 } RESULT_MAP;
 
 class tuner : public tunerDialog
