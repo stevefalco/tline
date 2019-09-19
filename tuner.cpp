@@ -1325,14 +1325,14 @@ void tuner::buildResults()
 		}
 	}
 
-	// Hide invalid solutions; show valid ones.
+	// Disable invalid solutions; enable valid ones.
 	for(i = 0; i < USE_LAST; i++) {
 		d = &m_results[i];
-		dl_topology->Show(i, d->validSolution);
+		dl_topology->Enable(i, d->validSolution);
 	}
 
-	// If the current item is hidden, try pick the first valid one that we find.
-	if(!dl_topology->IsItemShown(dl_topology->GetSelection())) {
+	// If the current item is disabled, try pick the first valid one that we find.
+	if(!dl_topology->IsItemEnabled(dl_topology->GetSelection())) {
 		for(i = 0; i < USE_LAST; i++) {
 			d = &m_results[i];
 			if(d->validSolution) {
