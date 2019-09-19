@@ -1398,6 +1398,9 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	complex<double> voltage[MAX_COMPONENTS + 1];
 	complex<double> current[MAX_COMPONENTS + 1];
 
+	double powerRemaining = m_power;
+	double loss;
+
 	if(bmp.IsOk()) {
 		dl_bitmap->SetBitmap(bmp);
 	} else {
@@ -1446,7 +1449,7 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line3->Hide();
 			r->line3Tag->Hide();
 		} else if(count == 2 && i == 3) {
-			// For simple L-networks, we need three slots in the
+			// For simple L-networks, we need four slots in the
 			// fourth component.
 			r->box->GetStaticBox()->Show();
 			r->line0->Show();
@@ -1455,18 +1458,18 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line1Tag->Show();
 			r->line2->Show();
 			r->line2Tag->Show();
-			r->line3->Hide();
-			r->line3Tag->Hide();
+			r->line3->Show();
+			r->line3Tag->Show();
 		} else if(count == 3 && i == 3) {
-			// For PI and T networks, we need two slots in the
+			// For PI and T networks, we need three slots in the
 			// fourth component.
 			r->box->GetStaticBox()->Show();
 			r->line0->Show();
 			r->line0Tag->Show();
 			r->line1->Show();
 			r->line1Tag->Show();
-			r->line2->Hide();
-			r->line2Tag->Hide();
+			r->line2->Show();
+			r->line2Tag->Show();
 			r->line3->Hide();
 			r->line3Tag->Hide();
 		} else {
@@ -1538,7 +1541,9 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line2Tag->SetLabel("Current Through");
 
 			// Use voltage for loss.
-			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), powerFromVoltage(voltage[i], yComp[i])));
+			loss = powerFromVoltage(voltage[i], yComp[i]);
+			powerRemaining -= loss;
+			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), loss));
 			r->line3Tag->SetLabel("Loss (Watts)");
 		} else {
 			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i + 1] - voltage[i])));
@@ -1548,6 +1553,8 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line2Tag->SetLabel("Current Through");
 
 			// Use current for loss.
+			loss = powerFromCurrent(current[i], zComp[i]);
+			powerRemaining -= loss;
 			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
 			r->line3Tag->SetLabel("Loss (Watts)");
 		}
@@ -1563,9 +1570,12 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 	r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[count])));
 	r->line1Tag->SetLabel("Load Voltage");
 
+	r->line2->ChangeValue(wxString::Format(wxT("%.2f"), powerRemaining));
+	r->line2Tag->SetLabel("Load Power");
+
 	if(count == 2) {
-		r->line2->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
-		r->line2Tag->SetLabel("Network Q");
+		r->line3->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
+		r->line3Tag->SetLabel("Network Q");
 	}
 
 	Layout();
