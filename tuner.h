@@ -44,6 +44,25 @@ using namespace std;
 #define MAX_COMPONENTS		3
 
 typedef struct {
+	complex<double>		zComp;
+	complex<double>		yComp;
+	complex<double>		zCombined;
+	complex<double>		yCombined;
+	complex<double>		voltage;
+	complex<double>		current;
+	double			voltageAcross;
+	double			currentThrough;
+	double			loss;
+} SOLVER_NODE;
+
+typedef struct {
+	complex<double>		zLoad;
+	complex<double>		yLoad;
+	SOLVER_NODE		n[MAX_COMPONENTS + 1];
+	double			powerRemaining;
+} SOLVER;
+
+typedef struct {
 	char			type;				// 'L', 'C', or ' '
 	wxString		label;				// "LS". "CL", etc.
 	int			arrangement;			// IS_PAR or IS_SER
@@ -188,6 +207,10 @@ class tuner : public tunerDialog
 		void		buildLPT(DISPLAYED_RESULTS *d);
 
 		void		buildResults();
+		void		disableInvalid();
+
+		void		calcOne(int type, int count);
+		void		calcAll();
 
 		void		show3Part(wxBitmap bmp, int type, int count);
 
@@ -260,6 +283,8 @@ class tuner : public tunerDialog
 		RESULT_MAP	m_r[MAX_COMPONENTS + 1];
 
 		DISPLAYED_RESULTS	m_results[USE_LAST];
+
+		SOLVER		m_solver[USE_LAST];
 };
 
 #endif // __tuner__

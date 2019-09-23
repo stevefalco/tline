@@ -1285,7 +1285,10 @@ void tuner::buildResults()
 				for(k = 0; k < 2; k++) {
 					s = &m_lnet.s[j][k];
 					if(s->type == i) {
-						// Set the common parameters.
+						// Set the common parameters.  Note that
+						// even though we seem to have a valid
+						// solution here, calcOne() may reject
+						// the solution.
 						d->validSolution = TRUE;
 						d->networkQ = s->qualityFactor;
 						
@@ -1324,6 +1327,13 @@ void tuner::buildResults()
 			}
 		}
 	}
+}
+
+void tuner::disableInvalid()
+{
+	int i;
+
+	DISPLAYED_RESULTS *d;
 
 	// Disable invalid solutions; enable valid ones.
 	for(i = 0; i < USE_LAST; i++) {
@@ -1376,6 +1386,10 @@ void tuner::recalculate()
 
 	buildResults();
 
+	calcAll();
+
+	disableInvalid();
+
 	// Display the requested topology.  The user won't be able
 	// to select invalid topologies, but they can change a
 	// parameter such that a previously valid topology becomes
@@ -1409,28 +1423,113 @@ void tuner::recalculate()
 	}
 }
 
+void tuner::calcOne(int type, int count)
+{
+	DISPLAYED_RESULTS *d = &m_results[type];
+	ONE_COMPONENT *c;
+	SOLVER *s = &m_solver[type];
+	SOLVER_NODE *sn;
+	SOLVER_NODE *snNext;
+
+	int i;
+
+	s->zLoad = complex<double>(m_loadResistance, m_loadReactance);;
+	s->yLoad = 1.0 / s->zLoad;
+
+	s->powerRemaining = m_power;
+
+	// Work backwards so we can solve for impedances/admittances.
+	sn = &s->n[count];
+	sn->zCombined = s->zLoad;
+	sn->yCombined = s->yLoad;
+	sn->zComp = complex<double>(0.0,0.0);
+	sn->yComp = complex<double>(0.0,0.0);
+	for(i = (count - 1); i >= 0; i--) {
+		c = &d->component[i];
+		sn = &s->n[i];
+		snNext = &s->n[i + 1];
+		sn->zComp = complex<double>(c->resistance, c->reactance);
+		sn->yComp = 1.0 / sn->zComp;
+
+		if(c->arrangement == IS_PAR) {
+			sn->yCombined = sn->yComp + snNext->yCombined;
+			sn->zCombined = 1.0 / sn->yCombined;
+		} else {
+			sn->zCombined = sn->zComp + snNext->zCombined;
+			sn->yCombined = 1.0 / sn->zCombined;
+		}
+	}
+
+	// Work forwards so we can solve for voltages/currents.
+	sn = &s->n[0];
+	sn->voltage = m_voltageForPower;
+	sn->current = m_currentForPower;
+	for(i = 0; i < count; i++) {
+		c = &d->component[i];
+		sn = &s->n[i];
+		snNext = &s->n[i + 1];
+
+		if(c->arrangement == IS_PAR) {
+			snNext->current = sn->voltage / snNext->zCombined;
+			snNext->voltage = snNext->current * snNext->zCombined;
+		} else {
+			snNext->voltage = sn->current * snNext->zCombined;
+			snNext->current = snNext->voltage / snNext->zCombined;
+		}
+	}
+
+	// Calculate "voltage across", "current through", and loss.
+	for(i = 0; i < count; i++) {
+		c = &d->component[i];
+		sn = &s->n[i];
+		snNext = &s->n[i + 1];
+
+		if(c->arrangement == IS_PAR) {
+			sn->voltageAcross = fabs(sn->voltage);
+			sn->currentThrough = fabs(snNext->current - sn->current);
+
+			// Use voltage for loss.
+			sn->loss = powerFromVoltage(sn->voltage, sn->yComp);
+			s->powerRemaining -= sn->loss;
+		} else {
+			sn->voltageAcross = fabs(snNext->voltage - sn->voltage);
+			sn->currentThrough = fabs(sn->current);
+
+			// Use current for loss.
+			sn->loss = powerFromCurrent(sn->current, sn->zComp);
+			s->powerRemaining -= sn->loss;
+		}
+	}
+
+	// For excessive losses and high network Q, we can get invalid results.
+	// Clamp the delivered power to zero.
+	if(s->powerRemaining < 0.0) {
+		d->validSolution = FALSE;
+	}
+}
+
+void tuner::calcAll()
+{
+	int i;
+
+	for(i = USE_CPCS; i <= USE_CLHP; i++) {
+		calcOne(i, 2);
+	}
+
+	for(i = USE_HPPI; i <= USE_LPT; i++) {
+		calcOne(i, 3);
+	}
+}
+
 void tuner::show3Part(wxBitmap bmp, int type, int count)
 {
 	DISPLAYED_RESULTS *d = &m_results[type];
 	ONE_COMPONENT *c;
 	RESULT_MAP *r;
+	SOLVER *s = &m_solver[type];
+	SOLVER_NODE *sn;
 
 	int i;
-
-	complex<double> zLoad = complex<double>(m_loadResistance, m_loadReactance);;
-	complex<double> yLoad = 1.0 / zLoad;
-
-	complex<double> zComp[MAX_COMPONENTS + 1];
-	complex<double> yComp[MAX_COMPONENTS + 1];
-
-	complex<double> zCombined[MAX_COMPONENTS + 1];
-	complex<double> yCombined[MAX_COMPONENTS + 1];
-
-	complex<double> voltage[MAX_COMPONENTS + 1];
-	complex<double> current[MAX_COMPONENTS + 1];
-
-	double powerRemaining = m_power;
-	double loss;
 
 	if(bmp.IsOk()) {
 		dl_bitmap->SetBitmap(bmp);
@@ -1518,43 +1617,10 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 		}
 	}
 
-	// Work backwards so we can solve for impedances/admittances.
-	zCombined[count] = zLoad;
-	yCombined[count] = yLoad;
-	zComp[count]=complex<double>(0.0,0.0);
-	yComp[count]=complex<double>(0.0,0.0);
-	for(i = (count - 1); i >= 0; i--) {
-		c = &d->component[i];
-		zComp[i] = complex<double>(c->resistance, c->reactance);
-		yComp[i] = 1.0 / zComp[i];
-
-		if(c->arrangement == IS_PAR) {
-			yCombined[i] = yComp[i] + yCombined[i + 1];
-			zCombined[i] = 1.0 / yCombined[i];
-		} else {
-			zCombined[i] = zComp[i] + zCombined[i + 1];
-			yCombined[i] = 1.0 / zCombined[i];
-		}
-	}
-
-	// Work forwards so we can solve for voltages/currents.
-	voltage[0] = m_voltageForPower;
-	current[0] = m_currentForPower;
-	for(i = 0; i < count; i++) {
-		c = &d->component[i];
-
-		if(c->arrangement == IS_PAR) {
-			current[i + 1] = voltage[i] / zCombined[i + 1];
-			voltage[i + 1] = current[i + 1] * zCombined[i + 1];
-		} else {
-			voltage[i + 1] = current[i] * zCombined[i + 1];
-			current[i + 1] = voltage[i + 1] / zCombined[i + 1];
-		}
-	}
-
 	// We can now display the various components.
 	for(i = 0; i < count; i++) {
 		c = &d->component[i];
+		sn = &s->n[i];
 		r = &m_r[i];
 		r->box->GetStaticBox()->SetLabel(c->label);
 		r->line0->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
@@ -1565,43 +1631,38 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 		}
 
 		if(c->arrangement == IS_PAR) {
-			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i])));
+			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), sn->voltageAcross));
 			r->line1Tag->SetLabel("Voltage Across");
 
-			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i + 1] - current[i])));
+			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), sn->currentThrough));
 			r->line2Tag->SetLabel("Current Through");
 
-			// Use voltage for loss.
-			loss = powerFromVoltage(voltage[i], yComp[i]);
-			powerRemaining -= loss;
-			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), loss));
+			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), sn->loss));
 			r->line3Tag->SetLabel("Loss (Watts)");
 		} else {
-			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[i + 1] - voltage[i])));
+			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), sn->voltageAcross));
 			r->line1Tag->SetLabel("Voltage Across");
 
-			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), fabs(current[i])));
+			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), sn->currentThrough));
 			r->line2Tag->SetLabel("Current Through");
 
-			// Use current for loss.
-			loss = powerFromCurrent(current[i], zComp[i]);
-			powerRemaining -= loss;
-			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), powerFromCurrent(current[i], zComp[i])));
+			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), sn->loss));
 			r->line3Tag->SetLabel("Loss (Watts)");
 		}
 	}
 
 	r = &m_r[3];
+	sn = &s->n[count];
 	r->box->GetStaticBox()->Show();
 	r->box->GetStaticBox()->SetLabel("Notes");
 
 	r->line0->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
 	r->line0Tag->SetLabel("Source Voltage");
 
-	r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(voltage[count])));
+	r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(sn->voltage)));
 	r->line1Tag->SetLabel("Load Voltage");
 
-	r->line2->ChangeValue(wxString::Format(wxT("%.2f"), powerRemaining));
+	r->line2->ChangeValue(wxString::Format(wxT("%.2f"), s->powerRemaining));
 	r->line2Tag->SetLabel("Load Power");
 
 	if(count == 2) {

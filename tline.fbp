@@ -9063,11 +9063,11 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="sizeritem" expanded="0">
+                        <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxEXPAND|wxSHAPED</property>
                             <property name="proportion">1</property>
-                            <object class="wxBoxSizer" expanded="0">
+                            <object class="wxBoxSizer" expanded="1">
                                 <property name="minimum_size"></property>
                                 <property name="name">bTunerRight</property>
                                 <property name="orient">wxVERTICAL</property>
@@ -9104,7 +9104,7 @@
                                         <property name="gripper">0</property>
                                         <property name="hidden">0</property>
                                         <property name="id">wxID_ANY</property>
-                                        <property name="label">Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 Ω transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the &quot;Parameters&quot; box at left.&#x0A;&#x0A;Regarding the &quot;Desired Network Q&quot; parameter, typically, one will specify a fairly low Q.  Try a value less than 10.  The Network Q parameter is only used for the PI and T topologies, and is an upper bound.&#x0A;&#x0A;The Actual Inductor and Capacitor Q default to 200 and 2000 respectively, but can be overridden as desired.&#x0A;</property>
+                                        <property name="label">Parameter note: The tuner can be located in the shack, or it can be located at the antenna. Since it is more common for the tuner to be located in the shack, we prepopulate the tuner source impedance assuming a 50 Ω transceiver and we prepopulate the tuner load impedance based on the calculated value at the input of the transmission line.  These values can be overridden in the &quot;Parameters&quot; box at left.&#x0A;&#x0A;The Actual Inductor and Capacitor Q default to 200 and 2000 respectively, but can be overridden as desired.&#x0A;&#x0A;The &quot;Desired Network Q&quot; parameter is only used for the PI and T topologies, and is an upper bound.  Typically, one will specify a fairly low Q.  Try a value around 1.0.  &#x0A;</property>
                                         <property name="markup">0</property>
                                         <property name="max_size"></property>
                                         <property name="maximize_button">0</property>
