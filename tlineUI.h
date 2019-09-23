@@ -301,6 +301,7 @@ class tunerDialog : public wxDialog
 		wxStaticText* dl_tunerParameterNote;
 		wxStaticText* dl_tunerTopologyNote;
 		wxButton* dl_tunerOKbutton;
+		wxStaticText* dl_tunerInfo;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onTunerFrequency( wxCommandEvent& event ) { event.Skip(); }
@@ -327,7 +328,7 @@ class tunerDialog : public wxDialog
 		wxString m_tunerCapacitorQStr;
 		wxString m_tunerNetworkQStr;
 
-		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,804 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();
 
 };

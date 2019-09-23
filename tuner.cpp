@@ -1672,9 +1672,18 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	if(excessiveLoss) {
 		r->line2->SetForegroundColour(wxColour("#ff0000"));
 		r->line2Tag->SetForegroundColour(wxColour("#ff0000"));
+
+		dl_tunerInfo->SetLabel(wxT("\
+Excessive loss detected (highlighted in red in the \"Results\" box).\n\
+\n\
+You should probably choose a different topology.\n"));
+		dl_tunerInfo->SetForegroundColour(wxColour("#ff0000"));
 	} else {
 		r->line2->SetForegroundColour(wxColour("#000000"));
 		r->line2Tag->SetForegroundColour(wxColour("#000000"));
+
+		dl_tunerInfo->SetLabel("");
+		dl_tunerInfo->SetForegroundColour(wxColour("#000000"));
 	}
 
 	r->line2->ChangeValue(wxString::Format(wxT("%.2f"), s->powerRemaining));

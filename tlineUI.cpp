@@ -766,10 +766,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	this->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 
 	wxBoxSizer* bTunerOuter;
-	bTunerOuter = new wxBoxSizer( wxVERTICAL );
-
-	wxBoxSizer* bTunerInner;
-	bTunerInner = new wxBoxSizer( wxHORIZONTAL );
+	bTunerOuter = new wxBoxSizer( wxHORIZONTAL );
 
 	wxBoxSizer* bTunerLeft;
 	bTunerLeft = new wxBoxSizer( wxVERTICAL );
@@ -866,10 +863,10 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	gTunerParameters->Add( dl_tunerNetworkQ, 0, wxALL, 0 );
 
 
-	sbTunerParameterContainer->Add( gTunerParameters, 1, wxEXPAND|wxSHAPED, 5 );
+	sbTunerParameterContainer->Add( gTunerParameters, 1, wxBOTTOM|wxEXPAND|wxLEFT, 10 );
 
 
-	bTunerLeft->Add( sbTunerParameterContainer, 0, wxEXPAND, 5 );
+	bTunerLeft->Add( sbTunerParameterContainer, 0, wxEXPAND|wxTOP, 5 );
 
 
 	bTunerLeft->Add( 0, 20, 0, 0, 5 );
@@ -1075,10 +1072,16 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	sbTunerResultsContainer->Add( sbTunerResults4, 1, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 10 );
 
 
-	bTunerLeft->Add( sbTunerResultsContainer, 1, wxALIGN_CENTER|wxEXPAND, 5 );
+	bTunerLeft->Add( sbTunerResultsContainer, 1, wxEXPAND, 5 );
 
 
-	bTunerInner->Add( bTunerLeft, 1, wxEXPAND|wxSHAPED, 5 );
+	bTunerOuter->Add( bTunerLeft, 1, 0, 5 );
+
+	wxBoxSizer* bTunerCenterAndRight;
+	bTunerCenterAndRight = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bTunerCenterAndRightUpper;
+	bTunerCenterAndRightUpper = new wxBoxSizer( wxHORIZONTAL );
 
 	wxBoxSizer* bTunerCenter;
 	bTunerCenter = new wxBoxSizer( wxVERTICAL );
@@ -1095,7 +1098,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	bTunerCenter->Add( dl_bitmap, 0, wxALIGN_CENTER|wxALL, 5 );
 
 
-	bTunerInner->Add( bTunerCenter, 1, wxEXPAND|wxSHAPED, 5 );
+	bTunerCenterAndRightUpper->Add( bTunerCenter, 1, wxEXPAND|wxSHAPED, 5 );
 
 	wxBoxSizer* bTunerRight;
 	bTunerRight = new wxBoxSizer( wxVERTICAL );
@@ -1112,15 +1115,27 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	bTunerRight->Add( dl_tunerOKbutton, 0, wxALIGN_CENTER|wxALL, 5 );
 
 
-	bTunerInner->Add( bTunerRight, 1, wxEXPAND|wxSHAPED, 5 );
+	bTunerCenterAndRightUpper->Add( bTunerRight, 1, wxEXPAND|wxSHAPED, 5 );
 
 
-	bTunerOuter->Add( bTunerInner, 1, wxEXPAND, 5 );
+	bTunerCenterAndRight->Add( bTunerCenterAndRightUpper, 1, 0, 5 );
+
+	wxBoxSizer* bTunerCenterAndRightLower;
+	bTunerCenterAndRightLower = new wxBoxSizer( wxVERTICAL );
+
+	dl_tunerInfo = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerInfo->Wrap( -1 );
+	bTunerCenterAndRightLower->Add( dl_tunerInfo, 0, wxALL, 5 );
+
+
+	bTunerCenterAndRight->Add( bTunerCenterAndRightLower, 1, wxEXPAND, 5 );
+
+
+	bTunerOuter->Add( bTunerCenterAndRight, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bTunerOuter );
 	this->Layout();
-	bTunerOuter->Fit( this );
 
 	this->Centre( wxBOTH );
 
