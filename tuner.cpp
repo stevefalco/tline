@@ -1397,29 +1397,29 @@ void tuner::recalculate()
 	// now invalid topology, but cannot go back to it until a
 	// parameter change makes it valid again.
 	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc1), USE_CPCS, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_cc1), USE_CPCS, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_cc2), USE_CSCP, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_cc2), USE_CSCP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll1), USE_LPLS, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_ll1), USE_LPLS, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_ll2), USE_LSLP, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_ll2), USE_LSLP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lchp), USE_LCHP, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_lchp), USE_LCHP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_cllp), USE_CLLP, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_cllp), USE_CLLP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lclp), USE_LCLP, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_lclp), USE_LCLP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
+		show(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI, 3);
+		show(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI, 3);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI, 3);
+		show(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI, 3);
 	} else if(strcmp(m_tunerTopologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT, 3);
+		show(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT, 3);
 	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
-		show3Part(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT, 3);
+		show(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT, 3);
 	}
 }
 
@@ -1521,13 +1521,17 @@ void tuner::calcAll()
 	}
 }
 
-void tuner::show3Part(wxBitmap bmp, int type, int count)
+void tuner::show(wxBitmap bmp, int type, int count)
 {
 	DISPLAYED_RESULTS *d = &m_results[type];
 	ONE_COMPONENT *c;
 	RESULT_MAP *r;
 	SOLVER *s = &m_solver[type];
 	SOLVER_NODE *sn;
+
+	// If less than 75% of the input power is delivered to the load,
+	// then that is arbitrarily considerted to be excessive loss.
+	bool excessiveLoss = (s->powerRemaining < (m_power * 0.75));
 
 	int i;
 
@@ -1630,24 +1634,25 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 			r->line0Tag->SetLabel("Value (nH)");
 		}
 
-		if(c->arrangement == IS_PAR) {
-			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), sn->voltageAcross));
-			r->line1Tag->SetLabel("Voltage Across");
+		r->line1->ChangeValue(wxString::Format(wxT("%.2f"), sn->voltageAcross));
+		r->line1Tag->SetLabel("Voltage Across");
 
-			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), sn->currentThrough));
-			r->line2Tag->SetLabel("Current Through");
+		r->line2->ChangeValue(wxString::Format(wxT("%.2f"), sn->currentThrough));
+		r->line2Tag->SetLabel("Current Through");
 
-			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), sn->loss));
-			r->line3Tag->SetLabel("Loss (Watts)");
+		r->line3->ChangeValue(wxString::Format(wxT("%.2f"), sn->loss));
+		r->line3Tag->SetLabel("Loss (Watts)");
+
+		// If 10% or more of the power is lost in a component, that
+		// is arbitrarily considered to be excessive.
+		if(sn->loss > m_power * 0.1) {
+			excessiveLoss = TRUE;
+
+			r->line3->SetForegroundColour(wxColour("#ff0000"));
+			r->line3Tag->SetForegroundColour(wxColour("#ff0000"));
 		} else {
-			r->line1->ChangeValue(wxString::Format(wxT("%.2f"), sn->voltageAcross));
-			r->line1Tag->SetLabel("Voltage Across");
-
-			r->line2->ChangeValue(wxString::Format(wxT("%.2f"), sn->currentThrough));
-			r->line2Tag->SetLabel("Current Through");
-
-			r->line3->ChangeValue(wxString::Format(wxT("%.2f"), sn->loss));
-			r->line3Tag->SetLabel("Loss (Watts)");
+			r->line3->SetForegroundColour(wxColour("#000000"));
+			r->line3Tag->SetForegroundColour(wxColour("#000000"));
 		}
 	}
 
@@ -1661,6 +1666,16 @@ void tuner::show3Part(wxBitmap bmp, int type, int count)
 
 	r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(sn->voltage)));
 	r->line1Tag->SetLabel("Load Voltage");
+
+	// If any component has excessive loss, or if we are losing too much power
+	// overall, flag it in red.
+	if(excessiveLoss) {
+		r->line2->SetForegroundColour(wxColour("#ff0000"));
+		r->line2Tag->SetForegroundColour(wxColour("#ff0000"));
+	} else {
+		r->line2->SetForegroundColour(wxColour("#000000"));
+		r->line2Tag->SetForegroundColour(wxColour("#000000"));
+	}
 
 	r->line2->ChangeValue(wxString::Format(wxT("%.2f"), s->powerRemaining));
 	r->line2Tag->SetLabel("Load Power");

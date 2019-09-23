@@ -212,7 +212,7 @@ class tuner : public tunerDialog
 		void		calcOne(int type, int count);
 		void		calcAll();
 
-		void		show3Part(wxBitmap bmp, int type, int count);
+		void		show(wxBitmap bmp, int type, int count);
 
 		double		m_sourceResistance;
 		double		m_sourceReactance;
