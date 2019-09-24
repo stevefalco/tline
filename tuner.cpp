@@ -160,21 +160,27 @@ void tuner::onTunerFrequency( wxCommandEvent& event )
 {
 	m_tunerFrequencyStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerFrequencyStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerPower( wxCommandEvent& event )
 {
 	m_tunerPowerStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerPowerStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerSourceResistance( wxCommandEvent& event )
 {
 	m_tunerSourceResistanceStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerSourceResistanceStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerSourceReactance( wxCommandEvent& event )
@@ -188,49 +194,60 @@ void tuner::onTunerLoadResistance( wxCommandEvent& event )
 {
 	m_tunerLoadResistanceStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerLoadResistanceStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerLoadReactance( wxCommandEvent& event )
 {
 	m_tunerLoadReactanceStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerLoadReactanceStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerNetworkQ( wxCommandEvent& event )
 {
 	m_tunerNetworkQStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerNetworkQStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerInductorQ( wxCommandEvent& event )
 {
 	m_tunerInductorQStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerInductorQStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerCapacitorQ( wxCommandEvent& event )
 {
 	m_tunerCapacitorQStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerCapacitorQStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerTopologySelected( wxCommandEvent& event )
 {
 	m_tunerTopologyStr = event.GetString();
 
-	recalculate();
+	if(!m_tunerTopologyStr.empty()) {
+		recalculate();
+	}
 }
 
 void tuner::onTunerOKclicked( wxCommandEvent& event )
 {
-	if ( Validate() )
-	{
-		EndModal( wxID_OK );
+	if(Validate()) {
+		EndModal(wxID_OK);
 	}
 }
 
