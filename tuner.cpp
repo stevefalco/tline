@@ -1661,7 +1661,6 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	}
 
 	i = 0;
-	sn = &s->n[count];
 
 	m_s.box->GetStaticBox()->Show();
 	m_s.box->GetStaticBox()->SetLabel("Notes");
@@ -1670,6 +1669,12 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	m_s.item[i].tag->SetLabel("Source Voltage");
 	++i;
 
+	sn = &s->n[0];
+	m_s.item[i].value->ChangeValue(wxString::Format(wxT("%.2f %.2fi"), real(sn->zCombined), imag(sn->zCombined)));
+	m_s.item[i].tag->SetLabel("Source Impedance");
+	++i;
+
+	sn = &s->n[count];
 	m_s.item[i].value->ChangeValue(wxString::Format(wxT("%.2f"), fabs(sn->voltage)));
 	m_s.item[i].tag->SetLabel("Load Voltage");
 	++i;
