@@ -99,20 +99,28 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 	m_r[2].line2Tag	= dl_tunerResultTag11;
 	m_r[2].line3	= dl_tunerResult12;
 	m_r[2].line3Tag	= dl_tunerResultTag12;
-	m_r[3].box	= sbTunerResults4;
-	m_r[3].line0	= dl_tunerResult13;
-	m_r[3].line0Tag	= dl_tunerResultTag13;
-	m_r[3].line1	= dl_tunerResult14;
-	m_r[3].line1Tag	= dl_tunerResultTag14;
-	m_r[3].line2	= dl_tunerResult15;
-	m_r[3].line2Tag	= dl_tunerResultTag15;
-	m_r[3].line3	= dl_tunerResult16;
-	m_r[3].line3Tag	= dl_tunerResultTag16;
+
+	m_s.box			= sbTunerStatus;
+	m_s.item[0].value	= dl_tunerStatus0;
+	m_s.item[0].tag		= dl_tunerStatusTag0;
+	m_s.item[1].value	= dl_tunerStatus1;
+	m_s.item[1].tag		= dl_tunerStatusTag1;
+	m_s.item[2].value	= dl_tunerStatus2;
+	m_s.item[2].tag		= dl_tunerStatusTag2;
+	m_s.item[3].value	= dl_tunerStatus3;
+	m_s.item[3].tag		= dl_tunerStatusTag3;
+	m_s.item[4].value	= dl_tunerStatus4;
+	m_s.item[4].tag		= dl_tunerStatusTag4;
+	m_s.item[5].value	= dl_tunerStatus5;
+	m_s.item[5].tag		= dl_tunerStatusTag5;
+	m_s.item[6].value	= dl_tunerStatus6;
+	m_s.item[6].tag		= dl_tunerStatusTag6;
 
 	// Start out with all results hidden.
-	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
+	for(i = 0; i < MAX_COMPONENTS; i++) {
 		m_r[i].box->GetStaticBox()->Hide();
 	}
+	m_s.box->GetStaticBox()->Hide();
 }
 
 void tuner::Update()
@@ -1561,7 +1569,8 @@ void tuner::show(wxBitmap bmp, int type, int count)
 
 	// Handle invalid case first.
 	if(!d->validSolution) {
-		for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
+		// Hide everything.
+		for(i = 0; i < MAX_COMPONENTS; i++) {
 			r = &m_r[i];
 			r->box->GetStaticBox()->Hide();
 			r->line0->Hide();
@@ -1573,7 +1582,9 @@ void tuner::show(wxBitmap bmp, int type, int count)
 			r->line3->Hide();
 			r->line3Tag->Hide();
 		}
+		m_s.box->GetStaticBox()->Hide();
 
+		// Then enable just the ones we want.
 		r = &m_r[0];
 		r->box->GetStaticBox()->Show();
 		r->box->GetStaticBox()->SetLabel("Invalid");
@@ -1585,7 +1596,7 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	}
 
 	// Set up to display the appropriate fields.
-	for(i = 0; i < (MAX_COMPONENTS + 1); i++) {
+	for(i = 0; i < MAX_COMPONENTS; i++) {
 		r = &m_r[i];
 		if(count == 2 && i == 2) {
 			// For simple L-networks, hide the third component
@@ -1597,30 +1608,6 @@ void tuner::show(wxBitmap bmp, int type, int count)
 			r->line1Tag->Hide();
 			r->line2->Hide();
 			r->line2Tag->Hide();
-			r->line3->Hide();
-			r->line3Tag->Hide();
-		} else if(count == 2 && i == 3) {
-			// For simple L-networks, we need four slots in the
-			// fourth component.
-			r->box->GetStaticBox()->Show();
-			r->line0->Show();
-			r->line0Tag->Show();
-			r->line1->Show();
-			r->line1Tag->Show();
-			r->line2->Show();
-			r->line2Tag->Show();
-			r->line3->Show();
-			r->line3Tag->Show();
-		} else if(count == 3 && i == 3) {
-			// For PI and T networks, we need three slots in the
-			// fourth component.
-			r->box->GetStaticBox()->Show();
-			r->line0->Show();
-			r->line0Tag->Show();
-			r->line1->Show();
-			r->line1Tag->Show();
-			r->line2->Show();
-			r->line2Tag->Show();
 			r->line3->Hide();
 			r->line3Tag->Hide();
 		} else {
@@ -1673,22 +1660,25 @@ void tuner::show(wxBitmap bmp, int type, int count)
 		}
 	}
 
-	r = &m_r[3];
+	i = 0;
 	sn = &s->n[count];
-	r->box->GetStaticBox()->Show();
-	r->box->GetStaticBox()->SetLabel("Notes");
 
-	r->line0->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
-	r->line0Tag->SetLabel("Source Voltage");
+	m_s.box->GetStaticBox()->Show();
+	m_s.box->GetStaticBox()->SetLabel("Notes");
 
-	r->line1->ChangeValue(wxString::Format(wxT("%.2f"), fabs(sn->voltage)));
-	r->line1Tag->SetLabel("Load Voltage");
+	m_s.item[i].value->ChangeValue(wxString::Format(wxT("%.2f"), fabs(m_voltageForPower)));
+	m_s.item[i].tag->SetLabel("Source Voltage");
+	++i;
+
+	m_s.item[i].value->ChangeValue(wxString::Format(wxT("%.2f"), fabs(sn->voltage)));
+	m_s.item[i].tag->SetLabel("Load Voltage");
+	++i;
 
 	// If any component has excessive loss, or if we are losing too much power
 	// overall, flag it in red.
 	if(excessiveLoss) {
-		r->line2->SetForegroundColour(wxColour("#ff0000"));
-		r->line2Tag->SetForegroundColour(wxColour("#ff0000"));
+		m_s.item[i].value->SetForegroundColour(wxColour("#ff0000"));
+		m_s.item[i].tag->SetForegroundColour(wxColour("#ff0000"));
 
 		dl_tunerInfo->SetLabel(wxT("\
 Excessive loss detected (highlighted in red in the \"Results\" box).\n\
@@ -1696,19 +1686,26 @@ Excessive loss detected (highlighted in red in the \"Results\" box).\n\
 You should probably choose a different topology.\n"));
 		dl_tunerInfo->SetForegroundColour(wxColour("#ff0000"));
 	} else {
-		r->line2->SetForegroundColour(wxColour("#000000"));
-		r->line2Tag->SetForegroundColour(wxColour("#000000"));
+		m_s.item[i].value->SetForegroundColour(wxColour("#000000"));
+		m_s.item[i].tag->SetForegroundColour(wxColour("#000000"));
 
 		dl_tunerInfo->SetLabel("");
 		dl_tunerInfo->SetForegroundColour(wxColour("#000000"));
 	}
 
-	r->line2->ChangeValue(wxString::Format(wxT("%.2f"), s->powerRemaining));
-	r->line2Tag->SetLabel("Load Power");
+	m_s.item[i].value->ChangeValue(wxString::Format(wxT("%.2f"), s->powerRemaining));
+	m_s.item[i].tag->SetLabel("Load Power");
+	++i;
 
 	if(count == 2) {
-		r->line3->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
-		r->line3Tag->SetLabel("Network Q");
+		m_s.item[i].value->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
+		m_s.item[i].tag->SetLabel("Network Q");
+	}
+	++i;
+
+	for(/**/; i < MAX_STATUS_ITEMS; i++) {
+		m_s.item[i].value->Hide();
+		m_s.item[i].tag->Hide();
 	}
 
 	Layout();

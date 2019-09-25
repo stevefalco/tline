@@ -42,6 +42,7 @@ using namespace std;
 #define IS_SER			2
 
 #define MAX_COMPONENTS		3
+#define MAX_STATUS_ITEMS	7
 
 typedef struct {
 	complex<double>		zComp;
@@ -112,6 +113,16 @@ typedef struct {
 	wxTextCtrl*		line3;
 	wxStaticText*		line3Tag;
 } RESULT_MAP;
+
+typedef struct {
+	wxTextCtrl*		value;
+	wxStaticText*		tag;
+} STATUS_ITEM;
+
+typedef struct {
+	wxStaticBoxSizer*	box;
+	STATUS_ITEM		item[MAX_STATUS_ITEMS];
+} STATUS_MAP;
 
 class tuner : public tunerDialog
 {
@@ -280,7 +291,8 @@ class tuner : public tunerDialog
 		double		m_ctX;
 		bool		m_lptValid;
 
-		RESULT_MAP	m_r[MAX_COMPONENTS + 1];
+		RESULT_MAP	m_r[MAX_COMPONENTS];
+		STATUS_MAP	m_s;
 
 		DISPLAYED_RESULTS	m_results[USE_LAST];
 
