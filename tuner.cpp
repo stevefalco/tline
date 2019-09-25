@@ -1671,7 +1671,7 @@ void tuner::show(wxBitmap bmp, int type, int count)
 
 	sn = &s->n[0];
 	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f, %.2fi"), real(sn->zCombined), imag(sn->zCombined)));
-	m_s.item[i].tag->SetLabel("Source Impedance");
+	m_s.item[i].tag->SetLabel(wxT("Actual Source Z (Ω)"));
 	++i;
 
 	sn = &s->n[count];

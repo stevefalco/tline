@@ -802,7 +802,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	gTunerParameters->Add( dl_tunerPower, 0, wxALL, 0 );
 
-	dl_tunerSourceResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerSourceResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Resistance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerSourceResistanceTag->Wrap( -1 );
 	gTunerParameters->Add( dl_tunerSourceResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
@@ -811,7 +811,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	gTunerParameters->Add( dl_tunerSourceResistance, 0, wxALL, 0 );
 
-	dl_tunerSourceReactanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerSourceReactanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Source Reactance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerSourceReactanceTag->Wrap( -1 );
 	gTunerParameters->Add( dl_tunerSourceReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
@@ -820,7 +820,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	gTunerParameters->Add( dl_tunerSourceReactance, 0, wxALL, 0 );
 
-	dl_tunerLoadResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Load Resistance"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerLoadResistanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Load Resistance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerLoadResistanceTag->Wrap( -1 );
 	gTunerParameters->Add( dl_tunerLoadResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
@@ -829,7 +829,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	gTunerParameters->Add( dl_tunerLoadResistance, 0, wxALL, 0 );
 
-	dl_tunerLoadReactanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Load Reactance"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerLoadReactanceTag = new wxStaticText( sbTunerParameterContainer->GetStaticBox(), wxID_ANY, wxT("Load Reactance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerLoadReactanceTag->Wrap( -1 );
 	gTunerParameters->Add( dl_tunerLoadReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 

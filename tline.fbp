@@ -5566,7 +5566,7 @@
             <property name="minimum_size">-1,-1</property>
             <property name="name">tunerDialog</property>
             <property name="pos"></property>
-            <property name="size">900,804</property>
+            <property name="size">930,810</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Tuner Calculator</property>
@@ -5905,7 +5905,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Source Resistance</property>
+                                                        <property name="label">Source Resistance (Ω)</property>
                                                         <property name="markup">0</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
@@ -6031,7 +6031,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Source Reactance</property>
+                                                        <property name="label">Source Reactance (Ω)</property>
                                                         <property name="markup">0</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
@@ -6157,7 +6157,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Load Resistance</property>
+                                                        <property name="label">Load Resistance (Ω)</property>
                                                         <property name="markup">0</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
@@ -6283,7 +6283,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Load Reactance</property>
+                                                        <property name="label">Load Reactance (Ω)</property>
                                                         <property name="markup">0</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
