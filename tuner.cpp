@@ -1698,10 +1698,13 @@ You should probably choose a different topology.\n"));
 	++i;
 
 	if(count == 2) {
+		m_s.item[i].value->Show();
+		m_s.item[i].tag->Show();
+
 		m_s.item[i].value->ChangeValue(wxString::Format(wxT("%.2f"), d->networkQ));
 		m_s.item[i].tag->SetLabel("Network Q");
+		++i;
 	}
-	++i;
 
 	for(/**/; i < MAX_STATUS_ITEMS; i++) {
 		m_s.item[i].value->Hide();
