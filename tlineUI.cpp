@@ -1049,77 +1049,72 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	sbTunerStatus = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("label") ), wxVERTICAL );
 
-	wxGridSizer* gTunerStatus;
-	gTunerStatus = new wxGridSizer( 0, 2, 0, 0 );
+	wxFlexGridSizer* fgTunerStatus;
+	fgTunerStatus = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgTunerStatus->SetFlexibleDirection( wxBOTH );
+	fgTunerStatus->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	dl_tunerStatusTag0 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("Status 0"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerStatusTag0->Wrap( -1 );
-	gTunerStatus->Add( dl_tunerStatusTag0, 0, wxALIGN_RIGHT|wxALL, 0 );
+	fgTunerStatus->Add( dl_tunerStatusTag0, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerStatus0 = new wxTextCtrl( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerStatus0->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	gTunerStatus->Add( dl_tunerStatus0, 0, wxALL, 0 );
+	dl_tunerStatus0 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerStatus0->Wrap( -1 );
+	fgTunerStatus->Add( dl_tunerStatus0, 0, wxLEFT, 5 );
 
 	dl_tunerStatusTag1 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("Status 1"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerStatusTag1->Wrap( -1 );
-	gTunerStatus->Add( dl_tunerStatusTag1, 0, wxALIGN_RIGHT|wxALL, 0 );
+	fgTunerStatus->Add( dl_tunerStatusTag1, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerStatus1 = new wxTextCtrl( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerStatus1->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	gTunerStatus->Add( dl_tunerStatus1, 0, wxALL, 0 );
+	dl_tunerStatus1 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerStatus1->Wrap( -1 );
+	fgTunerStatus->Add( dl_tunerStatus1, 0, wxLEFT, 5 );
 
 	dl_tunerStatusTag2 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("Status 2"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerStatusTag2->Wrap( -1 );
-	gTunerStatus->Add( dl_tunerStatusTag2, 0, wxALIGN_RIGHT|wxALL, 0 );
+	fgTunerStatus->Add( dl_tunerStatusTag2, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerStatus2 = new wxTextCtrl( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerStatus2->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	gTunerStatus->Add( dl_tunerStatus2, 0, wxALL, 0 );
+	dl_tunerStatus2 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerStatus2->Wrap( -1 );
+	fgTunerStatus->Add( dl_tunerStatus2, 0, wxLEFT, 5 );
 
 	dl_tunerStatusTag3 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("Status 3"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerStatusTag3->Wrap( -1 );
-	gTunerStatus->Add( dl_tunerStatusTag3, 0, wxALIGN_RIGHT|wxALL, 0 );
+	fgTunerStatus->Add( dl_tunerStatusTag3, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerStatus3 = new wxTextCtrl( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerStatus3->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	gTunerStatus->Add( dl_tunerStatus3, 0, wxALL, 0 );
+	dl_tunerStatus3 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerStatus3->Wrap( -1 );
+	fgTunerStatus->Add( dl_tunerStatus3, 0, wxLEFT, 5 );
 
 	dl_tunerStatusTag4 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("Status 4"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerStatusTag4->Wrap( -1 );
-	gTunerStatus->Add( dl_tunerStatusTag4, 0, wxALIGN_RIGHT|wxALL, 0 );
+	fgTunerStatus->Add( dl_tunerStatusTag4, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerStatus4 = new wxTextCtrl( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerStatus4->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	gTunerStatus->Add( dl_tunerStatus4, 0, wxALL, 0 );
+	dl_tunerStatus4 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerStatus4->Wrap( -1 );
+	fgTunerStatus->Add( dl_tunerStatus4, 0, wxLEFT, 5 );
 
 	dl_tunerStatusTag5 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("Status 5"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerStatusTag5->Wrap( -1 );
-	gTunerStatus->Add( dl_tunerStatusTag5, 0, wxALIGN_RIGHT|wxALL, 0 );
+	fgTunerStatus->Add( dl_tunerStatusTag5, 0, wxALIGN_RIGHT|wxALL, 0 );
 
-	dl_tunerStatus5 = new wxTextCtrl( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerStatus5->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	gTunerStatus->Add( dl_tunerStatus5, 0, wxALL, 0 );
+	dl_tunerStatus5 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerStatus5->Wrap( -1 );
+	fgTunerStatus->Add( dl_tunerStatus5, 0, wxLEFT, 5 );
 
 	dl_tunerStatusTag6 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("Status 6"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	dl_tunerStatusTag6->Wrap( -1 );
-	gTunerStatus->Add( dl_tunerStatusTag6, 0, wxALIGN_RIGHT, 0 );
+	fgTunerStatus->Add( dl_tunerStatusTag6, 0, wxALIGN_RIGHT, 0 );
 
-	dl_tunerStatus6 = new wxTextCtrl( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
-	dl_tunerStatus6->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-
-	gTunerStatus->Add( dl_tunerStatus6, 0, wxALL, 0 );
-
-
-	sbTunerStatus->Add( gTunerStatus, 1, wxEXPAND, 5 );
+	dl_tunerStatus6 = new wxStaticText( sbTunerStatus->GetStaticBox(), wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerStatus6->Wrap( -1 );
+	fgTunerStatus->Add( dl_tunerStatus6, 0, wxLEFT, 5 );
 
 
-	bTunerCenter->Add( sbTunerStatus, 1, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 10 );
+	sbTunerStatus->Add( fgTunerStatus, 1, wxALL, 5 );
+
+
+	bTunerCenter->Add( sbTunerStatus, 0, wxBOTTOM|wxEXPAND|wxLEFT|wxRIGHT, 5 );
 
 
 	bTunerInner->Add( bTunerCenter, 1, wxEXPAND|wxSHAPED, 5 );

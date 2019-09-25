@@ -115,7 +115,7 @@ typedef struct {
 } RESULT_MAP;
 
 typedef struct {
-	wxTextCtrl*		value;
+	wxStaticText*		value;
 	wxStaticText*		tag;
 } STATUS_ITEM;
 
