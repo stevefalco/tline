@@ -1553,6 +1553,8 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	RESULT_MAP *r;
 	SOLVER *s = &m_solver[type];
 	SOLVER_NODE *sn;
+	complex<double> reflectionCoefficient;
+	double swr;
 
 	// If less than 75% of the input power is delivered to the load,
 	// then that is arbitrarily considerted to be excessive loss.
@@ -1674,6 +1676,12 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	m_s.item[i].tag->SetLabel(wxT("Actual Source Z (Ω)"));
 	++i;
 
+	reflectionCoefficient = (sn->zCombined - m_sourceImpedance) / (sn->zCombined + m_sourceImpedance);
+	swr = (1.0 + fabs(reflectionCoefficient)) / (1.0 - fabs(reflectionCoefficient));
+	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f"), swr));
+	m_s.item[i].tag->SetLabel(wxT("SWR at Source"));
+	++i;
+
 	sn = &s->n[count];
 	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f"), fabs(sn->voltage)));
 	m_s.item[i].tag->SetLabel("Load Voltage");
@@ -1699,7 +1707,7 @@ You should probably choose a different topology.\n"));
 	}
 
 	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f"), s->powerRemaining));
-	m_s.item[i].tag->SetLabel("Load Power");
+	m_s.item[i].tag->SetLabel("Load Power (W)");
 	++i;
 
 	if(count == 2) {
