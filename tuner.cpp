@@ -1687,27 +1687,26 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	m_s.item[i].tag->SetLabel("Load Voltage");
 	++i;
 
-	// If any component has excessive loss, or if we are losing too much power
-	// overall, flag it in red.
 	if(excessiveLoss) {
 		m_s.item[i].value->SetForegroundColour(wxColour("#ff0000"));
 		m_s.item[i].tag->SetForegroundColour(wxColour("#ff0000"));
-
-		dl_tunerInfo->SetLabel(wxT("\
-Excessive loss detected (highlighted in red in the \"Results\" box).\n\
-\n\
-You should probably choose a different topology.\n"));
-		dl_tunerInfo->SetForegroundColour(wxColour("#ff0000"));
 	} else {
 		m_s.item[i].value->SetForegroundColour(wxColour("#000000"));
 		m_s.item[i].tag->SetForegroundColour(wxColour("#000000"));
-
-		dl_tunerInfo->SetLabel("");
-		dl_tunerInfo->SetForegroundColour(wxColour("#000000"));
 	}
+	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f"), m_power - s->powerRemaining));
+	m_s.item[i].tag->SetLabel("Power Lost in Tuner (W)");
+	++i;
 
+	if(excessiveLoss) {
+		m_s.item[i].value->SetForegroundColour(wxColour("#ff0000"));
+		m_s.item[i].tag->SetForegroundColour(wxColour("#ff0000"));
+	} else {
+		m_s.item[i].value->SetForegroundColour(wxColour("#000000"));
+		m_s.item[i].tag->SetForegroundColour(wxColour("#000000"));
+	}
 	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f"), s->powerRemaining));
-	m_s.item[i].tag->SetLabel("Load Power (W)");
+	m_s.item[i].tag->SetLabel("Power to Load (W)");
 	++i;
 
 	if(count == 2) {
@@ -1722,6 +1721,17 @@ You should probably choose a different topology.\n"));
 	for(/**/; i < MAX_STATUS_ITEMS; i++) {
 		m_s.item[i].value->Hide();
 		m_s.item[i].tag->Hide();
+	}
+
+	if(excessiveLoss) {
+		dl_tunerInfo->SetLabel(wxT("\
+Excessive loss detected (highlighted in red in the \"Results\" and/or \"Notes\" boxs).\n\
+\n\
+You should probably choose a different topology or add a transmission line transformer.\n"));
+		dl_tunerInfo->SetForegroundColour(wxColour("#ff0000"));
+	} else {
+		dl_tunerInfo->SetLabel("");
+		dl_tunerInfo->SetForegroundColour(wxColour("#000000"));
 	}
 
 	Layout();
