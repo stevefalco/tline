@@ -18,6 +18,6 @@
 #ifndef __version__
 #define __version__
 
-#define VERSION "0.0.7"
+#define VERSION "0.1.0"
 
 #endif // __version__
