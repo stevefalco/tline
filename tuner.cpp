@@ -72,33 +72,35 @@ tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 
 	// We need a convenient way to map from array indexing
 	// to the gui structures.
-	m_r[0].box	= sbTunerResults1;
-	m_r[0].line0	= dl_tunerResult1;
-	m_r[0].line0Tag	= dl_tunerResultTag1;
-	m_r[0].line1	= dl_tunerResult2;
-	m_r[0].line1Tag	= dl_tunerResultTag2;
-	m_r[0].line2	= dl_tunerResult3;
-	m_r[0].line2Tag	= dl_tunerResultTag3;
-	m_r[0].line3	= dl_tunerResult4;
-	m_r[0].line3Tag	= dl_tunerResultTag4;
-	m_r[1].box	= sbTunerResults2;
-	m_r[1].line0	= dl_tunerResult5;
-	m_r[1].line0Tag	= dl_tunerResultTag5;
-	m_r[1].line1	= dl_tunerResult6;
-	m_r[1].line1Tag	= dl_tunerResultTag6;
-	m_r[1].line2	= dl_tunerResult7;
-	m_r[1].line2Tag	= dl_tunerResultTag7;
-	m_r[1].line3	= dl_tunerResult8;
-	m_r[1].line3Tag	= dl_tunerResultTag8;
-	m_r[2].box	= sbTunerResults3;
-	m_r[2].line0	= dl_tunerResult9;
-	m_r[2].line0Tag	= dl_tunerResultTag9;
-	m_r[2].line1	= dl_tunerResult10;
-	m_r[2].line1Tag	= dl_tunerResultTag10;
-	m_r[2].line2	= dl_tunerResult11;
-	m_r[2].line2Tag	= dl_tunerResultTag11;
-	m_r[2].line3	= dl_tunerResult12;
-	m_r[2].line3Tag	= dl_tunerResultTag12;
+	m_r[0].box		= sbTunerResults1;
+	m_r[0].item[0].value	= dl_tunerResult1;
+	m_r[0].item[0].tag	= dl_tunerResultTag1;
+	m_r[0].item[1].value	= dl_tunerResult2;
+	m_r[0].item[1].tag	= dl_tunerResultTag2;
+	m_r[0].item[2].value	= dl_tunerResult3;
+	m_r[0].item[2].tag	= dl_tunerResultTag3;
+	m_r[0].item[3].value	= dl_tunerResult4;
+	m_r[0].item[3].tag	= dl_tunerResultTag4;
+
+	m_r[1].box		= sbTunerResults2;
+	m_r[1].item[0].value	= dl_tunerResult5;
+	m_r[1].item[0].tag	= dl_tunerResultTag5;
+	m_r[1].item[1].value	= dl_tunerResult6;
+	m_r[1].item[1].tag	= dl_tunerResultTag6;
+	m_r[1].item[2].value	= dl_tunerResult7;
+	m_r[1].item[2].tag	= dl_tunerResultTag7;
+	m_r[1].item[3].value	= dl_tunerResult8;
+	m_r[1].item[3].tag	= dl_tunerResultTag8;
+
+	m_r[2].box		= sbTunerResults3;
+	m_r[2].item[0].value	= dl_tunerResult9;
+	m_r[2].item[0].tag	= dl_tunerResultTag9;
+	m_r[2].item[1].value	= dl_tunerResult10;
+	m_r[2].item[1].tag	= dl_tunerResultTag10;
+	m_r[2].item[2].value	= dl_tunerResult11;
+	m_r[2].item[2].tag	= dl_tunerResultTag11;
+	m_r[2].item[3].value	= dl_tunerResult12;
+	m_r[2].item[3].tag	= dl_tunerResultTag12;
 
 	m_s.box			= sbTunerStatus;
 	m_s.item[0].value	= dl_tunerStatus0;
@@ -1561,6 +1563,7 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	bool excessiveLoss = (s->powerRemaining < (m_power * 0.75));
 
 	int i;
+	int j;
 
 	if(bmp.IsOk()) {
 		dl_bitmap->SetBitmap(bmp);
@@ -1575,14 +1578,10 @@ void tuner::show(wxBitmap bmp, int type, int count)
 		for(i = 0; i < MAX_COMPONENTS; i++) {
 			r = &m_r[i];
 			r->box->GetStaticBox()->Hide();
-			r->line0->Hide();
-			r->line0Tag->Hide();
-			r->line1->Hide();
-			r->line1Tag->Hide();
-			r->line2->Hide();
-			r->line2Tag->Hide();
-			r->line3->Hide();
-			r->line3Tag->Hide();
+			for(j = 0; j < MAX_RESULTS_ITEMS; j++) {
+				r->item[j].value->Hide();
+				r->item[j].tag->Hide();
+			}
 		}
 		m_s.box->GetStaticBox()->Hide();
 
@@ -1590,8 +1589,8 @@ void tuner::show(wxBitmap bmp, int type, int count)
 		r = &m_r[0];
 		r->box->GetStaticBox()->Show();
 		r->box->GetStaticBox()->SetLabel("Invalid");
-		r->line0Tag->Show();
-		r->line0Tag->SetLabel("No Match Found");
+		r->item[0].tag->Show();
+		r->item[0].tag->SetLabel("No Match Found");
 
 		Layout();
 		return;
@@ -1604,62 +1603,58 @@ void tuner::show(wxBitmap bmp, int type, int count)
 			// For simple L-networks, hide the third component
 			// completely.
 			r->box->GetStaticBox()->Hide();
-			r->line0->Hide();
-			r->line0Tag->Hide();
-			r->line1->Hide();
-			r->line1Tag->Hide();
-			r->line2->Hide();
-			r->line2Tag->Hide();
-			r->line3->Hide();
-			r->line3Tag->Hide();
+			for(j = 0; j < MAX_RESULTS_ITEMS; j++) {
+				r->item[j].value->Hide();
+				r->item[j].tag->Hide();
+			}
 		} else {
 			// In all other cases, we need all four slots in
 			// the component.
 			r->box->GetStaticBox()->Show();
-			r->line0->Show();
-			r->line0Tag->Show();
-			r->line1->Show();
-			r->line1Tag->Show();
-			r->line2->Show();
-			r->line2Tag->Show();
-			r->line3->Show();
-			r->line3Tag->Show();
+			for(j = 0; j < MAX_RESULTS_ITEMS; j++) {
+				r->item[j].value->Show();
+				r->item[j].tag->Show();
+			}
 		}
 	}
 
 	// We can now display the various components.
 	for(i = 0; i < count; i++) {
+		j = 0;
 		c = &d->component[i];
 		sn = &s->n[i];
 		r = &m_r[i];
 		r->box->GetStaticBox()->SetLabel(c->label);
-		r->line0->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
+		r->item[j].value->ChangeValue(wxString::Format(wxT("%.2f"), c->value));
 		if(c->type == 'C') {
-			r->line0Tag->SetLabel("Value (pF)");
+			r->item[j].tag->SetLabel("Value (pF)");
 		} else {
-			r->line0Tag->SetLabel("Value (nH)");
+			r->item[j].tag->SetLabel("Value (nH)");
 		}
+		++j;
 
-		r->line1->ChangeValue(wxString::Format(wxT("%.2f"), sn->voltageAcross));
-		r->line1Tag->SetLabel("Voltage Across");
+		r->item[j].value->ChangeValue(wxString::Format(wxT("%.2f"), sn->voltageAcross));
+		r->item[j].tag->SetLabel("Voltage Across");
+		++j;
 
-		r->line2->ChangeValue(wxString::Format(wxT("%.2f"), sn->currentThrough));
-		r->line2Tag->SetLabel("Current Through");
-
-		r->line3->ChangeValue(wxString::Format(wxT("%.2f"), sn->loss));
-		r->line3Tag->SetLabel("Loss (Watts)");
+		r->item[j].value->ChangeValue(wxString::Format(wxT("%.2f"), sn->currentThrough));
+		r->item[j].tag->SetLabel("Current Through");
+		++j;
 
 		// If 10% or more of the power is lost in a component, that
 		// is arbitrarily considered to be excessive.
+		r->item[j].value->ChangeValue(wxString::Format(wxT("%.2f"), sn->loss));
+		r->item[j].tag->SetLabel("Loss (Watts)");
 		if(sn->loss > m_power * 0.1) {
 			excessiveLoss = TRUE;
 
-			r->line3->SetForegroundColour(wxColour("#ff0000"));
-			r->line3Tag->SetForegroundColour(wxColour("#ff0000"));
+			r->item[j].value->SetForegroundColour(wxColour("#ff0000"));
+			r->item[j].tag->SetForegroundColour(wxColour("#ff0000"));
 		} else {
-			r->line3->SetForegroundColour(wxColour("#000000"));
-			r->line3Tag->SetForegroundColour(wxColour("#000000"));
+			r->item[j].value->SetForegroundColour(wxColour("#000000"));
+			r->item[j].tag->SetForegroundColour(wxColour("#000000"));
 		}
+		++j;
 	}
 
 	i = 0;

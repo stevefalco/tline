@@ -42,6 +42,7 @@ using namespace std;
 #define IS_SER			2
 
 #define MAX_COMPONENTS		3
+#define MAX_RESULTS_ITEMS	4
 #define MAX_STATUS_ITEMS	7
 
 typedef struct {
@@ -99,19 +100,13 @@ typedef struct {
 } LNET_RESULTS;
 
 typedef struct {
+	wxTextCtrl*		value;
+	wxStaticText*		tag;
+} RESULT_ITEM;
+
+typedef struct {
 	wxStaticBoxSizer*	box;
-
-	wxTextCtrl*		line0;
-	wxStaticText*		line0Tag;
-
-	wxTextCtrl*		line1;
-	wxStaticText*		line1Tag;
-
-	wxTextCtrl*		line2;
-	wxStaticText*		line2Tag;
-
-	wxTextCtrl*		line3;
-	wxStaticText*		line3Tag;
+	RESULT_ITEM		item[MAX_RESULTS_ITEMS];
 } RESULT_MAP;
 
 typedef struct {
