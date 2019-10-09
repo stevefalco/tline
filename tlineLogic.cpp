@@ -688,9 +688,9 @@ bool tlineLogic::setOutput( wxFFile* file )
 // otherwise the backslashes are interpolated and the paths don't work.
 void tlineLogic::setControlZ( wxFFile* file, const char* name )
 {
-	fprintf(file->fp(), "set ytics -1000000,10 nomirror tc lt 1\n");
+	fprintf(file->fp(), "set ytics nomirror tc lt 1\n");
 	fprintf(file->fp(), "set ylabel 'Imaginary (Ω)' tc lt 1\n");
-	fprintf(file->fp(), "set y2tics -1000000,10 nomirror tc lt 2\n");
+	fprintf(file->fp(), "set y2tics nomirror tc lt 2\n");
 	fprintf(file->fp(), "set y2label 'Real (Ω)' tc lt 2\n");
 	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr);
 	fprintf(file->fp(), "plot \\\n");
@@ -702,9 +702,9 @@ void tlineLogic::setControlZ( wxFFile* file, const char* name )
 // otherwise the backslashes are interpolated and the paths don't work.
 void tlineLogic::setControlVI( wxFFile* file, const char* name )
 {	
-	fprintf(file->fp(), "set ytics -1000000,1 nomirror tc lt 1\n");
+	fprintf(file->fp(), "set ytics nomirror tc lt 1\n");
 	fprintf(file->fp(), "set ylabel 'Current (Amps)' tc lt 1\n");
-	fprintf(file->fp(), "set y2tics -1000000,20 nomirror tc lt 2\n");
+	fprintf(file->fp(), "set y2tics nomirror tc lt 2\n");
 	fprintf(file->fp(), "set y2label 'Voltage (Volts)' tc lt 2\n");
 	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr);
 	fprintf(file->fp(), "plot \\\n");
