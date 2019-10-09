@@ -1142,7 +1142,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	wxBoxSizer* bTunerBottom;
 	bTunerBottom = new wxBoxSizer( wxVERTICAL );
 
-	dl_tunerInfo = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	dl_tunerInfo = new wxStaticText( this, wxID_ANY, wxT("XXXXXX\nXXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_tunerInfo->Wrap( -1 );
 	bTunerBottom->Add( dl_tunerInfo, 0, wxALL, 5 );
 

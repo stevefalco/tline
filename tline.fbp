@@ -5566,7 +5566,7 @@
             <property name="minimum_size">-1,-1</property>
             <property name="name">tunerDialog</property>
             <property name="pos"></property>
-            <property name="size">930,810</property>
+            <property name="size">930,740</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Tuner Calculator</property>
@@ -9670,7 +9670,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label"></property>
+                                <property name="label">XXXXXX&#x0A;XXXXXX</property>
                                 <property name="markup">0</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>

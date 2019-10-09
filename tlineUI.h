@@ -334,7 +334,7 @@ class tunerDialog : public wxDialog
 		wxString m_tunerCapacitorQStr;
 		wxString m_tunerNetworkQStr;
 
-		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 930,810 ), long style = wxDEFAULT_DIALOG_STYLE );
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 930,740 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~tunerDialog();
 
 };

@@ -1721,7 +1721,6 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	if(excessiveLoss) {
 		dl_tunerInfo->SetLabel(wxT("\
 Excessive loss detected (highlighted in red in the \"Results\" and/or \"Notes\" boxs).\n\
-\n\
 You should probably choose a different topology or add a transmission line transformer.\n"));
 		dl_tunerInfo->SetForegroundColour(wxColour("#ff0000"));
 	} else {
