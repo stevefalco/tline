@@ -47,11 +47,12 @@ Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 First, create a source archive.  Note that the "TAG=x.x.x" must be changed
 to match the version in the spec file, and that has to match a tag in git.
 
-TAG=0.1.0
+TAG=0.1.1
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 
 Next, prepare a working directory:
 
+rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
 cp spec/tline.spec ~/rpmbuild/SPECS
 mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
@@ -68,8 +69,9 @@ adjusting the version string and target Fedora version as necessary.  In
 this case, you first generate the sourc RPM in your local rpmbuild
 directory, then pass that to mock:
 
-TAG=0.1.0
+TAG=0.1.1
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
+rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
 cp spec/tline.spec ~/rpmbuild/SPECS
 mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
