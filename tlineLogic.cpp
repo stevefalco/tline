@@ -717,15 +717,21 @@ void tlineLogic::doPlot( int type, int mode )
 {
 	wxString		dataName;
 	wxString		controlName;
+#ifdef __linux
+	wxString		shellName;
+#endif // __linux
 
 	wxFFile			dataFP;
 	wxFFile			controlFP;
+#ifdef __linux
+	wxFFile			shellFP;
+#endif // __linux
 
 	// Create temporary data file.
 	dataName = wxFileName::CreateTempFileName("", &dataFP);
 	if(dataName.IsEmpty()) {
 		wxLogError("Cannot create temporary data file");
-		goto QUIT;
+		return;
 	}
 
 	// Create temporary control file.
@@ -735,12 +741,39 @@ void tlineLogic::doPlot( int type, int mode )
 		goto DELETE_DATA;
 	}
 
+#ifdef __linux
+	// Create temporary shell file.
+	shellName = wxFileName::CreateTempFileName("", &shellFP);
+	if(shellName.IsEmpty()) {
+		wxLogError("Cannot create temporary shell file");
+		goto DELETE_CONTROL;
+	}
+	if(chmod(shellName.mb_str(), 0755)) {
+		wxLogError("Cannot chmod temporary shell file");
+		goto DELETE_SHELL;
+	}
+
+	// Generate the shell script.
+	fprintf(shellFP.fp(), "gnuplot %s %s\n",
+			(const char *)controlName.mb_str(),
+			(mode == PLOT) ? "-" : "");
+	fprintf(shellFP.fp(), "rm -f %s %s %s\n",
+			(const char *)controlName.mb_str(),
+			(const char *)dataName.mb_str(),
+			(const char *)shellName.mb_str());
+
+	if(!shellFP.Flush()) {
+		wxLogError("Cannot flush shell file '%s'", shellName);
+		goto DELETE_SHELL;
+	}
+#endif // __linux
+
 	// Generate the data.
 	generateGraphableData(dataFP.fp());
 
 	if(!dataFP.Flush()) {
 		wxLogError("Cannot flush data file '%s'", dataName);
-		goto DELETE_CONTROL;
+		goto DELETE_SHELL;
 	}
 
 	// Arrange for gnuplot to handle special characters.
@@ -749,7 +782,7 @@ void tlineLogic::doPlot( int type, int mode )
 	// If saving, we need to set the terminal type and output file.
 	if(mode == SAVE) {
 		if(!setOutput( &controlFP )) {
-			goto DELETE_CONTROL;
+			goto DELETE_SHELL;
 		}
 	}
 
@@ -766,14 +799,31 @@ void tlineLogic::doPlot( int type, int mode )
 	
 	if(!controlFP.Flush()) {
 		wxLogError("Cannot flush control file '%s'", controlName);
-		goto DELETE_CONTROL;
+		goto DELETE_SHELL;
 	}
 
-	// Build and execute the plot command.
+#if defined __linux
+	// Build and execute the plot command.  The shell script will unlink
+	// the temp files when gnuplot exits, so close them here.
+	shellFP.Close();
+	controlFP.Close();
+	dataFP.Close();
+	system(wxString::Format(wxT("xterm -e 'bash %s' &"), shellName));
+	return;
+#elif defined _WIN32
+	// Build and execute the plot command.  We will close and unlink the
+	// temp files after the command returns.
 	system(wxString::Format(wxT("gnuplot %s %s"), (mode == PLOT) ? "-p" : "", controlName));
-	
+#endif // __linux, _WIN32
+
 	// Delete the temporary files from the filesystem.
+DELETE_SHELL:
+#ifdef __linux
+	shellFP.Close();
+	wxRemoveFile(shellName);
+
 DELETE_CONTROL:
+#endif // __linux
 	controlFP.Close();
 	wxRemoveFile(controlName);
 
@@ -781,7 +831,6 @@ DELETE_DATA:
 	dataFP.Close();
 	wxRemoveFile(dataName);
 
-QUIT:
 	return;
 }
 

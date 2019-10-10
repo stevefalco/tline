@@ -95,19 +95,19 @@ you will want to install mingw32-wxWidgets3.noarch, mingw32-nsis.x86_64, etc.
 Also, Tline for windows uses a number of dlls from various projects.  The dll
 files are stored in the windows-installer subdirectory.
 
-First, build the Tline.exe file and copy it into the windows-installer
-directory:
+Build the Tline.exe file, copy it into the windows-installer directory, and
+generate the package:
 
+TAG=0.1.1
 mkdir build-windows
 cd build-windows
 mingw32-cmake ..
 make -j12 && cp tline.exe ../windows-installer
-
-Generate the windows package:
-
 cd ../windows-installer
 makensis tline.nsi
+mv tline-installer.exe tline-installer-${TAG}.exe
+cd -
 
-You will wind up with tline-installer.exe, which contains all the components
-needed to install and run Tline.
+You will wind up with tline-installer-${TAG}.exe, which contains all the
+components needed to install and run Tline.
 
