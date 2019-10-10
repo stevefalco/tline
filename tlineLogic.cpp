@@ -754,6 +754,7 @@ void tlineLogic::doPlot( int type, int mode )
 	}
 
 	// Generate the shell script.
+	fprintf(shellFP.fp(), "#!/bin/sh\n");
 	fprintf(shellFP.fp(), "gnuplot %s %s\n",
 			(const char *)controlName.mb_str(),
 			(mode == PLOT) ? "-" : "");
@@ -808,7 +809,7 @@ void tlineLogic::doPlot( int type, int mode )
 	// Build and execute the plot command.  The shell script will unlink
 	// the temp files when gnuplot exits.
 	shellFP.Close();
-	system(wxString::Format(wxT("xterm -e 'bash %s' &"), shellName));
+	system(wxString::Format(wxT("xterm -e %s &"), shellName));
 #elif defined _WIN32
 	// Build and execute the plot command.  We will unlink the
 	// temp files after gnuplot returns.
