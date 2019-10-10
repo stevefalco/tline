@@ -802,19 +802,20 @@ void tlineLogic::doPlot( int type, int mode )
 		goto DELETE_SHELL;
 	}
 
-#if defined __linux
-	// Build and execute the plot command.  The shell script will unlink
-	// the temp files when gnuplot exits, so close them here.
-	shellFP.Close();
 	controlFP.Close();
 	dataFP.Close();
+#if defined __linux
+	// Build and execute the plot command.  The shell script will unlink
+	// the temp files when gnuplot exits.
+	shellFP.Close();
 	system(wxString::Format(wxT("xterm -e 'bash %s' &"), shellName));
-	return;
 #elif defined _WIN32
-	// Build and execute the plot command.  We will close and unlink the
-	// temp files after the command returns.
-	system(wxString::Format(wxT("gnuplot %s %s"), (mode == PLOT) ? "-p" : "", controlName));
+	// Build and execute the plot command.  We will unlink the
+	// temp files after gnuplot returns.
+	system(wxString::Format(wxT("gnuplot %s %s"), controlName, (mode == PLOT) ? "-" : ""));
+	system(wxString::Format(wxT("del %s %s"), controlName, dataName));
 #endif // __linux, _WIN32
+	return;
 
 	// Delete the temporary files from the filesystem.
 DELETE_SHELL:

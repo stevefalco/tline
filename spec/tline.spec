@@ -18,6 +18,7 @@ BuildRequires:  libappstream-glib
 
 Requires:       electronics-menu
 Requires:       gnuplot-wx
+Requires:       xterm
 
 
 %description
