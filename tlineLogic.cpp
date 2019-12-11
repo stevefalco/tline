@@ -85,6 +85,9 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 	}
 	ui_cableLength->ChangeValue(m_lengthStr);
 
+	// Start out without an update warning.
+	ui_updateWarning->SetLabel("");
+
 	// If a file was specified on the command line, read it now.  This has to be after
 	// all the above initializations.
 	if(fileName != "") {
@@ -269,6 +272,11 @@ void tlineLogic::loadFile( wxString path )
 			m_userLineCableVoltageLimitStr = p;
 			m_userLineInit = 1;
 		}
+
+		if(strcmp(buffer, "m_userLineLastMethod") == 0) {
+			m_userLineLastMethodStr = p;
+			m_userLineInit = 1;
+		}
 	}
 
 	f->Close();
@@ -329,6 +337,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 		fprintf(fp, "m_userLineCableResistance=%s\n",	(const char *)m_userLineCableResistanceStr.mb_str());
 		fprintf(fp, "m_userLineCableReactance=%s\n",	(const char *)m_userLineCableReactanceStr.mb_str());
 		fprintf(fp, "m_userLineCableVoltageLimit=%s\n",	(const char *)m_userLineCableVoltageLimitStr.mb_str());
+		fprintf(fp, "m_userLineLastMethod=%s\n",	(const char *)m_userLineLastMethodStr.mb_str());
 	}
 
 	if(fflush(fp) == EOF) {
@@ -398,6 +407,9 @@ void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 
 	if(m_cableTypeStr == "User-Defined Transmission Line") {
 		m_newUserLine = TRUE;
+	} else {
+		// Line is not user specified.  Clear any warnings.
+		ui_updateWarning->SetLabel("");
 	}
 
 	m_saved = 0;
@@ -417,6 +429,11 @@ void tlineLogic::onFrequencySelected( wxCommandEvent& event )
 {
 	m_frequencyStr = event.GetString();
 	m_saved = 0;
+
+	if(m_cableTypeStr == "User-Defined Transmission Line") {
+		// User-specified line + frequency change.  Show the update warning.
+		ui_updateWarning->SetLabel(wxT("Frequency has changed.  Reselect\nUserLine dialog to update."));
+	}
 
 	recalculate();
 }
@@ -939,9 +956,14 @@ void tlineLogic::recalculate()
 			dialog->m_userLineCableResistanceStr = m_userLineCableResistanceStr;
 			dialog->m_userLineCableReactanceStr = m_userLineCableReactanceStr;
 			dialog->m_userLineCableVoltageLimitStr = m_userLineCableVoltageLimitStr;
+			dialog->m_userLineLastMethodStr = m_userLineLastMethodStr;
 			dialog->Update();
 
 			if (dialog->ShowModal() == wxID_OK) {
+
+				// Dialog has closed.  Remove any update warnings.
+				ui_updateWarning->SetLabel("");
+
 				// Save the new user values.
 				m_userLineAttenuationStr = dialog->m_userLineAttenuationStr;
 				m_userLineVelocityFactorStr = dialog->m_userLineVelocityFactorStr;
@@ -949,6 +971,7 @@ void tlineLogic::recalculate()
 				m_userLineCableResistanceStr = dialog->m_userLineCableResistanceStr;
 				m_userLineCableReactanceStr = dialog->m_userLineCableReactanceStr;
 				m_userLineCableVoltageLimitStr = dialog->m_userLineCableVoltageLimitStr;
+				m_userLineLastMethodStr = dialog->m_userLineLastMethodStr;
 
 				// Also set our working values.
 				m_userSpecifiedZ = TRUE;

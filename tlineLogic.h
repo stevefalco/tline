@@ -145,6 +145,7 @@ class tlineLogic : public tlineUI
 		wxString		m_userLineCableResistanceStr = _("0.0");
 		wxString		m_userLineCableVoltageLimitStr = _("0.0");
 		wxString		m_userLineVelocityFactorStr = _("0.0");
+		wxString		m_userLineLastMethodStr = _("1");
 
 		complex<double>		m_lossCoef;
 		complex<double>		m_rhoLoad;

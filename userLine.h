@@ -20,12 +20,17 @@
 
 #include "tlineUI.h"
 
+#define UL_LAST_METHOD_RX_FROM_Z "1"
+#define UL_LAST_METHOD_Z_FROM_RX "2"
+
 class userLine : public userLineDialog
 {
 	public:
 		userLine( wxWindow* parent );
 
 		void Update();
+
+		wxString m_userLineLastMethodStr;
 
 	private:
 		void onAttenuationSelected( wxCommandEvent& event );

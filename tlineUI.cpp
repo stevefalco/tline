@@ -52,6 +52,9 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_programTitle->Wrap( -1 );
 	bMainWindow->Add( ui_programTitle, 0, wxALL, 5 );
 
+	wxBoxSizer* bCable;
+	bCable = new wxBoxSizer( wxHORIZONTAL );
+
 	ui_cableType = new wxComboBox( this, wxID_ANY, wxT("RG-8U"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
 	ui_cableType->Append( wxT("RG-6 (Belden 8215)") );
 	ui_cableType->Append( wxT("RG-8 (TMS LMR400)") );
@@ -93,7 +96,18 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_cableType->SetSelection( 0 );
 	ui_cableType->SetMinSize( wxSize( 500,-1 ) );
 
-	bMainWindow->Add( ui_cableType, 0, wxALL, 5 );
+	bCable->Add( ui_cableType, 0, wxALL, 5 );
+
+	ui_updateWarning = new wxStaticText( this, wxID_ANY, wxT("Parameters have changed. Reselect UserLine dialog to update."), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_updateWarning->Wrap( -1 );
+	ui_updateWarning->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	ui_updateWarning->SetForegroundColour( wxColour( 255, 0, 0 ) );
+	ui_updateWarning->SetMinSize( wxSize( -1,40 ) );
+
+	bCable->Add( ui_updateWarning, 0, wxALL|wxRESERVE_SPACE_EVEN_IF_HIDDEN, 5 );
+
+
+	bMainWindow->Add( bCable, 0, wxEXPAND, 5 );
 
 	wxBoxSizer* bPane1;
 	bPane1 = new wxBoxSizer( wxHORIZONTAL );
@@ -541,92 +555,130 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* bUserLineOuter;
 	bUserLineOuter = new wxBoxSizer( wxVERTICAL );
 
-	wxGridSizer* gParameters;
-	gParameters = new wxGridSizer( 0, 2, 0, 0 );
+	wxFlexGridSizer* fgParameters;
+	fgParameters = new wxFlexGridSizer( 0, 3, 10, 0 );
+	fgParameters->SetFlexibleDirection( wxBOTH );
+	fgParameters->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	dl_frequencyTag = new wxStaticText( this, wxID_ANY, wxT("Frequency (MHz)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_frequencyTag->Wrap( -1 );
-	gParameters->Add( dl_frequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	fgParameters->Add( dl_frequencyTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_frequencyStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxBORDER_NONE );
 	dl_frequencyStr->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	dl_frequencyStr->SetMinSize( wxSize( 150,-1 ) );
+	dl_frequencyStr->SetMinSize( wxSize( 200,-1 ) );
 
 	dl_frequencyStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineFrequencyStr ) );
 
-	gParameters->Add( dl_frequencyStr, 0, wxALL, 5 );
+	fgParameters->Add( dl_frequencyStr, 0, wxALL, 5 );
+
+	dl_hiddenPadFQ = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_hiddenPadFQ->Wrap( -1 );
+	dl_hiddenPadFQ->Hide();
+
+	fgParameters->Add( dl_hiddenPadFQ, 0, wxALL, 5 );
 
 	dl_attenuationTag = new wxStaticText( this, wxID_ANY, wxT("Attenuation (dB/100 feet)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_attenuationTag->Wrap( -1 );
-	gParameters->Add( dl_attenuationTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	fgParameters->Add( dl_attenuationTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_attenuationStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_attenuationStr->SetMinSize( wxSize( 150,-1 ) );
+	dl_attenuationStr->SetMinSize( wxSize( 200,-1 ) );
 
 	dl_attenuationStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineAttenuationStr ) );
 
-	gParameters->Add( dl_attenuationStr, 0, wxALL, 0 );
+	fgParameters->Add( dl_attenuationStr, 0, wxALL, 0 );
+
+	dl_hiddenPadATTN = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_hiddenPadATTN->Wrap( -1 );
+	dl_hiddenPadATTN->Hide();
+
+	fgParameters->Add( dl_hiddenPadATTN, 0, wxALL, 5 );
 
 	dl_velocityFactorTag = new wxStaticText( this, wxID_ANY, wxT("Velocity Factor (0.00 to 1.00)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_velocityFactorTag->Wrap( -1 );
-	gParameters->Add( dl_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	fgParameters->Add( dl_velocityFactorTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_velocityFactorStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_velocityFactorStr->SetMinSize( wxSize( 150,-1 ) );
+	dl_velocityFactorStr->SetMinSize( wxSize( 200,-1 ) );
 
 	dl_velocityFactorStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineVelocityFactorStr ) );
 
-	gParameters->Add( dl_velocityFactorStr, 0, wxALL, 0 );
+	fgParameters->Add( dl_velocityFactorStr, 0, wxALL, 0 );
+
+	dl_hiddenPadVF = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_hiddenPadVF->Wrap( -1 );
+	dl_hiddenPadVF->Hide();
+
+	fgParameters->Add( dl_hiddenPadVF, 0, wxALL, 5 );
 
 	dl_cableImpedanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Impedance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableImpedanceTag->Wrap( -1 );
-	gParameters->Add( dl_cableImpedanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	fgParameters->Add( dl_cableImpedanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_cableImpedanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_cableImpedanceStr->SetMinSize( wxSize( 150,-1 ) );
+	dl_cableImpedanceStr->SetMinSize( wxSize( 200,-1 ) );
 
 	dl_cableImpedanceStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableImpedanceStr ) );
 
-	gParameters->Add( dl_cableImpedanceStr, 0, wxALL, 0 );
+	fgParameters->Add( dl_cableImpedanceStr, 0, wxALL, 0 );
+
+	dl_cableImpedanceCtlStr = new wxStaticText( this, wxID_ANY, wxT("Calculated from R, X"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableImpedanceCtlStr->Wrap( -1 );
+	fgParameters->Add( dl_cableImpedanceCtlStr, 0, wxALL, 5 );
 
 	dl_cableResistanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Resistance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableResistanceTag->Wrap( -1 );
-	gParameters->Add( dl_cableResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	fgParameters->Add( dl_cableResistanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_cableResistanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_cableResistanceStr->SetMinSize( wxSize( 150,-1 ) );
+	dl_cableResistanceStr->SetMinSize( wxSize( 200,-1 ) );
 
 	dl_cableResistanceStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableResistanceStr ) );
 
-	gParameters->Add( dl_cableResistanceStr, 0, wxALL, 0 );
+	fgParameters->Add( dl_cableResistanceStr, 0, wxALL, 0 );
+
+	dl_cableResistanceCtlStr = new wxStaticText( this, wxID_ANY, wxT("Calculated from Z"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableResistanceCtlStr->Wrap( -1 );
+	fgParameters->Add( dl_cableResistanceCtlStr, 0, wxALL, 5 );
 
 	dl_cableReactanceTag = new wxStaticText( this, wxID_ANY, wxT("Cable Characteristic Reactance (Ω)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableReactanceTag->Wrap( -1 );
-	gParameters->Add( dl_cableReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	fgParameters->Add( dl_cableReactanceTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_cableReactanceStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_cableReactanceStr->SetMinSize( wxSize( 150,-1 ) );
+	dl_cableReactanceStr->SetMinSize( wxSize( 200,-1 ) );
 
 	dl_cableReactanceStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableReactanceStr ) );
 
-	gParameters->Add( dl_cableReactanceStr, 0, wxALL, 0 );
+	fgParameters->Add( dl_cableReactanceStr, 0, wxALL, 0 );
+
+	dl_cableReactanceCtlStr = new wxStaticText( this, wxID_ANY, wxT("Calculated from Z"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_cableReactanceCtlStr->Wrap( -1 );
+	fgParameters->Add( dl_cableReactanceCtlStr, 0, wxALL, 5 );
 
 	dl_cableVoltageLimitTag = new wxStaticText( this, wxID_ANY, wxT("Cable Voltage Limit (Volts)"), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_cableVoltageLimitTag->Wrap( -1 );
-	gParameters->Add( dl_cableVoltageLimitTag, 0, wxALIGN_RIGHT|wxALL, 5 );
+	fgParameters->Add( dl_cableVoltageLimitTag, 0, wxALIGN_RIGHT|wxALL, 5 );
 
 	dl_cableVoltageLimitStr = new wxTextCtrl( this, wxID_ANY, wxT("XXXXXX"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_cableVoltageLimitStr->SetMinSize( wxSize( 150,-1 ) );
+	dl_cableVoltageLimitStr->SetMinSize( wxSize( 200,-1 ) );
 
 	dl_cableVoltageLimitStr->SetValidator( wxTextValidator( wxFILTER_NUMERIC, &m_userLineCableVoltageLimitStr ) );
 
-	gParameters->Add( dl_cableVoltageLimitStr, 0, wxALL, 0 );
+	fgParameters->Add( dl_cableVoltageLimitStr, 0, wxALL, 0 );
 
-	dl_hiddenPad = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_hiddenPad->Wrap( -1 );
-	dl_hiddenPad->Hide();
+	dl_hiddenPadVL = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_hiddenPadVL->Wrap( -1 );
+	dl_hiddenPadVL->Hide();
 
-	gParameters->Add( dl_hiddenPad, 0, wxALL, 5 );
+	fgParameters->Add( dl_hiddenPadVL, 0, wxALL, 5 );
+
+	dl_hiddenPadBTN = new wxStaticText( this, wxID_ANY, wxT("Hidden Pad"), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_hiddenPadBTN->Wrap( -1 );
+	dl_hiddenPadBTN->Hide();
+
+	fgParameters->Add( dl_hiddenPadBTN, 0, wxALL, 5 );
 
 	wxBoxSizer* bButtons;
 	bButtons = new wxBoxSizer( wxHORIZONTAL );
@@ -638,15 +690,15 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	bButtons->Add( dl_cancelButton, 0, wxALL, 5 );
 
 
-	gParameters->Add( bButtons, 1, wxEXPAND, 5 );
+	fgParameters->Add( bButtons, 1, wxEXPAND, 5 );
 
 
-	bUserLineOuter->Add( gParameters, 1, wxEXPAND, 5 );
+	bUserLineOuter->Add( fgParameters, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bUserLineBottom;
 	bUserLineBottom = new wxBoxSizer( wxVERTICAL );
 
-	dl_help = new wxStaticText( this, wxID_ANY, wxT("Note: When you enter the Cable Characteristic Impedance, the cable characteristic resistance and reactance will be estimated.  You can override the estimates, in which case the corresponding cable impedance will be recalculated."), wxDefaultPosition, wxDefaultSize, 0 );
+	dl_help = new wxStaticText( this, wxID_ANY, wxT("Note: When you enter the Cable Characteristic Impedance, the cable characteristic resistance and reactance will be estimated.  You can override the estimates, in which case the corresponding cable impedance will be recalculated.  A note will be shown to indicate which variables are calculated and which are user-specified."), wxDefaultPosition, wxDefaultSize, 0 );
 	dl_help->Wrap( 750 );
 	bUserLineBottom->Add( dl_help, 0, wxALL, 5 );
 

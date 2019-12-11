@@ -32,7 +32,11 @@ void userLine::onAttenuationSelected( wxCommandEvent& event )
 	// to the text.  We only want to recalculate on user input.  Otherwise,
 	// previous settings won't replay correctly when reopening this dialog.
 	if(dl_attenuationStr->IsModified()) {
-		ResistanceReactanceFromImpedance();
+		if(m_userLineLastMethodStr == UL_LAST_METHOD_RX_FROM_Z) {
+			ResistanceReactanceFromImpedance();
+		} else {
+			ImpedanceFromResistanceReactance();
+		}
 	}
 }
 
@@ -44,7 +48,11 @@ void userLine::onVelocityFactorSelected( wxCommandEvent& event )
 	// to the text.  We only want to recalculate on user input.  Otherwise,
 	// previous settings won't replay correctly when reopening this dialog.
 	if(dl_velocityFactorStr->IsModified()) {
-		ResistanceReactanceFromImpedance();
+		if(m_userLineLastMethodStr == UL_LAST_METHOD_RX_FROM_Z) {
+			ResistanceReactanceFromImpedance();
+		} else {
+			ImpedanceFromResistanceReactance();
+		}
 	}
 }
 
@@ -57,6 +65,7 @@ void userLine::onCableImpedanceSelected( wxCommandEvent& event )
 	// previous settings won't replay correctly when reopening this dialog.
 	if(dl_cableImpedanceStr->IsModified()) {
 		ResistanceReactanceFromImpedance();
+		m_userLineLastMethodStr = UL_LAST_METHOD_RX_FROM_Z;
 	}
 }
 
@@ -69,6 +78,7 @@ void userLine::onCableResistanceSelected( wxCommandEvent& event )
 	// previous settings won't replay correctly when reopening this dialog.
 	if(dl_cableResistanceStr->IsModified()) {
 		ImpedanceFromResistanceReactance();
+		m_userLineLastMethodStr = UL_LAST_METHOD_Z_FROM_RX;
 	}
 }
 
@@ -81,6 +91,7 @@ void userLine::onCableReactanceSelected( wxCommandEvent& event )
 	// previous settings won't replay correctly when reopening this dialog.
 	if(dl_cableReactanceStr->IsModified()) {
 		ImpedanceFromResistanceReactance();
+		m_userLineLastMethodStr = UL_LAST_METHOD_Z_FROM_RX;
 	}
 }
 
@@ -127,6 +138,10 @@ void userLine::ResistanceReactanceFromImpedance()
 	m_cableReactance = -m_cableResistance * (attenuation / phase);
 	m_userLineCableReactanceStr = wxString::Format(wxT("%.2f"), m_cableReactance);
 	dl_cableReactanceStr->ChangeValue(m_userLineCableReactanceStr);
+
+	dl_cableImpedanceCtlStr->SetLabel("User-Specified");
+	dl_cableResistanceCtlStr->SetLabel("Calculated from Z");
+	dl_cableReactanceCtlStr->SetLabel("Calculated from Z");
 }
 
 void userLine::ImpedanceFromResistanceReactance()
@@ -137,6 +152,10 @@ void userLine::ImpedanceFromResistanceReactance()
 	m_cableImpedance = sqrt(sq(m_cableResistance) + sq(m_cableReactance));
 	m_userLineCableImpedanceStr = wxString::Format(wxT("%.2f"), m_cableImpedance);
 	dl_cableImpedanceStr->ChangeValue(m_userLineCableImpedanceStr);
+
+	dl_cableImpedanceCtlStr->SetLabel("Calculated from R, X");
+	dl_cableResistanceCtlStr->SetLabel("User-Specified");
+	dl_cableReactanceCtlStr->SetLabel("User-Specified");
 }
 
 void userLine::Update()
@@ -154,4 +173,12 @@ void userLine::Update()
 	dl_cableResistanceStr->ChangeValue(m_userLineCableResistanceStr);
 	dl_cableReactanceStr->ChangeValue(m_userLineCableReactanceStr);
 	dl_cableVoltageLimitStr->ChangeValue(m_userLineCableVoltageLimitStr);
+
+	// Frequency may have changed on the home screen, in which case
+	// we need to recalculate.
+	if(m_userLineLastMethodStr == UL_LAST_METHOD_RX_FROM_Z) {
+		ResistanceReactanceFromImpedance();
+	} else {
+		ImpedanceFromResistanceReactance();
+	}
 }

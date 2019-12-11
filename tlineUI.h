@@ -20,8 +20,8 @@
 #include <wx/settings.h>
 #include <wx/stattext.h>
 #include <wx/combobox.h>
-#include <wx/radiobox.h>
 #include <wx/sizer.h>
+#include <wx/radiobox.h>
 #include <wx/textctrl.h>
 #include <wx/valtext.h>
 #include <wx/statbox.h>
@@ -48,6 +48,7 @@ class tlineUI : public wxFrame
 		wxMenu* helpMenu;
 		wxStaticText* ui_programTitle;
 		wxComboBox* ui_cableType;
+		wxStaticText* ui_updateWarning;
 		wxRadioBox* ui_unitsRadioButtons;
 		wxStaticText* ui_cableLengthTag;
 		wxTextCtrl* ui_cableLength;
@@ -146,19 +147,26 @@ class userLineDialog : public wxDialog
 	protected:
 		wxStaticText* dl_frequencyTag;
 		wxTextCtrl* dl_frequencyStr;
+		wxStaticText* dl_hiddenPadFQ;
 		wxStaticText* dl_attenuationTag;
 		wxTextCtrl* dl_attenuationStr;
+		wxStaticText* dl_hiddenPadATTN;
 		wxStaticText* dl_velocityFactorTag;
 		wxTextCtrl* dl_velocityFactorStr;
+		wxStaticText* dl_hiddenPadVF;
 		wxStaticText* dl_cableImpedanceTag;
 		wxTextCtrl* dl_cableImpedanceStr;
+		wxStaticText* dl_cableImpedanceCtlStr;
 		wxStaticText* dl_cableResistanceTag;
 		wxTextCtrl* dl_cableResistanceStr;
+		wxStaticText* dl_cableResistanceCtlStr;
 		wxStaticText* dl_cableReactanceTag;
 		wxTextCtrl* dl_cableReactanceStr;
+		wxStaticText* dl_cableReactanceCtlStr;
 		wxStaticText* dl_cableVoltageLimitTag;
 		wxTextCtrl* dl_cableVoltageLimitStr;
-		wxStaticText* dl_hiddenPad;
+		wxStaticText* dl_hiddenPadVL;
+		wxStaticText* dl_hiddenPadBTN;
 		wxButton* dl_okButton;
 		wxButton* dl_cancelButton;
 		wxStaticText* dl_help;
