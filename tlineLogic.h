@@ -147,7 +147,8 @@ class tlineLogic : public tlineUI
 		wxString		m_userLineVelocityFactorStr = _("0.0");
 
 		complex<double>		m_lossCoef;
-		complex<double>		m_rho;
+		complex<double>		m_rhoLoad;
+		complex<double>		m_rhoSource;
 		complex<double>		m_zCable;
 		complex<double>		m_zInput;
 		complex<double>		m_zLoad;

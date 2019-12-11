@@ -1069,8 +1069,8 @@ void tlineLogic::recalculate()
 	}
 
 	// Calculate the reflection coefficient at the load.
-	m_rho = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
-	m_rhoMagnitudeAtLoad = abs(m_rho);
+	m_rhoLoad = (m_zLoad - m_zCable) / (m_zLoad + m_zCable);
+	m_rhoMagnitudeAtLoad = abs(m_rhoLoad);
 	m_returnLossAtLoad = 20.0 * log10(m_rhoMagnitudeAtLoad);
 	ui_rhoLoad->ChangeValue(wxString::Format(wxT("%.2f"), m_rhoMagnitudeAtLoad));
 
@@ -1092,9 +1092,11 @@ void tlineLogic::recalculate()
 	m_totalLoss = m_totalMatchedLineLoss + m_extraSWRloss;
 	ui_totalLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_totalLoss));
 
+	// Calculate the reflection coefficient at the input.
+	m_rhoSource = (m_zInput - m_zCable) / (m_zInput + m_zCable);
+	m_rhoMagnitudeAtSource = abs(m_rhoSource);
+
 	// Calculate the SWR at the source.
-	m_returnLossAtSource = m_returnLossAtLoad - 2.0 * m_totalLoss;
-	m_rhoMagnitudeAtSource = pow(10.0, m_returnLossAtSource / 20.0);
 	m_swrAtSource = (1 + m_rhoMagnitudeAtSource) / (1 - m_rhoMagnitudeAtSource);
 	ui_swrInput->ChangeValue(wxString::Format(wxT("%.2f"), m_swrAtSource));
 	
