@@ -1082,14 +1082,15 @@ void tlineLogic::recalculate()
 	m_totalMatchedLineLoss = m_attenDBPerUnitLength * m_length;
 	ui_totalMatchedLineLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_totalMatchedLineLoss));
 
-	// Calculate total loss.
-	double tmp = pow(10.0, 0.1 * m_totalMatchedLineLoss);
-	m_totalLoss = 10.0 * log10((sq(tmp) - sq(m_rhoMagnitudeAtLoad)) / (tmp * (1.0 - sq(m_rhoMagnitudeAtLoad))));
-	ui_totalLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_totalLoss));
-	
-	// Calculate extra loss caused by SWR.
-	m_extraSWRloss = m_totalLoss - m_totalMatchedLineLoss;
+	// Calculate extra loss caused by SWR.  Based on W7XC method from Nov 1997 QST.
+	double absRhoInput = abs((m_zInput - conj(m_zCable)) / (m_zInput + m_zCable));
+	double absRhoLoad = abs((m_zLoad - conj(m_zCable)) / (m_zLoad + m_zCable));
+	m_extraSWRloss = 10.0 * log10((1.0 - pow(absRhoInput, 2.0)) / (1 - pow(absRhoLoad, 2.0)));
 	ui_addedLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_extraSWRloss));
+
+	// Calculate total loss.
+	m_totalLoss = m_totalMatchedLineLoss + m_extraSWRloss;
+	ui_totalLoss->ChangeValue(wxString::Format(wxT("%.2f dB"), m_totalLoss));
 
 	// Calculate the SWR at the source.
 	m_returnLossAtSource = m_returnLossAtLoad - 2.0 * m_totalLoss;
