@@ -83,7 +83,12 @@ In window 2 do:
 TAG=0.1.2
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
-mock -r fedora-30-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc30.src.rpm
+mock -r fedora-31-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc31.src.rpm
+
+In window 3 do:
+
+TAG=0.1.2
+mock -r fedora-30-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc31.src.rpm
 
 2) BUILDING FOR WINDOWS
 =======================
