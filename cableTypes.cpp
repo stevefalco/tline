@@ -148,7 +148,8 @@ ATTENUATION TMS_LMR240[] = {
 // Attenuation in dB per hundred feet.
 ATTENUATION BELDEN_8213[] = {
 	{     1E6, 0.2 },
-	{     5E6, 0.9 },
+	{    10E6, 0.4 },
+	{    50E6, 0.9 },
 	{   100E6, 1.3 },
 	{   200E6, 1.9 },
 	{   400E6, 2.9 },
