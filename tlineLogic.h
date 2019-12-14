@@ -91,8 +91,10 @@ class tlineLogic : public tlineUI
 		bool			m_userLineInit;
 		bool			m_userSpecifiedZ;
 
-		wxString		m_cableTypeStr = _("RG-6 (Belden 8215)");
-		wxString		m_cableTypePrevStr = _("RG-6 (Belden 8215)");
+		// The cable type strings here must match the first member
+		// of the cableProperties table.
+		wxString		m_cableTypeStr = _("Andrew Braided CNT-100");
+		wxString		m_cableTypePrevStr = _("Andrew Braided CNT-100");
 		wxString		m_loadInputStr = _("Load");
 		wxString		m_unitsStr = _("Feet");
 		wxString		m_widthStr = _("800");

@@ -23,11 +23,16 @@ typedef struct {
 	double attenuation;
 } ATTENUATION;
 
+// We will either have the k0/k1/k2 factors or an attenuation pointer, but
+// not both.
 typedef struct {
 		const char	*name;
-		ATTENUATION	*attenuation;
-		double		velocityFactor;
 		double		impedance;
+		double		velocityFactor;
+		double		k0;
+		double		k1;
+		double		k2;
+		ATTENUATION	*attenuation;
 		double		maximumVoltage;
 } CABLE_PROPERTIES;
 

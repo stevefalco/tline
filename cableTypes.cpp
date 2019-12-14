@@ -21,55 +21,14 @@
 #  include "wx/wx.h"
 #endif
 
+#include "wx/log.h"
+
 #include <cstring>
+#include <complex>
+using namespace std;
 
 #include "cableTypes.h"
 #include "constants.h"
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8215[] = {
-	{     1E6, 0.4 },
-	{    10E6, 0.8 },
-	{    50E6, 1.9 },
-	{   100E6, 2.7 },
-	{   200E6, 4.1 },
-	{   400E6, 5.9 },
-	{   700E6, 8.1 },
-	{   900E6, 9.4 },
-	{  1000E6, 9.8 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION TMS_LMR400[] = {
-	{    30E6,  0.7 },
-	{    50E6,  0.9 },
-	{   150E6,  1.5 },
-	{   220E6,  1.9 },
-	{   450E6,  2.7 },
-	{   900E6,  3.9 },
-	{  1500E6,  5.1 },
-	{  1800E6,  5.7 },
-	{  2000E6,  6.0 },
-	{  2500E6,  6.8 },
-	{  5800E6, 10.8 },
-	{  8000E6, 13.0 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_9913[] = {
-	{     5E6, 0.4 },
-	{    10E6, 0.5 },
-	{    50E6, 1.0 },
-	{   100E6, 1.4 },
-	{   200E6, 1.8 },
-	{   400E6, 2.6 },
-	{   700E6, 3.6 },
-	{   900E6, 4.1 },
-	{  1000E6, 4.4 },
-	{ 99999E6, 0.0 }
-};
 
 // Attenuation in dB per hundred feet.
 ATTENUATION DXE_8U[] = {
@@ -82,80 +41,12 @@ ATTENUATION DXE_8U[] = {
 };
 
 // Attenuation in dB per hundred feet.
-ATTENUATION WIREMAN_CQ106[] = {
-	{    30E6, 1.1 },
-	{   150E6, 1.8 },
-	{   450E6, 3.0 },
-	{  1000E6, 4.8 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8237[] = {
-	{     1E6, 0.2 },
-	{    10E6, 0.6 },
-	{    50E6, 1.3 },
-	{   100E6, 1.9 },
-	{   200E6, 2.8 },
-	{   400E6, 4.2 },
-	{   700E6, 5.9 },
-	{   900E6, 6.9 },
-	{  1000E6, 7.4 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_9258[] = {
-	{     1E6,  0.3 },
-	{    10E6,  0.9 },
-	{    50E6,  2.1 },
-	{   100E6,  3.1 },
-	{   200E6,  4.5 },
-	{   400E6,  6.6 },
-	{   700E6,  9.1 },
-	{   900E6, 10.7 },
-	{  1000E6, 11.2 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
 ATTENUATION DXE_8X[] = {
 	{     5E6, 0.6 },
 	{    10E6, 0.9 },
 	{    30E6, 1.4 },
 	{    50E6, 2.0 },
 	{   150E6, 3.8 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION TMS_LMR240[] = {
-	{    30E6,  1.3 },
-	{    50E6,  1.7 },
-	{   150E6,  3.0 },
-	{   220E6,  3.7 },
-	{   450E6,  5.3 },
-	{   900E6,  7.6 },
-	{  1500E6,  9.9 },
-	{  1800E6, 10.9 },
-	{  2000E6, 11.5 },
-	{  2500E6, 12.9 },
-	{  5800E6, 20.4 },
-	{  8000E6, 24.3 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8213[] = {
-	{     1E6, 0.2 },
-	{    10E6, 0.4 },
-	{    50E6, 0.9 },
-	{   100E6, 1.3 },
-	{   200E6, 1.9 },
-	{   400E6, 2.9 },
-	{   700E6, 4.1 },
-	{   900E6, 4.8 },
-	{  1000E6, 5.2 },
 	{ 99999E6, 0.0 }
 };
 
@@ -172,65 +63,6 @@ ATTENUATION DXE_11U[] = {
 };
 
 // Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8261[] = {
-	{     1E6, 0.2 },
-	{    10E6, 0.7 },
-	{    50E6, 1.3 },
-	{   100E6, 2.0 },
-	{   200E6, 2.9 },
-	{   400E6, 4.2 },
-	{   700E6, 5.8 },
-	{   900E6, 6.8 },
-	{  1000E6, 7.1 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION TMS_LMR200[] = {
-	{    30E6,  1.8 },
-	{    50E6,  2.3 },
-	{   150E6,  4.0 },
-	{   220E6,  4.8 },
-	{   450E6,  7.0 },
-	{   900E6,  9.9 },
-	{  1500E6, 12.9 },
-	{  1800E6, 14.2 },
-	{  2000E6, 15.0 },
-	{  2500E6, 16.9 },
-	{  5800E6, 26.4 },
-	{  8000E6, 31.3 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8219[] = {
-	{     1E6,  0.4 },
-	{    10E6,  1.3 },
-	{    50E6,  3.1 },
-	{   100E6,  4.5 },
-	{   200E6,  6.6 },
-	{   400E6, 10.0 },
-	{   700E6, 14.2 },
-	{   900E6, 16.6 },
-	{  1000E6, 18.1 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8259[] = {
-	{     1E6,  0.4 },
-	{    10E6,  1.5 },
-	{    50E6,  3.7 },
-	{   100E6,  5.4 },
-	{   200E6,  8.1 },
-	{   400E6, 12.4 },
-	{   700E6, 17.7 },
-	{   900E6, 21.1 },
-	{  1000E6, 22.8 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
 ATTENUATION DXE_58AU[] = {
 	{     1E6, 0.5 },
 	{     5E6, 1.5 },
@@ -241,83 +73,12 @@ ATTENUATION DXE_58AU[] = {
 };
 
 // Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8212[] = {
-	{     1E6,  0.6 },
-	{    10E6,  1.0 },
-	{    50E6,  2.1 },
-	{   100E6,  3.0 },
-	{   200E6,  4.5 },
-	{   400E6,  6.6 },
-	{   700E6,  8.9 },
-	{   900E6, 10.1 },
-	{  1000E6, 10.9 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8263[] = {
-	{     1E6,  0.6 },
-	{    10E6,  1.1 },
-	{    50E6,  2.4 },
-	{   100E6,  3.4 },
-	{   200E6,  4.9 },
-	{   400E6,  7.0 },
-	{   700E6,  9.7 },
-	{   900E6, 11.1 },
-	{  1000E6, 12.0 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_9269[] = {
-	{     1E6, 0.3 },
-	{    10E6, 0.9 },
-	{    50E6, 1.9 },
-	{   100E6, 2.7 },
-	{   200E6, 3.8 },
-	{   400E6, 5.3 },
-	{   700E6, 7.3 },
-	{   900E6, 8.2 },
-	{  1000E6, 8.7 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
 ATTENUATION PASTER_142[] = {
 	{   100E6,  3.9 },
 	{  1000E6, 13.0 },
 	{  3000E6, 23.8 },
 	{  5000E6, 36.0 },
 	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8216[] = {
-	{     1E6,  1.9 },
-	{    10E6,  3.3 },
-	{    50E6,  5.8 },
-	{   100E6,  8.4 },
-	{   200E6, 12.5 },
-	{   400E6, 19.0 },
-	{   700E6, 27.0 },
-	{   900E6, 31.0 },
-	{  1000E6, 34.0 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION BELDEN_8267[] = {
-	{     1E6,  0.27 },
-	{    10E6,  0.55 },
-	{    50E6,  1.3  },
-	{   100E6,  1.9  },
-	{   200E6,  2.7  },
-	{   400E6,  4.1  },
-	{   700E6,  6.5  },
-	{   900E6,  7.6  },
-	{  1000E6,  8.0  },
-	{  4000E6, 21.5  },
-	{ 99999E6,  0.0  }
 };
 
 // Attenuation in dB per hundred feet.
@@ -362,230 +123,6 @@ ATTENUATION DXE_400MAX[] = {
 };
 
 // Attenuation in dB per hundred feet.
-ATTENUATION TMS_LMR500[] = {
-	{    30E6,  0.5 },
-	{    50E6,  0.7 },
-	{   150E6,  1.2 },
-	{   220E6,  1.5 },
-	{   450E6,  2.2 },
-	{   900E6,  3.1 },
-	{  1500E6,  4.1 },
-	{  1800E6,  4.6 },
-	{  2000E6,  4.8 },
-	{  2500E6,  5.5 },
-	{  5800E6,  8.9 },
-	{  8000E6, 10.7 },
-	{ 99999E6,  0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION TMS_LMR600[] = {
-	{    30E6, 0.4 },
-	{    50E6, 0.5 },
-	{   150E6, 1.0 },
-	{   220E6, 1.2 },
-	{   450E6, 1.7 },
-	{   900E6, 2.5 },
-	{  1500E6, 3.3 },
-	{  1800E6, 3.7 },
-	{  2000E6, 3.9 },
-	{  2500E6, 4.4 },
-	{  5800E6, 7.3 },
-	{  8000E6, 8.0 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION TMS_LMR1200[] = {
-	{    30E6, 0.2 },
-	{    50E6, 0.3 },
-	{   150E6, 0.5 },
-	{   220E6, 0.6 },
-	{   450E6, 0.9 },
-	{   900E6, 1.3 },
-	{  1500E6, 1.7 },
-	{  1800E6, 1.9 },
-	{  2000E6, 2.0 },
-	{  2500E6, 2.3 },
-	{ 99999E6, 0.0 }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION HEL_LDF4_50A[] = {
-	{   0.5E6, 0.045 },
-	{     1E6, 0.064 },
-	{   1.5E6, 0.079 },
-	{     2E6, 0.091 },
-	{    10E6, 0.205 },
-	{    20E6, 0.291 },
-	{    30E6, 0.357 },
-	{    50E6, 0.463 },
-	{    85E6, 0.608 },
-	{    88E6, 0.619 },
-	{   100E6, 0.661 },
-	{   108E6, 0.688 },
-	{   150E6, 0.815 },
-	{   174E6, 0.880 },
-	{   200E6, 0.946 },
-	{   204E6, 0.956 },
-	{   300E6, 1.169 },
-	{   400E6, 1.360 },
-	{   450E6, 1.447 },
-	{   460E6, 1.464 },
-	{   460E6, 1.464 },
-	{   500E6, 1.530 },
-	{   512E6, 1.550 },
-	{   600E6, 1.686 },
-	{   700E6, 1.831 },
-	{   800E6, 1.968 },
-	{   824E6, 1.999 },
-	{   894E6, 2.089 },
-	{   960E6, 2.171 },
-	{  1000E6, 2.220 },
-	{  1218E6, 2.472 },
-	{  1250E6, 2.507 },
-	{  1500E6, 2.771 },
-	{  1700E6, 2.970 },
-	{  1794E6, 3.060 },
-	{  1800E6, 3.066 },
-	{  2000E6, 3.251 },
-	{  2100E6, 3.341 },
-	{  2200E6, 3.429 },
-	{  2300E6, 3.516 },
-	{  2500E6, 3.685 },
-	{  2700E6, 3.849 },
-	{  3000E6, 4.086 },
-	{  3400E6, 4.389 },
-	{  3600E6, 4.536 },
-	{  3700E6, 4.608 },
-	{  3800E6, 4.679 },
-	{  3900E6, 4.750 },
-	{  4000E6, 4.820 },
-	{  4100E6, 4.889 },
-	{  4200E6, 4.958 },
-	{  4300E6, 5.027 },
-	{  4400E6, 5.094 },
-	{  4500E6, 5.161 },
-	{  4600E6, 5.228 },
-	{  4700E6, 5.294 },
-	{  4800E6, 5.360 },
-	{  4900E6, 5.425 },
-	{  5000E6, 5.489 },
-	{  6000E6, 6.113 },
-	{  8000E6, 7.262 },
-	{  8800E6, 7.694 },
-	{ 99999E6, 0.0   }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION HEL_LDF5_50A[] = {
-	{   0.5E6, 0.025 },
-	{     1E6, 0.035 },
-	{   1.5E6, 0.043 },
-	{     2E6, 0.050 },
-	{    10E6, 0.112 },
-	{    20E6, 0.159 },
-	{    30E6, 0.195 },
-	{    50E6, 0.254 },
-	{    88E6, 0.340 },
-	{   100E6, 0.364 },
-	{   108E6, 0.378 },
-	{   150E6, 0.449 },
-	{   174E6, 0.486 },
-	{   200E6, 0.523 },
-	{   300E6, 0.649 },
-	{   400E6, 0.758 },
-	{   450E6, 0.808 },
-	{   500E6, 0.855 },
-	{   512E6, 0.866 },
-	{   600E6, 0.945 },
-	{   700E6, 1.029 },
-	{   800E6, 1.107 },
-	{   824E6, 1.126 },
-	{   860E6, 1.153 },
-	{   894E6, 1.178 },
-	{   960E6, 1.226 },
-	{  1000E6, 1.254 },
-	{  1250E6, 1.423 },
-	{  1500E6, 1.578 },
-	{  1640E6, 1.661 },
-	{  1700E6, 1.696 },
-	{  1800E6, 1.753 },
-	{  2000E6, 1.863 },
-	{  2100E6, 1.917 },
-	{  2200E6, 1.970 },
-	{  2300E6, 2.022 },
-	{  2500E6, 2.124 },
-	{  2700E6, 2.223 },
-	{  3000E6, 2.366 },
-	{  3400E6, 2.551 },
-	{  3600E6, 2.640 },
-	{  3700E6, 2.684 },
-	{  3800E6, 2.728 },
-	{  3900E6, 2.772 },
-	{  4000E6, 2.815 },
-	{  4100E6, 2.857 },
-	{  4200E6, 2.900 },
-	{  4300E6, 2.942 },
-	{  4400E6, 2.983 },
-	{  4500E6, 3.025 },
-	{  4600E6, 3.066 },
-	{  4700E6, 3.107 },
-	{  4800E6, 3.147 },
-	{  4900E6, 3.188 },
-	{  5000E6, 3.228 },
-	{ 99999E6, 0.0   }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION HEL_LDF6_50[] = {
-	{   0.5E6, 0.016 },
-	{     1E6, 0.023 },
-	{   1.5E6, 0.028 },
-	{     2E6, 0.033 },
-	{    10E6, 0.074 },
-	{    20E6, 0.105 },
-	{    30E6, 0.129 },
-	{    50E6, 0.168 },
-	{    85E6, 0.222 },
-	{    88E6, 0.226 },
-	{   100E6, 0.242 },
-	{   108E6, 0.252 },
-	{   150E6, 0.299 },
-	{   174E6, 0.324 },
-	{   200E6, 0.349 },
-	{   204E6, 0.353 },
-	{   300E6, 0.435 },
-	{   400E6, 0.509 },
-	{   450E6, 0.544 },
-	{   460E6, 0.550 },
-	{   460E6, 0.550 },
-	{   500E6, 0.576 },
-	{   512E6, 0.584 },
-	{   600E6, 0.638 },
-	{   700E6, 0.696 },
-	{   800E6, 0.751 },
-	{   824E6, 0.764 },
-	{   894E6, 0.801 },
-	{   960E6, 0.834 },
-	{  1000E6, 0.854 },
-	{  1218E6, 0.958 },
-	{  1250E6, 0.972 },
-	{  1500E6, 1.082 },
-	{  1700E6, 1.166 },
-	{  1794E6, 1.204 },
-	{  1800E6, 1.206 },
-	{  2000E6, 1.285 },
-	{  2100E6, 1.323 },
-	{  2200E6, 1.361 },
-	{  2300E6, 1.398 },
-	{  2500E6, 1.472 },
-	{  2700E6, 1.543 },
-	{  3000E6, 1.646 },
-	{ 99999E6, 0.0   }
-};
-
-// Attenuation in dB per hundred feet.
 ATTENUATION DXE_LL300[] = {
 	{     1E6,  0.240 },
 	{    10E6,  0.485 },
@@ -594,74 +131,119 @@ ATTENUATION DXE_LL300[] = {
 	{ 99999E6,  0.0   }
 };
 
-// Attenuation in dB per hundred feet.
-ATTENUATION WIREMAN_551[] = {
-	{     1E6,  0.05 },
-	{     5E6,  0.10 },
-	{    10E6,  0.15 },
-	{    50E6,  0.33 },
-	{ 99999E6,  0.0  }
-};
-
-// Attenuation in dB per hundred feet.
-ATTENUATION WIREMAN_554[] = {
-	{     1E6,  0.06 },
-	{     5E6,  0.13 },
-	{    10E6,  0.18 },
-	{    50E6,  0.41 },
-	{ 99999E6,  0.0  }
-};
-
-// Attenuation in dB per hundred feet, from the ARRL chart.
-ATTENUATION W7FG_TLL[] = {
-	{    28E6,  0.10 },
-	{    60E6,  0.16 },
-	{   100E6,  0.21 },
-	{   140E6,  0.25 },
-	{ 99999E6,  0.0  }
-};
-
 CABLE_PROPERTIES cableProperties[] = {
-	{ "RG-6 (Belden 8215)",				BELDEN_8215,	0.66,    75.0,   2700.0 },
-	{ "RG-8 (TMS LMR400)",				TMS_LMR400,	0.84,    50.0,    600.0 },
-	{ "RG-8 (Belden 9913/9086)",			BELDEN_9913,	0.84,    50.0,    600.0 },
-	{ "RG-8 (DX Engineering)",			DXE_8U,		0.81,    50.0,    600.0 },
-	{ "RG-8 (Wireman CQ106)",			WIREMAN_CQ106,	0.82,    50.0,    600.0 },
-	{ "RG-8A (Belden 8237)",			BELDEN_8237,	0.66,    50.0,   3700.0 },
-	{ "RG-8X (Belden 9258)",			BELDEN_9258,	0.82,    50.0,    300.0 },
-	{ "RG-8X (DX Engineering)",			DXE_8X,		0.82,    50.0,    300.0 },
-	{ "RG-8X (TMS LMR240)",				TMS_LMR240,	0.83,    50.0,   1500.0 },
-	{ "RG-11 Foam (Belden 8213)",			BELDEN_8213,	0.84,    75.0,    300.0 },
-	{ "RG-11 (DX Engineering)",			DXE_11U,	0.82,    75.0,    600.0 },
-	{ "RG-11A (Belden 8261)",			BELDEN_8261,	0.66,    75.0,   3700.0 },
-	{ "RG-58 (TMS LMR200)",				TMS_LMR200,	0.83,    50.0,   1000.0 },
-	{ "RG-58A Foam (Belden 8219)",			BELDEN_8219,	0.73,    53.5,    300.0 },
-	{ "RG-58A (Belden 8259)",			BELDEN_8259,	0.66,    50.0,   1400.0 },
-	{ "RG-58A (DX Engineering)",			DXE_58AU,	0.66,    50.0,   1400.0 },
-	{ "RG-59 Foam (Belden 8212)",			BELDEN_8212,	0.78,    75.0,    300.0 },
-	{ "RG-59B (Belden 8263)",			BELDEN_8263,	0.66,    75.0,   1700.0 },
-	{ "RG-62A (Belden 9269)",			BELDEN_9269,	0.84,    93.0,    300.0 },
-	{ "RG-142/303 High-Temp. Teflon",		PASTER_142,	0.692,   50.0,   1900.0 },
-	{ "RG-174 (Belden 8216)",			BELDEN_8216,	0.66,    50.0,   1100.0 },
-	{ "RG-213 (Belden 8267)",			BELDEN_8267,	0.66,    50.0,   3700.0 },
-	{ "RG-213 (DX Engineering)",			DXE_213U,	0.66,    50.0,   3700.0 },
-	{ "RG-218A (ex RG-17)",				PASTER_218,	0.66,    50.0,  11000.0 },
-	{ "RG-400 (DX Engineering)",			DXE_RG400,	0.695,   50.0,   1900.0 },
-	{ "DX Engineering DXE-400MAX",			DXE_400MAX,	0.84,    50.0,   3700.0 },
-	{ "1/2-inch, LMR500",				TMS_LMR500,	0.82,    50.0,   3000.0 },
-	{ "0.59-inch, LMR600",				TMS_LMR600,	0.85,    50.0,   4000.0 },
-	{ "1.2-inch, LMR1200",				TMS_LMR1200,	0.88,    50.0,   6000.0 },
-	{ "1/2-inch LDF4-50A Andrew Heliax",		HEL_LDF4_50A,	0.88,    50.0,   4000.0 },
-	{ "7/8-inch LDF5-50A Andrew Heliax",		HEL_LDF5_50A,	0.89,    50.0,   6000.0 },
-	{ "1-1/4 Inch LDF6-50 Andrew Heliax",		HEL_LDF6_50,	0.89,    50.0,   9000.0 },
-	{ "300-Ohm DXE #18 Ladder Line",		DXE_LL300,	0.88,   272.0,   8000.0 },
-	{ "450-Ohm Window Line, Wireman #551",		WIREMAN_551,	0.902,  405.0,  10000.0 },
-	{ "450-Ohm Window Line, Wireman #554",		WIREMAN_554,	0.928,  359.0,  10000.0 },
-	{ "600-Ohm Open-Wire Ladder Line, #12 Wire",	W7FG_TLL,	0.98,   600.0,  12000.0 },
-	// This one is intentionally undefined here, which will cause us to return 0
+	{ "Andrew Braided CNT-100"	,	50.0,	0.66,	0.352647,	0.691672,	0.001106, 0,		  500.0 },
+	{ "Andrew Braided CNT-195"	,	50.0,	0.8,	0.108574,	0.363325,	0.000299, 0,		 1500.0 },
+	{ "Andrew Braided CNT-240"	,	50.0,	0.83,	0.062452,	0.260761,	0.000000, 0,		 1500.0 },
+	{ "Andrew Braided CNT-300"	,	50.0,	0.83,	0.039521,	0.201307,	0.000000, 0,		 2500.0 },
+	{ "Andrew Braided CNT-400"	,	50.0,	0.85,	0.026753,	0.131386,	0.000000, 0,		 2500.0 },
+	{ "Andrew Braided CNT-600"	,	50.0,	0.87,	0.015027,	0.082774,	0.000059, 0,		 4600.0 },
+	{ "Andrew Heliax  LDF4-50A"	,	50.0,	0.88,	0.008946,	0.064142,	0.000193, 0,		 4000.0 },
+	{ "Andrew Heliax  LDF5-50A"	,	50.0,	0.89,	0.005906,	0.034825,	0.000153, 0,		 6000.0 },
+	{ "Andrew Heliax  LDF6-50"	,	50.0,	0.89,	0.003561,	0.022861,	0.000131, 0,		 9000.0 },
+	{ "Belden 8215    (RG-6A/U)"	,	75.0,	0.66,	0.375388,	0.246660,	0.002253, 0,		 2700.0 },
+	{ "Belden 7915A   (RG-6/HDTV)"	,	75.0,	0.83,	0.063697,	0.195292,	0.000071, 0,		  350.0 },
+	{ "Belden 9116    (RG-6/CATV)"	,	75.0,	0.83,	0.615093,	0.196584,	0.000190, 0,		  300.0 },
+	{ "Belden 8237    (RG-8/U)"	,	52.0,	0.66,	0.025891,	0.185562,	0.001357, 0,		 3700.0 },
+	{ "Belden 9251    (RG-8/U)"	,	52.0,	0.66,	0.025891,	0.185562,	0.001357, 0,		 3700.0 },
+	{ "Belden 9913    (RG-8/U)"	,	50.0,	0.84,	0.402115,	0.129373,	0.000223, 0,		  300.0 },
+	{ "Belden 9913F7 (RG-8/U)"	,	52.0,	0.85,	0.024220,	0.158114,	0.000000, 0,		  300.0 },
+	{ "Belden 9914    (RG-8/U)"	,	50.0,	0.82,	0.019978,	0.139420,	0.000000, 0,		  300.0 },
+	{ "Belden 9258    (RG-8X)"	,	50.0,	0.82,	0.066013,	0.288776,	0.002125, 0,		  300.0 },
+	{ "Belden 8213    (RG-11/U)"	,	75.0,	0.84,	0.190155,	0.113867,	0.001554, 0,		  300.0 },
+	{ "Belden 8238    (RG-11/U)"	,	75.0,	0.66,	0.042271,	0.199492,	0.000720, 0,		  300.0 },
+	{ "Belden 8261    (RG-11A/U)"	,	75.0,	0.66,	0.042271,	0.199492,	0.000720, 0,		 3700.0 },
+	{ "Belden 9212    (RG-11/U)"	,	76.0,	0.66,	0.041715,	0.198907,	0.000803, 0,		 3700.0 },
+	{ "Belden 8219    (RG-58A/U)"	,	53.5,	0.73,	0.104718,	0.398776,	0.005265, 0,		  300.0 },
+	{ "Belden 8240    (RG-58A/U)"	,	51.5,	0.66,	0.118904,	0.321239,	0.004695, 0,		 1400.0 },
+	{ "Belden 8259    (RG-58A/U)"	,	50.0,	0.66,	0.129420,	0.436326,	0.009218, 0,		 1400.0 },
+	{ "Belden 8262    (RG-58C/U)"	,	50.0,	0.66,	0.129420,	0.403833,	0.008761, 0,		 1400.0 },
+	{ "Belden 9201    (RG-58/U)"	,	52.0,	0.66,	0.129453,	0.320710,	0.004718, 0,		 1400.0 },
+	{ "Belden 8212    (RG-59/U)"	,	75.0,	0.78,	0.603418,	0.280797,	0.002069, 0,		  300.0 },
+	{ "Belden 8241    (RG-59/U)"	,	75.0,	0.66,	0.594885,	0.319915,	0.001754, 0,		 1700.0 },
+	{ "Belden 8263    (RG-59B/U)"	,	75.0,	0.66,	0.594885,	0.319915,	0.001754, 0,		 1700.0 },
+	{ "Belden 9269    (RG-62A/U)"	,	90.0,	0.84,	0.212804,	0.271020,	0.000073, 0,		  750.0 },
+	{ "Belden 9857    (RG-63/U)"	,	125.0,	0.84,	0.147313,	0.149965,	0.000989, 0,		  750.0 },
+	{ "Belden 83242  (RG-142B/U)"	,	50.0,	0.7,	0.187615,	0.353181,	0.001996, 0,		 1400.0 },
+	{ "Belden 7805    (RG-174/U)"	,	50.0,	0.66,	0.356990,	0.690569,	0.001356, 0,		 1100.0 },
+	{ "Belden 8216    (RG-174/U)"	,	50.0,	0.66,	2.156088,	0.777862,	0.008695, 0,		 1100.0 },
+	{ "Belden 83265  (RG-178B/U)"	,	50.0,	0.695,	3.098352,	1.448062,	0.000000, 0,		  750.0 },
+	{ "Belden 83269  (RG-188A/U)"	,	50.0,	0.695,	0.865983,	0.856815,	0.001408, 0,		  900.0 },
+	{ "Belden 8267    (RG-213/U)"	,	50.0,	0.66,	0.256179,	0.154587,	0.003135, 0,		 3700.0 },
+	{ "Belden 8268    (RG-214/U)"	,	50.0,	0.66,	0.020846,	0.163915,	0.002752, 0,		 3700.0 },
+	{ "Belden 84303   (RG-303/U)"	,	50.0,	0.7,	0.178929,	0.338634,	0.003147, 0,		 1400.0 },
+	{ "Belden 84316   (RG-316/U)"	,	50.0,	0.695,	1.189647,	0.800401,	0.003536, 0,		  900.0 },
+	{ "CommScope 2427K   (RG-8)"	,	50.0,	0.84,	0.020151,	0.136083,	0.001562, 0,		 3000.0 },
+	{ "CommScope 3227     (RG-8)"	,	50.0,	0.84,	0.020151,	0.123024,	0.000460, 0,		 3000.0 },
+	{ "Davis RF Bury-Flex"		,	50.0,	0.82,	0.025189,	0.154616,	0.000000, 0,		    0.0 },
+	{ "DX Engineering RG-8"		,	50.0,	0.81,	0.000000,	0.000000,	0.000000, DXE_8U,	  600.0 },
+	{ "DX Engineering RG-8X"	,	50.0,	0.82,	0.000000,	0.000000,	0.000000, DXE_8X,	  300.0 },
+	{ "DX Engineering RG-11"	,	75.0,	0.82,	0.000000,	0.000000,	0.000000, DXE_11U,	  600.0 },
+	{ "DX Engineering RG-58A"	,	50.0,	0.66,	0.000000,	0.000000,	0.000000, DXE_58AU,	 1400.0 },
+	{ "DX Engineering RG-213"	,	50.0,	0.66,	0.000000,	0.000000,	0.000000, DXE_213U,	 3700.0 },
+	{ "DX Engineering RG-400"	,	50.0,	0.695,	0.000000,	0.000000,	0.000000, DXE_RG400,	 1900.0 },
+	{ "DX Engineering DXE-400MAX"	,	50.0,	0.84,	0.000000,	0.000000,	0.000000, DXE_400MAX,	 3700.0 },
+	{ "DX Engineering 300-Ohm LL"	,	272.0,	0.88,	0.000000,	0.000000,	0.000000, DXE_LL300,	 8000.0 },
+	{ "Radioware RG-6"		,	75.0,	0.82,	0.063697,	0.196827,	0.000257, 0,		    0.0 },
+	{ "Radioware RG-8X"		,	50.0,	0.78,	0.466609,	0.316133,	0.003738, 0,		    0.0 },
+	{ "Radioware RG-11"		,	75.0,	0.78,	0.178674,	0.130375,	0.001802, 0,		    0.0 },
+	{ "Radioware RG-58"		,	50.0,	0.66,	0.129420,	0.403626,	0.008667, 0,		    0.0 },
+	{ "Radioware RG-174"		,	50.0,	0.66,	2.108132,	0.868020,	0.002986, 0,		    0.0 },
+	{ "Radioware RG-213"		,	50.0,	0.66,	0.025189,	0.199693,	0.002006, 0,		    0.0 },
+	{ "Radioware RF-9913"		,	50.0,	0.84,	0.186127,	0.123263,	0.000541, 0,		    0.0 },
+	{ "Radioware RF-9914F"		,	50.0,	0.83,	0.298145,	0.140867,	0.000557, 0,		    0.0 },
+	{ "RG-142/303 High-Temp. Teflon",	50.0,	0.692,	0.000000,	0.000000,	0.000000, PASTER_142,	 1900.0 },
+	{ "RG-218A (ex RG-17)"		,	50.0,	0.66,	0.000000,	0.000000,	0.000000, PASTER_218,	11000.0 },
+	{ "Tandy Cable RG-8X"		,	50.0,	0.78,	0.069487,	0.316119,	0.002984, 0,		    0.0 },
+	{ "Tandy Cable RG-58"		,	50.0,	0.66,	0.138974,	0.378678,	0.003754, 0,		    0.0 },
+	{ "Tandy Cable RG-59"		,	75.0,	0.66,	0.191090,	0.300255,	0.000076, 0,		    0.0 },
+	{ "Times  LMR-100A"		,	50.0,	0.66,	0.786073,	0.709385,	0.001766, 0,		  500.0 },
+	{ "Times  LMR-195"		,	50.0,	0.76,	0.108574,	0.358541,	0.000424, 0,		 1000.0 },
+	{ "Times  LMR-200"		,	50.0,	0.83,	0.089117,	0.326439,	0.000172, 0,		 1000.0 },
+	{ "Times  LMR-240"		,	50.0,	0.84,	0.061583,	0.239481,	0.000447, 0,		 1500.0 },
+	{ "Times  LMR-240-UF"		,	50.0,	0.84,	0.070964,	0.293214,	0.000307, 0,		 1500.0 },
+	{ "Times  LMR-240-75"		,	75.0,	0.84,	0.081010,	0.232188,	0.000260, 0,		 1500.0 },
+	{ "Times  LMR-300"		,	50.0,	0.85,	0.037610,	0.196637,	0.000181, 0,		 2000.0 },
+	{ "Times  LMR-400"		,	50.0,	0.85,	0.026405,	0.124805,	0.000187, 0,		 2500.0 },
+	{ "Times  LMR-400-UF"		,	50.0,	0.85,	0.023626,	0.147204,	0.000315, 0,		 2500.0 },
+	{ "Times  LMR-400-75"		,	75.0,	0.85,	0.024031,	0.112936,	0.000374, 0,		 2000.0 },
+	{ "Times  LMR-500"		,	50.0,	0.86,	0.018154,	0.094339,	0.000332, 0,		 3000.0 },
+	{ "Times  LMR-600"		,	50.0,	0.87,	0.015027,	0.072828,	0.000353, 0,		 4000.0 },
+	{ "Times  LMR-600-UF"		,	50.0,	0.87,	0.014158,	0.093622,	0.000237, 0,		 4000.0 },
+	{ "Times  LMR-600-75"		,	75.0,	0.87,	0.014998,	0.070230,	0.000260, 0,		 4000.0 },
+	{ "Times  LMR-900"		,	50.0,	0.87,	0.009468,	0.055074,	0.000065, 0,		 5000.0 },
+	{ "Times  LMR-1200"		,	50.0,	0.88,	0.005993,	0.038836,	0.000143, 0,		 6000.0 },
+	{ "Times  LMR-1700"		,	50.0,	0.89,	0.004169,	0.022220,	0.000275, 0,		 9000.0 },
+	{ "Wireman CQ102     (RG-8)"	,	50.0,	0.84,	0.023452,	0.131438,	0.000000, 0,		 4000.0 },
+	{ "Wireman CQ106     (RG-8)"	,	50.0,	0.82,	0.025623,	0.164155,	0.000000, 0,		 4000.0 },
+	{ "Wireman CQ1000   (RG-8)"	,	50.0,	0.85,	0.025189,	0.131439,	0.000000, 0,		 4000.0 },
+	{ "Wireman CQ116     (RG-8X)"	,	50.0,	0.78,	0.066013,	0.242334,	0.003309, 0,		  300.0 },
+	{ "Wireman CQ117     (RG-8X)"	,	50.0,	0.72,	0.066013,	0.327886,	0.001195, 0,		 1500.0 },
+	{ "Wireman CQ118     (RG-8X)"	,	50.0,	0.8,	0.063407,	0.239480,	0.001934, 0,		  300.0 },
+	{ "Wireman CQ124     (RG-58)"	,	50.0,	0.66,	0.255365,	0.482485,	0.000295, 0,		 1400.0 },
+	{ "Wireman CQ129FF (RG-58)"	,	52.0,	0.78,	0.126112,	0.473162,	0.000000, 0,		    0.0 },
+	{ "Wireman CQ113     (RG-213)"	,	50.0,	0.66,	1.104626,	0.120013,	0.001291, 0,		    0.0 },
+	{ "Wireman CQ142A   (RG-217)"	,	50.0,	0.66,	0.024494,	0.152518,	0.000171, 0,		 7000.0 },
+	{ "UTP Category 3"		,	100.0,	0.61,	0.247548,	0.683349,	0.083457, 0,		    0.0 },
+	{ "UTP Category 5E"		,	100.0,	0.61,	0.247548,	0.612538,	0.006121, 0,		    0.0 },
+	{ "UTP Category 6"		,	100.0,	0.61,	0.247548,	0.591814,	0.000360, 0,		    0.0 },
+	{ "STP-A 150 ohm"		,	150.0,	0.61,	0.101335,	0.326196,	0.006211, 0,		 1200.0 },
+	{ "Wireman 551 Ladder Line"	,	400.0,	0.902,	0.249956,	0.044559,	0.001200, 0,		    0.0 },
+	{ "Wireman 552 Ladder Line"	,	380.0,	0.918,	0.355771,	0.041126,	0.001000, 0,		    0.0 },
+	{ "Wireman 553 Ladder Line"	,	395.0,	0.902,	0.077708,	0.078862,	0.000900, 0,		    0.0 },
+	{ "Wireman 554 Ladder Line"	,	360.0,	0.93,	0.149143,	0.043640,	0.001700, 0,		    0.0 },
+	{ "Wireman 551 LL (ice/snow)"	,	390.0,	0.864,	0.256365,	0.045702,	0.086984, 0,		    0.0 },
+	{ "Wireman 552 LL (ice/snow)"	,	365.0,	0.883,	0.370392,	0.042816,	0.077033, 0,		    0.0 },
+	{ "Wireman 553 LL (ice/snow)"	,	380.0,	0.869,	0.080775,	0.081975,	0.069739, 0,		    0.0 },
+	{ "Wireman 554 LL (ice/snow)"	,	350.0,	0.887,	0.153404,	0.044887,	0.092957, 0,		    0.0 },
+	{ "Generic 300 ohm Tubular"	,	300.0,	0.8,	0.021715,	0.092240,	0.001089, 0,		    0.0 },
+	{ "Generic 450 ohm Window"	,	450.0,	0.91,	0.009651,	0.022439,	0.000459, 0,		    0.0 },
+	{ "Generic 600 ohm Open"	,	600.0,	0.92,	0.003619,	0.019219,	0.000090, 0,		12000.0 },
+	{ "Ideal (lossless) 50 ohm"	,	50.0,	0.66,	0.000000,	0.000000,	0.000000, 0,		    0.0 },
+	{ "Ideal (lossless) 75 ohm"	,	75.0,	0.66,	0.000000,	0.000000,	0.000000, 0,		    0.0 },
+	// "User-Defined Transmission Line" is intentionally undefined here, which will cause us to return 0
 	// from findCable(), which will open a dialog.
-	// { "User-Defined Transmission Line",		0,		0.0,      0.0,      0.0 },
-	{ 0, 0, 0, 0, 0 }
+	{ 0, 0, 0, 0, 0, 0, 0, 0 }
 };
 
 cableTypes::cableTypes( void )
@@ -698,24 +280,62 @@ cableTypes::findAtten(
 	double				freqLow   = 0.0;
 	double				freqHigh  = 0.0;
 
-	for(attenuation = cp->attenuation; cp->attenuation->frequency != 99999E6; attenuation++) {
-		if(frequency >= attenuation->frequency) {
-			freqLow  = attenuation->frequency;
-			attenLow = attenuation->attenuation;
-		}
-		if(frequency < attenuation->frequency) {
-			freqHigh  = attenuation->frequency;
-			attenHigh = attenuation->attenuation;
-			if(freqLow == 0.0) {
-				// Special case - frequency is below the attenuation chart, so just use
-				// the lower bound.
-				return attenHigh;
-			}
+	double				Rdc;
+	double				Rhf;
+	double				Lhf;
+	double				Ghf;
+	double				Chf;
+	double				w;
+	complex<double>			Zinternal;
+	complex<double>			RjwL;
+	complex<double>			GjwC;
+	complex<double>			gamma;
 
-			// Attenuation is pretty close to a straight line if plotted log-log, so convert
-			// all values to their logs, then perform a linear interpolation, then convert back.
-			return pow(10.0, (((log10(frequency) - log10(freqLow)) / (log10(freqHigh) - log10(freqLow))) * (log10(attenHigh) - log10(attenLow))) + log10(attenLow));
+	if(cp->attenuation) {
+		// Use attenuation tables - we don't have the k factors.
+		for(attenuation = cp->attenuation; cp->attenuation->frequency != 99999E6; attenuation++) {
+			if(frequency >= attenuation->frequency) {
+				freqLow  = attenuation->frequency;
+				attenLow = attenuation->attenuation;
+			}
+			if(frequency < attenuation->frequency) {
+				freqHigh  = attenuation->frequency;
+				attenHigh = attenuation->attenuation;
+				if(freqLow == 0.0) {
+					// Special case - frequency is below the attenuation chart, so just use
+					// the lower bound.
+					return attenHigh;
+				}
+
+				// Attenuation is pretty close to a straight line if plotted log-log, so convert
+				// all values to their logs, then perform a linear interpolation, then convert back.
+				return pow(10.0, (((log10(frequency) - log10(freqLow)) / (log10(freqHigh) - log10(freqLow))) * (log10(attenHigh) - log10(attenLow))) + log10(attenLow));
+			}
 		}
+	} else {
+		// Compute attenuation from the k factors.
+		Rdc = 2.0 * (cp->k0 / 100.0 / NEPERS_TO_DB) * cp->impedance;
+		Rhf = 2.0 * (cp->k1 / 100.0 / NEPERS_TO_DB * sqrt(frequency / 1E6)) * cp->impedance;
+		Lhf = cp->impedance / (SPEED_OF_LIGHT_F * cp->velocityFactor);
+		Ghf = 2.0 * (cp->k2 / 100.0 / NEPERS_TO_DB * (frequency / 1E6)) / cp->impedance;
+		Chf = 1.0 / (cp->impedance * SPEED_OF_LIGHT_F * cp->velocityFactor);
+		w = (2.0 * PI) * frequency;
+		//wxLogError("Rdc %g", Rdc);
+		//wxLogError("Rhf %g", Rhf);
+		//wxLogError("Lhf %g", Lhf);
+		//wxLogError("Ghf %g", Ghf);
+		//wxLogError("Chf %g", Chf);
+		//wxLogError("w %g", w);
+		Zinternal = sqrt(pow(complex<double>(Rdc, 0), 2.0) + pow(complex<double>(Rhf, Rhf), 2.0));
+		RjwL = Zinternal + complex<double>(0, w * Lhf);
+		GjwC = complex<double>(Ghf, w * Chf);
+		gamma = sqrt(RjwL * GjwC);
+		//wxLogError("Zinternal %g,%gj", real(Zinternal), imag(Zinternal));
+		//wxLogError("RjwL %g,%gj", real(RjwL), imag(RjwL));
+		//wxLogError("GjwC %g,%gj", real(GjwC), imag(GjwC));
+		//wxLogError("gamma %g,%gj", real(gamma), imag(gamma));
+
+		return real(gamma) * NEPERS_TO_DB * 100.0;
 	}
 
 	return -1.0;
