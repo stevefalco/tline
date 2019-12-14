@@ -540,7 +540,7 @@ CABLE_PROPERTIES cableProperties[] = {
 	{ "600-Ohm Open-Wire Ladder Line, #12 Wire",	W7FG_TLL,	0.98,   600.0,  12000.0 },
 	// This one is intentionally undefined here, which will cause us to return 0
 	// from findCable(), which will open a dialog.
-	// { "User-Defined Transmission Line",		W7FG_TLL,	0.98,   600.0,  12000.0 },
+	// { "User-Defined Transmission Line",		0,		0.0,      0.0,      0.0 },
 	{ 0, 0, 0, 0, 0 }
 };
 
