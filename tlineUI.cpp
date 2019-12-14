@@ -87,7 +87,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_cableType->Append( wxT("1.2-inch, LMR1200") );
 	ui_cableType->Append( wxT("1/2-inch LDF4-50A Andrew Heliax") );
 	ui_cableType->Append( wxT("7/8-inch LDF5-50A Andrew Heliax") );
-	ui_cableType->Append( wxT("1-1/4 Inch LDF6-50A Andrew Heliax") );
+	ui_cableType->Append( wxT("1-1/4 Inch LDF6-50 Andrew Heliax") );
 	ui_cableType->Append( wxT("300-Ohm DXE #18 Ladder Line") );
 	ui_cableType->Append( wxT("450-Ohm Window Line, Wireman #551") );
 	ui_cableType->Append( wxT("450-Ohm Window Line, Wireman #554") );
