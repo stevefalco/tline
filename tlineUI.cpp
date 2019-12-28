@@ -105,6 +105,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_cableType->Append( wxT("DX Engineering RG-11") );
 	ui_cableType->Append( wxT("DX Engineering RG-58A") );
 	ui_cableType->Append( wxT("DX Engineering RG-213") );
+	ui_cableType->Append( wxT("DX Engineering RG-214") );
 	ui_cableType->Append( wxT("DX Engineering RG-400") );
 	ui_cableType->Append( wxT("DX Engineering DXE-400MAX") );
 	ui_cableType->Append( wxT("DX Engineering 300-Ohm LL") );

@@ -92,6 +92,16 @@ ATTENUATION DXE_213U[] = {
 };
 
 // Attenuation in dB per hundred feet.
+ATTENUATION DXE_214[] = {
+	{     5E6, 0.4 },
+	{    10E6, 0.6 },
+	{    30E6, 1.0 },
+	{    50E6, 1.3 },
+	{   100E6, 1.9 },
+	{ 99999E6, 0.0 }
+};
+
+// Attenuation in dB per hundred feet.
 ATTENUATION PASTER_218[] = {
 	{    50E6, 0.65 },
 	{   100E6, 1.0  },
@@ -103,7 +113,7 @@ ATTENUATION PASTER_218[] = {
 // Attenuation in dB per hundred feet.
 ATTENUATION DXE_RG400[] = {
 	{     1E6, 0.4 },
-	{     5E6, 1.9 },
+	{     5E6, 0.9 },
 	{    30E6, 2.2 },
 	{    50E6, 2.9 },
 	{   150E6, 5.1 },
@@ -181,6 +191,7 @@ CABLE_PROPERTIES cableProperties[] = {
 	{ "DX Engineering RG-11"	,	75.0,	0.82,	0.000000,	0.000000,	0.000000, DXE_11U,	  600.0 },
 	{ "DX Engineering RG-58A"	,	50.0,	0.66,	0.000000,	0.000000,	0.000000, DXE_58AU,	 1400.0 },
 	{ "DX Engineering RG-213"	,	50.0,	0.66,	0.000000,	0.000000,	0.000000, DXE_213U,	 3700.0 },
+	{ "DX Engineering RG-214"	,	50.0,	0.66,	0.000000,	0.000000,	0.000000, DXE_214,	 5000.0 },
 	{ "DX Engineering RG-400"	,	50.0,	0.695,	0.000000,	0.000000,	0.000000, DXE_RG400,	 1900.0 },
 	{ "DX Engineering DXE-400MAX"	,	50.0,	0.84,	0.000000,	0.000000,	0.000000, DXE_400MAX,	 3700.0 },
 	{ "DX Engineering 300-Ohm LL"	,	272.0,	0.88,	0.000000,	0.000000,	0.000000, DXE_LL300,	 8000.0 },
