@@ -942,7 +942,7 @@ void tlineLogic::recalculate()
 	m_frequency = atof(m_frequencyStr) * 1.0E6;
 
 	// Look up the cable parameters.
-	m_cp = m_c->findCable(m_cableTypeStr.mb_str());
+	m_cp = m_c->findCable(m_cableTypeStr.mb_str(), m_frequency);
 	if(m_cp == 0) {
 		if(m_newUserLine == TRUE) {
 			// No such cable - open a dialog to ask for parameters.
@@ -1002,9 +1002,10 @@ void tlineLogic::recalculate()
 		}
 	} else {
 		m_userSpecifiedZ = FALSE;
-		m_attenPer100Feet = m_c->findAtten(m_cp, m_frequency);
-		m_velocityFactor = m_cp->velocityFactor;
-		m_impedance = m_cp->impedance;
+		m_attenPer100Feet = m_c->findAtten();
+		m_velocityFactor = m_c->findVF();
+		m_cableResistivePart = m_c->findZoReal();
+		m_cableReactivePart = m_c->findZoImag();
 		m_maximumVoltage = m_cp->maximumVoltage;
 	}
 
@@ -1051,17 +1052,7 @@ void tlineLogic::recalculate()
 	// Combine attenuation and phase angle to get the loss coefficient.
 	m_lossCoef = complex<double>(m_attenNepersPerUnitLength, m_phase);
 
-	// The user can specify the cable resistance / reactance, in which
-	// case we use those values directly.  But manufacturers don't
-	// specify cable that way, so we have to generate the values
-	// ourselves from the attenuation and phase angle.
-	if(!m_userSpecifiedZ) {
-		// Find the complex impedance of the coax.  There are several ways to
-		// do this, and they each give different answers.  This is the best
-		// method that I've found...
-		m_cableResistivePart = m_impedance * sqrt(1.0 / (1.0 + sq(m_attenNepersPerUnitLength / m_phase)));
-		m_cableReactivePart = -m_cableResistivePart * (m_attenNepersPerUnitLength / m_phase);
-	}
+	// Combine cable resistive part and reactive part.
 	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
 	ui_characteristicZ0->ChangeValue(wxString::Format(wxT("%.2f, %.2fi Ω"), real(m_zCable), imag(m_zCable)));
 

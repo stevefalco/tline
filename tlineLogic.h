@@ -109,7 +109,6 @@ class tlineLogic : public tlineUI
 		double			m_cableResistivePart;
 		double			m_extraSWRloss;
 		double			m_frequency;
-		double			m_impedance;
 		double			m_lambda;
 		double			m_length;
 		double			m_maximumVoltage;

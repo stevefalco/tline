@@ -32,7 +32,6 @@ typedef struct {
 		double		k0;
 		double		k1;
 		double		k2;
-		ATTENUATION	*attenuation;
 		double		maximumVoltage;
 } CABLE_PROPERTIES;
 
@@ -42,13 +41,27 @@ class cableTypes
 		cableTypes( void );
 
 		CABLE_PROPERTIES * findCable(
-				const char		*name
-				);
-
-		double findAtten(
-				CABLE_PROPERTIES	*cp,
+				const char		*name,
 				double			frequency
 				);
+
+		double findAtten();
+		double findVF();
+		double findZoReal();
+		double findZoImag();
+
+	private:
+		double			m_Rdc;
+		double			m_Rhf;
+		double			m_Lhf;
+		double			m_Ghf;
+		double			m_Chf;
+		double			m_w;
+		complex<double>		m_Zinternal;
+		complex<double>		m_RjwL;
+		complex<double>		m_GjwC;
+		complex<double>		m_Zo;
+		complex<double>		m_gamma;
 };
 
 #endif // __cableTypes__

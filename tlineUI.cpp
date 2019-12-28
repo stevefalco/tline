@@ -109,6 +109,9 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_cableType->Append( wxT("DX Engineering RG-400") );
 	ui_cableType->Append( wxT("DX Engineering DXE-400MAX") );
 	ui_cableType->Append( wxT("DX Engineering 300-Ohm LL") );
+	ui_cableType->Append( wxT("DX Eng 300-Ohm LL (wet)") );
+	ui_cableType->Append( wxT("Pasternack RG-142") );
+	ui_cableType->Append( wxT("Pasternack RG-218") );
 	ui_cableType->Append( wxT("Radioware RG-6") );
 	ui_cableType->Append( wxT("Radioware RG-8X") );
 	ui_cableType->Append( wxT("Radioware RG-11") );
@@ -117,8 +120,6 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_cableType->Append( wxT("Radioware RG-213") );
 	ui_cableType->Append( wxT("Radioware RF-9913") );
 	ui_cableType->Append( wxT("Radioware RF-9914F") );
-	ui_cableType->Append( wxT("RG-142/303 High-Temp. Teflon") );
-	ui_cableType->Append( wxT("RG-218A (ex RG-17)") );
 	ui_cableType->Append( wxT("Tandy Cable RG-8X") );
 	ui_cableType->Append( wxT("Tandy Cable RG-58") );
 	ui_cableType->Append( wxT("Tandy Cable RG-59") );
