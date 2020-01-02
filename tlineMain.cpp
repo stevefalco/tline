@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -54,7 +54,8 @@ inline bool tlineMain::OnInit() {
 		return false;
 	}
 
-
+	// The main frame will be owned by the wxWidgets library, and will
+	// be deleted by the library when appropriate.
 	wxFrame* mainFrame = new tlineLogic(NULL, m_file);
 	mainFrame->Show(true);
 	SetTopWindow(mainFrame);

@@ -45,6 +45,8 @@ wxString g_heightStr;
 
 tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent )
 {
+	// Handlers are allocated on the heap.  They will be deleted at
+	// program shutdown, since we never call RemoveHandler().
 	wxImage::AddHandler(new wxPNGHandler);
 	wxImage::AddHandler(new wxJPEGHandler);
 	wxImage::AddHandler(new wxGIFHandler);
@@ -629,12 +631,15 @@ MyExtraPanel::MyExtraPanel(wxWindow *parent, wxString width, wxString height) : 
 	m_widthStr = width;
 	m_heightStr = height;
 
+	// These text items are added to a sizer, and will be deleted with it.
 	m_widthTag = new wxStaticText(this, -1, "Width");
 	m_widthBox = new wxTextCtrl(this, -1, m_widthStr);
 
 	m_heightTag = new wxStaticText(this, -1, "   Height");
 	m_heightBox = new wxTextCtrl(this, -1, m_heightStr);
 
+	// Sizers are assigned to a window by a call to SetSizer.  Thus, they are owned by
+	// the library, and will be deleted by the library when appropriate.
 	wxBoxSizer *sizerTop = new wxBoxSizer(wxHORIZONTAL);
 	sizerTop->Add(m_widthTag, wxSizerFlags().Right().Border());
 	sizerTop->Add(m_widthBox, wxSizerFlags().Right().Border(wxALL, 0));
@@ -655,9 +660,11 @@ void MyExtraPanel::onHeightSelected( wxCommandEvent& event )
 	m_heightStr = event.GetString();
 }
 
-// a static method can be used instead of a function with most of compilers
+// A static method can be used instead of a function with most compilers.
 static wxWindow* createMyExtraPanel(wxWindow *parent)
 {
+	// The panel created here will be added to the file dialog, and will be
+	// deleted along with the file dialog by the library.
 	return new MyExtraPanel(parent, g_widthStr, g_heightStr);
 }
 
@@ -948,7 +955,9 @@ void tlineLogic::recalculate()
 
 	// Look up the cable parameters.
 	try {
-		cable = new cableTypes(m_cableTypeStr.mb_str(), m_frequency); // Deleted before exiting this block.
+		// This "cableTypes" item is not added to any wxWidgets item, so
+		// we are responsible for deleting it when we are done with it.
+		cable = new cableTypes(m_cableTypeStr.mb_str(), m_frequency);
 		m_userSpecifiedZ = FALSE;
 		m_attenPer100Feet = cable->findAtten();
 		m_velocityFactor = cable->findVF();
