@@ -205,9 +205,11 @@ class helpInfoDialog : public wxDialog
 
 	protected:
 		wxHtmlWindow* dl_htmlWindow;
+		wxButton* dl_helpInfoOk;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void onLinkClicked( wxHtmlLinkEvent& event ) { event.Skip(); }
+		virtual void onHelpInfoOK( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

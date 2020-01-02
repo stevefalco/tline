@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -30,6 +30,7 @@ class helpInfo : public helpInfoDialog
 
 	private:
 		void onLinkClicked( wxHtmlLinkEvent& event );
+		void onHelpInfoOK( wxCommandEvent& event );
 };
 
 #endif // __helpInfo__

@@ -825,6 +825,9 @@ helpInfoDialog::helpInfoDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	bHelpInfo->Add( dl_htmlWindow, 0, wxALL, 5 );
 
+	dl_helpInfoOk = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	bHelpInfo->Add( dl_helpInfoOk, 0, wxALIGN_CENTER|wxALL, 5 );
+
 
 	this->SetSizer( bHelpInfo );
 	this->Layout();
@@ -834,12 +837,14 @@ helpInfoDialog::helpInfoDialog( wxWindow* parent, wxWindowID id, const wxString&
 
 	// Connect Events
 	dl_htmlWindow->Connect( wxEVT_COMMAND_HTML_LINK_CLICKED, wxHtmlLinkEventHandler( helpInfoDialog::onLinkClicked ), NULL, this );
+	dl_helpInfoOk->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( helpInfoDialog::onHelpInfoOK ), NULL, this );
 }
 
 helpInfoDialog::~helpInfoDialog()
 {
 	// Disconnect Events
 	dl_htmlWindow->Disconnect( wxEVT_COMMAND_HTML_LINK_CLICKED, wxHtmlLinkEventHandler( helpInfoDialog::onLinkClicked ), NULL, this );
+	dl_helpInfoOk->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( helpInfoDialog::onHelpInfoOK ), NULL, this );
 
 }
 

@@ -357,25 +357,25 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 
 void tlineLogic::onHelpInfo( wxCommandEvent& event )
 {
-	helpInfo* dialog = new helpInfo(this); // Deleted before exiting this block.
+	// Create on stack.  Will be automatically cleaned up at
+	// the end of this function.
+	helpInfo dialog(NULL);
 
-	dialog->helpInfoSetPage(INFO_PAGE);
-
-	dialog->ShowModal();
-	delete dialog;
+	dialog.helpInfoSetPage(INFO_PAGE);
+	dialog.ShowModal();
 }
 
 void tlineLogic::onHelpAbout( wxCommandEvent& event )
 {
-	helpAbout* dialog = new helpAbout(this); // Deleted before exiting this block.
+	// Create on stack.  Will be automatically cleaned up at
+	// the end of this function.
+	helpAbout dialog(NULL);
 
-	dialog->helpAboutAddTextLine1("tline - A Transmission Line Calculator");
-	dialog->helpAboutAddTextLine2(wxString::Format(wxT("Version %s"), VERSION));
-	dialog->helpAboutAddTextLine3("by Steven A. Falco, AC2XM");
-	dialog->helpAboutAddTextLine4("License: GPLv3");
-
-	dialog->ShowModal();
-	delete dialog;
+	dialog.helpAboutAddTextLine1("tline - A Transmission Line Calculator");
+	dialog.helpAboutAddTextLine2(wxString::Format(wxT("Version %s"), VERSION));
+	dialog.helpAboutAddTextLine3(wxT("© 2019,2020 Steven A. Falco, AC2XM"));
+	dialog.helpAboutAddTextLine4("License: GPLv3");
+	dialog.ShowModal();
 }
 
 // On Linux, this event only happens if the selected item changes.
@@ -506,7 +506,9 @@ void tlineLogic::onSaveDataClicked( wxCommandEvent& event )
 
 void tlineLogic::onTunerClicked( wxCommandEvent& event )
 {
-	tuner* dialog = new tuner(this); // Deleted before exiting this block.
+	// Create on stack.  Will be automatically cleaned up at
+	// the end of this function.
+	tuner dialog(NULL);
 
 	if(m_tunerInit == FALSE) {
 		// Start the tuner off with reasonable values.
@@ -524,31 +526,30 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerInit = TRUE;
 	}
 
-	dialog->m_tunerFrequencyStr = m_tunerFrequencyStr;
-	dialog->m_tunerPowerStr = m_tunerPowerStr;
-	dialog->m_tunerSourceResistanceStr = m_tunerSourceResistanceStr;
-	dialog->m_tunerSourceReactanceStr = m_tunerSourceReactanceStr;
-	dialog->m_tunerLoadResistanceStr = m_tunerLoadResistanceStr;
-	dialog->m_tunerLoadReactanceStr = m_tunerLoadReactanceStr;
-	dialog->m_tunerNetworkQStr = m_tunerNetworkQStr;
-	dialog->m_tunerInductorQStr = m_tunerInductorQStr;
-	dialog->m_tunerCapacitorQStr = m_tunerCapacitorQStr;
-	dialog->m_tunerTopologyStr = m_tunerTopologyStr;
-	dialog->Update();
+	dialog.m_tunerFrequencyStr = m_tunerFrequencyStr;
+	dialog.m_tunerPowerStr = m_tunerPowerStr;
+	dialog.m_tunerSourceResistanceStr = m_tunerSourceResistanceStr;
+	dialog.m_tunerSourceReactanceStr = m_tunerSourceReactanceStr;
+	dialog.m_tunerLoadResistanceStr = m_tunerLoadResistanceStr;
+	dialog.m_tunerLoadReactanceStr = m_tunerLoadReactanceStr;
+	dialog.m_tunerNetworkQStr = m_tunerNetworkQStr;
+	dialog.m_tunerInductorQStr = m_tunerInductorQStr;
+	dialog.m_tunerCapacitorQStr = m_tunerCapacitorQStr;
+	dialog.m_tunerTopologyStr = m_tunerTopologyStr;
+	dialog.Update();
 
-	if (dialog->ShowModal() == wxID_OK) {
-		m_tunerFrequencyStr = dialog->m_tunerFrequencyStr;
-		m_tunerPowerStr = dialog->m_tunerPowerStr;
-		m_tunerSourceResistanceStr = dialog->m_tunerSourceResistanceStr;
-		m_tunerSourceReactanceStr = dialog->m_tunerSourceReactanceStr;
-		m_tunerLoadResistanceStr = dialog->m_tunerLoadResistanceStr;
-		m_tunerLoadReactanceStr = dialog->m_tunerLoadReactanceStr;
-		m_tunerNetworkQStr = dialog->m_tunerNetworkQStr;
-		m_tunerInductorQStr = dialog->m_tunerInductorQStr;
-		m_tunerCapacitorQStr = dialog->m_tunerCapacitorQStr;
-		m_tunerTopologyStr = dialog->m_tunerTopologyStr;
+	if (dialog.ShowModal() == wxID_OK) {
+		m_tunerFrequencyStr = dialog.m_tunerFrequencyStr;
+		m_tunerPowerStr = dialog.m_tunerPowerStr;
+		m_tunerSourceResistanceStr = dialog.m_tunerSourceResistanceStr;
+		m_tunerSourceReactanceStr = dialog.m_tunerSourceReactanceStr;
+		m_tunerLoadResistanceStr = dialog.m_tunerLoadResistanceStr;
+		m_tunerLoadReactanceStr = dialog.m_tunerLoadReactanceStr;
+		m_tunerNetworkQStr = dialog.m_tunerNetworkQStr;
+		m_tunerInductorQStr = dialog.m_tunerInductorQStr;
+		m_tunerCapacitorQStr = dialog.m_tunerCapacitorQStr;
+		m_tunerTopologyStr = dialog.m_tunerTopologyStr;
 	}
-	delete dialog;
 }
 
 double tlineLogic::wavelength()
@@ -960,32 +961,35 @@ void tlineLogic::recalculate()
 		// No such cable.  Should only happen for user-specified line.
 		if(m_newUserLine == TRUE) {
 			// Open a dialog to ask for parameters.
-			userLine* dialog = new userLine(this); // Deleted before exiting this block.
+			//
+			// Create on stack.  Will be automatically cleaned up at
+			// the end of this block of code.
+			userLine dialog(NULL);
 
 			// Fill in the previous user-provided values.
-			dialog->m_userLineFrequencyStr = m_frequencyStr;
-			dialog->m_userLineAttenuationStr = m_userLineAttenuationStr;
-			dialog->m_userLineVelocityFactorStr = m_userLineVelocityFactorStr;
-			dialog->m_userLineCableImpedanceStr = m_userLineCableImpedanceStr;
-			dialog->m_userLineCableResistanceStr = m_userLineCableResistanceStr;
-			dialog->m_userLineCableReactanceStr = m_userLineCableReactanceStr;
-			dialog->m_userLineCableVoltageLimitStr = m_userLineCableVoltageLimitStr;
-			dialog->m_userLineLastMethodStr = m_userLineLastMethodStr;
-			dialog->Update();
+			dialog.m_userLineFrequencyStr = m_frequencyStr;
+			dialog.m_userLineAttenuationStr = m_userLineAttenuationStr;
+			dialog.m_userLineVelocityFactorStr = m_userLineVelocityFactorStr;
+			dialog.m_userLineCableImpedanceStr = m_userLineCableImpedanceStr;
+			dialog.m_userLineCableResistanceStr = m_userLineCableResistanceStr;
+			dialog.m_userLineCableReactanceStr = m_userLineCableReactanceStr;
+			dialog.m_userLineCableVoltageLimitStr = m_userLineCableVoltageLimitStr;
+			dialog.m_userLineLastMethodStr = m_userLineLastMethodStr;
+			dialog.Update();
 
-			if (dialog->ShowModal() == wxID_OK) {
+			if (dialog.ShowModal() == wxID_OK) {
 
 				// Dialog has closed.  Remove any update warnings.
 				ui_updateWarning->SetLabel("");
 
 				// Save the new user values.
-				m_userLineAttenuationStr = dialog->m_userLineAttenuationStr;
-				m_userLineVelocityFactorStr = dialog->m_userLineVelocityFactorStr;
-				m_userLineCableImpedanceStr = dialog->m_userLineCableImpedanceStr;
-				m_userLineCableResistanceStr = dialog->m_userLineCableResistanceStr;
-				m_userLineCableReactanceStr = dialog->m_userLineCableReactanceStr;
-				m_userLineCableVoltageLimitStr = dialog->m_userLineCableVoltageLimitStr;
-				m_userLineLastMethodStr = dialog->m_userLineLastMethodStr;
+				m_userLineAttenuationStr = dialog.m_userLineAttenuationStr;
+				m_userLineVelocityFactorStr = dialog.m_userLineVelocityFactorStr;
+				m_userLineCableImpedanceStr = dialog.m_userLineCableImpedanceStr;
+				m_userLineCableResistanceStr = dialog.m_userLineCableResistanceStr;
+				m_userLineCableReactanceStr = dialog.m_userLineCableReactanceStr;
+				m_userLineCableVoltageLimitStr = dialog.m_userLineCableVoltageLimitStr;
+				m_userLineLastMethodStr = dialog.m_userLineLastMethodStr;
 
 				// Also set our working values.
 				m_userSpecifiedZ = TRUE;
@@ -1005,7 +1009,6 @@ void tlineLogic::recalculate()
 				m_cableTypeStr = m_cableTypePrevStr;
 				ui_cableType->ChangeValue(m_cableTypeStr);
 			}
-			delete dialog;
 		} else {
 			// Use the cached values.
 			m_userSpecifiedZ = TRUE;

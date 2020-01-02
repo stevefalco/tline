@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -36,4 +36,12 @@ void helpInfo::helpInfoSetPage( wxString s )
 void helpInfo::onLinkClicked( wxHtmlLinkEvent& event )
 {
 	wxLaunchDefaultBrowser(event.GetLinkInfo().GetHref());
+}
+
+void helpInfo::onHelpInfoOK( wxCommandEvent& event )
+{
+	if ( Validate() )
+	{
+		EndModal( wxID_OK );
+	}
 }
