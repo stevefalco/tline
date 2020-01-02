@@ -1,9 +1,28 @@
-I use valgrind to check for memory leaks under Linux.  The gtk and related
-libraries throw tons of errors because of the optimization techniques they
-use.  We can suppress those errors by running valgrind as follows.  This
-assumes you are in the build-linux directory:
+#!/bin/sh
+
+# I use valgrind to check for memory leaks under Linux.  The gtk and related
+# libraries throw tons of errors because of the optimization techniques they
+# use.  We can suppress those errors by running valgrind as follows.  This
+# assumes you are in the build-linux directory:
 
 make -j12 && valgrind --leak-check=full --suppressions=../valgrind/gtk.suppression --tool=memcheck ./tline > ~/log.mem 2>&1
 
-This is not perfect - I still see gtk errors in the log, but at least it
-cuts them down to a manageable level.
+# This is not perfect - I still see gtk errors in the log, but at least it
+# cuts them down to a manageable level.
+
+# I found a page that talks about how to create a more comprehensive
+# suppression list here:
+#
+# https://wiki.wxwidgets.org/Valgrind_Suppression_File_Howto
+#
+# Unfortunately, this results in a file of 100k lines, which should be
+# hand-edited to add wildcards.  That would be a huge amount of work.
+
+# Generate a full suppression log:
+valgrind --leak-check=full --show-reachable=yes --error-limit=no --gen-suppressions=all --log-file=/home/sfalco/supp.log ./tline
+
+# Post process with either:
+./parse_valgrind_suppressions.sh < ~/supp.log > ~/new.supp.log
+# Or:
+./grindmerge < ~/supp.log > ~/merge.supp.log
+
