@@ -1,0 +1,493 @@
+#
+# Valgrind suppression file for Geany by RPG
+#
+# Format specification:
+# http://valgrind.org/docs/manual/manual-core.html#manual-core.suppress
+#
+
+
+#pango
+{
+	libpango
+	Memcheck:Leak
+	...
+	obj:/usr/lib*/libpango*
+}
+
+#GTK
+{
+	g_type_register
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_type_register_*
+	...
+	fun:_dl_init
+	...
+}
+
+{
+	g_quark_from_static_string
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_quark_from_static_string
+	...
+	fun:_dl_init
+	...
+}
+
+{
+	g_main_thread
+	Memcheck:Leak
+	fun:*alloc
+	...
+	fun:g_main*
+	...
+	fun:start_thread
+	fun:clone
+}
+
+{
+	g_closure
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	...
+	fun:g_cclosure_new
+	fun:g_signal_connect_data
+	...
+}
+
+{
+	g_object
+	Memcheck:Leak
+	match-leak-kinds:possible
+	...
+	fun:g_object_newv
+	fun:g_object_new
+	...
+}
+
+{
+	g_type_register_static
+	Memcheck:Leak
+	match-leak-kinds:possible
+	...
+	fun:g_type_register_static
+	...
+}
+
+{
+	g_signal_connect_closure
+	Memcheck:Leak
+	match-leak-kinds:possible
+	...
+	fun:g_signal_connect_closure
+	fun:gtk_*group*
+	...
+}
+
+#GTK engines
+{
+	engines
+	Memcheck:Leak
+	fun:malloc
+	...
+	obj:/usr/lib*/gtk*/*/engines*
+	...
+	obj:/usr/lib*/libgtk*
+}
+
+#nvidia
+{
+	libGL
+	Memcheck:Leak
+	...
+	obj:/usr/lib*/libGL.so*
+}
+#ignore everything that completely inside libs
+{
+	lib_alloc_4
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_4
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_5
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_5
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_6
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_6
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_7
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_7
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_8
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_8
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_9
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_9
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_10
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_10
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_11
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_11
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_12
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_12
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_13
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_13
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_14
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_14
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_alloc_15
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:*alloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
+{
+	lib_realloc_15
+	Memcheck:Leak
+	match-leak-kinds:possible
+	fun:malloc
+	fun:realloc
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+	obj:/usr/lib*/l*
+}
