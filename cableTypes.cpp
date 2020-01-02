@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -29,6 +29,16 @@ using namespace std;
 
 #include "cableTypes.h"
 #include "constants.h"
+
+typedef struct {
+		const char	*name;
+		double		impedance;
+		double		velocityFactor;
+		double		k0;
+		double		k1;
+		double		k2;
+		double		maximumVoltage;
+} CABLE_PROPERTIES;
 
 CABLE_PROPERTIES cableProperties[] = {
 	{ "Andrew Braided CNT-100"	,	50.0,	0.66,	0.352647,	0.691672,	0.001106,   500.0 },
@@ -142,18 +152,12 @@ CABLE_PROPERTIES cableProperties[] = {
 	{ "Generic 600 ohm Open"	,	600.0,	0.92,	0.003619,	0.019219,	0.000090, 12000.0 },
 	{ "Ideal (lossless) 50 ohm"	,	50.0,	0.66,	0.000000,	0.000000,	0.000000,     0.0 },
 	{ "Ideal (lossless) 75 ohm"	,	75.0,	0.66,	0.000000,	0.000000,	0.000000,     0.0 },
-	// "User-Defined Transmission Line" is intentionally undefined here, which will cause us to return 0
-	// from findCable(), which will open a dialog.
-	{ 0, 0, 0, 0, 0, 0, 0 }
+	// "User-Defined Transmission Line" is intentionally undefined here, which will cause us to throw an
+	// error in our constructor.
+	{ 0, 0, 0, 0, 0, 0, 0 } // End-marker
 };
 
-cableTypes::cableTypes( void )
-{
-}
-
-// Look up the cable properties.
-CABLE_PROPERTIES *
-cableTypes::findCable(
+cableTypes::cableTypes(
 		const char		*name,
 		double			frequency
 		)
@@ -162,7 +166,9 @@ cableTypes::findCable(
 
 	for(cp = cableProperties; cp->name != 0; cp++) {
 		if(strcmp(name, cp->name) == 0) {
-			// Compute attenuation from the k factors.
+			m_voltageLimit = cp->maximumVoltage;
+
+			// Compute attenuation, impedance, gamma, etc from the k factors.
 			m_Rdc = 2.0 * (cp->k0 / 100.0 / NEPERS_TO_DB) * cp->impedance;
 			m_Rhf = 2.0 * (cp->k1 / 100.0 / NEPERS_TO_DB * sqrt(frequency / 1E6)) * cp->impedance;
 			m_Lhf = cp->impedance / (SPEED_OF_LIGHT_F * cp->velocityFactor);
@@ -175,11 +181,11 @@ cableTypes::findCable(
 			m_Zo = sqrt(m_RjwL / m_GjwC);
 			m_gamma = sqrt(m_RjwL * m_GjwC);
 
-			return cp;
+			return;
 		}
 	}
 
-	return 0;
+	throw CABLE_TYPE_NO_MATCH;
 }
 
 // Return attenuation per hundred feet.
@@ -212,4 +218,12 @@ cableTypes::findZoImag(
 		)
 {
 	return imag(m_Zo);
+}
+
+// Return voltage limit of cable.
+double
+cableTypes::findVoltageLimit(
+		)
+{
+	return m_voltageLimit;
 }

@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -18,29 +18,12 @@
 #ifndef __cableTypes__
 #define __cableTypes__
 
-typedef struct {
-	double frequency;
-	double attenuation;
-} ATTENUATION;
-
-// We will either have the k0/k1/k2 factors or an attenuation pointer, but
-// not both.
-typedef struct {
-		const char	*name;
-		double		impedance;
-		double		velocityFactor;
-		double		k0;
-		double		k1;
-		double		k2;
-		double		maximumVoltage;
-} CABLE_PROPERTIES;
+#define CABLE_TYPE_NO_MATCH	1
 
 class cableTypes
 {
 	public:
-		cableTypes( void );
-
-		CABLE_PROPERTIES * findCable(
+		cableTypes(
 				const char		*name,
 				double			frequency
 				);
@@ -49,8 +32,10 @@ class cableTypes
 		double findVF();
 		double findZoReal();
 		double findZoImag();
+		double findVoltageLimit();
 
 	private:
+		double			m_voltageLimit;
 		double			m_Rdc;
 		double			m_Rhf;
 		double			m_Lhf;

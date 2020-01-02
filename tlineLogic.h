@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -78,9 +78,6 @@ class tlineLogic : public tlineUI
 		inline double sq( double v ) {
 			return v * v;
 		}
-
-		cableTypes		*m_c;
-		CABLE_PROPERTIES	*m_cp;
 
 		int			m_saved;
 		int			m_width;

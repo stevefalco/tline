@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -54,7 +54,6 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 
 	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
 
-	m_c = new cableTypes;
 	ui_programTitle->SetLabel(title);
 
 	// Once any parameter is changed, this will flip to 0.
@@ -358,16 +357,17 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 
 void tlineLogic::onHelpInfo( wxCommandEvent& event )
 {
-	helpInfo* dialog = new helpInfo(this);
+	helpInfo* dialog = new helpInfo(this); // Deleted before exiting this block.
 
 	dialog->helpInfoSetPage(INFO_PAGE);
 
 	dialog->ShowModal();
+	delete dialog;
 }
 
 void tlineLogic::onHelpAbout( wxCommandEvent& event )
 {
-	helpAbout* dialog = new helpAbout(this);
+	helpAbout* dialog = new helpAbout(this); // Deleted before exiting this block.
 
 	dialog->helpAboutAddTextLine1("tline - A Transmission Line Calculator");
 	dialog->helpAboutAddTextLine2(wxString::Format(wxT("Version %s"), VERSION));
@@ -375,6 +375,7 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 	dialog->helpAboutAddTextLine4("License: GPLv3");
 
 	dialog->ShowModal();
+	delete dialog;
 }
 
 // On Linux, this event only happens if the selected item changes.
@@ -505,7 +506,7 @@ void tlineLogic::onSaveDataClicked( wxCommandEvent& event )
 
 void tlineLogic::onTunerClicked( wxCommandEvent& event )
 {
-	tuner* dialog = new tuner(this);
+	tuner* dialog = new tuner(this); // Deleted before exiting this block.
 
 	if(m_tunerInit == FALSE) {
 		// Start the tuner off with reasonable values.
@@ -547,6 +548,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerCapacitorQStr = dialog->m_tunerCapacitorQStr;
 		m_tunerTopologyStr = dialog->m_tunerTopologyStr;
 	}
+	delete dialog;
 }
 
 double tlineLogic::wavelength()
@@ -927,6 +929,8 @@ void tlineLogic::generateGraphableData(
 
 void tlineLogic::recalculate()
 {
+	cableTypes *cable;
+
 	// Convert the units string.
 	if(m_unitsStr == "Feet") {
 		m_units = USE_FEET;
@@ -942,11 +946,21 @@ void tlineLogic::recalculate()
 	m_frequency = atof(m_frequencyStr) * 1.0E6;
 
 	// Look up the cable parameters.
-	m_cp = m_c->findCable(m_cableTypeStr.mb_str(), m_frequency);
-	if(m_cp == 0) {
+	try {
+		cable = new cableTypes(m_cableTypeStr.mb_str(), m_frequency); // Deleted before exiting this block.
+		m_userSpecifiedZ = FALSE;
+		m_attenPer100Feet = cable->findAtten();
+		m_velocityFactor = cable->findVF();
+		m_cableResistivePart = cable->findZoReal();
+		m_cableReactivePart = cable->findZoImag();
+		m_maximumVoltage = cable->findVoltageLimit();
+		delete cable;
+	}
+	catch(...) {
+		// No such cable.  Should only happen for user-specified line.
 		if(m_newUserLine == TRUE) {
-			// No such cable - open a dialog to ask for parameters.
-			userLine* dialog = new userLine(this);
+			// Open a dialog to ask for parameters.
+			userLine* dialog = new userLine(this); // Deleted before exiting this block.
 
 			// Fill in the previous user-provided values.
 			dialog->m_userLineFrequencyStr = m_frequencyStr;
@@ -991,6 +1005,7 @@ void tlineLogic::recalculate()
 				m_cableTypeStr = m_cableTypePrevStr;
 				ui_cableType->ChangeValue(m_cableTypeStr);
 			}
+			delete dialog;
 		} else {
 			// Use the cached values.
 			m_userSpecifiedZ = TRUE;
@@ -1000,13 +1015,6 @@ void tlineLogic::recalculate()
 			m_cableReactivePart = atof(m_userLineCableReactanceStr);
 			m_maximumVoltage = atof(m_userLineCableVoltageLimitStr);
 		}
-	} else {
-		m_userSpecifiedZ = FALSE;
-		m_attenPer100Feet = m_c->findAtten();
-		m_velocityFactor = m_c->findVF();
-		m_cableResistivePart = m_c->findZoReal();
-		m_cableReactivePart = m_c->findZoImag();
-		m_maximumVoltage = m_cp->maximumVoltage;
 	}
 
 	ui_velocityFactor->ChangeValue(wxString::Format(wxT("%.2f"), m_velocityFactor));
