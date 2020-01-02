@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -212,6 +212,7 @@ class tuner : public tunerDialog
 		void		buildHPT(DISPLAYED_RESULTS *d);
 		void		buildLPT(DISPLAYED_RESULTS *d);
 
+		void		wipeResults();
 		void		buildResults();
 		void		disableInvalid();
 

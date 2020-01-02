@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -1390,8 +1390,34 @@ void tuner::disableInvalid()
 	}
 }
 
+void tuner::wipeResults()
+{
+	int i;
+	int j;
+	DISPLAYED_RESULTS *d;
+	ONE_COMPONENT *c;
+
+	for(i = 0; i < USE_LAST; i++) {
+		d = &m_results[i];
+		d->validSolution = false;
+		d->networkQ = 0.0;
+		for(j = 0; j < MAX_COMPONENTS; j++) {
+			c = &d->component[j];
+			c->type = ' ';
+			c->label = "";
+			c->arrangement = 0;
+			c->qualityFactor = 0.0;
+			c->resistance = 0.0;
+			c->reactance = 0.0;
+			c->value = 0.0;
+		}
+	}
+}
+
 void tuner::recalculate()
 {
+	wipeResults();
+
 	m_frequency = atof(m_tunerFrequencyStr) * 1.0E6;
 	m_power = atof(m_tunerPowerStr);
 	m_sourceResistance = atof(m_tunerSourceResistanceStr);
