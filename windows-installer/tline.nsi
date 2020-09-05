@@ -1,5 +1,7 @@
 !pragma warning error all
 
+Unicode true
+
 # !verbose 4
 
 !define APPNAME "Tline"
@@ -74,7 +76,7 @@ Section "Tline"
 	File "tline.exe"
 	File "${ICON}"
 	File "${LICENSE}"
-	File "libgcc_s_sjlj-1.dll"
+	File "libgcc_s_dw2-1.dll"
 	File "libjpeg-62.dll"
 	File "libpng16-16.dll"
 	File "libstdc++-6.dll"
