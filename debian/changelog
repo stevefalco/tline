@@ -1,0 +1,17 @@
+tline (0.2.2-1ubuntu1) bionic; urgency=medium
+
+  * Got pdebuild working
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Mon, 07 Sep 2020 11:18:40 -0400
+
+tline (0.2.1-1ubuntu1) bionic; urgency=medium
+
+  * Managed to sort out the ubuntu dependencies
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Sun, 06 Sep 2020 16:23:53 -0400
+
+tline (0.2.1-1) bionic; urgency=medium
+
+  * Initial release
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Sun, 06 Sep 2020 16:02:38 -0400

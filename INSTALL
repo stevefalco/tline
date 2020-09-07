@@ -6,25 +6,49 @@ want to make any UI changes, install wxFormBuilder and open tline.fbp.
 After making your changes, type F8 in wxFormBuilder to regenerate the
 tlineUI.h and tlineUI.cpp files.
 
-Development of Tline is done under Linux.  I also use Linux to cross-compile
-for Windows.
+Development of Tline is done under Fedora Linux.  I also use Fedora Linux
+to cross-compile for Windows.
 
-tline is reasonably self-contained, but it does use gnuplot for graphing,
-so you will need gnuplot installed somewhere accessible by your shell.  The
-Tline windows installer includes gnuplot, and will install it on request.
+tline is reasonably self-contained, but it does use gnuplot (and xterm on
+Linux) for graphing.  The Tline windows installer includes the needed
+graphing components, and will install them on request.
 
-1) BUILDING FOR LINUX
-=====================
+1) BUILDING FOR FEDORA LINUX
+============================
 
 1a) Manual Builds
 =================
 
-Compilation for Linux can be done by the following steps:
+The following packages are required in order to build and run tline manually
+on a Fedora system:
 
-1) mkdir build-linux
-2) cd build-linux
-3) cmake ..
-4) make
+For building, you will need:
+
+  cmake
+  gcc-c++
+  wxGTK3-devel
+  vim-common
+  ImageMagick
+  desktop-file-utils
+  libappstream-glib
+
+For running, you will need:
+
+  gnuplot-wx
+  xterm
+
+All of the above packages can be installed via:
+
+dnf install cmake gcc-c++ wxGTK3-devel vim-common ImageMagick \
+  desktop-file-utils libappstream-glib gnuplot-wx xterm
+
+Once the above requirements are installed, compilation for Fedora
+can then be done by the following steps:
+
+mkdir build-fedora
+cd build-fedora
+cmake ..
+make
 
 If you have a multi-core CPU, you can speed up the compilation by replacing
 step 4 above with "make -jN" where N is number of CPU cores available.
@@ -35,9 +59,7 @@ CPU cores available, step 4 would be:
 
 make -j12 VERBOSE=1
 
-This will result in the tline binary being created as "build-linux/tline".
-You will need to have a development version of wxWidgets installed to perform
-the build.  On Fedora Linux this is provided by the wxGTK3-devel package.
+This will result in the tline binary being created as "build-fedora/tline".
 
 1b) RPM builds
 ==============
@@ -47,7 +69,7 @@ Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 First, create a source archive.  Note that the "TAG=x.x.x" must be changed
 to match the version in the spec file, and that has to match a tag in git.
 
-TAG=0.2.1
+TAG=0.2.2
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 
 Next, prepare a working directory:
@@ -63,15 +85,16 @@ Now, run the build:
 rpmbuild -ba SPECS/tline.spec
 
 1c) MOCK builds
+===============
 
-If you are set up for it on Fedora, you could instead use mock, again
+If you are set up for mock on Fedora, you can use it to do a build, again
 adjusting the version string and target Fedora version as necessary.  In
 this case, you first generate the source RPM in your local rpmbuild
 directory, then pass that to mock.  I like to use three windows for this.
 
 In window 1, in the source directory, do:
 
-TAG=0.2.1
+TAG=0.2.2
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -80,17 +103,81 @@ mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
 
 In window 2 do:
 
-TAG=0.2.1
+TAG=0.2.2
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
 mock -r fedora-32-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc32.src.rpm
 
 In window 3 do:
 
-TAG=0.2.1
+TAG=0.2.2
 mock -r fedora-31-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc32.src.rpm
 
-2) BUILDING FOR WINDOWS
+2) BUILDING FOR UBUNTU
+======================
+
+1a) Manual Builds
+=================
+
+The following packages are required in order to build and run tline manually
+on an Ubuntu system:
+
+For building, you will need:
+
+  cmake
+  imagemagick
+  librsvg2-bin
+  vim-common
+  libwxbase3.0-dev
+  libwxgtk-webview3.0-gtk3-dev
+  libwxgtk3.0-gtk3-dev
+
+For running, you will need:
+
+  gnuplot
+  xterm
+
+They can be installed via:
+
+apt install cmake imagemagick librsvg2-bin vim-common libwxbase3.0-dev \
+  libwxgtk-webview3.0-gtk3-dev libwxgtk3.0-gtk3-dev gnuplot xterm
+
+Once the above requirements are installed, compilation for Ubuntu
+can then be done by the following steps:
+
+mkdir build-ubuntu
+cd build-ubuntu
+cmake ..
+make
+
+If you have a multi-core CPU, you can speed up the compilation by replacing
+step 4 above with "make -jN" where N is number of CPU cores available.
+
+If you need to see the full text of the commands being executed by "make", add
+VERBOSE=1 to the command.  For example, to produce a verbose build, with 12
+CPU cores available, step 4 would be:
+
+make -j12 VERBOSE=1
+
+This will result in the tline binary being created as "build-ubuntu/tline".
+
+1b) PDEBUILD builds
+===================
+
+If you are set up for pdebuild on Ubuntu (and perhaps on other debian-based
+systems), then here are the recommended steps:
+
+TAG=0.2.2
+mkdir ~/build
+git archive --format=tar.gz --prefix=tline/ -o ~/build/tline_${TAG}.orig.tar.gz tags/${TAG}
+cd ~/build
+tar xvf tline_${TAG}.orig.tar.gz
+cd tline
+pdebuild
+
+The resulting .deb file will be found in /var/cache/pbuilder/result
+
+3) BUILDING FOR WINDOWS
 =======================
 
 The windows version of TLine is built using the MinGW cross-compilers running
@@ -103,7 +190,7 @@ files are stored in the windows-installer subdirectory.
 Build the Tline.exe file, copy it into the windows-installer directory, and
 generate the package:
 
-TAG=0.2.1
+TAG=0.2.2
 mkdir build-windows
 cd build-windows
 mingw32-cmake ..
@@ -113,6 +200,13 @@ makensis tline.nsi
 mv tline-installer.exe tline-installer-${TAG}.exe
 cd -
 
-You will wind up with tline-installer-${TAG}.exe, which contains all the
-components needed to install and run Tline.
+You will wind up with build-windows/tline-installer-${TAG}.exe, which contains
+all the components needed to install and run Tline.
+
+Version Changes
+===============
+
+If the version number changes, the following files must be updated:
+
+version.h spec/tline.spec INSTALL debian/changelog
 

@@ -1,0 +1,16 @@
+Source: tline
+Section: electronics
+Priority: optional
+Maintainer: Steven A. Falco <stevenfalco@gmail.com>
+Build-Depends: debhelper (>= 10), cmake (>=3.10),
+ imagemagick, librsvg2-bin, vim-common,
+ libwxbase3.0-dev, libwxgtk-webview3.0-gtk3-dev,
+ libwxgtk3.0-gtk3-dev
+Standards-Version: 4.1.2
+Homepage: https://github.com/stevefalco/tline
+
+Package: tline
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${dist:Depends}, xterm, gnuplot
+Description: Transmission Line Calculator
+ Transmission Line Calculator
