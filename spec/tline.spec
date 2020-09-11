@@ -30,15 +30,12 @@ tline is a transmission line calculator
 
 
 %build
-mkdir build
-cd build
-%cmake ..
-%make_build
+%cmake .
+%cmake_build
 
 
 %install
-cd build
-%make_install
+%cmake_install
 
 # install desktop
 for desktopfile in %{buildroot}%{_datadir}/applications/*.desktop ; do
