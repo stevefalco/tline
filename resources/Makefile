@@ -120,7 +120,7 @@ $(DESKTOP_FILE): tline.desktop
 $(XPM_FILE): tline.svg
 	mkdir -p `dirname $@`
 	convert $^ $@
-	sed -i -e 's/^static char \*tlineIcon\[] = {$$/char const * aaaa_xpm[] = {/' $@
+	sed -i -e 's/^static .*char \*tlineIcon\[] = {$$/char const * aaaa_xpm[] = {/' $@
 
 $(ICO_FILE): tline.svg
 	convert $^ -bordercolor white -border 0		\

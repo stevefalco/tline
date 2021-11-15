@@ -1,5 +1,5 @@
 Name:           tline
-Version:        0.2.2
+Version:        0.2.3
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -15,6 +15,7 @@ BuildRequires:  vim-common
 BuildRequires:  ImageMagick
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
+BuildRequires:  sed
 
 Requires:       electronics-menu
 Requires:       gnuplot-wx
@@ -63,6 +64,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/*.appdata
 
 
 %changelog
+* Mon Nov 15 2021 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.3-1
+- Update to 0.2.3
+
 * Mon Sep 07 2020 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.2-1
 - Update to 0.2.2
 
