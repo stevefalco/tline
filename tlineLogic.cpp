@@ -432,7 +432,7 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 
 	dialog.helpAboutAddTextLine1("tline - A Transmission Line Calculator");
 	dialog.helpAboutAddTextLine2(wxString::Format(wxT("Version %s"), VERSION));
-	dialog.helpAboutAddTextLine3(wxT("© 2019,2020 Steven A. Falco, AC2XM"));
+	dialog.helpAboutAddTextLine3(wxT("© 2019,2020,2022 Steven A. Falco, AC2XM"));
 	dialog.helpAboutAddTextLine4("License: GPLv3");
 	dialog.ShowModal();
 }

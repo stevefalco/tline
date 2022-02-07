@@ -1,3 +1,9 @@
+tline (0.2.5-1ubuntu1) bionic; urgency=medium
+
+  * Further Dark Mode
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Mon, 07 Feb 2022 18:38:22 -0400
+
 tline (0.2.4-1ubuntu1) bionic; urgency=medium
 
   * Support Dark Mode

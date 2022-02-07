@@ -1,5 +1,5 @@
 Name:           tline
-Version:        0.2.4
+Version:        0.2.5
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -64,6 +64,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/*.appdata
 
 
 %changelog
+* Mon Feb 07 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.5-1
+- Further Dark Mode
+
 * Mon Feb 07 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.4-1
 - Support Dark Mode
 

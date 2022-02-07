@@ -1,4 +1,4 @@
-// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020,2022 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -16,10 +16,19 @@
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "helpInfo.h"
+#include "theme.h"
 #include "tlineIcon.h"
 
 helpInfo::helpInfo( wxWindow* parent ) : helpInfoDialog( parent )
 {
+	if(g_darkMode) {
+		SetForegroundColour( wxColour( WHITE ) );
+		SetBackgroundColour( wxColour( BLACK ) );
+	} else {
+		SetForegroundColour( wxColour( BLACK ) );
+		SetBackgroundColour( wxColour( WHITE ) );
+	}
+
 	SetIcon(wxICON(aaaa));
 }
 
@@ -30,7 +39,23 @@ void helpInfo::helpInfoLoadPage( wxString s )
 
 void helpInfo::helpInfoSetPage( wxString s )
 {
-	dl_htmlWindow->SetPage(s);
+	wxString foreground;
+	wxString background;
+	wxString link;
+
+	if(g_darkMode) {
+		foreground = "white";
+		background = "black";
+		link = "sky blue";
+	} else {
+		foreground = "black";
+		background = "white";
+		link = "blue";
+	}
+
+	wxString m = wxString::Format(s, background, foreground, link);
+
+	dl_htmlWindow->SetPage(m);
 }
 
 void helpInfo::onLinkClicked( wxHtmlLinkEvent& event )

@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2022 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -19,7 +19,8 @@
 #define __INFO_H__
 
 const char* INFO_PAGE =
-	"<html><body>\n"
+	"<html><body style='background-color:%s;'>\n"
+	"<span style='color:%s;'>\n"
 	"<h1>tline - A Transmission Line Calculator for Ham Radio</h1>\n"
 	"<p>\n"
 	"<b><i>tline</i></b> is intended to calculate various transmission line parameters.\n"
@@ -35,7 +36,8 @@ const char* INFO_PAGE =
 	"<b><i>tline</i></b> uses the wxWidgets library, so while it is being developed on Linux, it can\n"
 	"be ported to other operating systems.  If you want to help make that happen, please\n"
 	"fork the project and create pull requests on github.  The project page is \n"
-	"<a href=\"http://github.com/stevefalco/tline\">here</a>.\n"
+	"<a href=\"http://github.com/stevefalco/tline\"><span style='color:%s;'>here</span></a>.\n"
+	"</span>\n"
 	"</body></html>\n";
 
 #endif // __INFO_H__
