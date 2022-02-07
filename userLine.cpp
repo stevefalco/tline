@@ -1,4 +1,4 @@
-// Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2022 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
