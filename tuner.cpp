@@ -18,6 +18,7 @@
 #include <wx/log.h>
 
 #include "constants.h"
+#include "theme.h"
 #include "tlineIcon.h"
 #include "tuner.h"
 
@@ -67,6 +68,56 @@
 tuner::tuner( wxWindow* parent ) : tunerDialog( parent )
 {
 	int i;
+
+	if(g_darkMode) {
+		dl_tunerFrequency->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerPower->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerSourceResistance->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerSourceReactance->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerLoadResistance->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerLoadReactance->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerInductorQ->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerCapacitorQ->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerNetworkQ->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult1->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult2->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult3->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult4->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult5->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult6->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult7->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult8->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult9->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult10->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult11->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_tunerResult12->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		SetForegroundColour( wxColour( WHITE ) );
+		SetBackgroundColour( wxColour( BLACK ) );
+	} else {
+		dl_tunerFrequency->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerPower->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerSourceResistance->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerSourceReactance->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerLoadResistance->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerLoadReactance->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerInductorQ->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerCapacitorQ->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerNetworkQ->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult1->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult2->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult3->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult4->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult5->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult6->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult7->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult8->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult9->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult10->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult11->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_tunerResult12->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		SetForegroundColour( wxColour( BLACK ) );
+		SetBackgroundColour( wxColour( WHITE ) );
+	}
 
 	SetIcon(wxICON(aaaa));
 
@@ -1674,11 +1725,16 @@ void tuner::show(wxBitmap bmp, int type, int count)
 		if(sn->loss > m_power * 0.1) {
 			excessiveLoss = TRUE;
 
-			r->item[j].value->SetForegroundColour(wxColour("#ff0000"));
-			r->item[j].tag->SetForegroundColour(wxColour("#ff0000"));
+			r->item[j].value->SetForegroundColour(wxColour( RED ));
+			r->item[j].tag->SetForegroundColour(wxColour( RED ));
 		} else {
-			r->item[j].value->SetForegroundColour(wxColour("#000000"));
-			r->item[j].tag->SetForegroundColour(wxColour("#000000"));
+			if(g_darkMode) {
+				r->item[j].value->SetForegroundColour(wxColour( WHITE ));
+				r->item[j].tag->SetForegroundColour(wxColour( WHITE));
+			} else {
+				r->item[j].value->SetForegroundColour(wxColour( BLACK ));
+				r->item[j].tag->SetForegroundColour(wxColour( BLACK));
+			}
 		}
 		++j;
 	}
@@ -1709,22 +1765,32 @@ void tuner::show(wxBitmap bmp, int type, int count)
 	++i;
 
 	if(excessiveLoss) {
-		m_s.item[i].value->SetForegroundColour(wxColour("#ff0000"));
-		m_s.item[i].tag->SetForegroundColour(wxColour("#ff0000"));
+		m_s.item[i].value->SetForegroundColour(wxColour( RED ));
+		m_s.item[i].tag->SetForegroundColour(wxColour( RED ));
 	} else {
-		m_s.item[i].value->SetForegroundColour(wxColour("#000000"));
-		m_s.item[i].tag->SetForegroundColour(wxColour("#000000"));
+		if(g_darkMode) {
+			m_s.item[i].value->SetForegroundColour(wxColour( WHITE ));
+			m_s.item[i].tag->SetForegroundColour(wxColour( WHITE ));
+		} else {
+			m_s.item[i].value->SetForegroundColour(wxColour( BLACK ));
+			m_s.item[i].tag->SetForegroundColour(wxColour( BLACK ));
+		}
 	}
 	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f"), m_power - s->powerRemaining));
 	m_s.item[i].tag->SetLabel("Power Lost in Tuner (W)");
 	++i;
 
 	if(excessiveLoss) {
-		m_s.item[i].value->SetForegroundColour(wxColour("#ff0000"));
-		m_s.item[i].tag->SetForegroundColour(wxColour("#ff0000"));
+		m_s.item[i].value->SetForegroundColour(wxColour( RED ));
+		m_s.item[i].tag->SetForegroundColour(wxColour( RED ));
 	} else {
-		m_s.item[i].value->SetForegroundColour(wxColour("#000000"));
-		m_s.item[i].tag->SetForegroundColour(wxColour("#000000"));
+		if(g_darkMode) {
+			m_s.item[i].value->SetForegroundColour(wxColour( WHITE ));
+			m_s.item[i].tag->SetForegroundColour(wxColour( WHITE ));
+		} else {
+			m_s.item[i].value->SetForegroundColour(wxColour( BLACK ));
+			m_s.item[i].tag->SetForegroundColour(wxColour( BLACK ));
+		}
 	}
 	m_s.item[i].value->SetLabel(wxString::Format(wxT("%.2f"), s->powerRemaining));
 	m_s.item[i].tag->SetLabel("Power to Load (W)");
@@ -1748,10 +1814,14 @@ void tuner::show(wxBitmap bmp, int type, int count)
 		dl_tunerInfo->SetLabel(wxT("\
 Excessive loss detected (highlighted in red in the \"Results\" and/or \"Notes\" boxs).\n\
 You should probably choose a different topology or add a transmission line transformer.\n"));
-		dl_tunerInfo->SetForegroundColour(wxColour("#ff0000"));
+		dl_tunerInfo->SetForegroundColour(wxColour( RED ));
 	} else {
 		dl_tunerInfo->SetLabel("");
-		dl_tunerInfo->SetForegroundColour(wxColour("#000000"));
+		if(g_darkMode) {
+			dl_tunerInfo->SetForegroundColour(wxColour( WHITE ));
+		} else {
+			dl_tunerInfo->SetForegroundColour(wxColour( BLACK ));
+		}
 	}
 
 	Layout();

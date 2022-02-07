@@ -34,6 +34,7 @@
 #include "helpInfo.h"
 #include "info.h"
 #include "strchrnul.h"
+#include "theme.h"
 #include "tlineIcon.h"
 #include "tlineLogic.h"
 #include "tuner.h"
@@ -42,9 +43,65 @@
 
 wxString g_widthStr;
 wxString g_heightStr;
+int g_darkMode;
 
 tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent )
 {
+	wxColour bg = wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW );
+	// Weighted W3C formula
+	double brightness = ( bg.Red() / 255.0 ) * 0.299 +
+		( bg.Green() / 255.0 ) * 0.587 +
+		( bg.Blue() / 255.0 ) * 0.117;
+	g_darkMode = brightness < 0.5;
+
+	if(g_darkMode) {
+		ui_cableLength->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_lambda->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_frequency->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_power->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_inputVoltage->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_resistance->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_reactance->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_matchedLineLoss->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_totalMatchedLineLoss->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_addedLoss->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_totalLoss->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_impedanceRectangular->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_impedancePolar->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_characteristicZ0->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_velocityFactor->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_maxVoltage->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_swrInput->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_swrLoad->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_rhoLoad->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		ui_menubar->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		SetForegroundColour( wxColour( WHITE ) );
+		SetBackgroundColour( wxColour( BLACK ) );
+	} else {
+		ui_cableLength->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_lambda->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_frequency->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_power->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_inputVoltage->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_resistance->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_reactance->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_matchedLineLoss->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_totalMatchedLineLoss->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_addedLoss->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_totalLoss->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_impedanceRectangular->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_impedancePolar->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_characteristicZ0->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_velocityFactor->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_maxVoltage->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_swrInput->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_swrLoad->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_rhoLoad->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		ui_menubar->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		SetForegroundColour( wxColour( BLACK ) );
+		SetBackgroundColour( wxColour( WHITE ) );
+	}
+
 	// Handlers are allocated on the heap.  They will be deleted at
 	// program shutdown, since we never call RemoveHandler().
 	wxImage::AddHandler(new wxPNGHandler);

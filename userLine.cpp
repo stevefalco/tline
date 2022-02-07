@@ -16,11 +16,34 @@
 //  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "constants.h"
+#include "theme.h"
 #include "tlineIcon.h"
 #include "userLine.h"
 
 userLine::userLine( wxWindow* parent ) : userLineDialog( parent )
 {
+	if(g_darkMode) {
+		dl_frequencyStr->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_attenuationStr->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_velocityFactorStr->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_cableImpedanceStr->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_cableResistanceStr->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_cableReactanceStr->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		dl_cableVoltageLimitStr->SetBackgroundColour( wxColour( DARK_GRAY ) );
+		SetForegroundColour( wxColour( WHITE ) );
+		SetBackgroundColour( wxColour( BLACK ) );
+	} else {
+		dl_frequencyStr->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_attenuationStr->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_velocityFactorStr->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_cableImpedanceStr->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_cableResistanceStr->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_cableReactanceStr->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		dl_cableVoltageLimitStr->SetBackgroundColour( wxColour( LIGHT_GRAY ) );
+		SetForegroundColour( wxColour( BLACK ) );
+		SetBackgroundColour( wxColour( WHITE ) );
+	}
+
 	SetIcon(wxICON(aaaa));
 }
 
