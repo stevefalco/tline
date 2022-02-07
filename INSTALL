@@ -69,7 +69,7 @@ Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 First, create a source archive.  Note that the "TAG=x.x.x" must be changed
 to match the version in the spec file, and that has to match a tag in git.
 
-TAG=0.2.3
+TAG=0.2.4
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 
 Next, prepare a working directory:
@@ -94,7 +94,7 @@ directory, then pass that to mock.  I like to use three windows for this.
 
 In window 1, in the source directory, do:
 
-TAG=0.2.3
+TAG=0.2.4
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -103,14 +103,14 @@ mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
 
 In window 2 do:
 
-TAG=0.2.3
+TAG=0.2.4
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
 mock -r fedora-35-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc35.src.rpm
 
 In window 3 do:
 
-TAG=0.2.3
+TAG=0.2.4
 mock -r fedora-34-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc35.src.rpm
 
 2) BUILDING FOR UBUNTU
@@ -167,7 +167,7 @@ This will result in the tline binary being created as "build-ubuntu/tline".
 If you are set up for pdebuild on Ubuntu (and perhaps on other debian-based
 systems), then here are the recommended steps:
 
-TAG=0.2.3
+TAG=0.2.4
 mkdir ~/build
 git archive --format=tar.gz --prefix=tline/ -o ~/build/tline_${TAG}.orig.tar.gz tags/${TAG}
 cd ~/build
@@ -190,7 +190,7 @@ files are stored in the windows-installer subdirectory.
 Build the Tline.exe file, copy it into the windows-installer directory, and
 generate the package:
 
-TAG=0.2.3
+TAG=0.2.4
 mkdir build-windows
 cd build-windows
 mingw32-cmake ..
