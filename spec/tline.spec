@@ -1,5 +1,5 @@
 Name:           tline
-Version:        0.2.5
+Version:        0.2.6
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -31,7 +31,7 @@ tline is a transmission line calculator
 
 
 %build
-%cmake .
+%cmake -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF .
 %cmake_build
 
 
@@ -64,6 +64,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/*.appdata
 
 
 %changelog
+* Tue Feb 08 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.6-1
+- Working on install path control
+
 * Mon Feb 07 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.5-1
 - Further Dark Mode
 

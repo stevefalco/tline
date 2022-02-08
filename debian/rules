@@ -2,3 +2,8 @@
 
 %:
 	dh $@ --parallel
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF
+
+

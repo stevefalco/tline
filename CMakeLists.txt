@@ -5,7 +5,27 @@ find_package(wxWidgets REQUIRED COMPONENTS net core base webview xrc html qa adv
 
 include(${wxWidgets_USE_FILE})
  
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I. -Wall -g")
+set( EXTRA_CXX_FLAGS "")
+
+option( TLINE_DEBUG
+	"Build for debugging (default OFF)"
+	OFF )
+
+if ( TLINE_DEBUG )
+	set( EXTRA_CXX_FLAGS "${EXTRA_CXX_FLAGS} -g")
+else()
+	set( EXTRA_CXX_FLAGS "${EXTRA_CXX_FLAGS} -O2")
+endif()
+
+option( TLINE_STRIP
+	"Strip build (default ON)"
+	ON )
+
+if ( NOT TLINE_DEBUG AND TLINE_STRIP )
+	set( EXTRA_CXX_FLAGS "${EXTRA_CXX_FLAGS} -s")
+endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I. -Wall ${EXTRA_CXX_FLAGS}")
 
 set(TOPOLOGIES
 	nt_bp1ll.png
@@ -70,7 +90,14 @@ foreach(VAR IN LISTS TOPOLOGIES)
 	add_dependencies(tline ${H})
 endforeach()
 
-install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/tline DESTINATION /usr/bin)
+if( NOT DEFAULT_PREFIX_PATH )
+	set( DEFAULT_PREFIX_PATH "/usr/local"
+		CACHE
+		PATH
+		"Location of tline." )
+endif()
+
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/tline DESTINATION ${DEFAULT_PREFIX_PATH}/bin)
 
 if( UNIX AND NOT APPLE )
 	# Set paths
@@ -82,25 +109,25 @@ if( UNIX AND NOT APPLE )
 
 	# Install Mime directory
 	install( DIRECTORY ${UNIX_ICON_FILES}
-		DESTINATION share
+		DESTINATION ${DEFAULT_PREFIX_PATH}/share
 		COMPONENT resources
 		)
 
 	# Install Icons
 	install( DIRECTORY ${UNIX_MIME_FILES}
-		DESTINATION share
+		DESTINATION ${DEFAULT_PREFIX_PATH}/share
 		COMPONENT resources
 		)
 
 	# Install Applications directory (.desktop files)
 	install( DIRECTORY ${UNIX_APPLICATIONS_FILES}
-		DESTINATION share
+		DESTINATION ${DEFAULT_PREFIX_PATH}/share
 		COMPONENT resources
 		)
 
 	# Install AppStream directory (app store entry)
 	install( DIRECTORY ${UNIX_APPDATA_FILES}
-		DESTINATION share
+		DESTINATION ${DEFAULT_PREFIX_PATH}/share
 		COMPONENT resources
 		)
 endif()

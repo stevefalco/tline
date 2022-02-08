@@ -1,3 +1,9 @@
+tline (0.2.6-1ubuntu1) bionic; urgency=medium
+
+  * Working on install path control
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Tue, 08 Feb 2022 10:53:38 -0400
+
 tline (0.2.5-1ubuntu1) bionic; urgency=medium
 
   * Further Dark Mode
