@@ -5,6 +5,7 @@ Icon=tline
 Type=Application
 Categories=Electronics;
 Exec=tline %f
+StartupWMClass=tline
 MimeType=application/x-tline;
 Name=tline
 GenericName=Transmission Line Calculator
