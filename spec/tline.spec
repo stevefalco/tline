@@ -1,5 +1,5 @@
 Name:           tline
-Version:        0.2.6
+Version:        0.2.7
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -64,6 +64,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/*.appdata
 
 
 %changelog
+* Wed Feb 09 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.7-1
+- Correct metadata for .tline files
+
 * Tue Feb 08 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.6-1
 - Working on install path control
 
