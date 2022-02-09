@@ -22,6 +22,7 @@
 #endif
 
 #include <wx/filedlg.h>
+#include <wx/filefn.h>
 #include <wx/filename.h>
 #include <wx/icon.h>
 #include <wx/sizer.h>
@@ -175,6 +176,7 @@ void tlineLogic::loadFile( wxString path )
 {
 	char buffer[512];
 	char *p;
+	struct stat status;
 
 	wxFileInputStream input_stream( path );
 	if(!input_stream.IsOk()) {
@@ -183,7 +185,25 @@ void tlineLogic::loadFile( wxString path )
 	}
     
 	wxFile *f = input_stream.GetFile();
+
+	if(fstat(f->fd(), &status) < 0) {
+		wxLogError("Cannot get status for '%s'", path);
+		f->Close();
+		return;
+	}
+	if((status.st_mode & S_IFMT) != S_IFREG) {
+		wxLogError("'%s' is not a regular file", path);
+		f->Close();
+		return;
+	}
+
 	FILE *fp = fdopen(f->fd(), "r");
+
+	if(fp == NULL) {
+		wxLogError("Cannot open file '%s'", path);
+		f->Close();
+		return;
+	}
 
 	while(fgets(buffer, 512, fp) != NULL) {
 		*strchrnul(buffer, '\n') = 0;
@@ -193,18 +213,16 @@ void tlineLogic::loadFile( wxString path )
 		}
 
 		if((p = strchr(buffer, '=')) == NULL) {
-			wxLogError("Missing '=' in %s", buffer);
-			continue;
+			wxLogError("'%s' is badly formatted - bad line: '%s'", path, buffer);
+			f->Close();
+			return;
 		}
 		*p++ = 0;
 
-		// Parse top-level parameters
-		if(strcmp(buffer, "cableType") == 0) {
+		if(strcmp(buffer, "cableType") == 0) {  // Parse top-level parameters
 			m_cableTypeStr = p;
 			ui_cableType->ChangeValue(m_cableTypeStr);
-		}
-
-		if(strcmp(buffer, "units") == 0) {
+		} else if(strcmp(buffer, "units") == 0) {
 			m_unitsStr = p;
 			if(strcmp(m_unitsStr, "Feet") == 0) {
 				ui_unitsRadioButtons->SetSelection(USE_FEET);
@@ -212,29 +230,19 @@ void tlineLogic::loadFile( wxString path )
 			if(strcmp(m_unitsStr, "Meters") == 0) {
 				ui_unitsRadioButtons->SetSelection(USE_METERS);
 			}
-		}
-
-		if(strcmp(buffer, "frequency") == 0) {
+		} else if(strcmp(buffer, "frequency") == 0) {
 			m_frequencyStr = p;
 			ui_frequency->ChangeValue(m_frequencyStr);
-		}
-
-		if(strcmp(buffer, "length") == 0) {
+		} else if(strcmp(buffer, "length") == 0) {
 			m_lengthStr = p;
 			ui_cableLength->ChangeValue(m_lengthStr);
-		}
-
-		if(strcmp(buffer, "resistance") == 0) {
+		} else if(strcmp(buffer, "resistance") == 0) {
 			m_resistanceStr = p;
 			ui_resistance->ChangeValue(m_resistanceStr);
-		}
-
-		if(strcmp(buffer, "reactance") == 0) {
+		} else if(strcmp(buffer, "reactance") == 0) {
 			m_reactanceStr = p;
 			ui_reactance->ChangeValue(m_reactanceStr);
-		}
-
-		if(strcmp(buffer, "loadInput") == 0) {
+		} else if(strcmp(buffer, "loadInput") == 0) {
 			m_loadInputStr = p;
 			if(strcmp(m_loadInputStr, "Load") == 0) {
 				ui_loadInputRadioButtons->SetSelection(USE_LOAD);
@@ -242,98 +250,64 @@ void tlineLogic::loadFile( wxString path )
 			if(strcmp(m_loadInputStr, "Input") == 0) {
 				ui_loadInputRadioButtons->SetSelection(USE_INPUT);
 			}
-		}
-
-		if(strcmp(buffer, "power") == 0) {
+		} else if(strcmp(buffer, "power") == 0) {
 			m_powerStr = p;
 			ui_power->ChangeValue(m_powerStr);
-		}
-
-		// Parse tuner parameters
-		if(strcmp(buffer, "m_tunerFrequency") == 0) {
+		} else if(strcmp(buffer, "m_tunerFrequency") == 0) { // Parse tuner parameters
 			m_tunerFrequencyStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerPower") == 0) {
+		} else if(strcmp(buffer, "m_tunerPower") == 0) {
 			m_tunerPowerStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerSourceResistance") == 0) {
+		} else if(strcmp(buffer, "m_tunerSourceResistance") == 0) {
 			m_tunerSourceResistanceStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerSourceReactance") == 0) {
+		} else if(strcmp(buffer, "m_tunerSourceReactance") == 0) {
 			m_tunerSourceReactanceStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerLoadResistance") == 0) {
+		} else if(strcmp(buffer, "m_tunerLoadResistance") == 0) {
 			m_tunerLoadResistanceStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerLoadReactance") == 0) {
+		} else if(strcmp(buffer, "m_tunerLoadReactance") == 0) {
 			m_tunerLoadReactanceStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerNetworkQ") == 0) {
+		} else if(strcmp(buffer, "m_tunerNetworkQ") == 0) {
 			m_tunerNetworkQStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerInductorQ") == 0) {
+		} else if(strcmp(buffer, "m_tunerInductorQ") == 0) {
 			m_tunerInductorQStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerCapacitorQ") == 0) {
+		} else if(strcmp(buffer, "m_tunerCapacitorQ") == 0) {
 			m_tunerCapacitorQStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		if(strcmp(buffer, "m_tunerTopology") == 0) {
+		} else if(strcmp(buffer, "m_tunerTopology") == 0) {
 			m_tunerTopologyStr = p;
 			m_tunerInit = TRUE;
-		}
-
-		// Parse user line parameters
-		if(strcmp(buffer, "m_userLineAttenuation") == 0) {
+		} else if(strcmp(buffer, "m_userLineAttenuation") == 0) { // Parse user line parameters
 			m_userLineAttenuationStr = p;
 			m_userLineInit = 1;
-		}
-
-		if(strcmp(buffer, "m_userLineVelocityFactor") == 0) {
+		} else if(strcmp(buffer, "m_userLineVelocityFactor") == 0) {
 			m_userLineVelocityFactorStr = p;
 			m_userLineInit = 1;
-		}
-
-		if(strcmp(buffer, "m_userLineCableImpedance") == 0) {
+		} else if(strcmp(buffer, "m_userLineCableImpedance") == 0) {
 			m_userLineCableImpedanceStr = p;
 			m_userLineInit = 1;
-		}
-
-		if(strcmp(buffer, "m_userLineCableResistance") == 0) {
+		} else if(strcmp(buffer, "m_userLineCableResistance") == 0) {
 			m_userLineCableResistanceStr = p;
 			m_userLineInit = 1;
-		}
-
-		if(strcmp(buffer, "m_userLineCableReactance") == 0) {
+		} else if(strcmp(buffer, "m_userLineCableReactance") == 0) {
 			m_userLineCableReactanceStr = p;
 			m_userLineInit = 1;
-		}
-
-		if(strcmp(buffer, "m_userLineCableVoltageLimit") == 0) {
+		} else if(strcmp(buffer, "m_userLineCableVoltageLimit") == 0) {
 			m_userLineCableVoltageLimitStr = p;
 			m_userLineInit = 1;
-		}
-
-		if(strcmp(buffer, "m_userLineLastMethod") == 0) {
+		} else if(strcmp(buffer, "m_userLineLastMethod") == 0) {
 			m_userLineLastMethodStr = p;
 			m_userLineInit = 1;
+		} else {
+			wxLogError("'%s' is badly formatted - bad tag: '%s'", path, buffer);
+			f->Close();
+			return;
 		}
 	}
 
@@ -365,6 +339,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 
 	if(fp == NULL) {
 		wxLogError("Cannot open file '%s' for writing", path);
+		f->Close();
 		return;
 	}
 

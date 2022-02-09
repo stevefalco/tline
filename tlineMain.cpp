@@ -1,4 +1,4 @@
-// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020,2022 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -23,6 +23,7 @@
 
 #include <wx/cmdline.h>
 
+#include "dragDrop.h"
 #include "tlineLogic.h"
 
 class tlineMain: public wxApp {
@@ -57,6 +58,7 @@ inline bool tlineMain::OnInit() {
 	// The main frame will be owned by the wxWidgets library, and will
 	// be deleted by the library when appropriate.
 	wxFrame* mainFrame = new tlineLogic(NULL, m_file);
+	mainFrame->SetDropTarget(new DnDFile(mainFrame));
 	mainFrame->Show(true);
 	SetTopWindow(mainFrame);
 

@@ -1,4 +1,4 @@
-// Copyright 2019,2020 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright 2019,2020,2022 Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -33,6 +33,9 @@ class tlineLogic : public tlineUI
 		wxString getWidth() { return m_widthStr; }
 		wxString getHeight() { return m_heightStr; }
 
+		// Public, so we can call it from a drag/dropped file.
+		void loadFile( wxString path );
+
 	private:
 		void onFileLoad( wxCommandEvent& event );
 		void onFileSave( wxCommandEvent& event );
@@ -64,7 +67,6 @@ class tlineLogic : public tlineUI
 		complex<double> voltageOut( double distance );
 		complex<double> currentOut( double distance );
 
-		void loadFile( wxString path );
 		void recalculate();
 		void doPlot( int type, int mode );
 		void setControlZ( wxFFile* file, const char* name );

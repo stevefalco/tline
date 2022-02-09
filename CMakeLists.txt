@@ -66,6 +66,7 @@ add_custom_target(GEN_RESOURCES
 
 add_executable(${PROJECT_NAME}
 	cableTypes.cpp
+	dragDrop.cpp
 	helpAbout.cpp
 	helpInfo.cpp
 	strchrnul.cpp
