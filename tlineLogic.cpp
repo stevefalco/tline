@@ -163,7 +163,7 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
 		}
 	}
     
-	wxFileDialog openFileDialog(this, _("Open tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog openFileDialog(this, _("Open tline file"), "", "", "tline files (*.tline)|*.tline|All files (*)|*", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if(openFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
@@ -349,9 +349,14 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 		return;
 	}
     
-	wxFileOutputStream output_stream(saveFileDialog.GetPath());
+	wxString path = saveFileDialog.GetPath();
+	if(!path.EndsWith(".tline")) {
+		path.append(".tline");
+	}
+
+	wxFileOutputStream output_stream(path);
 	if (!output_stream.IsOk()) {
-		wxLogError("Cannot save current contents in file '%s'", saveFileDialog.GetPath());
+		wxLogError("Cannot save current contents in file '%s'", path);
 		return;
 	}
     
@@ -359,7 +364,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	FILE *fp = fdopen(f->fd(), "w");
 
 	if(fp == NULL) {
-		wxLogError("Cannot open file '%s' for writing", saveFileDialog.GetPath());
+		wxLogError("Cannot open file '%s' for writing", path);
 		return;
 	}
 
@@ -399,7 +404,7 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	}
 
 	if(fflush(fp) == EOF) {
-		wxLogError("Cannot flush file '%s'", saveFileDialog.GetPath());
+		wxLogError("Cannot flush file '%s'", path);
 		return;
 	}
 

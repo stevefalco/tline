@@ -3,6 +3,6 @@
 	<mime-type type="application/x-tline">
 		<sub-class-of type="text/plain"/>
 		<comment>tline</comment>
-		<glob pattern="*.pro"/>
+		<glob pattern="*.tline"/>
 	</mime-type>
 </mime-info>
