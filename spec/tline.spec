@@ -1,5 +1,5 @@
 Name:           tline
-Version:        0.2.8
+Version:        0.2.9
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -64,6 +64,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/*.appdata
 
 
 %changelog
+* Thu Feb 10 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.9-1
+- Try again on windows file associations
+
 * Thu Feb 10 2022 Steven A. Falco <stevenfalco@gmail.com> - 1:0.2.8-1
 - Bump to 0.2.8
 

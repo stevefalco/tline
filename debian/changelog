@@ -1,3 +1,9 @@
+tline (0.2.9-1ubuntu1) bionic; urgency=medium
+
+  * Try again on windows file associations
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Thu, 10 Feb 2022 14:59:15 -0400
+
 tline (0.2.8-1ubuntu1) bionic; urgency=medium
 
   * Allow .tline files to be dropped on the app

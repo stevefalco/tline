@@ -107,7 +107,7 @@ Section "Tline"
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "NoRepair" 1
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "EstimatedSize" ${INSTALLSIZE}
 
-	${registerExtension} "tline.exe" ".tline" "TLine File"
+	${registerExtension} "$INSTDIR\tline.exe" ".tline" "TLine File"
 SectionEnd
 
 function un.onInit
