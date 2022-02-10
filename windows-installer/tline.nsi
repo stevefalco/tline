@@ -30,6 +30,7 @@ InstallDir $PROGRAMFILES${BITS}\${APPNAME}
 
 !include "MUI.nsh"
 !include "Library.nsh"
+!include "FileAssociation.nsh"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "${LICENSE}"
@@ -105,6 +106,8 @@ Section "Tline"
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "NoModify" 1
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "NoRepair" 1
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "EstimatedSize" ${INSTALLSIZE}
+
+	${registerExtension} "tline.exe" ".tline" "TLine File"
 SectionEnd
 
 function un.onInit
@@ -117,6 +120,8 @@ function un.onInit
 functionEnd
 
 section "uninstall"
+	${unregisterExtension} ".tline" "TLine File"
+
 	delete "$SMPROGRAMS\${APPNAME}\uninstall.lnk"
 	delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
 	rmDir "$SMPROGRAMS\${APPNAME}"

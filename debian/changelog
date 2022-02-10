@@ -1,3 +1,9 @@
+tline (0.2.8-1ubuntu1) bionic; urgency=medium
+
+  * Allow .tline files to be dropped on the app
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Thu, 10 Feb 2022 11:01:15 -0400
+
 tline (0.2.7-1ubuntu1) bionic; urgency=medium
 
   * Correct metadata for .tline files
