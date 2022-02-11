@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <wxFormBuilder_Project>
-    <FileVersion major="1" minor="15" />
+    <FileVersion major="1" minor="16" />
     <object class="Project" expanded="1">
         <property name="class_decoration">; </property>
         <property name="code_generation">C++</property>
@@ -47,11 +47,12 @@
             <property name="minimum_size">-1,-1</property>
             <property name="name">tlineUI</property>
             <property name="pos"></property>
-            <property name="size">850,570</property>
+            <property name="size">860,570</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">tline</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -65,7 +66,6 @@
                 <property name="font"></property>
                 <property name="hidden">0</property>
                 <property name="id">wxID_ANY</property>
-                <property name="label">MyMenuBar</property>
                 <property name="maximum_size"></property>
                 <property name="minimum_size"></property>
                 <property name="name">ui_menubar</property>
@@ -1072,7 +1072,7 @@
                     <property name="border">5</property>
                     <property name="flag"></property>
                     <property name="proportion">0</property>
-                    <object class="wxBoxSizer" expanded="0">
+                    <object class="wxBoxSizer" expanded="1">
                         <property name="minimum_size"></property>
                         <property name="name">bPane2</property>
                         <property name="orient">wxHORIZONTAL</property>
@@ -1977,6 +1977,7 @@
                                                 <property name="aui_name"></property>
                                                 <property name="aui_position"></property>
                                                 <property name="aui_row"></property>
+                                                <property name="auth_needed">0</property>
                                                 <property name="best_size"></property>
                                                 <property name="bg"></property>
                                                 <property name="bitmap"></property>
@@ -2050,6 +2051,7 @@
                                                 <property name="aui_name"></property>
                                                 <property name="aui_position"></property>
                                                 <property name="aui_row"></property>
+                                                <property name="auth_needed">0</property>
                                                 <property name="best_size"></property>
                                                 <property name="bg"></property>
                                                 <property name="bitmap"></property>
@@ -2123,6 +2125,7 @@
                                                 <property name="aui_name"></property>
                                                 <property name="aui_position"></property>
                                                 <property name="aui_row"></property>
+                                                <property name="auth_needed">0</property>
                                                 <property name="best_size"></property>
                                                 <property name="bg"></property>
                                                 <property name="bitmap"></property>
@@ -2207,6 +2210,7 @@
                                                 <property name="aui_name"></property>
                                                 <property name="aui_position"></property>
                                                 <property name="aui_row"></property>
+                                                <property name="auth_needed">0</property>
                                                 <property name="best_size"></property>
                                                 <property name="bg"></property>
                                                 <property name="bitmap"></property>
@@ -2280,6 +2284,7 @@
                                                 <property name="aui_name"></property>
                                                 <property name="aui_position"></property>
                                                 <property name="aui_row"></property>
+                                                <property name="auth_needed">0</property>
                                                 <property name="best_size"></property>
                                                 <property name="bg"></property>
                                                 <property name="bitmap"></property>
@@ -2353,6 +2358,7 @@
                                                 <property name="aui_name"></property>
                                                 <property name="aui_position"></property>
                                                 <property name="aui_row"></property>
+                                                <property name="auth_needed">0</property>
                                                 <property name="best_size"></property>
                                                 <property name="bg"></property>
                                                 <property name="bitmap"></property>
@@ -2423,12 +2429,12 @@
                     <property name="border">5</property>
                     <property name="flag">wxALIGN_CENTER|wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxBoxSizer" expanded="0">
+                    <object class="wxBoxSizer" expanded="1">
                         <property name="minimum_size"></property>
                         <property name="name">bPane3</property>
                         <property name="orient">wxHORIZONTAL</property>
                         <property name="permission">none</property>
-                        <object class="sizeritem" expanded="0">
+                        <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxEXPAND</property>
                             <property name="proportion">1</property>
@@ -3192,7 +3198,7 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="sizeritem" expanded="0">
+                        <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxEXPAND</property>
                             <property name="proportion">1</property>
@@ -3983,6 +3989,7 @@
             <property name="subclass">; ; forward_declare</property>
             <property name="title">User Defined Line</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
@@ -5398,6 +5405,7 @@
                                         <property name="aui_name"></property>
                                         <property name="aui_position"></property>
                                         <property name="aui_row"></property>
+                                        <property name="auth_needed">0</property>
                                         <property name="best_size"></property>
                                         <property name="bg"></property>
                                         <property name="bitmap"></property>
@@ -5471,6 +5479,7 @@
                                         <property name="aui_name"></property>
                                         <property name="aui_position"></property>
                                         <property name="aui_row"></property>
+                                        <property name="auth_needed">0</property>
                                         <property name="best_size"></property>
                                         <property name="bg"></property>
                                         <property name="bitmap"></property>
@@ -5632,6 +5641,7 @@
             <property name="subclass">; ; forward_declare</property>
             <property name="title"></property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
@@ -5712,6 +5722,7 @@
                         <property name="aui_name"></property>
                         <property name="aui_position"></property>
                         <property name="aui_row"></property>
+                        <property name="auth_needed">0</property>
                         <property name="best_size"></property>
                         <property name="bg"></property>
                         <property name="bitmap"></property>
@@ -5797,6 +5808,7 @@
             <property name="subclass">; ; forward_declare</property>
             <property name="title"></property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
@@ -6062,6 +6074,7 @@
                         <property name="aui_name"></property>
                         <property name="aui_position"></property>
                         <property name="aui_row"></property>
+                        <property name="auth_needed">0</property>
                         <property name="best_size"></property>
                         <property name="bg"></property>
                         <property name="bitmap"></property>
@@ -6142,11 +6155,12 @@
             <property name="minimum_size">-1,-1</property>
             <property name="name">tunerDialog</property>
             <property name="pos"></property>
-            <property name="size">930,740</property>
+            <property name="size">970,740</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Tuner Calculator</property>
             <property name="tooltip"></property>
+            <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
@@ -9089,7 +9103,7 @@
                                         <property name="maximum_size"></property>
                                         <property name="min_size"></property>
                                         <property name="minimize_button">0</property>
-                                        <property name="minimum_size">280,180</property>
+                                        <property name="minimum_size">300,180</property>
                                         <property name="moveable">1</property>
                                         <property name="name">dl_bitmap</property>
                                         <property name="pane_border">1</property>
@@ -10141,6 +10155,7 @@
                                         <property name="aui_name"></property>
                                         <property name="aui_position"></property>
                                         <property name="aui_row"></property>
+                                        <property name="auth_needed">0</property>
                                         <property name="best_size"></property>
                                         <property name="bg"></property>
                                         <property name="bitmap"></property>

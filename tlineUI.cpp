@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jul 30 2019)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -175,7 +175,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_updateWarning = new wxStaticText( this, wxID_ANY, wxT("Parameters have changed. Reselect UserLine dialog to update."), wxDefaultPosition, wxDefaultSize, 0 );
 	ui_updateWarning->Wrap( -1 );
-	ui_updateWarning->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
+	ui_updateWarning->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	ui_updateWarning->SetForegroundColour( wxColour( 255, 0, 0 ) );
 	ui_updateWarning->SetMinSize( wxSize( -1,40 ) );
 
@@ -1175,7 +1175,7 @@ tunerDialog::tunerDialog( wxWindow* parent, wxWindowID id, const wxString& title
 	bTunerCenter->Add( dl_topology, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
 	dl_bitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
-	dl_bitmap->SetMinSize( wxSize( 280,180 ) );
+	dl_bitmap->SetMinSize( wxSize( 300,180 ) );
 
 	bTunerCenter->Add( dl_bitmap, 0, wxALIGN_CENTER|wxALL, 5 );
 

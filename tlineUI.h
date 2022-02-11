@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jul 30 2019)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -102,7 +102,7 @@ class tlineUI : public wxFrame
 		wxStaticText* ui_rhoLoadTag;
 		wxTextCtrl* ui_rhoLoad;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void onFileLoad( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }
@@ -131,7 +131,7 @@ class tlineUI : public wxFrame
 		wxString m_resistanceStr;
 		wxString m_reactanceStr;
 
-		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 850,570 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		tlineUI( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tline"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 860,570 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~tlineUI();
 
@@ -171,7 +171,7 @@ class userLineDialog : public wxDialog
 		wxButton* dl_cancelButton;
 		wxStaticText* dl_help;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void onAttenuationSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onVelocityFactorSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableImpedanceSelected( wxCommandEvent& event ) { event.Skip(); }
@@ -192,6 +192,7 @@ class userLineDialog : public wxDialog
 		wxString m_userLineCableVoltageLimitStr;
 
 		userLineDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("User Defined Line"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 750,450 ), long style = wxDEFAULT_DIALOG_STYLE );
+
 		~userLineDialog();
 
 };
@@ -207,7 +208,7 @@ class helpInfoDialog : public wxDialog
 		wxHtmlWindow* dl_htmlWindow;
 		wxButton* dl_helpInfoOk;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void onLinkClicked( wxHtmlLinkEvent& event ) { event.Skip(); }
 		virtual void onHelpInfoOK( wxCommandEvent& event ) { event.Skip(); }
 
@@ -215,6 +216,7 @@ class helpInfoDialog : public wxDialog
 	public:
 
 		helpInfoDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
+
 		~helpInfoDialog();
 
 };
@@ -233,13 +235,14 @@ class helpAboutDialog : public wxDialog
 		wxStaticText* dl_helpAboutTextLine4;
 		wxButton* dl_helpAboutOk;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void onHelpAboutOK( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
 		helpAboutDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,200 ), long style = wxDEFAULT_DIALOG_STYLE );
+
 		~helpAboutDialog();
 
 };
@@ -319,7 +322,7 @@ class tunerDialog : public wxDialog
 		wxButton* dl_tunerOKbutton;
 		wxStaticText* dl_tunerInfo;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void onTunerFrequency( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerPower( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onTunerSourceResistance( wxCommandEvent& event ) { event.Skip(); }
@@ -344,7 +347,8 @@ class tunerDialog : public wxDialog
 		wxString m_tunerCapacitorQStr;
 		wxString m_tunerNetworkQStr;
 
-		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 930,740 ), long style = wxDEFAULT_DIALOG_STYLE );
+		tunerDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Tuner Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 970,740 ), long style = wxDEFAULT_DIALOG_STYLE );
+
 		~tunerDialog();
 
 };
