@@ -23,8 +23,9 @@ DnDFile::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
 {
 	size_t nFiles = filenames.GetCount();
 
-	// We only handle one file here.
-	if(nFiles >= 1) {
+	// We only handle one file here.  I don't think nFiles can be zero,
+	// but it doesn't hurt to check.
+	if(nFiles > 0) {
 		static_cast<tlineLogic*>(m_owner)->loadFile(filenames[0]);
 	}
 
