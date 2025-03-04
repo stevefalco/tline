@@ -1,4 +1,4 @@
-// Copyright 2019,2022 Steven A. Falco <stevenfalco@gmail.com>
+// Copyright Steven A. Falco <stevenfalco@gmail.com>
 //
 // This file is part of tline.
 //
@@ -18,6 +18,6 @@
 #ifndef __version__
 #define __version__
 
-#define VERSION "0.2.9"
+#define VERSION "1.0.0"
 
 #endif // __version__
