@@ -1,4 +1,4 @@
-# Copyright 2019 Steven A. Falco <stevenfalco@gmail.com>
+# Copyright Steven A. Falco <stevenfalco@gmail.com>
 # 
 # This file is part of tline.
 # 
@@ -75,31 +75,31 @@ all: $(PNG_FILES) $(SVG_FILES) $(PACK_XML_FILE) $(APP_XML_FILE) $(DESKTOP_FILE) 
 
 $(PNG_FILES_128): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ -resize 128x128 $@
+	gm convert $^ -resize 128x128 $@
 
 $(PNG_FILES_64): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ -resize 64x64 $@
+	gm convert $^ -resize 64x64 $@
 
 $(PNG_FILES_48): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ -resize 48x48 $@
+	gm convert $^ -resize 48x48 $@
 
 $(PNG_FILES_32): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ -resize 32x32 $@
+	gm convert $^ -resize 32x32 $@
 
 $(PNG_FILES_24): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ -resize 24x24 $@
+	gm convert $^ -resize 24x24 $@
 
 $(PNG_FILES_22): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ -resize 22x22 $@
+	gm convert $^ -resize 22x22 $@
 
 $(PNG_FILES_16): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ -resize 16x16 $@
+	gm convert $^ -resize 16x16 $@
 
 $(SVG_FILES): tline.svg
 	mkdir -p `dirname $@`
@@ -119,11 +119,11 @@ $(DESKTOP_FILE): tline.desktop
 	
 $(XPM_FILE): tline.svg
 	mkdir -p `dirname $@`
-	convert $^ $@
+	gm convert $^ $@
 	sed -i -e 's/^static .*char \*tlineIcon\[] = {$$/char const * aaaa_xpm[] = {/' $@
 
 $(ICO_FILE): tline.svg
-	convert $^ -bordercolor white -border 0		\
+	gm convert $^ -bordercolor white -border 0		\
 		\( -clone 0 -resize 16x16 \)		\
 		\( -clone 0 -resize 32x32 \)		\
 		\( -clone 0 -resize 48x48 \)		\

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6-dirty)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -572,7 +572,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bPane3->Add( gPane3Right, 1, wxEXPAND, 5 );
 
 
-	bMainWindow->Add( bPane3, 1, wxALIGN_CENTER|wxEXPAND, 5 );
+	bMainWindow->Add( bPane3, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bMainWindow );

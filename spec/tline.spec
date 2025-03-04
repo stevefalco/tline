@@ -1,5 +1,5 @@
 Name:           tline
-Version:        0.2.9
+Version:        1.0.0
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -10,9 +10,9 @@ Source0:        tline-%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
-BuildRequires:  wxGTK3-devel
+BuildRequires:  wxGTK-devel
 BuildRequires:  vim-common
-BuildRequires:  ImageMagick
+BuildRequires:  GraphicsMagick
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
 BuildRequires:  sed
