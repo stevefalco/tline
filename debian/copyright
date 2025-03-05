@@ -3,7 +3,7 @@ Upstream-Name: tline
 Source: https://github.com/stevefalco/tline
 
 Files: *
-Copyright: 2019-2020 Steven A. Falco <stevenfalco@gmail.com>
+Copyright: Steven A. Falco <stevenfalco@gmail.com>
 License: GPLv3+
  tline is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

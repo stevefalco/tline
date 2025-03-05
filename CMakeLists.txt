@@ -25,6 +25,23 @@ if ( NOT TLINE_DEBUG AND TLINE_STRIP )
 	set( EXTRA_CXX_FLAGS "${EXTRA_CXX_FLAGS} -s")
 endif()
 
+if( CMAKE_SYSTEM_NAME STREQUAL "Linux" )
+	file( STRINGS /etc/os-release OS_ID REGEX "^ID=" )
+	string( REGEX REPLACE "ID=(.*)" "\\1" OS_ID "${OS_ID}" )
+	string( TOLOWER "${OS_ID}" OS_ID )
+	if( ${OS_ID} STREQUAL "ubuntu" OR ${OS_ID} STREQUAL "debian" )
+		set( CONVERTER "convert" )
+	elseif( ${OS_ID} STREQUAL "fedora" )
+		set( CONVERTER "magick" )
+	else()
+		message( "Operating system is Linux, but not Debian or Fedora (Distribution ID: ${OS_ID})" )
+		set( CONVERTER "convert" )
+	endif()
+else()
+	message( "Operating system is not Linux" )
+	set( CONVERTER "convert" )
+endif()
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I. -Wall ${EXTRA_CXX_FLAGS}")
 
 set(TOPOLOGIES
@@ -60,7 +77,9 @@ foreach(VAR IN LISTS TOPOLOGIES)
 endforeach()
 
 add_custom_target(GEN_RESOURCES
-	COMMAND make
+	# ImageMagick cannot run in parallel on Fedora if the
+	# DBUS_SESSION_BUS_ADDRESS is set.
+	COMMAND DBUS_SESSION_BUS_ADDRESS="" make CONVERTER=${CONVERTER}
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resources
 )
 

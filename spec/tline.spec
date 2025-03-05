@@ -1,5 +1,5 @@
 Name:           tline
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
@@ -12,7 +12,7 @@ BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  wxGTK-devel
 BuildRequires:  vim-common
-BuildRequires:  GraphicsMagick
+BuildRequires:  ImageMagick
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
 BuildRequires:  sed

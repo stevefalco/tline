@@ -15,6 +15,10 @@
 #  You should have received a copy of the GNU General Public License
 #  along with tline.  If not, see <https://www.gnu.org/licenses/>.
 
+ifeq ($(CONVERTER),)
+	CONVERTER := "convert"
+endif
+
 GEN_BASE = ../generated-resources/linux
 
 ICON_BASE = ${GEN_BASE}/mime/icons/hicolor
@@ -75,31 +79,31 @@ all: $(PNG_FILES) $(SVG_FILES) $(PACK_XML_FILE) $(APP_XML_FILE) $(DESKTOP_FILE) 
 
 $(PNG_FILES_128): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ -resize 128x128 $@
+	$(CONVERTER) $^ -resize 128x128 $@
 
 $(PNG_FILES_64): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ -resize 64x64 $@
+	$(CONVERTER) $^ -resize 64x64 $@
 
 $(PNG_FILES_48): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ -resize 48x48 $@
+	$(CONVERTER) $^ -resize 48x48 $@
 
 $(PNG_FILES_32): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ -resize 32x32 $@
+	$(CONVERTER) $^ -resize 32x32 $@
 
 $(PNG_FILES_24): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ -resize 24x24 $@
+	$(CONVERTER) $^ -resize 24x24 $@
 
 $(PNG_FILES_22): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ -resize 22x22 $@
+	$(CONVERTER) $^ -resize 22x22 $@
 
 $(PNG_FILES_16): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ -resize 16x16 $@
+	$(CONVERTER) $^ -resize 16x16 $@
 
 $(SVG_FILES): tline.svg
 	mkdir -p `dirname $@`
@@ -119,11 +123,11 @@ $(DESKTOP_FILE): tline.desktop
 	
 $(XPM_FILE): tline.svg
 	mkdir -p `dirname $@`
-	gm convert $^ $@
+	$(CONVERTER) $^ $@
 	sed -i -e 's/^static .*char \*tlineIcon\[] = {$$/char const * aaaa_xpm[] = {/' $@
 
 $(ICO_FILE): tline.svg
-	gm convert $^ -bordercolor white -border 0		\
+	$(CONVERTER) $^ -bordercolor white -border 0		\
 		\( -clone 0 -resize 16x16 \)		\
 		\( -clone 0 -resize 32x32 \)		\
 		\( -clone 0 -resize 48x48 \)		\

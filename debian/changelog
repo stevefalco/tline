@@ -1,3 +1,15 @@
+tline (1.0.1-1ubuntu1) jammy; urgency=medium
+
+  * Working on ubuntu build
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Wed, 05 Feb 2025 10:46:50 -0400
+
+tline (1.0.0-1ubuntu1) jammy; urgency=medium
+
+  * Fix warning in bPane3
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Wed, 05 Feb 2025 10:46:50 -0400
+
 tline (0.2.9-1ubuntu1) bionic; urgency=medium
 
   * Try again on windows file associations

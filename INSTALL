@@ -70,7 +70,7 @@ For building, you will need:
   gcc-c++
   wxGTK-devel
   vim-common
-  GraphicsMagick
+  ImageMagick
   desktop-file-utils
   libappstream-glib
 
@@ -81,7 +81,7 @@ For running, you will need:
 
 All of the above packages can be installed via:
 
-dnf install cmake gcc-c++ wxGTK-devel vim-common GraphicsMagick \
+dnf install cmake gcc-c++ wxGTK-devel vim-common ImageMagick \
   desktop-file-utils libappstream-glib gnuplot-wx xterm
 
 Once the above requirements are installed, compilation for Fedora
@@ -111,7 +111,7 @@ Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 Note that the "TAG=x.x.x" must be changed to match the version in the
 spec file, and that has to match a tag in git.
 
-TAG=1.0.0
+TAG=1.0.1
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -131,7 +131,7 @@ directory, then pass that to mock.  I like to use two windows for this.
 
 In window 1, in the source directory, do:
 
-TAG=1.0.0
+TAG=1.0.1
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -140,7 +140,7 @@ mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
 
 In window 2 do:
 
-TAG=1.0.0
+TAG=1.0.1
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
 mock -r fedora-41-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc41.src.rpm
@@ -154,25 +154,14 @@ mock -r fedora-41-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc41.src.rpm
 The following packages are required in order to build and run tline manually
 on an Ubuntu system:
 
-For building, you will need:
+apt install build-essential cmake imagemagick librsvg2-bin vim-common \
+  libwxbase3.0-dev libwxgtk-webview3.0-gtk3-dev libwxgtk3.0-gtk3-dev \
+  gnuplot xterm gsfonts xxd
 
-  cmake
-  graphicsmagick
-  librsvg2-bin
-  vim-common
-  libwxbase3.0-dev
-  libwxgtk-webview3.0-gtk3-dev
-  libwxgtk3.0-gtk3-dev
+Newer Ubuntu systems (noble and later) instead use:
 
-For running, you will need:
-
-  gnuplot
-  xterm
-
-They can be installed via:
-
-apt install cmake graphicsmagick librsvg2-bin vim-common libwxbase3.0-dev \
-  libwxgtk-webview3.0-gtk3-dev libwxgtk3.0-gtk3-dev gnuplot xterm g++
+apt install build-essential cmake imagemagick librsvg2-bin vim-common \
+  libwxgtk-webview3.2-dev libwxgtk3.2-dev gnuplot xterm gsfonts xxd
 
 Once the above requirements are installed, compilation for Ubuntu
 can then be done by the following steps:
@@ -197,17 +186,32 @@ This will result in the tline binary being created as "build-ubuntu/tline".
 ===================
 
 If you are set up for pdebuild on Ubuntu (and perhaps on other debian-based
-systems), then here are the recommended steps:
+systems), then here are the recommended steps.
 
-TAG=1.0.0
+First, create the base distributions for whichever variants of Ubuntu you wish
+to use, in this case "jammy" and "noble":
+
+sudo pbuilder create --basetgz /var/cache/pbuilder/jammy.tgz \
+  --distribution jammy
+sudo pbuilder create --basetgz /var/cache/pbuilder/noble.tgz \
+  --distribution noble
+
+Then run the builds:
+
+TAG=1.0.1
 mkdir ~/build
 git archive --format=tar.gz --prefix=tline/ -o ~/build/tline_${TAG}.orig.tar.gz tags/${TAG}
+
 cd ~/build
+mkdir jammy noble
 tar xvf tline_${TAG}.orig.tar.gz
 cd tline
-pdebuild
+pdebuild --buildresult ~/build/jammy \
+  -- --basetgz /var/cache/pbuilder/jammy.tgz
+pdebuild --buildresult ~/build/noble \
+  -- --basetgz /var/cache/pbuilder/noble.tgz
 
-The resulting .deb file will be found in /var/cache/pbuilder/result
+The results will be in ~/build/jammy and ~/build/noble.
 
 7) BUILDING FOR WINDOWS
 =======================
@@ -222,7 +226,7 @@ files are stored in the windows-installer subdirectory.
 Build the Tline.exe file, copy it into the windows-installer directory, and
 generate the package:
 
-TAG=1.0.0
+TAG=1.0.1
 mkdir build-windows
 cd build-windows
 mingw32-cmake -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF ..
