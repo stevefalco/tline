@@ -14,7 +14,7 @@ Unicode true
 !define BITS 32
 
 !searchparse /file ..\version.h `#define VERSION "` VER_MAJOR `.` VER_MINOR `.` VER_BUILD `"`
-!define INSTALLSIZE 59610036
+!define INSTALLSIZE 69962692
 
 !define MUI_WELCOMEPAGE_TITLE "${DESCRIPTION}"
 !define MUI_WELCOMEPAGE_TEXT "Version ${VER_MAJOR}.${VER_MINOR}.${VER_BUILD}"
@@ -77,7 +77,7 @@ Section "Tline"
 	File "tline.exe"
 	File "${ICON}"
 	File "${LICENSE}"
-	File "libgcc_s_dw2-1.dll"
+	File "libgcc_s_seh-1.dll"
 	File "libjpeg-62.dll"
 	File "libpng16-16.dll"
 	File "libssp-0.dll"
@@ -129,7 +129,7 @@ section "uninstall"
 	# Remove gnuplot installer.
 	rmDir /r "$INSTDIR\Prerequisites"
 
-	delete "$INSTDIR\libgcc_s_dw2-1.dll"
+	delete "$INSTDIR\libgcc_s_seh-1.dll"
 	delete "$INSTDIR\libjpeg-62.dll"
 	delete "$INSTDIR\libpng16-16.dll"
 	delete "$INSTDIR\libssp-0.dll"
