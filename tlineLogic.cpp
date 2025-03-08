@@ -678,10 +678,10 @@ MyExtraPanel::MyExtraPanel(wxWindow *parent, wxString width, wxString height) : 
 	// Sizers are assigned to a window by a call to SetSizer.  Thus, they are owned by
 	// the library, and will be deleted by the library when appropriate.
 	wxBoxSizer *sizerTop = new wxBoxSizer(wxHORIZONTAL);
-	sizerTop->Add(m_widthTag, wxSizerFlags().Right().Border());
-	sizerTop->Add(m_widthBox, wxSizerFlags().Right().Border(wxALL, 0));
-	sizerTop->Add(m_heightTag, wxSizerFlags().Right().Border());
-	sizerTop->Add(m_heightBox, wxSizerFlags().Right().Border(wxALL, 0));
+	sizerTop->Add(m_widthTag, wxSizerFlags().Border());
+	sizerTop->Add(m_widthBox, wxSizerFlags().Border(wxALL, 0));
+	sizerTop->Add(m_heightTag, wxSizerFlags().Border());
+	sizerTop->Add(m_heightBox, wxSizerFlags().Border(wxALL, 0));
 	SetSizerAndFit(sizerTop);
 	m_widthBox->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MyExtraPanel::onWidthSelected ), NULL, this );
 	m_heightBox->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MyExtraPanel::onHeightSelected ), NULL, this );
@@ -937,10 +937,10 @@ void tlineLogic::generateGraphableData(
 		FILE*		fp
 		)
 {
-	int				i;
+	int			i;
 
-	double				distanceFromSource;
-	double				distanceFromLoad;
+	double			distanceFromSource;
+	double			distanceFromLoad;
 
 	complex<double>		zPoint;
 	complex<double>		vOut;
