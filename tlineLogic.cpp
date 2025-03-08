@@ -110,9 +110,9 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 	wxImage::AddHandler(new wxGIFHandler);
 
 	SetIcon(wxICON(aaaa));
-	SetTitle("Tline - A Transmission Line Calculator");
+	SetTitle(wxT("Tline - A Transmission Line Calculator"));
 
-	wxString title = _("Transmission Line Calculator, Version ") + VERSION + _(", by AC2XM");
+	wxString title = wxString("Transmission Line Calculator, Version ") + wxString(VERSION) + wxString(", by AC2XM");
 
 	ui_programTitle->SetLabel(title);
 
@@ -123,21 +123,21 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 	m_tunerInit = FALSE;
 
 	// Set our defaults.
-	m_powerStr = _("1500.0");
+	m_powerStr = wxT("1500.0");
 	ui_power->ChangeValue(m_powerStr);
 
-	m_resistanceStr = _("50");
+	m_resistanceStr = wxT("50");
 	ui_resistance->ChangeValue(m_resistanceStr);
 
-	m_reactanceStr = _("0");
+	m_reactanceStr = wxT("0");
 	ui_reactance->ChangeValue(m_reactanceStr);
 
-	m_frequencyStr = _("7.00");
+	m_frequencyStr = wxT("7.00");
 	ui_frequency->ChangeValue(m_frequencyStr);
 
 	// Length is special because we allow a 'w' character to specify wavelength
 	// rather than feet or meters.
-	m_lengthStr = _("100");
+	m_lengthStr = wxT("100");
 	wxTextValidator* txtValidator = wxDynamicCast(ui_cableLength->GetValidator(), wxTextValidator);
 	if(txtValidator) {
 		txtValidator->SetCharIncludes("0123456789.eE+-w");
@@ -159,12 +159,12 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 void tlineLogic::onFileLoad( wxCommandEvent& event )
 {
 	if(!m_saved) {
-		if(wxMessageBox(_("Current content has not been saved! Proceed?"), _("Please confirm"), wxICON_QUESTION | wxYES_NO, this) == wxNO) {
+		if(wxMessageBox(wxT("Current content has not been saved! Proceed?"), wxT("Please confirm"), wxICON_QUESTION | wxYES_NO, this) == wxNO) {
 			return;
 		}
 	}
     
-	wxFileDialog openFileDialog(this, _("Open tline file"), "", "", "tline files (*.tline)|*.tline|All files (*)|*", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog openFileDialog(this, wxT("Open tline file"), "", "", "tline files (*.tline)|*.tline|All files (*)|*", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if(openFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
@@ -224,10 +224,10 @@ void tlineLogic::loadFile( wxString path )
 			ui_cableType->ChangeValue(m_cableTypeStr);
 		} else if(strcmp(buffer, "units") == 0) {
 			m_unitsStr = p;
-			if(strcmp(m_unitsStr, "Feet") == 0) {
+			if(m_unitsStr == wxT("Feet")) {
 				ui_unitsRadioButtons->SetSelection(USE_FEET);
 			}
-			if(strcmp(m_unitsStr, "Meters") == 0) {
+			if(m_unitsStr == wxT("Meters")) {
 				ui_unitsRadioButtons->SetSelection(USE_METERS);
 			}
 		} else if(strcmp(buffer, "frequency") == 0) {
@@ -244,10 +244,10 @@ void tlineLogic::loadFile( wxString path )
 			ui_reactance->ChangeValue(m_reactanceStr);
 		} else if(strcmp(buffer, "loadInput") == 0) {
 			m_loadInputStr = p;
-			if(strcmp(m_loadInputStr, "Load") == 0) {
+			if(m_loadInputStr == wxT("Load")) {
 				ui_loadInputRadioButtons->SetSelection(USE_LOAD);
 			}
-			if(strcmp(m_loadInputStr, "Input") == 0) {
+			if(m_loadInputStr == wxT("Input")) {
 				ui_loadInputRadioButtons->SetSelection(USE_INPUT);
 			}
 		} else if(strcmp(buffer, "power") == 0) {
@@ -318,7 +318,7 @@ void tlineLogic::loadFile( wxString path )
 
 void tlineLogic::onFileSave( wxCommandEvent& event )
 {
-	wxFileDialog saveFileDialog(this, _("Save tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	wxFileDialog saveFileDialog(this, wxT("Save tline file"), "", "", "tline files (*.tline)|*.tline", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
@@ -560,7 +560,7 @@ void tlineLogic::onTunerClicked( wxCommandEvent& event )
 		m_tunerNetworkQStr= "1.0";
 		m_tunerInductorQStr= "200.0";
 		m_tunerCapacitorQStr= "2000.0";
-		m_tunerTopologyStr = _("Two Cap (Cpar Cser)");
+		m_tunerTopologyStr = wxT("Two Cap (Cpar Cser)");
 
 		m_tunerInit = TRUE;
 	}
@@ -645,11 +645,11 @@ class MyExtraPanel : public wxPanel
 		MyExtraPanel(wxWindow *parent, wxString width, wxString height);
 		wxString GetWidth() const
 		{
-			return wxString::Format("%s", (const char *)m_widthBox->GetValue());
+			return wxString::Format(wxT("%s"), m_widthBox->GetValue());
 		}
 		wxString GetHeight() const
 		{
-			return wxString::Format("%s", (const char *)m_heightBox->GetValue());
+			return wxString::Format(wxT("%s"), m_heightBox->GetValue());
 		}
 		void onWidthSelected( wxCommandEvent& event );
 		void onHeightSelected( wxCommandEvent& event );
@@ -715,7 +715,7 @@ bool tlineLogic::setOutput( wxFFile* file )
 	g_widthStr = m_widthStr;
 	g_heightStr = m_heightStr;
 
-	wxFileDialog saveFileDialog(this, _("Save plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	wxFileDialog saveFileDialog(this, wxT("Save plot graphic file"), "", "", "", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	saveFileDialog.SetExtraControlCreator(&createMyExtraPanel);
 	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 		return FALSE;
@@ -736,44 +736,44 @@ bool tlineLogic::setOutput( wxFFile* file )
 	wxWindow * const extra = saveFileDialog.GetExtraControl();
 	if(extra) {
 		m_widthStr = static_cast<MyExtraPanel*>(extra)->GetWidth();
-		m_width = atoi(m_widthStr);
+		m_width = wxAtoi(m_widthStr);
 
 		m_heightStr = static_cast<MyExtraPanel*>(extra)->GetHeight();
-		m_height = atoi(m_heightStr);
+		m_height = wxAtoi(m_heightStr);
 	}
 
 	fprintf(file->fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
-	fprintf(file->fp(), "set output '%s'\n", (const char*)saveFileDialog.GetPath());
+	fprintf(file->fp(), "set output '%s'\n", (const char*)saveFileDialog.GetPath().mb_str());
 
 	return TRUE;
 }
 
 // Warning: File names must be in single-quotes for gnuplot on Windows,
 // otherwise the backslashes are interpolated and the paths don't work.
-void tlineLogic::setControlZ( wxFFile* file, const char* name )
+void tlineLogic::setControlZ( wxFFile* file, wxString nameStr )
 {
 	fprintf(file->fp(), "set ytics nomirror tc lt 1\n");
 	fprintf(file->fp(), "set ylabel 'Imaginary (Ω)' tc lt 1\n");
 	fprintf(file->fp(), "set y2tics nomirror tc lt 2\n");
 	fprintf(file->fp(), "set y2label 'Real (Ω)' tc lt 2\n");
-	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr);
+	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr.mb_str());
 	fprintf(file->fp(), "plot \\\n");
-	fprintf(file->fp(), "  '%s' u 1:3 w l axes x1y1 title 'imag', \\\n", name);
-	fprintf(file->fp(), "  '%s' u 1:2 w l axes x1y2 title 'real'\n", name);
+	fprintf(file->fp(), "  '%s' u 1:3 w l axes x1y1 title 'imag', \\\n", (const char*)nameStr.mb_str());
+	fprintf(file->fp(), "  '%s' u 1:2 w l axes x1y2 title 'real'\n", (const char*)nameStr.mb_str());
 }
 
 // Warning: File names must be in single-quotes for gnuplot on Windows,
 // otherwise the backslashes are interpolated and the paths don't work.
-void tlineLogic::setControlVI( wxFFile* file, const char* name )
+void tlineLogic::setControlVI( wxFFile* file, wxString nameStr )
 {	
 	fprintf(file->fp(), "set ytics nomirror tc lt 1\n");
 	fprintf(file->fp(), "set ylabel 'Current (Amps)' tc lt 1\n");
 	fprintf(file->fp(), "set y2tics nomirror tc lt 2\n");
 	fprintf(file->fp(), "set y2label 'Voltage (Volts)' tc lt 2\n");
-	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr);
+	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr.mb_str());
 	fprintf(file->fp(), "plot \\\n");
-	fprintf(file->fp(), "  '%s' u 1:9 w l axes x1y1 title 'amps', \\\n", name);
-	fprintf(file->fp(), "  '%s' u 1:8 w l axes x1y2 title 'volts'\n", name);
+	fprintf(file->fp(), "  '%s' u 1:9 w l axes x1y1 title 'amps', \\\n", (const char*)nameStr.mb_str());
+	fprintf(file->fp(), "  '%s' u 1:8 w l axes x1y2 title 'volts'\n", (const char*)nameStr.mb_str());
 }
 
 // Build data and control files, then spawn gnuplot.
@@ -854,11 +854,11 @@ void tlineLogic::doPlot( int type, int mode )
 	// Add the remaining control statements.
 	switch(type) {
 		case DO_IMPEDANCE:
-			setControlZ( &controlFP, (const char*)dataName );
+			setControlZ( &controlFP, dataName );
 			break;
 
 		case DO_VOLT_AMP:
-			setControlVI( &controlFP, (const char*)dataName );
+			setControlVI( &controlFP, dataName );
 			break;
 	}
 	
@@ -873,12 +873,12 @@ void tlineLogic::doPlot( int type, int mode )
 	// Build and execute the plot command.  The shell script will unlink
 	// the temp files when gnuplot exits.
 	shellFP.Close();
-	system(wxString::Format(wxT("xterm -e %s &"), shellName));
+	system(wxString::Format(wxT("xterm -e %s &"), shellName).mb_str());
 #elif defined _WIN32
 	// Build and execute the plot command.  We will unlink the
 	// temp files after gnuplot returns.
-	system(wxString::Format(wxT("gnuplot %s %s"), controlName, (mode == PLOT) ? "-" : ""));
-	system(wxString::Format(wxT("del %s %s"), controlName, dataName));
+	system(wxString::Format(wxT("gnuplot %s %s"), controlName, (mode == PLOT) ? "-" : "").mb_str());
+	system(wxString::Format(wxT("del %s %s"), controlName, dataName).mb_str());
 #endif // __linux, _WIN32
 	return;
 
@@ -902,7 +902,7 @@ DELETE_DATA:
 
 void tlineLogic::saveData()
 {
-	wxFileDialog saveFileDialog(this, _("Save plot data file"), "", "", "plot data files (*.plot)|*.plot", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	wxFileDialog saveFileDialog(this, wxT("Save plot data file"), "", "", "plot data files (*.plot)|*.plot", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
@@ -988,7 +988,7 @@ void tlineLogic::recalculate()
 	ui_lengthUnits->SetLabel(m_unitsStr);
 
 	// Convert the frequency string.
-	m_frequency = atof(m_frequencyStr) * 1.0E6;
+	m_frequency = wxAtof(m_frequencyStr) * 1.0E6;
 
 	// Look up the cable parameters.
 	try {
@@ -1039,11 +1039,11 @@ void tlineLogic::recalculate()
 
 				// Also set our working values.
 				m_userSpecifiedZ = TRUE;
-				m_attenPer100Feet = atof(m_userLineAttenuationStr);
-				m_velocityFactor = atof(m_userLineVelocityFactorStr);
-				m_cableResistivePart = atof(m_userLineCableResistanceStr);
-				m_cableReactivePart = atof(m_userLineCableReactanceStr);
-				m_maximumVoltage = atof(m_userLineCableVoltageLimitStr);
+				m_attenPer100Feet = wxAtof(m_userLineAttenuationStr);
+				m_velocityFactor = wxAtof(m_userLineVelocityFactorStr);
+				m_cableResistivePart = wxAtof(m_userLineCableResistanceStr);
+				m_cableReactivePart = wxAtof(m_userLineCableReactanceStr);
+				m_maximumVoltage = wxAtof(m_userLineCableVoltageLimitStr);
 
 				// Cache has been loaded.
 				m_newUserLine = FALSE;
@@ -1058,11 +1058,11 @@ void tlineLogic::recalculate()
 		} else {
 			// Use the cached values.
 			m_userSpecifiedZ = TRUE;
-			m_attenPer100Feet = atof(m_userLineAttenuationStr);
-			m_velocityFactor = atof(m_userLineVelocityFactorStr);
-			m_cableResistivePart = atof(m_userLineCableResistanceStr);
-			m_cableReactivePart = atof(m_userLineCableReactanceStr);
-			m_maximumVoltage = atof(m_userLineCableVoltageLimitStr);
+			m_attenPer100Feet = wxAtof(m_userLineAttenuationStr);
+			m_velocityFactor = wxAtof(m_userLineVelocityFactorStr);
+			m_cableResistivePart = wxAtof(m_userLineCableResistanceStr);
+			m_cableReactivePart = wxAtof(m_userLineCableReactanceStr);
+			m_maximumVoltage = wxAtof(m_userLineCableVoltageLimitStr);
 		}
 	}
 
@@ -1077,13 +1077,13 @@ void tlineLogic::recalculate()
 		char lastChar = *m_lengthStr.rbegin();
 
 		if(lastChar == 'w' || lastChar == 'W') {
-			m_length = atof(m_lengthStr) * m_wavelength;
+			m_length = wxAtof(m_lengthStr) * m_wavelength;
 			ui_cableLength->ChangeValue(wxString::Format(wxT("%.2f"), m_length));
 		} else {
-			m_length = atof(m_lengthStr);
+			m_length = wxAtof(m_lengthStr);
 		}
 	} else {
-		m_length = atof(m_lengthStr);
+		m_length = wxAtof(m_lengthStr);
 	}
 
 	// Calculate the length of the line in wavelength units.
@@ -1113,8 +1113,8 @@ void tlineLogic::recalculate()
 	m_zCable = complex<double>(m_cableResistivePart, m_cableReactivePart);
 	ui_characteristicZ0->ChangeValue(wxString::Format(wxT("%.2f, %.2fi Ω"), real(m_zCable), imag(m_zCable)));
 
-	m_resistance = atof(m_resistanceStr);
-	m_reactance = atof(m_reactanceStr);
+	m_resistance = wxAtof(m_resistanceStr);
+	m_reactance = wxAtof(m_reactanceStr);
 	if(m_loadInputStr == "Load") {
 		// Use the provided load impedance.
 		m_zLoad = complex<double>(m_resistance, m_reactance);
@@ -1174,7 +1174,7 @@ void tlineLogic::recalculate()
 	// Find the voltage necessary to produce the desired power at the
 	// input of the cable, given the magnitude of the complex input
 	// impedance.
-	m_power = atof(m_powerStr);
+	m_power = wxAtof(m_powerStr);
 	m_voltageForPower = sqrt(m_power * abs(m_zInput));
 	ui_inputVoltage->ChangeValue(wxString::Format(wxT("%.2f V"), m_voltageForPower));
 }

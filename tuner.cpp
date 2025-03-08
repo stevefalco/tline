@@ -188,29 +188,29 @@ void tuner::Update()
 	dl_tunerInductorQ->ChangeValue(m_tunerInductorQStr);
 	dl_tunerCapacitorQ->ChangeValue(m_tunerCapacitorQStr);
 
-	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
+	if(m_tunerTopologyStr == "Two Cap (Cpar Cser)") {
 		dl_topology->SetSelection(USE_CPCS);
-	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Two Cap (Cser Cpar)") {
 		dl_topology->SetSelection(USE_CSCP);
-	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
+	} else if(m_tunerTopologyStr == "Two Coil (Lpar Lser)") {
 		dl_topology->SetSelection(USE_LPLS);
-	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Two Coil (Lser Lpar)") {
 		dl_topology->SetSelection(USE_LSLP);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass (Lpar Cser)") {
 		dl_topology->SetSelection(USE_LCHP);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass (Cpar Lser)") {
 		dl_topology->SetSelection(USE_CLLP);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass (Lser Cpar)") {
 		dl_topology->SetSelection(USE_LCLP);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass (Cser Lpar)") {
 		dl_topology->SetSelection(USE_CLHP);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass PI (Lpar Cser Lpar)") {
 		dl_topology->SetSelection(USE_HPPI);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass PI (Cpar Lser Cpar)") {
 		dl_topology->SetSelection(USE_LPPI);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass T (Cser Lpar Cser)") {
 		dl_topology->SetSelection(USE_HPT);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass T (Lser Cpar Lser)") {
 		dl_topology->SetSelection(USE_LPT);
 	}
 
@@ -1469,15 +1469,15 @@ void tuner::recalculate()
 {
 	wipeResults();
 
-	m_frequency = atof(m_tunerFrequencyStr) * 1.0E6;
-	m_power = atof(m_tunerPowerStr);
-	m_sourceResistance = atof(m_tunerSourceResistanceStr);
-	m_sourceReactance = atof(m_tunerSourceReactanceStr);
-	m_loadResistance = atof(m_tunerLoadResistanceStr);
-	m_loadReactance = atof(m_tunerLoadReactanceStr);
-	m_networkQ = atof(m_tunerNetworkQStr);
-	m_inductorQ = atof(m_tunerInductorQStr);
-	m_capacitorQ = atof(m_tunerCapacitorQStr);
+	m_frequency = wxAtof(m_tunerFrequencyStr) * 1.0E6;
+	m_power = wxAtof(m_tunerPowerStr);
+	m_sourceResistance = wxAtof(m_tunerSourceResistanceStr);
+	m_sourceReactance = wxAtof(m_tunerSourceReactanceStr);
+	m_loadResistance = wxAtof(m_tunerLoadResistanceStr);
+	m_loadReactance = wxAtof(m_tunerLoadReactanceStr);
+	m_networkQ = wxAtof(m_tunerNetworkQStr);
+	m_inductorQ = wxAtof(m_tunerInductorQStr);
+	m_capacitorQ = wxAtof(m_tunerCapacitorQStr);
 
 	// We always calculate every topology, so we can identify the
 	// valid solutions.
@@ -1500,29 +1500,29 @@ void tuner::recalculate()
 	// invalid.  In that case, they can select away from the
 	// now invalid topology, but cannot go back to it until a
 	// parameter change makes it valid again.
-	if(strcmp(m_tunerTopologyStr, "Two Cap (Cpar Cser)") == 0) {
+	if(m_tunerTopologyStr == "Two Cap (Cpar Cser)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_cc1), USE_CPCS, 2);
-	} else if(strcmp(m_tunerTopologyStr, "Two Cap (Cser Cpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Two Cap (Cser Cpar)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_cc2), USE_CSCP, 2);
-	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lpar Lser)") == 0) {
+	} else if(m_tunerTopologyStr == "Two Coil (Lpar Lser)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_ll1), USE_LPLS, 2);
-	} else if(strcmp(m_tunerTopologyStr, "Two Coil (Lser Lpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Two Coil (Lser Lpar)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_ll2), USE_LSLP, 2);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Lpar Cser)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass (Lpar Cser)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_lchp), USE_LCHP, 2);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Cpar Lser)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass (Cpar Lser)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_cllp), USE_CLLP, 2);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass (Lser Cpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass (Lser Cpar)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_lclp), USE_LCLP, 2);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass (Cser Lpar)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass (Cser Lpar)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_clhp), USE_CLHP, 2);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass PI (Lpar Cser Lpar)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass PI (Lpar Cser Lpar)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_hppi), USE_HPPI, 3);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass PI (Cpar Lser Cpar)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass PI (Cpar Lser Cpar)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_lppi), USE_LPPI, 3);
-	} else if(strcmp(m_tunerTopologyStr, "High Pass T (Cser Lpar Cser)") == 0) {
+	} else if(m_tunerTopologyStr == "High Pass T (Cser Lpar Cser)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_hpt), USE_HPT, 3);
-	} else if(strcmp(m_tunerTopologyStr, "Low Pass T (Lser Cpar Lser)") == 0) {
+	} else if(m_tunerTopologyStr == "Low Pass T (Lser Cpar Lser)") {
 		show(wxBITMAP_PNG_FROM_DATA(nt_lpt), USE_LPT, 3);
 	}
 }

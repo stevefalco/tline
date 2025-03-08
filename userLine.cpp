@@ -143,10 +143,10 @@ void userLine::ResistanceReactanceFromImpedance()
 	double			wavelength;
 	double			phase;
 
-	m_frequency = atof(m_userLineFrequencyStr) * 1.0E6;
-	m_attenuation = atof(m_userLineAttenuationStr);
-	m_velocityFactor = atof(m_userLineVelocityFactorStr);
-	m_cableImpedance = atof(m_userLineCableImpedanceStr);
+	m_frequency = wxAtof(m_userLineFrequencyStr) * 1.0E6;
+	m_attenuation = wxAtof(m_userLineAttenuationStr);
+	m_velocityFactor = wxAtof(m_userLineVelocityFactorStr);
+	m_cableImpedance = wxAtof(m_userLineCableImpedanceStr);
 
 	wavelength = m_velocityFactor * SPEED_OF_LIGHT_F / m_frequency;
 	phase = (2.0 * PI) / wavelength;
@@ -169,8 +169,8 @@ void userLine::ResistanceReactanceFromImpedance()
 
 void userLine::ImpedanceFromResistanceReactance()
 {
-	m_cableResistance = atof(m_userLineCableResistanceStr);
-	m_cableReactance = atof(m_userLineCableReactanceStr);
+	m_cableResistance = wxAtof(m_userLineCableResistanceStr);
+	m_cableReactance = wxAtof(m_userLineCableReactanceStr);
 
 	m_cableImpedance = sqrt(sq(m_cableResistance) + sq(m_cableReactance));
 	m_userLineCableImpedanceStr = wxString::Format(wxT("%.2f"), m_cableImpedance);

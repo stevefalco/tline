@@ -218,7 +218,8 @@ The results will be in ~/build/jammy and ~/build/noble.
 
 The windows version of TLine is built using the MinGW cross-compilers running
 on a Fedora Linux machine.  Also, the NSIS installer is used.  Therefore,
-you will want to install mingw32-wxWidgets3.noarch, mingw32-nsis.x86_64, etc.
+you will want to install mingw64-wxWidgets3.noarch, mingw64-nsis,
+mingw64-gcc-c++.x86_64, etc.
 
 Also, Tline for windows uses a number of dlls from various projects.  The dll
 files are stored in the windows-installer subdirectory.
@@ -229,8 +230,8 @@ generate the package:
 TAG=1.0.1
 mkdir build-windows
 cd build-windows
-mingw32-cmake -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF ..
-make -j12 && cp tline.exe ../windows-installer
+mingw64-cmake -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF ..
+make -j48 && cp tline.exe ../windows-installer
 cd ../windows-installer
 makensis tline.nsi
 mv tline-installer.exe tline-installer-${TAG}.exe

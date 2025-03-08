@@ -69,8 +69,8 @@ class tlineLogic : public tlineUI
 
 		void recalculate();
 		void doPlot( int type, int mode );
-		void setControlZ( wxFFile* file, const char* name );
-		void setControlVI( wxFFile* file, const char* name );
+		void setControlZ( wxFFile* file, wxString name );
+		void setControlVI( wxFFile* file, wxString name );
 		void saveData();
 
 		bool setOutput( wxFFile* file );
