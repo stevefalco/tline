@@ -773,9 +773,9 @@ userLineDialog::userLineDialog( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* bUserLineBottom;
 	bUserLineBottom = new wxBoxSizer( wxVERTICAL );
 
-	dl_help = new wxStaticText( this, wxID_ANY, wxT("Note: When you enter the Cable Characteristic Impedance, the cable characteristic resistance and reactance will be estimated.  You can override the estimates, in which case the corresponding cable impedance will be recalculated.  A note will be shown to indicate which variables are calculated and which are user-specified."), wxDefaultPosition, wxDefaultSize, 0 );
-	dl_help->Wrap( 750 );
-	bUserLineBottom->Add( dl_help, 0, wxALL, 5 );
+	dl_help = new wxStaticText( this, wxID_ANY, wxT("Note: When you enter the Cable Characteristic Impedance, the cable characteristic resistance and reactance will be estimated.  You can override the estimates, in which case the corresponding cable impedance will be recalculated.  A note will be shown to indicate which variables are calculated and which are user-specified."), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	dl_help->Wrap( -1 );
+	bUserLineBottom->Add( dl_help, 1, wxALL|wxEXPAND, 5 );
 
 
 	bUserLineOuter->Add( bUserLineBottom, 1, wxEXPAND, 5 );
