@@ -75,7 +75,7 @@ class tlineLogic : public tlineUI
 
 		bool setOutput( wxFFile* file );
 
-		void generateGraphableData( FILE* fp );
+		void generateGraphableData( wxFFile* file );
 
 		inline double sq( double v ) {
 			return v * v;

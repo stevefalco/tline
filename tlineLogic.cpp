@@ -344,38 +344,38 @@ void tlineLogic::onFileSave( wxCommandEvent& event )
 	}
 
 	// Save top-level parameters
-	fprintf(fp, "cableType=%s\n",	(const char *)m_cableTypeStr.mb_str());
-	fprintf(fp, "units=%s\n",	(const char *)m_unitsStr.mb_str());
-	fprintf(fp, "frequency=%s\n",	(const char *)m_frequencyStr.mb_str());
-	fprintf(fp, "length=%s\n",	(const char *)m_lengthStr.mb_str());
-	fprintf(fp, "resistance=%s\n",	(const char *)m_resistanceStr.mb_str());
-	fprintf(fp, "reactance=%s\n",	(const char *)m_reactanceStr.mb_str());
-	fprintf(fp, "loadInput=%s\n",	(const char *)m_loadInputStr.mb_str());
-	fprintf(fp, "power=%s\n",	(const char *)m_powerStr.mb_str());
+	f->Write(wxT("cableType=")	+ m_cableTypeStr	+ wxT("\n"));
+	f->Write(wxT("units=")		+ m_unitsStr		+ wxT("\n"));
+	f->Write(wxT("frequency=")	+ m_frequencyStr	+ wxT("\n"));
+	f->Write(wxT("length=")		+ m_lengthStr		+ wxT("\n"));
+	f->Write(wxT("resistance=")	+ m_resistanceStr	+ wxT("\n"));
+	f->Write(wxT("reactance=")	+ m_reactanceStr	+ wxT("\n"));
+	f->Write(wxT("loadInput=")	+ m_loadInputStr	+ wxT("\n"));
+	f->Write(wxT("power=")		+ m_powerStr		+ wxT("\n"));
 
 	// Save tuner parameters
 	if(m_tunerInit) {
-		fprintf(fp, "m_tunerFrequency=%s\n",		(const char *)m_tunerFrequencyStr.mb_str());
-		fprintf(fp, "m_tunerPower=%s\n",		(const char *)m_tunerPowerStr.mb_str());
-		fprintf(fp, "m_tunerSourceResistance=%s\n",	(const char *)m_tunerSourceResistanceStr.mb_str());
-		fprintf(fp, "m_tunerSourceReactance=%s\n",	(const char *)m_tunerSourceReactanceStr.mb_str());
-		fprintf(fp, "m_tunerLoadResistance=%s\n",	(const char *)m_tunerLoadResistanceStr.mb_str());
-		fprintf(fp, "m_tunerLoadReactance=%s\n",	(const char *)m_tunerLoadReactanceStr.mb_str());
-		fprintf(fp, "m_tunerNetworkQ=%s\n",		(const char *)m_tunerNetworkQStr.mb_str());
-		fprintf(fp, "m_tunerInductorQ=%s\n",		(const char *)m_tunerInductorQStr.mb_str());
-		fprintf(fp, "m_tunerCapacitorQ=%s\n",		(const char *)m_tunerCapacitorQStr.mb_str());
-		fprintf(fp, "m_tunerTopology=%s\n",		(const char *)m_tunerTopologyStr.mb_str());
+		f->Write(wxT("m_tunerFrequency=")		+ m_tunerFrequencyStr			+ wxT("\n"));
+		f->Write(wxT("m_tunerPower=")			+ m_tunerPowerStr			+ wxT("\n"));
+		f->Write(wxT("m_tunerSourceResistance=")	+ m_tunerSourceResistanceStr		+ wxT("\n"));
+		f->Write(wxT("m_tunerSourceReactance=")		+ m_tunerSourceReactanceStr		+ wxT("\n"));
+		f->Write(wxT("m_tunerLoadResistance=")		+ m_tunerLoadResistanceStr		+ wxT("\n"));
+		f->Write(wxT("m_tunerLoadReactance=")		+ m_tunerLoadReactanceStr		+ wxT("\n"));
+		f->Write(wxT("m_tunerNetworkQ=")		+ m_tunerNetworkQStr			+ wxT("\n"));
+		f->Write(wxT("m_tunerInductorQ=")		+ m_tunerInductorQStr			+ wxT("\n"));
+		f->Write(wxT("m_tunerCapacitorQ=")		+ m_tunerCapacitorQStr			+ wxT("\n"));
+		f->Write(wxT("m_tunerTopology=")		+ m_tunerTopologyStr			+ wxT("\n"));
 	}
 
 	// Save user line parameters
 	if(m_userLineInit) {
-		fprintf(fp, "m_userLineAttenuation=%s\n",	(const char *)m_userLineAttenuationStr.mb_str());
-		fprintf(fp, "m_userLineVelocityFactor=%s\n",	(const char *)m_userLineVelocityFactorStr.mb_str());
-		fprintf(fp, "m_userLineCableImpedance=%s\n",	(const char *)m_userLineCableImpedanceStr.mb_str());
-		fprintf(fp, "m_userLineCableResistance=%s\n",	(const char *)m_userLineCableResistanceStr.mb_str());
-		fprintf(fp, "m_userLineCableReactance=%s\n",	(const char *)m_userLineCableReactanceStr.mb_str());
-		fprintf(fp, "m_userLineCableVoltageLimit=%s\n",	(const char *)m_userLineCableVoltageLimitStr.mb_str());
-		fprintf(fp, "m_userLineLastMethod=%s\n",	(const char *)m_userLineLastMethodStr.mb_str());
+		f->Write(wxT("m_userLineAttenuation=")		+ m_userLineAttenuationStr		+ wxT("\n"));
+		f->Write(wxT("m_userLineVelocityFactor=")	+ m_userLineVelocityFactorStr		+ wxT("\n"));
+		f->Write(wxT("m_userLineCableImpedance=")	+ m_userLineCableImpedanceStr		+ wxT("\n"));
+		f->Write(wxT("m_userLineCableResistance=")	+ m_userLineCableResistanceStr		+ wxT("\n"));
+		f->Write(wxT("m_userLineCableReactance=")	+ m_userLineCableReactanceStr		+ wxT("\n"));
+		f->Write(wxT("m_userLineCableVoltageLimit=")	+ m_userLineCableVoltageLimitStr	+ wxT("\n"));
+		f->Write(wxT("m_userLineLastMethod=")		+ m_userLineLastMethodStr		+ wxT("\n"));
 	}
 
 	if(fflush(fp) == EOF) {
@@ -742,8 +742,8 @@ bool tlineLogic::setOutput( wxFFile* file )
 		m_height = wxAtoi(m_heightStr);
 	}
 
-	fprintf(file->fp(), "set terminal %s size %d,%d\n", q, m_width, m_height);
-	fprintf(file->fp(), "set output '%s'\n", (const char*)saveFileDialog.GetPath().mb_str());
+	file->Write(wxString::Format(wxT("set terminal %s size %d,%d\n"), q, m_width, m_height));
+	file->Write(wxString::Format(wxT("set output '") + saveFileDialog.GetPath() + wxT("'\n")));
 
 	return TRUE;
 }
@@ -752,28 +752,28 @@ bool tlineLogic::setOutput( wxFFile* file )
 // otherwise the backslashes are interpolated and the paths don't work.
 void tlineLogic::setControlZ( wxFFile* file, wxString nameStr )
 {
-	fprintf(file->fp(), "set ytics nomirror tc lt 1\n");
-	fprintf(file->fp(), "set ylabel 'Imaginary (Ω)' tc lt 1\n");
-	fprintf(file->fp(), "set y2tics nomirror tc lt 2\n");
-	fprintf(file->fp(), "set y2label 'Real (Ω)' tc lt 2\n");
-	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr.mb_str());
-	fprintf(file->fp(), "plot \\\n");
-	fprintf(file->fp(), "  '%s' u 1:3 w l axes x1y1 title 'imag', \\\n", (const char*)nameStr.mb_str());
-	fprintf(file->fp(), "  '%s' u 1:2 w l axes x1y2 title 'real'\n", (const char*)nameStr.mb_str());
+	file->Write(wxT("set ytics nomirror tc lt 1\n"));
+	file->Write(wxT("set ylabel 'Imaginary (Ω)' tc lt 1\n"));
+	file->Write(wxT("set y2tics nomirror tc lt 2\n"));
+	file->Write(wxT("set y2label 'Real (Ω)' tc lt 2\n"));
+	file->Write(wxT("set xlabel 'Length (") + m_unitsStr + wxT(")'\n"));
+	file->Write(wxT("plot \\\n"));
+	file->Write(wxT("  '") + nameStr + wxT("' u 1:3 w l axes x1y1 title 'imag', \\\n"));
+	file->Write(wxT("  '") + nameStr + wxT("' u 1:2 w l axes x1y2 title 'real'\n"));
 }
 
 // Warning: File names must be in single-quotes for gnuplot on Windows,
 // otherwise the backslashes are interpolated and the paths don't work.
 void tlineLogic::setControlVI( wxFFile* file, wxString nameStr )
 {	
-	fprintf(file->fp(), "set ytics nomirror tc lt 1\n");
-	fprintf(file->fp(), "set ylabel 'Current (Amps)' tc lt 1\n");
-	fprintf(file->fp(), "set y2tics nomirror tc lt 2\n");
-	fprintf(file->fp(), "set y2label 'Voltage (Volts)' tc lt 2\n");
-	fprintf(file->fp(), "set xlabel 'Length (%s)'\n", (const char*)m_unitsStr.mb_str());
-	fprintf(file->fp(), "plot \\\n");
-	fprintf(file->fp(), "  '%s' u 1:9 w l axes x1y1 title 'amps', \\\n", (const char*)nameStr.mb_str());
-	fprintf(file->fp(), "  '%s' u 1:8 w l axes x1y2 title 'volts'\n", (const char*)nameStr.mb_str());
+	file->Write(wxT("set ytics nomirror tc lt 1\n"));
+	file->Write(wxT("set ylabel 'Current (Amps)' tc lt 1\n"));
+	file->Write(wxT("set y2tics nomirror tc lt 2\n"));
+	file->Write(wxT("set y2label 'Voltage (Volts)' tc lt 2\n"));
+	file->Write(wxT("set xlabel 'Length (") + m_unitsStr + wxT(")'\n"));
+	file->Write(wxT("plot \\\n"));
+	file->Write(wxT("  '") + nameStr + wxT("' u 1:9 w l axes x1y1 title 'amps', \\\n"));
+	file->Write(wxT("  '") + nameStr + wxT("' u 1:8 w l axes x1y2 title 'volts'\n"));
 }
 
 // Build data and control files, then spawn gnuplot.
@@ -818,14 +818,9 @@ void tlineLogic::doPlot( int type, int mode )
 	}
 
 	// Generate the shell script.
-	fprintf(shellFP.fp(), "#!/bin/sh\n");
-	fprintf(shellFP.fp(), "gnuplot %s %s\n",
-			(const char *)controlName.mb_str(),
-			(mode == PLOT) ? "-" : "");
-	fprintf(shellFP.fp(), "rm -f %s %s %s\n",
-			(const char *)controlName.mb_str(),
-			(const char *)dataName.mb_str(),
-			(const char *)shellName.mb_str());
+	shellFP.Write(wxT("#!/bin/sh\n"));
+	shellFP.Write(wxString::Format(wxT("trap \"rm -f %s %s %s\" 0\n"), controlName, dataName, shellName));
+	shellFP.Write(wxString::Format(wxT("gnuplot %s %s\n"), controlName, (mode == PLOT) ? "-" : ""));
 
 	if(!shellFP.Flush()) {
 		wxLogError("Cannot flush shell file '%s'", shellName);
@@ -834,7 +829,7 @@ void tlineLogic::doPlot( int type, int mode )
 #endif // __linux
 
 	// Generate the data.
-	generateGraphableData(dataFP.fp());
+	generateGraphableData( &dataFP );
 
 	if(!dataFP.Flush()) {
 		wxLogError("Cannot flush data file '%s'", dataName);
@@ -842,7 +837,7 @@ void tlineLogic::doPlot( int type, int mode )
 	}
 
 	// Arrange for gnuplot to handle special characters.
-	fprintf(controlFP.fp(), "set encoding utf8\n");
+	controlFP.Write(wxT("set encoding utf8\n"));
 
 	// If saving, we need to set the terminal type and output file.
 	if(mode == SAVE) {
@@ -907,35 +902,26 @@ void tlineLogic::saveData()
 		return;
 	}
     
-	wxFileOutputStream output_stream(saveFileDialog.GetPath());
-	if (!output_stream.IsOk()) {
-		wxLogError("Cannot save current contents in file '%s'", saveFileDialog.GetPath());
-		return;
-	}
-    
-	wxFile *f = output_stream.GetFile();
-	FILE *fp = fdopen(f->fd(), "w");
+	wxFFile f = wxFFile(saveFileDialog.GetPath(), "w");
 
-	if(fp == NULL) {
+	if(!f.IsOpened()) {
 		wxLogError("Cannot open file '%s' for writing", saveFileDialog.GetPath());
 		return;
 	}
 
-	generateGraphableData(fp);
+	generateGraphableData( &f );
 
-	if(fflush(fp) == EOF) {
+	if(f.Flush()) {
 		wxLogError("Cannot flush file '%s'", saveFileDialog.GetPath());
 		return;
 	}
 
-	f->Close();
+	f.Close();
 }
 
 // Calculate the graphable data.  We write it to a temporary file which we
 // will pass to gnuplot.
-void tlineLogic::generateGraphableData(
-		FILE*		fp
-		)
+void tlineLogic::generateGraphableData( wxFFile* file )
 {
 	int			i;
 
@@ -947,7 +933,7 @@ void tlineLogic::generateGraphableData(
 	complex<double>		iOut;
 
 	// Show column headings.
-	fprintf(fp, "#       Length        Z_In_Real      Z_In_Imag           V_Real         V_Imag           I_Real         I_Imag           V_Magn         I_Magn\n");
+	file->Write(wxT("#       Length        Z_In_Real      Z_In_Imag           V_Real         V_Imag           I_Real         I_Imag           V_Magn         I_Magn\n"));
 
 	// Scale cable length by SCALE for a smoother curve.
 	for(i = 0; i <= POINTS_ON_X; i++) {
@@ -963,12 +949,12 @@ void tlineLogic::generateGraphableData(
 		// Find the current at a point along the cable.
 		iOut = currentOut(distanceFromSource);
 
-		fprintf(fp, "%14.6f   %14.6f %14.6f   %14.6f %14.6f   %14.6f %14.6f   %14.6f %14.6f\n",
+		file->Write(wxString::Format(wxT("%14.6f   %14.6f %14.6f   %14.6f %14.6f   %14.6f %14.6f   %14.6f %14.6f\n"),
 				distanceFromSource,
 				real(zPoint), imag(zPoint),
 				real(vOut), imag(vOut),
 				real(iOut), imag(iOut),
-				abs(vOut), abs(iOut));
+				abs(vOut), abs(iOut)));
 	}
 }
 
