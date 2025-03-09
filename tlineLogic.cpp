@@ -28,13 +28,14 @@
 #include <wx/sizer.h>
 #include <wx/textctrl.h>
 #include <wx/textfile.h>
+#include <wx/tokenzr.h>
+#include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 
 #include "constants.h"
 #include "helpAbout.h"
 #include "helpInfo.h"
 #include "info.h"
-#include "strchrnul.h"
 #include "theme.h"
 #include "tlineIcon.h"
 #include "tlineLogic.h"
@@ -174,144 +175,127 @@ void tlineLogic::onFileLoad( wxCommandEvent& event )
     
 void tlineLogic::loadFile( wxString path )
 {
-	char buffer[512];
-	char *p;
-	struct stat status;
+	wxString line;
+	wxString tag;
+	wxString val;
 
 	wxFileInputStream input_stream( path );
 	if(!input_stream.IsOk()) {
 		wxLogError("Cannot open file '%s'", path);
 		return;
 	}
-    
-	wxFile *f = input_stream.GetFile();
 
-	if(fstat(f->fd(), &status) < 0) {
-		wxLogError("Cannot get status for '%s'", path);
-		f->Close();
-		return;
-	}
-	if((status.st_mode & S_IFMT) != S_IFREG) {
-		wxLogError("'%s' is not a regular file", path);
-		f->Close();
-		return;
-	}
+	wxTextInputStream text( input_stream );
 
-	FILE *fp = fdopen(f->fd(), "r");
+	while (!input_stream.Eof()) {
+		line = text.ReadLine();
 
-	if(fp == NULL) {
-		wxLogError("Cannot open file '%s'", path);
-		f->Close();
-		return;
-	}
-
-	while(fgets(buffer, 512, fp) != NULL) {
-		*strchrnul(buffer, '\n') = 0;
-
-		if(buffer[0] == '#') {
+		if(line.IsEmpty()) {
 			continue;
 		}
 
-		if((p = strchr(buffer, '=')) == NULL) {
-			wxLogError("'%s' is badly formatted - bad line: '%s'", path, buffer);
-			f->Close();
+		if(line.starts_with( wxT( "#" ) )) {
+			continue;
+		}
+
+		wxStringTokenizer tokenizer( line, wxT( "=" ) );
+		if(tokenizer.CountTokens() != 2) {
+			wxLogError("'%s' is badly formatted - bad line: '%s'", path, line);
 			return;
 		}
-		*p++ = 0;
+		tag = tokenizer.GetNextToken();
+		val = tokenizer.GetNextToken();
 
-		if(strcmp(buffer, "cableType") == 0) {  // Parse top-level parameters
-			m_cableTypeStr = p;
+		if(tag == wxT( "cableType" ) ) {  // Parse top-level parameters
+			m_cableTypeStr = val;
 			ui_cableType->ChangeValue(m_cableTypeStr);
-		} else if(strcmp(buffer, "units") == 0) {
-			m_unitsStr = p;
+		} else if(tag == wxT( "units" ) ) {
+			m_unitsStr = val;
 			if(m_unitsStr == wxT("Feet")) {
 				ui_unitsRadioButtons->SetSelection(USE_FEET);
 			}
 			if(m_unitsStr == wxT("Meters")) {
 				ui_unitsRadioButtons->SetSelection(USE_METERS);
 			}
-		} else if(strcmp(buffer, "frequency") == 0) {
-			m_frequencyStr = p;
+		} else if(tag == wxT( "frequency" ) ) {
+			m_frequencyStr = val;
 			ui_frequency->ChangeValue(m_frequencyStr);
-		} else if(strcmp(buffer, "length") == 0) {
-			m_lengthStr = p;
+		} else if(tag == wxT( "length" ) ) {
+			m_lengthStr = val;
 			ui_cableLength->ChangeValue(m_lengthStr);
-		} else if(strcmp(buffer, "resistance") == 0) {
-			m_resistanceStr = p;
+		} else if(tag == wxT( "resistance" ) ) {
+			m_resistanceStr = val;
 			ui_resistance->ChangeValue(m_resistanceStr);
-		} else if(strcmp(buffer, "reactance") == 0) {
-			m_reactanceStr = p;
+		} else if(tag == wxT( "reactance" ) ) {
+			m_reactanceStr = val;
 			ui_reactance->ChangeValue(m_reactanceStr);
-		} else if(strcmp(buffer, "loadInput") == 0) {
-			m_loadInputStr = p;
+		} else if(tag == wxT( "loadInput" ) ) {
+			m_loadInputStr = val;
 			if(m_loadInputStr == wxT("Load")) {
 				ui_loadInputRadioButtons->SetSelection(USE_LOAD);
 			}
 			if(m_loadInputStr == wxT("Input")) {
 				ui_loadInputRadioButtons->SetSelection(USE_INPUT);
 			}
-		} else if(strcmp(buffer, "power") == 0) {
-			m_powerStr = p;
+		} else if(tag == wxT( "power" ) ) {
+			m_powerStr = val;
 			ui_power->ChangeValue(m_powerStr);
-		} else if(strcmp(buffer, "m_tunerFrequency") == 0) { // Parse tuner parameters
-			m_tunerFrequencyStr = p;
+		} else if(tag == wxT( "m_tunerFrequency" ) ) { // Parse tuner parameters
+			m_tunerFrequencyStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerPower") == 0) {
-			m_tunerPowerStr = p;
+		} else if(tag == wxT( "m_tunerPower" ) ) {
+			m_tunerPowerStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerSourceResistance") == 0) {
-			m_tunerSourceResistanceStr = p;
+		} else if(tag == wxT( "m_tunerSourceResistance" ) ) {
+			m_tunerSourceResistanceStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerSourceReactance") == 0) {
-			m_tunerSourceReactanceStr = p;
+		} else if(tag == wxT( "m_tunerSourceReactance" ) ) {
+			m_tunerSourceReactanceStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerLoadResistance") == 0) {
-			m_tunerLoadResistanceStr = p;
+		} else if(tag == wxT( "m_tunerLoadResistance" ) ) {
+			m_tunerLoadResistanceStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerLoadReactance") == 0) {
-			m_tunerLoadReactanceStr = p;
+		} else if(tag == wxT( "m_tunerLoadReactance" ) ) {
+			m_tunerLoadReactanceStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerNetworkQ") == 0) {
-			m_tunerNetworkQStr = p;
+		} else if(tag == wxT( "m_tunerNetworkQ" ) ) {
+			m_tunerNetworkQStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerInductorQ") == 0) {
-			m_tunerInductorQStr = p;
+		} else if(tag == wxT( "m_tunerInductorQ" ) ) {
+			m_tunerInductorQStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerCapacitorQ") == 0) {
-			m_tunerCapacitorQStr = p;
+		} else if(tag == wxT( "m_tunerCapacitorQ" ) ) {
+			m_tunerCapacitorQStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_tunerTopology") == 0) {
-			m_tunerTopologyStr = p;
+		} else if(tag == wxT( "m_tunerTopology" ) ) {
+			m_tunerTopologyStr = val;
 			m_tunerInit = TRUE;
-		} else if(strcmp(buffer, "m_userLineAttenuation") == 0) { // Parse user line parameters
-			m_userLineAttenuationStr = p;
+		} else if(tag == wxT( "m_userLineAttenuation" ) ) { // Parse user line parameters
+			m_userLineAttenuationStr = val;
 			m_userLineInit = 1;
-		} else if(strcmp(buffer, "m_userLineVelocityFactor") == 0) {
-			m_userLineVelocityFactorStr = p;
+		} else if(tag == wxT( "m_userLineVelocityFactor" ) ) {
+			m_userLineVelocityFactorStr = val;
 			m_userLineInit = 1;
-		} else if(strcmp(buffer, "m_userLineCableImpedance") == 0) {
-			m_userLineCableImpedanceStr = p;
+		} else if(tag == wxT( "m_userLineCableImpedance" ) ) {
+			m_userLineCableImpedanceStr = val;
 			m_userLineInit = 1;
-		} else if(strcmp(buffer, "m_userLineCableResistance") == 0) {
-			m_userLineCableResistanceStr = p;
+		} else if(tag == wxT( "m_userLineCableResistance" ) ) {
+			m_userLineCableResistanceStr = val;
 			m_userLineInit = 1;
-		} else if(strcmp(buffer, "m_userLineCableReactance") == 0) {
-			m_userLineCableReactanceStr = p;
+		} else if(tag == wxT( "m_userLineCableReactance" ) ) {
+			m_userLineCableReactanceStr = val;
 			m_userLineInit = 1;
-		} else if(strcmp(buffer, "m_userLineCableVoltageLimit") == 0) {
-			m_userLineCableVoltageLimitStr = p;
+		} else if(tag == wxT( "m_userLineCableVoltageLimit" ) ) {
+			m_userLineCableVoltageLimitStr = val;
 			m_userLineInit = 1;
-		} else if(strcmp(buffer, "m_userLineLastMethod") == 0) {
-			m_userLineLastMethodStr = p;
+		} else if(tag == wxT( "m_userLineLastMethod" ) ) {
+			m_userLineLastMethodStr = val;
 			m_userLineInit = 1;
 		} else {
-			wxLogError("'%s' is badly formatted - bad tag: '%s'", path, buffer);
-			f->Close();
+			wxLogError("'%s' is badly formatted - bad tag: '%s'", path, tag);
 			return;
 		}
 	}
-
-	f->Close();
 
 	recalculate();
 }
