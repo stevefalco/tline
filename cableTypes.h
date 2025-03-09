@@ -24,8 +24,8 @@ class cableTypes
 {
 	public:
 		cableTypes(
-				const char		*name,
-				double			frequency
+				wxString	name,
+				double		frequency
 				);
 
 		double findAtten();

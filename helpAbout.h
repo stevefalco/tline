@@ -25,10 +25,10 @@ class helpAbout : public helpAboutDialog
 	public:
 		helpAbout( wxWindow* parent );
 
-		void helpAboutAddTextLine1( wxString s );
-		void helpAboutAddTextLine2( wxString s );
-		void helpAboutAddTextLine3( wxString s );
-		void helpAboutAddTextLine4( wxString s );
+		void helpAboutAddTextLine1( const wxString& s );
+		void helpAboutAddTextLine2( const wxString& s );
+		void helpAboutAddTextLine3( const wxString& s );
+		void helpAboutAddTextLine4( const wxString& s );
 
 	private:
 		void onHelpAboutOK( wxCommandEvent& event );

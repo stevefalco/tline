@@ -32,22 +32,22 @@ helpAbout::helpAbout( wxWindow* parent ) : helpAboutDialog( parent )
 	SetIcon(wxICON(aaaa));
 }
 
-void helpAbout::helpAboutAddTextLine1( wxString s )
+void helpAbout::helpAboutAddTextLine1( const wxString& s )
 {
 	dl_helpAboutTextLine1->SetLabel(s);
 }
 
-void helpAbout::helpAboutAddTextLine2( wxString s )
+void helpAbout::helpAboutAddTextLine2( const wxString& s )
 {
 	dl_helpAboutTextLine2->SetLabel(s);
 }
 
-void helpAbout::helpAboutAddTextLine3( wxString s )
+void helpAbout::helpAboutAddTextLine3( const wxString& s )
 {
 	dl_helpAboutTextLine3->SetLabel(s);
 }
 
-void helpAbout::helpAboutAddTextLine4( wxString s )
+void helpAbout::helpAboutAddTextLine4( const wxString& s )
 {
 	dl_helpAboutTextLine4->SetLabel(s);
 }

@@ -112,7 +112,7 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 	SetIcon(wxICON(aaaa));
 	SetTitle(wxT("Tline - A Transmission Line Calculator"));
 
-	wxString title = wxString("Transmission Line Calculator, Version ") + wxString(VERSION) + wxString(", by AC2XM");
+	wxString title = wxString( wxT( "Transmission Line Calculator, Version " ) ) + wxString( wxT( VERSION ) ) + wxString( wxT( ", by AC2XM" ) );
 
 	ui_programTitle->SetLabel(title);
 
@@ -410,10 +410,10 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 	// the end of this function.
 	helpAbout dialog(NULL);
 
-	dialog.helpAboutAddTextLine1("tline - A Transmission Line Calculator");
+	dialog.helpAboutAddTextLine1(wxT("tline - A Transmission Line Calculator"));
 	dialog.helpAboutAddTextLine2(wxString::Format(wxT("Version %s"), VERSION));
-	dialog.helpAboutAddTextLine3(wxT("© 2019,2020,2022 Steven A. Falco, AC2XM"));
-	dialog.helpAboutAddTextLine4("License: GPLv3");
+	dialog.helpAboutAddTextLine3(wxT("Copyright © Steven A. Falco, AC2XM"));
+	dialog.helpAboutAddTextLine4(wxT("License: GPLv3"));
 	dialog.ShowModal();
 }
 
@@ -980,7 +980,7 @@ void tlineLogic::recalculate()
 	try {
 		// This "cableTypes" item is not added to any wxWidgets item, so
 		// we are responsible for deleting it when we are done with it.
-		cable = new cableTypes(m_cableTypeStr.mb_str(), m_frequency);
+		cable = new cableTypes(m_cableTypeStr, m_frequency);
 		m_userSpecifiedZ = FALSE;
 		m_attenPer100Feet = cable->findAtten();
 		m_velocityFactor = cable->findVF();
