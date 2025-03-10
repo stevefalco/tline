@@ -19,10 +19,10 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/sizer.h>
 #include <wx/statbox.h>
 #include <wx/radiobox.h>
-#include <wx/textctrl.h>
 #include <wx/valtext.h>
 #include <wx/button.h>
 #include <wx/frame.h>
@@ -143,6 +143,7 @@
 #define ct_Generic_600_ohm_Open 10108
 #define ct_Ideal_lossless_50_ohm 10109
 #define ct_Ideal_lossless_75_ohm 10110
+#define ct_user_defined 10111
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class tlineUI
@@ -171,10 +172,9 @@ class tlineUI : public wxFrame
 		wxMenu* m_cableWiremanLadder;
 		wxMenu* m_cableGenericLadder;
 		wxMenu* m_cableIdealCoax;
-		wxMenu* m_cableUserDefined;
 		wxMenu* helpMenu;
 		wxStaticText* ui_programTitle;
-		wxStaticText* ui_cableType;
+		wxTextCtrl* ui_cableType;
 		wxStaticText* ui_updateWarning;
 		wxRadioBox* ui_unitsRadioButtons;
 		wxStaticText* ui_cableLengthTag;

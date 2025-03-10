@@ -208,7 +208,7 @@ void tlineLogic::loadFile( wxString path )
 
 		if(tag == wxT( "cableType" ) ) {  // Parse top-level parameters
 			m_cableTypeStr = val;
-			ui_cableType->SetLabel(m_cableTypeStr);
+			ui_cableType->ChangeValue(m_cableTypeStr);
 		} else if(tag == wxT( "units" ) ) {
 			m_unitsStr = val;
 			if(m_unitsStr == wxT("Feet")) {
@@ -378,6 +378,30 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 	Destroy();
 }
 
+// On Linux, this event only happens if the selected item changes.
+// Reselecting the same item a second time does not cause this event.
+// However, Windows behaves differently; reselecting the same item does
+// regenerate this event.
+//
+// I consider the Linux behavior to be a bug; it is certainly not what
+// I want here.  I have a special case of "User Specified Line", and I
+// want a reselection of that item to reopen the associated dialog box.
+//
+// I tried onComboBoxCloseup, but it doesn't return the string in the
+// event.  And, if I try to recover the string from the combo box itself,
+// I get the previous value.  Consequently, when switching away from
+// "User Specified Line", I wind up getting the dialog opening when it
+// shouldn't.
+//
+// After much experimentation, I found that if I set the selection to
+// wxNOT_FOUND on Linux, then I will get this event even if the same
+// item is reselected.  But I cannot use that on Windows, because it
+// blanks out the displayed string.  Thus, we use the wxNOT_FOUND hack
+// only on Linux.
+#if 0
+	ui_cableType->SetSelection(wxNOT_FOUND);
+#endif
+
 void tlineLogic::onCableType( wxCommandEvent& event )
 {
 	cableTypes *cable;
@@ -422,48 +446,6 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 	dialog.ShowModal();
 }
 
-#if 0
-// On Linux, this event only happens if the selected item changes.
-// Reselecting the same item a second time does not cause this event.
-// However, Windows behaves differently; reselecting the same item does
-// regenerate this event.
-//
-// I consider the Linux behavior to be a bug; it is certainly not what
-// I want here.  I have a special case of "User Specified Line", and I
-// want a reselection of that item to reopen the associated dialog box.
-//
-// I tried onComboBoxCloseup, but it doesn't return the string in the
-// event.  And, if I try to recover the string from the combo box itself,
-// I get the previous value.  Consequently, when switching away from
-// "User Specified Line", I wind up getting the dialog opening when it
-// shouldn't.
-//
-// After much experimentation, I found that if I set the selection to
-// wxNOT_FOUND on Linux, then I will get this event even if the same
-// item is reselected.  But I cannot use that on Windows, because it
-// blanks out the displayed string.  Thus, we use the wxNOT_FOUND hack
-// only on Linux.
-void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
-{
-	m_cableTypePrevStr = m_cableTypeStr;
-	m_cableTypeStr = event.GetString();
-#ifdef __linux
-	ui_cableType->SetSelection(wxNOT_FOUND);
-#endif
-
-	if(m_cableTypeStr == "User-Defined Transmission Line") {
-		m_newUserLine = TRUE;
-	} else {
-		// Line is not user specified.  Clear any warnings.
-		ui_updateWarning->SetLabel("");
-	}
-
-	m_saved = 0;
-
-	recalculate();
-}
-#endif
-
 void tlineLogic::onUnitsSelected( wxCommandEvent& event )
 {
 	m_unitsStr = event.GetString();
@@ -479,7 +461,7 @@ void tlineLogic::onFrequencySelected( wxCommandEvent& event )
 
 	if(m_cableTypeStr == "User-Defined Transmission Line") {
 		// User-specified line + frequency change.  Show the update warning.
-		ui_updateWarning->SetLabel(wxT("Frequency has changed.  Reselect\nUserLine dialog to update."));
+		ui_updateWarning->SetLabel(wxT("Frequency has changed.  Reselect \"User Defined Line\" menu item to update."));
 	}
 
 	recalculate();
@@ -965,6 +947,70 @@ void tlineLogic::generateGraphableData( wxFFile* file )
 	}
 }
 
+void tlineLogic::setUserLine()
+{
+	// User-specified line.
+	if(m_newUserLine == TRUE) {
+		// Open a dialog to ask for parameters.
+		//
+		// Create on stack.  Will be automatically cleaned up at
+		// the end of this block of code.
+		userLine dialog(NULL);
+
+		// Fill in the previous user-provided values.
+		dialog.m_userLineFrequencyStr = m_frequencyStr;
+		dialog.m_userLineAttenuationStr = m_userLineAttenuationStr;
+		dialog.m_userLineVelocityFactorStr = m_userLineVelocityFactorStr;
+		dialog.m_userLineCableImpedanceStr = m_userLineCableImpedanceStr;
+		dialog.m_userLineCableResistanceStr = m_userLineCableResistanceStr;
+		dialog.m_userLineCableReactanceStr = m_userLineCableReactanceStr;
+		dialog.m_userLineCableVoltageLimitStr = m_userLineCableVoltageLimitStr;
+		dialog.m_userLineLastMethodStr = m_userLineLastMethodStr;
+		dialog.Update();
+
+		if (dialog.ShowModal() == wxID_OK) {
+
+			// Dialog has closed.  Remove any update warnings.
+			ui_updateWarning->SetLabel("");
+
+			// Save the new user values.
+			m_userLineAttenuationStr = dialog.m_userLineAttenuationStr;
+			m_userLineVelocityFactorStr = dialog.m_userLineVelocityFactorStr;
+			m_userLineCableImpedanceStr = dialog.m_userLineCableImpedanceStr;
+			m_userLineCableResistanceStr = dialog.m_userLineCableResistanceStr;
+			m_userLineCableReactanceStr = dialog.m_userLineCableReactanceStr;
+			m_userLineCableVoltageLimitStr = dialog.m_userLineCableVoltageLimitStr;
+			m_userLineLastMethodStr = dialog.m_userLineLastMethodStr;
+
+			// Also set our working values.
+			m_userSpecifiedZ = TRUE;
+			m_attenPer100Feet = wxAtof(m_userLineAttenuationStr);
+			m_velocityFactor = wxAtof(m_userLineVelocityFactorStr);
+			m_cableResistivePart = wxAtof(m_userLineCableResistanceStr);
+			m_cableReactivePart = wxAtof(m_userLineCableReactanceStr);
+			m_maximumVoltage = wxAtof(m_userLineCableVoltageLimitStr);
+
+			// Cache has been loaded.
+			m_newUserLine = FALSE;
+
+			// Permit saving the values.
+			m_userLineInit = TRUE;
+		} else {
+			// If cancelled, set back to previous type.
+			m_cableTypeStr = m_cableTypePrevStr;
+			ui_cableType->ChangeValue(m_cableTypeStr);
+		}
+	} else {
+		// Use the cached values.
+		m_userSpecifiedZ = TRUE;
+		m_attenPer100Feet = wxAtof(m_userLineAttenuationStr);
+		m_velocityFactor = wxAtof(m_userLineVelocityFactorStr);
+		m_cableResistivePart = wxAtof(m_userLineCableResistanceStr);
+		m_cableReactivePart = wxAtof(m_userLineCableReactanceStr);
+		m_maximumVoltage = wxAtof(m_userLineCableVoltageLimitStr);
+	}
+}
+
 void tlineLogic::recalculate()
 {
 	cableTypes *cable;
@@ -984,83 +1030,25 @@ void tlineLogic::recalculate()
 	m_frequency = wxAtof(m_frequencyStr) * 1.0E6;
 
 	// Update the cable label.
-	ui_cableType->SetLabel(m_cableTypeStr);
-	
+	ui_cableType->ChangeValue(m_cableTypeStr);
+
 	// Look up the cable parameters.
-	try {
-		// This "cableTypes" item is not added to any wxWidgets item, so
-		// we are responsible for deleting it when we are done with it.
-		cable = new cableTypes(m_cableTypeStr, m_frequency);
+	// This "cableTypes" item is not added to any wxWidgets item, so
+	// we are responsible for deleting it when we are done with it.
+	cable = new cableTypes(m_cableTypeStr, m_frequency);
+
+	if(cable->findID() == ct_user_defined) {
+		setUserLine();
+	} else {
 		m_userSpecifiedZ = FALSE;
 		m_attenPer100Feet = cable->findAtten();
 		m_velocityFactor = cable->findVF();
 		m_cableResistivePart = cable->findZoReal();
 		m_cableReactivePart = cable->findZoImag();
 		m_maximumVoltage = cable->findVoltageLimit();
-		delete cable;
 	}
-	catch(...) {
-		// No such cable.  Should only happen for user-specified line.
-		if(m_newUserLine == TRUE) {
-			// Open a dialog to ask for parameters.
-			//
-			// Create on stack.  Will be automatically cleaned up at
-			// the end of this block of code.
-			userLine dialog(NULL);
 
-			// Fill in the previous user-provided values.
-			dialog.m_userLineFrequencyStr = m_frequencyStr;
-			dialog.m_userLineAttenuationStr = m_userLineAttenuationStr;
-			dialog.m_userLineVelocityFactorStr = m_userLineVelocityFactorStr;
-			dialog.m_userLineCableImpedanceStr = m_userLineCableImpedanceStr;
-			dialog.m_userLineCableResistanceStr = m_userLineCableResistanceStr;
-			dialog.m_userLineCableReactanceStr = m_userLineCableReactanceStr;
-			dialog.m_userLineCableVoltageLimitStr = m_userLineCableVoltageLimitStr;
-			dialog.m_userLineLastMethodStr = m_userLineLastMethodStr;
-			dialog.Update();
-
-			if (dialog.ShowModal() == wxID_OK) {
-
-				// Dialog has closed.  Remove any update warnings.
-				ui_updateWarning->SetLabel("");
-
-				// Save the new user values.
-				m_userLineAttenuationStr = dialog.m_userLineAttenuationStr;
-				m_userLineVelocityFactorStr = dialog.m_userLineVelocityFactorStr;
-				m_userLineCableImpedanceStr = dialog.m_userLineCableImpedanceStr;
-				m_userLineCableResistanceStr = dialog.m_userLineCableResistanceStr;
-				m_userLineCableReactanceStr = dialog.m_userLineCableReactanceStr;
-				m_userLineCableVoltageLimitStr = dialog.m_userLineCableVoltageLimitStr;
-				m_userLineLastMethodStr = dialog.m_userLineLastMethodStr;
-
-				// Also set our working values.
-				m_userSpecifiedZ = TRUE;
-				m_attenPer100Feet = wxAtof(m_userLineAttenuationStr);
-				m_velocityFactor = wxAtof(m_userLineVelocityFactorStr);
-				m_cableResistivePart = wxAtof(m_userLineCableResistanceStr);
-				m_cableReactivePart = wxAtof(m_userLineCableReactanceStr);
-				m_maximumVoltage = wxAtof(m_userLineCableVoltageLimitStr);
-
-				// Cache has been loaded.
-				m_newUserLine = FALSE;
-
-				// Permit saving the values.
-				m_userLineInit = TRUE;
-			} else {
-				// If cancelled, set back to previous type.
-				m_cableTypeStr = m_cableTypePrevStr;
-				ui_cableType->SetLabel(m_cableTypeStr);
-			}
-		} else {
-			// Use the cached values.
-			m_userSpecifiedZ = TRUE;
-			m_attenPer100Feet = wxAtof(m_userLineAttenuationStr);
-			m_velocityFactor = wxAtof(m_userLineVelocityFactorStr);
-			m_cableResistivePart = wxAtof(m_userLineCableResistanceStr);
-			m_cableReactivePart = wxAtof(m_userLineCableReactanceStr);
-			m_maximumVoltage = wxAtof(m_userLineCableVoltageLimitStr);
-		}
-	}
+	delete cable;
 
 	ui_velocityFactor->ChangeValue(wxString::Format(wxT("%.2f"), m_velocityFactor));
 	ui_maxVoltage->ChangeValue(wxString::Format(wxT("%.0f V"), m_maximumVoltage));

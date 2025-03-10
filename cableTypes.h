@@ -18,8 +18,6 @@
 #ifndef __cableTypes__
 #define __cableTypes__
 
-#define CABLE_TYPE_NO_MATCH	1
-
 class cableTypes
 {
 	public:
@@ -32,6 +30,7 @@ class cableTypes
 				wxWindowID	id
 				);
 
+		wxWindowID findID();
 		wxString findName();
 		double findAtten();
 		double findVF();
@@ -40,6 +39,7 @@ class cableTypes
 		double findVoltageLimit();
 
 	private:
+		wxWindowID		m_id;
 		wxString		m_name;
 		double			m_voltageLimit;
 		double			m_Rdc;

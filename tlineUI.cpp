@@ -537,9 +537,9 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	cableMenu->Append( m_cableIdealCoaxItem );
 
-	m_cableUserDefined = new wxMenu();
-	wxMenuItem* m_cableUserDefinedItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("User Defined Line"), wxEmptyString, wxITEM_NORMAL, m_cableUserDefined );
-	cableMenu->Append( m_cableUserDefinedItem );
+	wxMenuItem* m_cableUserDefined;
+	m_cableUserDefined = new wxMenuItem( cableMenu, ct_user_defined, wxString( wxT("User Defined Line") ) , wxEmptyString, wxITEM_NORMAL );
+	cableMenu->Append( m_cableUserDefined );
 
 	ui_menubar->Append( cableMenu, wxT("Cable Type") );
 
@@ -563,31 +563,23 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	ui_programTitle->Wrap( -1 );
 	bMainWindow->Add( ui_programTitle, 0, wxALL, 5 );
 
-	wxBoxSizer* bCable;
-	bCable = new wxBoxSizer( wxHORIZONTAL );
+	wxStaticBoxSizer* sbCable;
+	sbCable = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Cable Type") ), wxHORIZONTAL );
 
-	wxStaticBoxSizer* sbCableLeft;
-	sbCableLeft = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Cable Type") ), wxVERTICAL );
+	ui_cableType = new wxTextCtrl( sbCable->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	ui_cableType->SetMinSize( wxSize( 300,-1 ) );
 
-	ui_cableType = new wxStaticText( sbCableLeft->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	ui_cableType->Wrap( -1 );
-	ui_cableType->SetMinSize( wxSize( 500,-1 ) );
+	sbCable->Add( ui_cableType, 0, wxALL, 5 );
 
-	sbCableLeft->Add( ui_cableType, 0, wxALL, 5 );
-
-
-	bCable->Add( sbCableLeft, 1, wxEXPAND, 5 );
-
-	ui_updateWarning = new wxStaticText( this, wxID_ANY, wxT("Parameters have changed. Reselect UserLine dialog to update."), wxDefaultPosition, wxDefaultSize, 0 );
+	ui_updateWarning = new wxStaticText( sbCable->GetStaticBox(), wxID_ANY, wxT("Parameters have changed. Reselect UserLine cable type to update."), wxDefaultPosition, wxSize( -1,-1 ), 0 );
 	ui_updateWarning->Wrap( -1 );
 	ui_updateWarning->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	ui_updateWarning->SetForegroundColour( wxColour( 255, 0, 0 ) );
-	ui_updateWarning->SetMinSize( wxSize( -1,40 ) );
 
-	bCable->Add( ui_updateWarning, 0, wxALL|wxRESERVE_SPACE_EVEN_IF_HIDDEN, 5 );
+	sbCable->Add( ui_updateWarning, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
 
-	bMainWindow->Add( bCable, 0, wxEXPAND, 5 );
+	bMainWindow->Add( sbCable, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bPane1;
 	bPane1 = new wxBoxSizer( wxHORIZONTAL );
@@ -1100,6 +1092,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_cableGenericLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Generic_600_ohm_Open->GetId());
 	m_cableIdealCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Ideal_lossless_50_ohm->GetId());
 	m_cableIdealCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Ideal_lossless_75_ohm->GetId());
+	cableMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_cableUserDefined->GetId());
 	helpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onHelpInfo ), this, ui_helpInfo->GetId());
 	helpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onHelpAbout ), this, ui_helpAbout->GetId());
 	ui_unitsRadioButtons->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( tlineUI::onUnitsSelected ), NULL, this );

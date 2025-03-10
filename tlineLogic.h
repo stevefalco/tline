@@ -68,6 +68,7 @@ class tlineLogic : public tlineUI
 		complex<double> voltageOut( double distance );
 		complex<double> currentOut( double distance );
 
+		void setUserLine();
 		void recalculate();
 		void doPlot( int type, int mode );
 		void setControlZ( wxFFile* file, wxString name );
