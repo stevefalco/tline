@@ -208,7 +208,7 @@ void tlineLogic::loadFile( wxString path )
 
 		if(tag == wxT( "cableType" ) ) {  // Parse top-level parameters
 			m_cableTypeStr = val;
-			ui_cableType->ChangeValue(m_cableTypeStr);
+			ui_cableType->SetLabel(m_cableTypeStr);
 		} else if(tag == wxT( "units" ) ) {
 			m_unitsStr = val;
 			if(m_unitsStr == wxT("Feet")) {
@@ -422,6 +422,7 @@ void tlineLogic::onHelpAbout( wxCommandEvent& event )
 	dialog.ShowModal();
 }
 
+#if 0
 // On Linux, this event only happens if the selected item changes.
 // Reselecting the same item a second time does not cause this event.
 // However, Windows behaves differently; reselecting the same item does
@@ -461,6 +462,7 @@ void tlineLogic::onCableTypeSelected( wxCommandEvent& event )
 
 	recalculate();
 }
+#endif
 
 void tlineLogic::onUnitsSelected( wxCommandEvent& event )
 {
@@ -981,6 +983,9 @@ void tlineLogic::recalculate()
 	// Convert the frequency string.
 	m_frequency = wxAtof(m_frequencyStr) * 1.0E6;
 
+	// Update the cable label.
+	ui_cableType->SetLabel(m_cableTypeStr);
+	
 	// Look up the cable parameters.
 	try {
 		// This "cableTypes" item is not added to any wxWidgets item, so
@@ -1044,7 +1049,7 @@ void tlineLogic::recalculate()
 			} else {
 				// If cancelled, set back to previous type.
 				m_cableTypeStr = m_cableTypePrevStr;
-				ui_cableType->ChangeValue(m_cableTypeStr);
+				ui_cableType->SetLabel(m_cableTypeStr);
 			}
 		} else {
 			// Use the cached values.

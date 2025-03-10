@@ -46,7 +46,6 @@ class tlineLogic : public tlineUI
 		void onHelpInfo( wxCommandEvent& event );
 		void onHelpAbout( wxCommandEvent& event );
 
-		void onCableTypeSelected( wxCommandEvent& event );
 		void onUnitsSelected( wxCommandEvent& event );
 		void onFrequencySelected( wxCommandEvent& event );
 		void onLengthSelected( wxCommandEvent& event );

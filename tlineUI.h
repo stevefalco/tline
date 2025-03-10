@@ -19,12 +19,11 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/stattext.h>
-#include <wx/combobox.h>
 #include <wx/sizer.h>
+#include <wx/statbox.h>
 #include <wx/radiobox.h>
 #include <wx/textctrl.h>
 #include <wx/valtext.h>
-#include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/dialog.h>
@@ -175,7 +174,7 @@ class tlineUI : public wxFrame
 		wxMenu* m_cableUserDefined;
 		wxMenu* helpMenu;
 		wxStaticText* ui_programTitle;
-		wxComboBox* ui_cableType;
+		wxStaticText* ui_cableType;
 		wxStaticText* ui_updateWarning;
 		wxRadioBox* ui_unitsRadioButtons;
 		wxStaticText* ui_cableLengthTag;
@@ -237,7 +236,6 @@ class tlineUI : public wxFrame
 		virtual void onCableType( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onHelpInfo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onHelpAbout( wxCommandEvent& event ) { event.Skip(); }
-		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onUnitsSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onLengthSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFrequencySelected( wxCommandEvent& event ) { event.Skip(); }
