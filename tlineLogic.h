@@ -41,6 +41,8 @@ class tlineLogic : public tlineUI
 		void onFileSave( wxCommandEvent& event );
 		void onFileExit( wxCommandEvent& event );
 
+		void onCableType( wxCommandEvent& event );
+
 		void onHelpInfo( wxCommandEvent& event );
 		void onHelpAbout( wxCommandEvent& event );
 

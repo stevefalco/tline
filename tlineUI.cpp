@@ -32,6 +32,517 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 
 	ui_menubar->Append( fileMenu, wxT("File") );
 
+	cableMenu = new wxMenu();
+	m_cableAndrew = new wxMenu();
+	wxMenuItem* m_cableAndrewItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Andrew"), wxEmptyString, wxITEM_NORMAL, m_cableAndrew );
+	wxMenuItem* m_Andrew_Braided_CNT_100;
+	m_Andrew_Braided_CNT_100 = new wxMenuItem( m_cableAndrew, ct_Andrew_Braided_CNT_100, wxString( wxT("Andrew Braided CNT-100") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Braided_CNT_100 );
+
+	wxMenuItem* m_Andrew_Braided_CNT_195;
+	m_Andrew_Braided_CNT_195 = new wxMenuItem( m_cableAndrew, ct_Andrew_Braided_CNT_195, wxString( wxT("Andrew Braided CNT-195") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Braided_CNT_195 );
+
+	wxMenuItem* m_Andrew_Braided_CNT_240;
+	m_Andrew_Braided_CNT_240 = new wxMenuItem( m_cableAndrew, ct_Andrew_Braided_CNT_240, wxString( wxT("Andrew Braided CNT-240") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Braided_CNT_240 );
+
+	wxMenuItem* m_Andrew_Braided_CNT_300;
+	m_Andrew_Braided_CNT_300 = new wxMenuItem( m_cableAndrew, ct_Andrew_Braided_CNT_300, wxString( wxT("Andrew Braided CNT-300") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Braided_CNT_300 );
+
+	wxMenuItem* m_Andrew_Braided_CNT_400;
+	m_Andrew_Braided_CNT_400 = new wxMenuItem( m_cableAndrew, ct_Andrew_Braided_CNT_400, wxString( wxT("Andrew Braided CNT-400") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Braided_CNT_400 );
+
+	wxMenuItem* m_Andrew_Braided_CNT_600;
+	m_Andrew_Braided_CNT_600 = new wxMenuItem( m_cableAndrew, ct_Andrew_Braided_CNT_600, wxString( wxT("Andrew Braided CNT-600") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Braided_CNT_600 );
+
+	wxMenuItem* m_Andrew_Heliax_LDF4_50A;
+	m_Andrew_Heliax_LDF4_50A = new wxMenuItem( m_cableAndrew, ct_Andrew_Heliax_LDF4_50A, wxString( wxT("Andrew Heliax LDF4-50A") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Heliax_LDF4_50A );
+
+	wxMenuItem* m_Andrew_Heliax_LDF5_50A;
+	m_Andrew_Heliax_LDF5_50A = new wxMenuItem( m_cableAndrew, ct_Andrew_Heliax_LDF5_50A, wxString( wxT("Andrew Heliax LDF5-50A") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Heliax_LDF5_50A );
+
+	wxMenuItem* m_Andrew_Heliax_LDF6_50;
+	m_Andrew_Heliax_LDF6_50 = new wxMenuItem( m_cableAndrew, ct_Andrew_Heliax_LDF6_50, wxString( wxT("Andrew Heliax LDF6-50") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableAndrew->Append( m_Andrew_Heliax_LDF6_50 );
+
+	cableMenu->Append( m_cableAndrewItem );
+
+	m_cableBelden = new wxMenu();
+	wxMenuItem* m_cableBeldenItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Belden"), wxEmptyString, wxITEM_NORMAL, m_cableBelden );
+	wxMenuItem* m_Belden_8215;
+	m_Belden_8215 = new wxMenuItem( m_cableBelden, ct_Belden_8215, wxString( wxT("Belden 8215    (RG-6A/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8215 );
+
+	wxMenuItem* m_Belden_7915A;
+	m_Belden_7915A = new wxMenuItem( m_cableBelden, ct_Belden_7915A, wxString( wxT("Belden 7915A   (RG-6/HDTV)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_7915A );
+
+	wxMenuItem* m_Belden_9116;
+	m_Belden_9116 = new wxMenuItem( m_cableBelden, ct_Belden_9116, wxString( wxT("Belden 9116    (RG-6/CATV)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9116 );
+
+	wxMenuItem* m_Belden_8237;
+	m_Belden_8237 = new wxMenuItem( m_cableBelden, ct_Belden_8237, wxString( wxT("Belden 8237    (RG-8/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8237 );
+
+	wxMenuItem* m_Belden_9251;
+	m_Belden_9251 = new wxMenuItem( m_cableBelden, ct_Belden_9251, wxString( wxT("Belden 9251    (RG-8/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9251 );
+
+	wxMenuItem* m_Belden_9913;
+	m_Belden_9913 = new wxMenuItem( m_cableBelden, ct_Belden_9913, wxString( wxT("Belden 9913    (RG-8/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9913 );
+
+	wxMenuItem* m_Belden_9913F7;
+	m_Belden_9913F7 = new wxMenuItem( m_cableBelden, ct_Belden_9913F7, wxString( wxT("Belden 9913F7 (RG-8/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9913F7 );
+
+	wxMenuItem* m_Belden_9914;
+	m_Belden_9914 = new wxMenuItem( m_cableBelden, ct_Belden_9914, wxString( wxT("Belden 9914    (RG-8/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9914 );
+
+	wxMenuItem* m_Belden_9258;
+	m_Belden_9258 = new wxMenuItem( m_cableBelden, ct_Belden_9258, wxString( wxT("Belden 9258    (RG-8X)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9258 );
+
+	wxMenuItem* m_Belden_8213;
+	m_Belden_8213 = new wxMenuItem( m_cableBelden, ct_Belden_8213, wxString( wxT("Belden 8213    (RG-11/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8213 );
+
+	wxMenuItem* m_Belden_8238;
+	m_Belden_8238 = new wxMenuItem( m_cableBelden, ct_Belden_8238, wxString( wxT("Belden 8238    (RG-11/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8238 );
+
+	wxMenuItem* m_Belden_8261;
+	m_Belden_8261 = new wxMenuItem( m_cableBelden, ct_Belden_8261, wxString( wxT("Belden 8261    (RG-11A/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8261 );
+
+	wxMenuItem* m_Belden_9212;
+	m_Belden_9212 = new wxMenuItem( m_cableBelden, ct_Belden_9212, wxString( wxT("Belden 9212    (RG-11/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9212 );
+
+	wxMenuItem* m_Belden_8219;
+	m_Belden_8219 = new wxMenuItem( m_cableBelden, ct_Belden_8219, wxString( wxT("Belden 8219    (RG-58A/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8219 );
+
+	wxMenuItem* m_Belden_8240;
+	m_Belden_8240 = new wxMenuItem( m_cableBelden, ct_Belden_8240, wxString( wxT("Belden 8240    (RG-58A/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8240 );
+
+	wxMenuItem* m_Belden_8259;
+	m_Belden_8259 = new wxMenuItem( m_cableBelden, ct_Belden_8259, wxString( wxT("Belden 8259    (RG-58A/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8259 );
+
+	wxMenuItem* m_Belden_8262;
+	m_Belden_8262 = new wxMenuItem( m_cableBelden, ct_Belden_8262, wxString( wxT("Belden 8262    (RG-58C/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8262 );
+
+	wxMenuItem* m_Belden_9201;
+	m_Belden_9201 = new wxMenuItem( m_cableBelden, ct_Belden_9201, wxString( wxT("Belden 9201    (RG-58/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9201 );
+
+	wxMenuItem* m_Belden_8212;
+	m_Belden_8212 = new wxMenuItem( m_cableBelden, ct_Belden_8212, wxString( wxT("Belden 8212    (RG-59/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8212 );
+
+	wxMenuItem* m_Belden_8241;
+	m_Belden_8241 = new wxMenuItem( m_cableBelden, ct_Belden_8241, wxString( wxT("Belden 8241    (RG-59/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8241 );
+
+	wxMenuItem* m_Belden_8263;
+	m_Belden_8263 = new wxMenuItem( m_cableBelden, ct_Belden_8263, wxString( wxT("Belden 8263    (RG-59B/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8263 );
+
+	wxMenuItem* m_Belden_9269;
+	m_Belden_9269 = new wxMenuItem( m_cableBelden, ct_Belden_9269, wxString( wxT("Belden 9269    (RG-62A/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9269 );
+
+	wxMenuItem* m_Belden_9857;
+	m_Belden_9857 = new wxMenuItem( m_cableBelden, ct_Belden_9857, wxString( wxT("Belden 9857    (RG-63/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_9857 );
+
+	wxMenuItem* m_Belden_83242;
+	m_Belden_83242 = new wxMenuItem( m_cableBelden, ct_Belden_83242, wxString( wxT("Belden 83242  (RG-142B/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_83242 );
+
+	wxMenuItem* m_Belden_7805;
+	m_Belden_7805 = new wxMenuItem( m_cableBelden, ct_Belden_7805, wxString( wxT("Belden 7805    (RG-174/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_7805 );
+
+	wxMenuItem* m_Belden_8216;
+	m_Belden_8216 = new wxMenuItem( m_cableBelden, ct_Belden_8216, wxString( wxT("Belden 8216    (RG-174/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8216 );
+
+	wxMenuItem* m_Belden_83265;
+	m_Belden_83265 = new wxMenuItem( m_cableBelden, ct_Belden_83265, wxString( wxT("Belden 83265  (RG-178B/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_83265 );
+
+	wxMenuItem* m_Belden_83269;
+	m_Belden_83269 = new wxMenuItem( m_cableBelden, ct_Belden_83269, wxString( wxT("Belden 83269  (RG-188A/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_83269 );
+
+	wxMenuItem* m_Belden_8267;
+	m_Belden_8267 = new wxMenuItem( m_cableBelden, ct_Belden_8267, wxString( wxT("Belden 8267    (RG-213/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8267 );
+
+	wxMenuItem* m_Belden_8268;
+	m_Belden_8268 = new wxMenuItem( m_cableBelden, ct_Belden_8268, wxString( wxT("Belden 8268    (RG-214/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_8268 );
+
+	wxMenuItem* m_Belden_84303;
+	m_Belden_84303 = new wxMenuItem( m_cableBelden, ct_Belden_84303, wxString( wxT("Belden 84303   (RG-303/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_84303 );
+
+	wxMenuItem* m_Belden_84316;
+	m_Belden_84316 = new wxMenuItem( m_cableBelden, ct_Belden_84316, wxString( wxT("Belden 84316   (RG-316/U)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableBelden->Append( m_Belden_84316 );
+
+	cableMenu->Append( m_cableBeldenItem );
+
+	m_cableCommScope = new wxMenu();
+	wxMenuItem* m_cableCommScopeItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("CommScope"), wxEmptyString, wxITEM_NORMAL, m_cableCommScope );
+	wxMenuItem* m_CommScope_2427K;
+	m_CommScope_2427K = new wxMenuItem( m_cableCommScope, ct_CommScope_2427K, wxString( wxT("CommScope 2427K   (RG-8)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableCommScope->Append( m_CommScope_2427K );
+
+	wxMenuItem* m_CommScope_3227;
+	m_CommScope_3227 = new wxMenuItem( m_cableCommScope, ct_CommScope_3227, wxString( wxT("CommScope 3227     (RG-8)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableCommScope->Append( m_CommScope_3227 );
+
+	cableMenu->Append( m_cableCommScopeItem );
+
+	m_cableDavis = new wxMenu();
+	wxMenuItem* m_cableDavisItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Davis"), wxEmptyString, wxITEM_NORMAL, m_cableDavis );
+	wxMenuItem* m_Davis_RF_Bury_Flex;
+	m_Davis_RF_Bury_Flex = new wxMenuItem( m_cableDavis, ct_Davis_RF_Bury_Flex, wxString( wxT("Davis RF Bury-Flex") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDavis->Append( m_Davis_RF_Bury_Flex );
+
+	cableMenu->Append( m_cableDavisItem );
+
+	m_cableDXengineering = new wxMenu();
+	wxMenuItem* m_cableDXengineeringItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("DX Engineering"), wxEmptyString, wxITEM_NORMAL, m_cableDXengineering );
+	wxMenuItem* m_DX_Engineering_RG_8;
+	m_DX_Engineering_RG_8 = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_RG_8, wxString( wxT("DX Engineering RG-8") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_RG_8 );
+
+	wxMenuItem* m_DX_Engineering_RG_8X;
+	m_DX_Engineering_RG_8X = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_RG_8X, wxString( wxT("DX Engineering RG-8X") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_RG_8X );
+
+	wxMenuItem* m_DX_Engineering_RG_11;
+	m_DX_Engineering_RG_11 = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_RG_11, wxString( wxT("DX Engineering RG-11") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_RG_11 );
+
+	wxMenuItem* m_DX_Engineering_RG_58A;
+	m_DX_Engineering_RG_58A = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_RG_58A, wxString( wxT("DX Engineering RG-58A") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_RG_58A );
+
+	wxMenuItem* m_DX_Engineering_RG_213;
+	m_DX_Engineering_RG_213 = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_RG_213, wxString( wxT("DX Engineering RG-213") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_RG_213 );
+
+	wxMenuItem* m_DX_Engineering_RG_214;
+	m_DX_Engineering_RG_214 = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_RG_214, wxString( wxT("DX Engineering RG-214") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_RG_214 );
+
+	wxMenuItem* m_DX_Engineering_RG_400;
+	m_DX_Engineering_RG_400 = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_RG_400, wxString( wxT("DX Engineering RG-400") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_RG_400 );
+
+	wxMenuItem* m_DX_Engineering_DXE_400MAX;
+	m_DX_Engineering_DXE_400MAX = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_DXE_400MAX, wxString( wxT("DX Engineering DXE-400MAX") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_DXE_400MAX );
+
+	wxMenuItem* m_DX_Engineering_300_Ohm_LL;
+	m_DX_Engineering_300_Ohm_LL = new wxMenuItem( m_cableDXengineering, ct_DX_Engineering_300_Ohm_LL, wxString( wxT("DX Engineering 300-Ohm LL") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Engineering_300_Ohm_LL );
+
+	wxMenuItem* m_DX_Eng_300_Ohm_LL_wet;
+	m_DX_Eng_300_Ohm_LL_wet = new wxMenuItem( m_cableDXengineering, ct_DX_Eng_300_Ohm_LL_wet, wxString( wxT("DX Eng 300-Ohm LL (wet)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableDXengineering->Append( m_DX_Eng_300_Ohm_LL_wet );
+
+	cableMenu->Append( m_cableDXengineeringItem );
+
+	m_cablePasternack = new wxMenu();
+	wxMenuItem* m_cablePasternackItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Pasternack"), wxEmptyString, wxITEM_NORMAL, m_cablePasternack );
+	wxMenuItem* m_Pasternack_RG_142;
+	m_Pasternack_RG_142 = new wxMenuItem( m_cablePasternack, ct_Pasternack_RG_142, wxString( wxT("Pasternack RG-142") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cablePasternack->Append( m_Pasternack_RG_142 );
+
+	wxMenuItem* m_Pasternack_RG_218;
+	m_Pasternack_RG_218 = new wxMenuItem( m_cablePasternack, ct_Pasternack_RG_218, wxString( wxT("Pasternack RG-218") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cablePasternack->Append( m_Pasternack_RG_218 );
+
+	cableMenu->Append( m_cablePasternackItem );
+
+	m_cableRadioware = new wxMenu();
+	wxMenuItem* m_cableRadiowareItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Radioware"), wxEmptyString, wxITEM_NORMAL, m_cableRadioware );
+	wxMenuItem* m_Radioware_RG_6;
+	m_Radioware_RG_6 = new wxMenuItem( m_cableRadioware, ct_Radioware_RG_6, wxString( wxT("Radioware RG-6") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RG_6 );
+
+	wxMenuItem* m_Radioware_RG_8X;
+	m_Radioware_RG_8X = new wxMenuItem( m_cableRadioware, ct_Radioware_RG_8X, wxString( wxT("Radioware RG-8X") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RG_8X );
+
+	wxMenuItem* m_Radioware_RG_11;
+	m_Radioware_RG_11 = new wxMenuItem( m_cableRadioware, ct_Radioware_RG_11, wxString( wxT("Radioware RG-11") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RG_11 );
+
+	wxMenuItem* m_Radioware_RG_58;
+	m_Radioware_RG_58 = new wxMenuItem( m_cableRadioware, ct_Radioware_RG_58, wxString( wxT("Radioware RG-58") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RG_58 );
+
+	wxMenuItem* m_Radioware_RG_174;
+	m_Radioware_RG_174 = new wxMenuItem( m_cableRadioware, ct_Radioware_RG_174, wxString( wxT("Radioware RG-174") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RG_174 );
+
+	wxMenuItem* m_Radioware_RG_213;
+	m_Radioware_RG_213 = new wxMenuItem( m_cableRadioware, ct_Radioware_RG_213, wxString( wxT("Radioware RG-213") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RG_213 );
+
+	wxMenuItem* m_Radioware_RF_9913;
+	m_Radioware_RF_9913 = new wxMenuItem( m_cableRadioware, ct_Radioware_RF_9913, wxString( wxT("Radioware RF-9913") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RF_9913 );
+
+	wxMenuItem* m_Radioware_RF_9914F;
+	m_Radioware_RF_9914F = new wxMenuItem( m_cableRadioware, ct_Radioware_RF_9914F, wxString( wxT("Radioware RF-9914F") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableRadioware->Append( m_Radioware_RF_9914F );
+
+	cableMenu->Append( m_cableRadiowareItem );
+
+	m_cableTandy = new wxMenu();
+	wxMenuItem* m_cableTandyItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Tandy Cable"), wxEmptyString, wxITEM_NORMAL, m_cableTandy );
+	wxMenuItem* m_Tandy_Cable_RG_8X;
+	m_Tandy_Cable_RG_8X = new wxMenuItem( m_cableTandy, ct_Tandy_Cable_RG_8X, wxString( wxT("Tandy Cable RG-8X") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTandy->Append( m_Tandy_Cable_RG_8X );
+
+	wxMenuItem* m_Tandy_Cable_RG_58;
+	m_Tandy_Cable_RG_58 = new wxMenuItem( m_cableTandy, ct_Tandy_Cable_RG_58, wxString( wxT("Tandy Cable RG-58") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTandy->Append( m_Tandy_Cable_RG_58 );
+
+	wxMenuItem* m_Tandy_Cable_RG_59;
+	m_Tandy_Cable_RG_59 = new wxMenuItem( m_cableTandy, ct_Tandy_Cable_RG_59, wxString( wxT("Tandy Cable RG-59") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTandy->Append( m_Tandy_Cable_RG_59 );
+
+	cableMenu->Append( m_cableTandyItem );
+
+	m_cableTimes = new wxMenu();
+	wxMenuItem* m_cableTimesItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Times LMR"), wxEmptyString, wxITEM_NORMAL, m_cableTimes );
+	wxMenuItem* m_Times_LMR_100A;
+	m_Times_LMR_100A = new wxMenuItem( m_cableTimes, ct_Times_LMR_100A, wxString( wxT("Times LMR-100A") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_100A );
+
+	wxMenuItem* m_Times_LMR_195;
+	m_Times_LMR_195 = new wxMenuItem( m_cableTimes, ct_Times_LMR_195, wxString( wxT("Times LMR-195") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_195 );
+
+	wxMenuItem* m_Times_LMR_200;
+	m_Times_LMR_200 = new wxMenuItem( m_cableTimes, ct_Times_LMR_200, wxString( wxT("Times LMR-200") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_200 );
+
+	wxMenuItem* m_Times_LMR_240;
+	m_Times_LMR_240 = new wxMenuItem( m_cableTimes, ct_Times_LMR_240, wxString( wxT("Times LMR-240") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_240 );
+
+	wxMenuItem* m_Times_LMR_240_UF;
+	m_Times_LMR_240_UF = new wxMenuItem( m_cableTimes, ct_Times_LMR_240_UF, wxString( wxT("Times LMR-240-UF") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_240_UF );
+
+	wxMenuItem* m_Times_LMR_240_75;
+	m_Times_LMR_240_75 = new wxMenuItem( m_cableTimes, ct_Times_LMR_240_75, wxString( wxT("Times LMR-240-75") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_240_75 );
+
+	wxMenuItem* m_Times_LMR_300;
+	m_Times_LMR_300 = new wxMenuItem( m_cableTimes, ct_Times_LMR_300, wxString( wxT("Times LMR-300") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_300 );
+
+	wxMenuItem* m_Times_LMR_400;
+	m_Times_LMR_400 = new wxMenuItem( m_cableTimes, ct_Times_LMR_400, wxString( wxT("Times LMR-400") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_400 );
+
+	wxMenuItem* m_Times_LMR_400_UF;
+	m_Times_LMR_400_UF = new wxMenuItem( m_cableTimes, ct_Times_LMR_400_UF, wxString( wxT("Times LMR-400-UF") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_400_UF );
+
+	wxMenuItem* m_Times_LMR_400_75;
+	m_Times_LMR_400_75 = new wxMenuItem( m_cableTimes, ct_Times_LMR_400_75, wxString( wxT("Times LMR-400-75") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_400_75 );
+
+	wxMenuItem* m_Times_LMR_500;
+	m_Times_LMR_500 = new wxMenuItem( m_cableTimes, ct_Times_LMR_500, wxString( wxT("Times LMR-500") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_500 );
+
+	wxMenuItem* m_Times_LMR_600;
+	m_Times_LMR_600 = new wxMenuItem( m_cableTimes, ct_Times_LMR_600, wxString( wxT("Times LMR-600") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_600 );
+
+	wxMenuItem* m_Times_LMR_600_UF;
+	m_Times_LMR_600_UF = new wxMenuItem( m_cableTimes, ct_Times_LMR_600_UF, wxString( wxT("Times LMR-600-UF") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_600_UF );
+
+	wxMenuItem* m_Times_LMR_600_75;
+	m_Times_LMR_600_75 = new wxMenuItem( m_cableTimes, ct_Times_LMR_600_75, wxString( wxT("Times LMR-600-75") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_600_75 );
+
+	wxMenuItem* m_Times_LMR_900;
+	m_Times_LMR_900 = new wxMenuItem( m_cableTimes, ct_Times_LMR_900, wxString( wxT("Times LMR-900") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_900 );
+
+	wxMenuItem* m_Times_LMR_1200;
+	m_Times_LMR_1200 = new wxMenuItem( m_cableTimes, ct_Times_LMR_1200, wxString( wxT("Times LMR-1200") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_1200 );
+
+	wxMenuItem* m_Times_LMR_1700;
+	m_Times_LMR_1700 = new wxMenuItem( m_cableTimes, ct_Times_LMR_1700, wxString( wxT("Times LMR-1700") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableTimes->Append( m_Times_LMR_1700 );
+
+	cableMenu->Append( m_cableTimesItem );
+
+	m_cableWiremanCoax = new wxMenu();
+	wxMenuItem* m_cableWiremanCoaxItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Wireman Coax"), wxEmptyString, wxITEM_NORMAL, m_cableWiremanCoax );
+	wxMenuItem* m_Wireman_CQ102;
+	m_Wireman_CQ102 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ102, wxString( wxT("Wireman CQ102     (RG-8)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ102 );
+
+	wxMenuItem* m_Wireman_CQ106;
+	m_Wireman_CQ106 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ106, wxString( wxT("Wireman CQ106     (RG-8)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ106 );
+
+	wxMenuItem* m_Wireman_CQ1000;
+	m_Wireman_CQ1000 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ1000, wxString( wxT("Wireman CQ1000   (RG-8)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ1000 );
+
+	wxMenuItem* m_Wireman_CQ116;
+	m_Wireman_CQ116 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ116, wxString( wxT("Wireman CQ116     (RG-8X)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ116 );
+
+	wxMenuItem* m_Wireman_CQ117;
+	m_Wireman_CQ117 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ117, wxString( wxT("Wireman CQ117     (RG-8X)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ117 );
+
+	wxMenuItem* m_Wireman_CQ118;
+	m_Wireman_CQ118 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ118, wxString( wxT("Wireman CQ118     (RG-8X)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ118 );
+
+	wxMenuItem* m_Wireman_CQ124;
+	m_Wireman_CQ124 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ124, wxString( wxT("Wireman CQ124     (RG-58)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ124 );
+
+	wxMenuItem* m_Wireman_CQ129FF;
+	m_Wireman_CQ129FF = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ129FF, wxString( wxT("Wireman CQ129FF (RG-58)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ129FF );
+
+	wxMenuItem* m_Wireman_CQ113;
+	m_Wireman_CQ113 = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ113, wxString( wxT("Wireman CQ113     (RG-213)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ113 );
+
+	wxMenuItem* m_Wireman_CQ142A;
+	m_Wireman_CQ142A = new wxMenuItem( m_cableWiremanCoax, ct_Wireman_CQ142A, wxString( wxT("Wireman CQ142A   (RG-217)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanCoax->Append( m_Wireman_CQ142A );
+
+	cableMenu->Append( m_cableWiremanCoaxItem );
+
+	m_cableUTP = new wxMenu();
+	wxMenuItem* m_cableUTPItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("UTP"), wxEmptyString, wxITEM_NORMAL, m_cableUTP );
+	wxMenuItem* m_UTP_Category_3;
+	m_UTP_Category_3 = new wxMenuItem( m_cableUTP, ct_UTP_Category_3, wxString( wxT("UTP Category 3") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableUTP->Append( m_UTP_Category_3 );
+
+	wxMenuItem* m_UTP_Category_5E;
+	m_UTP_Category_5E = new wxMenuItem( m_cableUTP, ct_UTP_Category_5E, wxString( wxT("UTP Category 5E") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableUTP->Append( m_UTP_Category_5E );
+
+	wxMenuItem* m_UTP_Category_6;
+	m_UTP_Category_6 = new wxMenuItem( m_cableUTP, ct_UTP_Category_6, wxString( wxT("UTP Category 6") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableUTP->Append( m_UTP_Category_6 );
+
+	cableMenu->Append( m_cableUTPItem );
+
+	m_cableSTP = new wxMenu();
+	wxMenuItem* m_cableSTPItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("STP"), wxEmptyString, wxITEM_NORMAL, m_cableSTP );
+	wxMenuItem* m_STP_A_150_ohm;
+	m_STP_A_150_ohm = new wxMenuItem( m_cableSTP, ct_STP_A_150_ohm, wxString( wxT("STP-A 150 ohm") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableSTP->Append( m_STP_A_150_ohm );
+
+	cableMenu->Append( m_cableSTPItem );
+
+	m_cableWiremanLadder = new wxMenu();
+	wxMenuItem* m_cableWiremanLadderItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Wireman Ladder Line"), wxEmptyString, wxITEM_NORMAL, m_cableWiremanLadder );
+	wxMenuItem* m_Wireman_551_LL;
+	m_Wireman_551_LL = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_551_LL, wxString( wxT("Wireman 551 Ladder Line") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_551_LL );
+
+	wxMenuItem* m_Wireman_552_LL;
+	m_Wireman_552_LL = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_552_LL, wxString( wxT("Wireman 552 Ladder Line") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_552_LL );
+
+	wxMenuItem* m_Wireman_553_LL;
+	m_Wireman_553_LL = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_553_LL, wxString( wxT("Wireman 553 Ladder Line") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_553_LL );
+
+	wxMenuItem* m_Wireman_554_LL;
+	m_Wireman_554_LL = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_554_LL, wxString( wxT("Wireman 554 Ladder Line") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_554_LL );
+
+	wxMenuItem* m_Wireman_551_LL_ice_snow;
+	m_Wireman_551_LL_ice_snow = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_551_LL_ice_snow, wxString( wxT("Wireman 551 LL (ice/snow)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_551_LL_ice_snow );
+
+	wxMenuItem* m_Wireman_552_LL_ice_snow;
+	m_Wireman_552_LL_ice_snow = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_552_LL_ice_snow, wxString( wxT("Wireman 552 LL (ice/snow)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_552_LL_ice_snow );
+
+	wxMenuItem* m_Wireman_553_LL_ice_snow;
+	m_Wireman_553_LL_ice_snow = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_553_LL_ice_snow, wxString( wxT("Wireman 553 LL (ice/snow)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_553_LL_ice_snow );
+
+	wxMenuItem* m_Wireman_554_LL_ice_snow;
+	m_Wireman_554_LL_ice_snow = new wxMenuItem( m_cableWiremanLadder, ct_Wireman_554_LL_ice_snow, wxString( wxT("Wireman 554 LL (ice/snow)") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableWiremanLadder->Append( m_Wireman_554_LL_ice_snow );
+
+	cableMenu->Append( m_cableWiremanLadderItem );
+
+	m_cableGenericLadder = new wxMenu();
+	wxMenuItem* m_cableGenericLadderItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Generic Ladder Line"), wxEmptyString, wxITEM_NORMAL, m_cableGenericLadder );
+	wxMenuItem* m_Generic_300_ohm_Tubular;
+	m_Generic_300_ohm_Tubular = new wxMenuItem( m_cableGenericLadder, ct_Generic_300_ohm_Tubular, wxString( wxT("Generic 300 ohm Tubular") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableGenericLadder->Append( m_Generic_300_ohm_Tubular );
+
+	wxMenuItem* m_Generic_450_ohm_Window;
+	m_Generic_450_ohm_Window = new wxMenuItem( m_cableGenericLadder, ct_Generic_450_ohm_Window, wxString( wxT("Generic 450 ohm Window") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableGenericLadder->Append( m_Generic_450_ohm_Window );
+
+	wxMenuItem* m_Generic_600_ohm_Open;
+	m_Generic_600_ohm_Open = new wxMenuItem( m_cableGenericLadder, ct_Generic_600_ohm_Open, wxString( wxT("Generic 600 ohm Open") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableGenericLadder->Append( m_Generic_600_ohm_Open );
+
+	cableMenu->Append( m_cableGenericLadderItem );
+
+	m_cableIdealCoax = new wxMenu();
+	wxMenuItem* m_cableIdealCoaxItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("Ideal Coax"), wxEmptyString, wxITEM_NORMAL, m_cableIdealCoax );
+	wxMenuItem* m_Ideal_lossless_50_ohm;
+	m_Ideal_lossless_50_ohm = new wxMenuItem( m_cableIdealCoax, ct_Ideal_lossless_50_ohm, wxString( wxT("Ideal (lossless) 50 ohm") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableIdealCoax->Append( m_Ideal_lossless_50_ohm );
+
+	wxMenuItem* m_Ideal_lossless_75_ohm;
+	m_Ideal_lossless_75_ohm = new wxMenuItem( m_cableIdealCoax, ct_Ideal_lossless_75_ohm, wxString( wxT("Ideal (lossless) 75 ohm") ) , wxEmptyString, wxITEM_NORMAL );
+	m_cableIdealCoax->Append( m_Ideal_lossless_75_ohm );
+
+	cableMenu->Append( m_cableIdealCoaxItem );
+
+	m_cableUserDefined = new wxMenu();
+	wxMenuItem* m_cableUserDefinedItem = new wxMenuItem( cableMenu, wxID_ANY, wxT("User Defined Line"), wxEmptyString, wxITEM_NORMAL, m_cableUserDefined );
+	cableMenu->Append( m_cableUserDefinedItem );
+
+	ui_menubar->Append( cableMenu, wxT("Cable Type") );
+
 	helpMenu = new wxMenu();
 	wxMenuItem* ui_helpInfo;
 	ui_helpInfo = new wxMenuItem( helpMenu, wxID_ANY, wxString( wxT("Info") ) , wxEmptyString, wxITEM_NORMAL );
@@ -55,7 +566,7 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxBoxSizer* bCable;
 	bCable = new wxBoxSizer( wxHORIZONTAL );
 
-	ui_cableType = new wxComboBox( this, wxID_ANY, wxT("RG-8U"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	ui_cableType = new wxComboBox( this, wxID_ANY, wxT("RG-8U"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
 	ui_cableType->Append( wxT("Andrew Braided CNT-100") );
 	ui_cableType->Append( wxT("Andrew Braided CNT-195") );
 	ui_cableType->Append( wxT("Andrew Braided CNT-240") );
@@ -584,6 +1095,117 @@ tlineUI::tlineUI( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileLoad ), this, ui_fileMenuLoad->GetId());
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileSave ), this, ui_fileMenuSave->GetId());
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onFileExit ), this, ui_fileMenuExit->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Braided_CNT_100->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Braided_CNT_195->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Braided_CNT_240->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Braided_CNT_300->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Braided_CNT_400->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Braided_CNT_600->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Heliax_LDF4_50A->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Heliax_LDF5_50A->GetId());
+	m_cableAndrew->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Andrew_Heliax_LDF6_50->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8215->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_7915A->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9116->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8237->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9251->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9913->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9913F7->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9914->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9258->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8213->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8238->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8261->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9212->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8219->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8240->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8259->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8262->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9201->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8212->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8241->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8263->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9269->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_9857->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_83242->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_7805->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8216->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_83265->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_83269->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8267->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_8268->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_84303->GetId());
+	m_cableBelden->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Belden_84316->GetId());
+	m_cableCommScope->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_CommScope_2427K->GetId());
+	m_cableCommScope->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_CommScope_3227->GetId());
+	m_cableDavis->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Davis_RF_Bury_Flex->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_RG_8->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_RG_8X->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_RG_11->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_RG_58A->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_RG_213->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_RG_214->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_RG_400->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_DXE_400MAX->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Engineering_300_Ohm_LL->GetId());
+	m_cableDXengineering->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_DX_Eng_300_Ohm_LL_wet->GetId());
+	m_cablePasternack->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Pasternack_RG_142->GetId());
+	m_cablePasternack->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Pasternack_RG_218->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RG_6->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RG_8X->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RG_11->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RG_58->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RG_174->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RG_213->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RF_9913->GetId());
+	m_cableRadioware->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Radioware_RF_9914F->GetId());
+	m_cableTandy->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Tandy_Cable_RG_8X->GetId());
+	m_cableTandy->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Tandy_Cable_RG_58->GetId());
+	m_cableTandy->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Tandy_Cable_RG_59->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_100A->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_195->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_200->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_240->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_240_UF->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_240_75->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_300->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_400->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_400_UF->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_400_75->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_500->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_600->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_600_UF->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_600_75->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_900->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_1200->GetId());
+	m_cableTimes->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Times_LMR_1700->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ102->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ106->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ1000->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ116->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ117->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ118->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ124->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ129FF->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ113->GetId());
+	m_cableWiremanCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_CQ142A->GetId());
+	m_cableUTP->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_UTP_Category_3->GetId());
+	m_cableUTP->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_UTP_Category_5E->GetId());
+	m_cableUTP->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_UTP_Category_6->GetId());
+	m_cableSTP->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_STP_A_150_ohm->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_551_LL->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_552_LL->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_553_LL->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_554_LL->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_551_LL_ice_snow->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_552_LL_ice_snow->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_553_LL_ice_snow->GetId());
+	m_cableWiremanLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Wireman_554_LL_ice_snow->GetId());
+	m_cableGenericLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Generic_300_ohm_Tubular->GetId());
+	m_cableGenericLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Generic_450_ohm_Window->GetId());
+	m_cableGenericLadder->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Generic_600_ohm_Open->GetId());
+	m_cableIdealCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Ideal_lossless_50_ohm->GetId());
+	m_cableIdealCoax->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onCableType ), this, m_Ideal_lossless_75_ohm->GetId());
 	helpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onHelpInfo ), this, ui_helpInfo->GetId());
 	helpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( tlineUI::onHelpAbout ), this, ui_helpAbout->GetId());
 	ui_cableType->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( tlineUI::onCableTypeSelected ), NULL, this );

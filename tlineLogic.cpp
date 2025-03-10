@@ -378,6 +378,27 @@ void tlineLogic::onFileExit( wxCommandEvent& event )
 	Destroy();
 }
 
+void tlineLogic::onCableType( wxCommandEvent& event )
+{
+	cableTypes *cable;
+
+	cable = new cableTypes(event.GetId());
+	m_cableTypePrevStr = m_cableTypeStr;
+	m_cableTypeStr = cable->findName();
+	delete cable;
+
+	if(m_cableTypeStr == "User-Defined Transmission Line") {
+		m_newUserLine = TRUE;
+	} else {
+		// Line is not user specified.  Clear any warnings.
+		ui_updateWarning->SetLabel("");
+	}
+
+	m_saved = 0;
+
+	recalculate();
+}
+
 void tlineLogic::onHelpInfo( wxCommandEvent& event )
 {
 	// Create on stack.  Will be automatically cleaned up at

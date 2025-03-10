@@ -33,6 +33,118 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
+#define ct_Andrew_Braided_CNT_100 10000
+#define ct_Andrew_Braided_CNT_195 10001
+#define ct_Andrew_Braided_CNT_240 10002
+#define ct_Andrew_Braided_CNT_300 10003
+#define ct_Andrew_Braided_CNT_400 10004
+#define ct_Andrew_Braided_CNT_600 10005
+#define ct_Andrew_Heliax_LDF4_50A 10006
+#define ct_Andrew_Heliax_LDF5_50A 10007
+#define ct_Andrew_Heliax_LDF6_50 10008
+#define ct_Belden_8215 10009
+#define ct_Belden_7915A 10010
+#define ct_Belden_9116 10011
+#define ct_Belden_8237 10012
+#define ct_Belden_9251 10013
+#define ct_Belden_9913 10014
+#define ct_Belden_9913F7 10015
+#define ct_Belden_9914 10016
+#define ct_Belden_9258 10017
+#define ct_Belden_8213 10018
+#define ct_Belden_8238 10019
+#define ct_Belden_8261 10020
+#define ct_Belden_9212 10021
+#define ct_Belden_8219 10022
+#define ct_Belden_8240 10023
+#define ct_Belden_8259 10024
+#define ct_Belden_8262 10025
+#define ct_Belden_9201 10026
+#define ct_Belden_8212 10027
+#define ct_Belden_8241 10028
+#define ct_Belden_8263 10029
+#define ct_Belden_9269 10030
+#define ct_Belden_9857 10031
+#define ct_Belden_83242 10032
+#define ct_Belden_7805 10033
+#define ct_Belden_8216 10034
+#define ct_Belden_83265 10035
+#define ct_Belden_83269 10036
+#define ct_Belden_8267 10037
+#define ct_Belden_8268 10038
+#define ct_Belden_84303 10039
+#define ct_Belden_84316 10040
+#define ct_CommScope_2427K 10041
+#define ct_CommScope_3227 10042
+#define ct_Davis_RF_Bury_Flex 10043
+#define ct_DX_Engineering_RG_8 10044
+#define ct_DX_Engineering_RG_8X 10045
+#define ct_DX_Engineering_RG_11 10046
+#define ct_DX_Engineering_RG_58A 10047
+#define ct_DX_Engineering_RG_213 10048
+#define ct_DX_Engineering_RG_214 10049
+#define ct_DX_Engineering_RG_400 10050
+#define ct_DX_Engineering_DXE_400MAX 10051
+#define ct_DX_Engineering_300_Ohm_LL 10052
+#define ct_DX_Eng_300_Ohm_LL_wet 10053
+#define ct_Pasternack_RG_142 10054
+#define ct_Pasternack_RG_218 10055
+#define ct_Radioware_RG_6 10056
+#define ct_Radioware_RG_8X 10057
+#define ct_Radioware_RG_11 10058
+#define ct_Radioware_RG_58 10059
+#define ct_Radioware_RG_174 10060
+#define ct_Radioware_RG_213 10061
+#define ct_Radioware_RF_9913 10062
+#define ct_Radioware_RF_9914F 10063
+#define ct_Tandy_Cable_RG_8X 10064
+#define ct_Tandy_Cable_RG_58 10065
+#define ct_Tandy_Cable_RG_59 10066
+#define ct_Times_LMR_100A 10067
+#define ct_Times_LMR_195 10068
+#define ct_Times_LMR_200 10069
+#define ct_Times_LMR_240 10070
+#define ct_Times_LMR_240_UF 10071
+#define ct_Times_LMR_240_75 10072
+#define ct_Times_LMR_300 10073
+#define ct_Times_LMR_400 10074
+#define ct_Times_LMR_400_UF 10075
+#define ct_Times_LMR_400_75 10076
+#define ct_Times_LMR_500 10077
+#define ct_Times_LMR_600 10078
+#define ct_Times_LMR_600_UF 10079
+#define ct_Times_LMR_600_75 10080
+#define ct_Times_LMR_900 10081
+#define ct_Times_LMR_1200 10082
+#define ct_Times_LMR_1700 10083
+#define ct_Wireman_CQ102 10084
+#define ct_Wireman_CQ106 10085
+#define ct_Wireman_CQ1000 10086
+#define ct_Wireman_CQ116 10087
+#define ct_Wireman_CQ117 10088
+#define ct_Wireman_CQ118 10089
+#define ct_Wireman_CQ124 10090
+#define ct_Wireman_CQ129FF 10091
+#define ct_Wireman_CQ113 10092
+#define ct_Wireman_CQ142A 10093
+#define ct_UTP_Category_3 10094
+#define ct_UTP_Category_5E 10095
+#define ct_UTP_Category_6 10096
+#define ct_STP_A_150_ohm 10097
+#define ct_Wireman_551_LL 10098
+#define ct_Wireman_552_LL 10099
+#define ct_Wireman_553_LL 10100
+#define ct_Wireman_554_LL 10101
+#define ct_Wireman_551_LL_ice_snow 10102
+#define ct_Wireman_552_LL_ice_snow 10103
+#define ct_Wireman_553_LL_ice_snow 10104
+#define ct_Wireman_554_LL_ice_snow 10105
+#define ct_Generic_300_ohm_Tubular 10106
+#define ct_Generic_450_ohm_Window 10107
+#define ct_Generic_600_ohm_Open 10108
+#define ct_Ideal_lossless_50_ohm 10109
+#define ct_Ideal_lossless_75_ohm 10110
+
 ///////////////////////////////////////////////////////////////////////////////
 /// Class tlineUI
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,6 +156,23 @@ class tlineUI : public wxFrame
 		wxMenuBar* ui_menubar;
 		wxMenu* fileMenu;
 		wxMenuItem* ui_fileMenuExit;
+		wxMenu* cableMenu;
+		wxMenu* m_cableAndrew;
+		wxMenu* m_cableBelden;
+		wxMenu* m_cableCommScope;
+		wxMenu* m_cableDavis;
+		wxMenu* m_cableDXengineering;
+		wxMenu* m_cablePasternack;
+		wxMenu* m_cableRadioware;
+		wxMenu* m_cableTandy;
+		wxMenu* m_cableTimes;
+		wxMenu* m_cableWiremanCoax;
+		wxMenu* m_cableUTP;
+		wxMenu* m_cableSTP;
+		wxMenu* m_cableWiremanLadder;
+		wxMenu* m_cableGenericLadder;
+		wxMenu* m_cableIdealCoax;
+		wxMenu* m_cableUserDefined;
 		wxMenu* helpMenu;
 		wxStaticText* ui_programTitle;
 		wxComboBox* ui_cableType;
@@ -105,6 +234,7 @@ class tlineUI : public wxFrame
 		virtual void onFileLoad( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onFileExit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onCableType( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onHelpInfo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onHelpAbout( wxCommandEvent& event ) { event.Skip(); }
 		virtual void onCableTypeSelected( wxCommandEvent& event ) { event.Skip(); }

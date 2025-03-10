@@ -14,7 +14,7 @@
     <property name="embedded_files_path">res</property>
     <property name="encoding">UTF-8</property>
     <property name="file">tlineUI</property>
-    <property name="first_id">1000</property>
+    <property name="first_id">10000</property>
     <property name="internationalize">0</property>
     <property name="lua_skip_events">1</property>
     <property name="lua_ui_table">UI</property>
@@ -82,7 +82,7 @@
         <property name="window_extra_style"></property>
         <property name="window_name"></property>
         <property name="window_style"></property>
-        <object class="wxMenu" expanded="false">
+        <object class="wxMenu" expanded="true">
           <property name="label">File</property>
           <property name="name">fileMenu</property>
           <property name="permission">protected</property>
@@ -129,7 +129,1662 @@
             <event name="OnMenuSelection">onFileExit</event>
           </object>
         </object>
-        <object class="wxMenu" expanded="false">
+        <object class="wxMenu" expanded="true">
+          <property name="label">Cable Type</property>
+          <property name="name">cableMenu</property>
+          <property name="permission">protected</property>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Andrew</property>
+            <property name="name">m_cableAndrew</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Braided_CNT_100</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Braided CNT-100</property>
+              <property name="name">m_Andrew_Braided_CNT_100</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Braided_CNT_195</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Braided CNT-195</property>
+              <property name="name">m_Andrew_Braided_CNT_195</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Braided_CNT_240</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Braided CNT-240</property>
+              <property name="name">m_Andrew_Braided_CNT_240</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Braided_CNT_300</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Braided CNT-300</property>
+              <property name="name">m_Andrew_Braided_CNT_300</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Braided_CNT_400</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Braided CNT-400</property>
+              <property name="name">m_Andrew_Braided_CNT_400</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Braided_CNT_600</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Braided CNT-600</property>
+              <property name="name">m_Andrew_Braided_CNT_600</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Heliax_LDF4_50A</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Heliax LDF4-50A</property>
+              <property name="name">m_Andrew_Heliax_LDF4_50A</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Heliax_LDF5_50A</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Heliax LDF5-50A</property>
+              <property name="name">m_Andrew_Heliax_LDF5_50A</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Andrew_Heliax_LDF6_50</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Andrew Heliax LDF6-50</property>
+              <property name="name">m_Andrew_Heliax_LDF6_50</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Belden</property>
+            <property name="name">m_cableBelden</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8215</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8215    (RG-6A/U)</property>
+              <property name="name">m_Belden_8215</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_7915A</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 7915A   (RG-6/HDTV)</property>
+              <property name="name">m_Belden_7915A</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9116</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9116    (RG-6/CATV)</property>
+              <property name="name">m_Belden_9116</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8237</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8237    (RG-8/U)</property>
+              <property name="name">m_Belden_8237</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9251</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9251    (RG-8/U)</property>
+              <property name="name">m_Belden_9251</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9913</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9913    (RG-8/U)</property>
+              <property name="name">m_Belden_9913</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9913F7</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9913F7 (RG-8/U)</property>
+              <property name="name">m_Belden_9913F7</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9914</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9914    (RG-8/U)</property>
+              <property name="name">m_Belden_9914</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9258</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9258    (RG-8X)</property>
+              <property name="name">m_Belden_9258</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8213</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8213    (RG-11/U)</property>
+              <property name="name">m_Belden_8213</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8238</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8238    (RG-11/U)</property>
+              <property name="name">m_Belden_8238</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8261</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8261    (RG-11A/U)</property>
+              <property name="name">m_Belden_8261</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9212</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9212    (RG-11/U)</property>
+              <property name="name">m_Belden_9212</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8219</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8219    (RG-58A/U)</property>
+              <property name="name">m_Belden_8219</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8240</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8240    (RG-58A/U)</property>
+              <property name="name">m_Belden_8240</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8259</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8259    (RG-58A/U)</property>
+              <property name="name">m_Belden_8259</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8262</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8262    (RG-58C/U)</property>
+              <property name="name">m_Belden_8262</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9201</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9201    (RG-58/U)</property>
+              <property name="name">m_Belden_9201</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8212</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8212    (RG-59/U)</property>
+              <property name="name">m_Belden_8212</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8241</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8241    (RG-59/U)</property>
+              <property name="name">m_Belden_8241</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8263</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8263    (RG-59B/U)</property>
+              <property name="name">m_Belden_8263</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9269</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9269    (RG-62A/U)</property>
+              <property name="name">m_Belden_9269</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_9857</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 9857    (RG-63/U)</property>
+              <property name="name">m_Belden_9857</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_83242</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 83242  (RG-142B/U)</property>
+              <property name="name">m_Belden_83242</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_7805</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 7805    (RG-174/U)</property>
+              <property name="name">m_Belden_7805</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8216</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8216    (RG-174/U)</property>
+              <property name="name">m_Belden_8216</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_83265</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 83265  (RG-178B/U)</property>
+              <property name="name">m_Belden_83265</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_83269</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 83269  (RG-188A/U)</property>
+              <property name="name">m_Belden_83269</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8267</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8267    (RG-213/U)</property>
+              <property name="name">m_Belden_8267</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_8268</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 8268    (RG-214/U)</property>
+              <property name="name">m_Belden_8268</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_84303</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 84303   (RG-303/U)</property>
+              <property name="name">m_Belden_84303</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Belden_84316</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Belden 84316   (RG-316/U)</property>
+              <property name="name">m_Belden_84316</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">CommScope</property>
+            <property name="name">m_cableCommScope</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_CommScope_2427K</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">CommScope 2427K   (RG-8)</property>
+              <property name="name">m_CommScope_2427K</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_CommScope_3227</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">CommScope 3227     (RG-8)</property>
+              <property name="name">m_CommScope_3227</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Davis</property>
+            <property name="name">m_cableDavis</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Davis_RF_Bury_Flex</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Davis RF Bury-Flex</property>
+              <property name="name">m_Davis_RF_Bury_Flex</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">DX Engineering</property>
+            <property name="name">m_cableDXengineering</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_RG_8</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering RG-8</property>
+              <property name="name">m_DX_Engineering_RG_8</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_RG_8X</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering RG-8X</property>
+              <property name="name">m_DX_Engineering_RG_8X</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_RG_11</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering RG-11</property>
+              <property name="name">m_DX_Engineering_RG_11</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_RG_58A</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering RG-58A</property>
+              <property name="name">m_DX_Engineering_RG_58A</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_RG_213</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering RG-213</property>
+              <property name="name">m_DX_Engineering_RG_213</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_RG_214</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering RG-214</property>
+              <property name="name">m_DX_Engineering_RG_214</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_RG_400</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering RG-400</property>
+              <property name="name">m_DX_Engineering_RG_400</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_DXE_400MAX</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering DXE-400MAX</property>
+              <property name="name">m_DX_Engineering_DXE_400MAX</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Engineering_300_Ohm_LL</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Engineering 300-Ohm LL</property>
+              <property name="name">m_DX_Engineering_300_Ohm_LL</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_DX_Eng_300_Ohm_LL_wet</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">DX Eng 300-Ohm LL (wet)</property>
+              <property name="name">m_DX_Eng_300_Ohm_LL_wet</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Pasternack</property>
+            <property name="name">m_cablePasternack</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Pasternack_RG_142</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Pasternack RG-142</property>
+              <property name="name">m_Pasternack_RG_142</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Pasternack_RG_218</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Pasternack RG-218</property>
+              <property name="name">m_Pasternack_RG_218</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Radioware</property>
+            <property name="name">m_cableRadioware</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RG_6</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RG-6</property>
+              <property name="name">m_Radioware_RG_6</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RG_8X</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RG-8X</property>
+              <property name="name">m_Radioware_RG_8X</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RG_11</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RG-11</property>
+              <property name="name">m_Radioware_RG_11</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RG_58</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RG-58</property>
+              <property name="name">m_Radioware_RG_58</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RG_174</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RG-174</property>
+              <property name="name">m_Radioware_RG_174</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RG_213</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RG-213</property>
+              <property name="name">m_Radioware_RG_213</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RF_9913</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RF-9913</property>
+              <property name="name">m_Radioware_RF_9913</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Radioware_RF_9914F</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Radioware RF-9914F</property>
+              <property name="name">m_Radioware_RF_9914F</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Tandy Cable</property>
+            <property name="name">m_cableTandy</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Tandy_Cable_RG_8X</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Tandy Cable RG-8X</property>
+              <property name="name">m_Tandy_Cable_RG_8X</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Tandy_Cable_RG_58</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Tandy Cable RG-58</property>
+              <property name="name">m_Tandy_Cable_RG_58</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Tandy_Cable_RG_59</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Tandy Cable RG-59</property>
+              <property name="name">m_Tandy_Cable_RG_59</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Times LMR</property>
+            <property name="name">m_cableTimes</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_100A</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-100A</property>
+              <property name="name">m_Times_LMR_100A</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_195</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-195</property>
+              <property name="name">m_Times_LMR_195</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_200</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-200</property>
+              <property name="name">m_Times_LMR_200</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_240</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-240</property>
+              <property name="name">m_Times_LMR_240</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_240_UF</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-240-UF</property>
+              <property name="name">m_Times_LMR_240_UF</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_240_75</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-240-75</property>
+              <property name="name">m_Times_LMR_240_75</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_300</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-300</property>
+              <property name="name">m_Times_LMR_300</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_400</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-400</property>
+              <property name="name">m_Times_LMR_400</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_400_UF</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-400-UF</property>
+              <property name="name">m_Times_LMR_400_UF</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_400_75</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-400-75</property>
+              <property name="name">m_Times_LMR_400_75</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_500</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-500</property>
+              <property name="name">m_Times_LMR_500</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_600</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-600</property>
+              <property name="name">m_Times_LMR_600</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_600_UF</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-600-UF</property>
+              <property name="name">m_Times_LMR_600_UF</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_600_75</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-600-75</property>
+              <property name="name">m_Times_LMR_600_75</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_900</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-900</property>
+              <property name="name">m_Times_LMR_900</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_1200</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-1200</property>
+              <property name="name">m_Times_LMR_1200</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Times_LMR_1700</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Times LMR-1700</property>
+              <property name="name">m_Times_LMR_1700</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Wireman Coax</property>
+            <property name="name">m_cableWiremanCoax</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ102</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ102     (RG-8)</property>
+              <property name="name">m_Wireman_CQ102</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ106</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ106     (RG-8)</property>
+              <property name="name">m_Wireman_CQ106</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ1000</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ1000   (RG-8)</property>
+              <property name="name">m_Wireman_CQ1000</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ116</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ116     (RG-8X)</property>
+              <property name="name">m_Wireman_CQ116</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ117</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ117     (RG-8X)</property>
+              <property name="name">m_Wireman_CQ117</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ118</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ118     (RG-8X)</property>
+              <property name="name">m_Wireman_CQ118</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ124</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ124     (RG-58)</property>
+              <property name="name">m_Wireman_CQ124</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ129FF</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ129FF (RG-58)</property>
+              <property name="name">m_Wireman_CQ129FF</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ113</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ113     (RG-213)</property>
+              <property name="name">m_Wireman_CQ113</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_CQ142A</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman CQ142A   (RG-217)</property>
+              <property name="name">m_Wireman_CQ142A</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">UTP</property>
+            <property name="name">m_cableUTP</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_UTP_Category_3</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">UTP Category 3</property>
+              <property name="name">m_UTP_Category_3</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_UTP_Category_5E</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">UTP Category 5E</property>
+              <property name="name">m_UTP_Category_5E</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_UTP_Category_6</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">UTP Category 6</property>
+              <property name="name">m_UTP_Category_6</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">STP</property>
+            <property name="name">m_cableSTP</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_STP_A_150_ohm</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">STP-A 150 ohm</property>
+              <property name="name">m_STP_A_150_ohm</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Wireman Ladder Line</property>
+            <property name="name">m_cableWiremanLadder</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_551_LL</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 551 Ladder Line</property>
+              <property name="name">m_Wireman_551_LL</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_552_LL</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 552 Ladder Line</property>
+              <property name="name">m_Wireman_552_LL</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_553_LL</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 553 Ladder Line</property>
+              <property name="name">m_Wireman_553_LL</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_554_LL</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 554 Ladder Line</property>
+              <property name="name">m_Wireman_554_LL</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_551_LL_ice_snow</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 551 LL (ice/snow)</property>
+              <property name="name">m_Wireman_551_LL_ice_snow</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_552_LL_ice_snow</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 552 LL (ice/snow)</property>
+              <property name="name">m_Wireman_552_LL_ice_snow</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_553_LL_ice_snow</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 553 LL (ice/snow)</property>
+              <property name="name">m_Wireman_553_LL_ice_snow</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Wireman_554_LL_ice_snow</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Wireman 554 LL (ice/snow)</property>
+              <property name="name">m_Wireman_554_LL_ice_snow</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Generic Ladder Line</property>
+            <property name="name">m_cableGenericLadder</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Generic_300_ohm_Tubular</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Generic 300 ohm Tubular</property>
+              <property name="name">m_Generic_300_ohm_Tubular</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Generic_450_ohm_Window</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Generic 450 ohm Window</property>
+              <property name="name">m_Generic_450_ohm_Window</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Generic_600_ohm_Open</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Generic 600 ohm Open</property>
+              <property name="name">m_Generic_600_ohm_Open</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="false">
+            <property name="bitmap"></property>
+            <property name="label">Ideal Coax</property>
+            <property name="name">m_cableIdealCoax</property>
+            <property name="permission">protected</property>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Ideal_lossless_50_ohm</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Ideal (lossless) 50 ohm</property>
+              <property name="name">m_Ideal_lossless_50_ohm</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+            <object class="wxMenuItem" expanded="false">
+              <property name="bitmap"></property>
+              <property name="checked">0</property>
+              <property name="enabled">1</property>
+              <property name="help"></property>
+              <property name="id">ct_Ideal_lossless_75_ohm</property>
+              <property name="kind">wxITEM_NORMAL</property>
+              <property name="label">Ideal (lossless) 75 ohm</property>
+              <property name="name">m_Ideal_lossless_75_ohm</property>
+              <property name="permission">none</property>
+              <property name="shortcut"></property>
+              <property name="unchecked_bitmap"></property>
+              <event name="OnMenuSelection">onCableType</event>
+            </object>
+          </object>
+          <object class="submenu" expanded="true">
+            <property name="bitmap"></property>
+            <property name="label">User Defined Line</property>
+            <property name="name">m_cableUserDefined</property>
+            <property name="permission">protected</property>
+          </object>
+        </object>
+        <object class="wxMenu" expanded="true">
           <property name="label">Help</property>
           <property name="name">helpMenu</property>
           <property name="permission">protected</property>
@@ -291,7 +1946,7 @@
                 <property name="selection">0</property>
                 <property name="show">1</property>
                 <property name="size"></property>
-                <property name="style"></property>
+                <property name="style">wxCB_READONLY</property>
                 <property name="subclass">; ; forward_declare</property>
                 <property name="toolbar_pane">0</property>
                 <property name="tooltip"></property>

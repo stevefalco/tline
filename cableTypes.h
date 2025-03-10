@@ -28,6 +28,11 @@ class cableTypes
 				double		frequency
 				);
 
+		cableTypes(
+				wxWindowID	id
+				);
+
+		wxString findName();
 		double findAtten();
 		double findVF();
 		double findZoReal();
@@ -35,6 +40,7 @@ class cableTypes
 		double findVoltageLimit();
 
 	private:
+		wxString		m_name;
 		double			m_voltageLimit;
 		double			m_Rdc;
 		double			m_Rhf;
