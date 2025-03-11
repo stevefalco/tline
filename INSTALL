@@ -96,8 +96,8 @@ If you have a multi-core CPU, you can speed up the compilation by replacing
 step 4 above with "make -jN" where N is number of CPU cores available.
 
 If you need to see the full text of the commands being executed by "make", add
-VERBOSE=1 to the command.  For example, to produce a verbose build, with 12
-CPU cores available, step 4 would be:
+VERBOSE=1 to the command.  For example, to produce a verbose build with 12
+CPU cores available, use:
 
 make -j12 VERBOSE=1
 
@@ -111,7 +111,7 @@ Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 Note that the "TAG=x.x.x" must be changed to match the version in the
 spec file, and that has to match a tag in git.
 
-TAG=1.0.1
+TAG=1.0.2
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -131,7 +131,7 @@ directory, then pass that to mock.  I like to use two windows for this.
 
 In window 1, in the source directory, do:
 
-TAG=1.0.1
+TAG=1.0.2
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -140,7 +140,7 @@ mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
 
 In window 2 do:
 
-TAG=1.0.1
+TAG=1.0.2
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
 mock -r fedora-41-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc41.src.rpm
@@ -198,7 +198,7 @@ sudo pbuilder create --basetgz /var/cache/pbuilder/noble.tgz \
 
 Then run the builds:
 
-TAG=1.0.1
+TAG=1.0.2
 mkdir ~/build
 git archive --format=tar.gz --prefix=tline/ -o ~/build/tline_${TAG}.orig.tar.gz tags/${TAG}
 
@@ -227,7 +227,7 @@ files are stored in the windows-installer subdirectory.
 Build the Tline.exe file, copy it into the windows-installer directory, and
 generate the package:
 
-TAG=1.0.1
+TAG=1.0.2
 mkdir build-windows
 cd build-windows
 mingw64-cmake -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF ..

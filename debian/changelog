@@ -1,3 +1,9 @@
+tline (1.0.2-1ubuntu1) jammy; urgency=medium
+
+  * Lots of code cleanup
+
+ -- Steven A. Falco <stevenfalco@gmail.com>  Tue, 11 Feb 2025 10:26:50 -0400
+
 tline (1.0.1-1ubuntu1) jammy; urgency=medium
 
   * Working on ubuntu build
