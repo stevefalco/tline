@@ -5,7 +5,7 @@ find_package(wxWidgets REQUIRED COMPONENTS net core base webview xrc html qa adv
 
 include(${wxWidgets_USE_FILE})
  
-set( EXTRA_CXX_FLAGS "")
+set( EXTRA_CXX_FLAGS "-std=gnu++23 -Wno-deprecated-enum-enum-conversion")
 
 option( TLINE_DEBUG
 	"Build for debugging (default OFF)"

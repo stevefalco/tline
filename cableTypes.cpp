@@ -23,6 +23,7 @@
 
 #include "wx/log.h"
 
+#include <array>
 #include <cstring>
 #include <complex>
 using namespace std;

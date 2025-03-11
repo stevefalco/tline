@@ -1,13 +1,12 @@
 0) General Information:
 =======================
 
+Development of Tline is done under Fedora Linux.
+
 This program uses wxFormBuilder to generate its user interface, so if you
 want to make any UI changes, install wxFormBuilder and open tline.fbp.
 After making your changes, type F8 in wxFormBuilder to regenerate the
 tlineUI.h and tlineUI.cpp files.
-
-Development of Tline is done under Fedora Linux.  I also use Fedora Linux
-to cross-compile packages for Windows and Ubuntu.
 
 tline is reasonably self-contained, but it does use gnuplot (and xterm on
 Linux) for graphing.  The Tline windows installer includes the needed
@@ -152,13 +151,13 @@ mock -r fedora-41-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc41.src.rpm
 =================
 
 The following packages are required in order to build and run tline manually
-on an Ubuntu system:
+on Ubuntu systems (jammy and older):
 
 apt install build-essential cmake imagemagick librsvg2-bin vim-common \
   libwxbase3.0-dev libwxgtk-webview3.0-gtk3-dev libwxgtk3.0-gtk3-dev \
   gnuplot xterm gsfonts xxd
 
-Newer Ubuntu systems (noble and later) instead use:
+Newer Ubuntu systems (noble and newer) instead use:
 
 apt install build-essential cmake imagemagick librsvg2-bin vim-common \
   libwxgtk-webview3.2-dev libwxgtk3.2-dev gnuplot xterm gsfonts xxd
@@ -175,8 +174,8 @@ If you have a multi-core CPU, you can speed up the compilation by replacing
 step 4 above with "make -jN" where N is number of CPU cores available.
 
 If you need to see the full text of the commands being executed by "make", add
-VERBOSE=1 to the command.  For example, to produce a verbose build, with 12
-CPU cores available, step 4 would be:
+VERBOSE=1 to the command.  For example, to produce a verbose build with 12
+CPU cores available, use:
 
 make -j12 VERBOSE=1
 
@@ -189,7 +188,7 @@ If you are set up for pdebuild on Ubuntu (and perhaps on other debian-based
 systems), then here are the recommended steps.
 
 First, create the base distributions for whichever variants of Ubuntu you wish
-to use, in this case "jammy" and "noble":
+to use.  We'll choose "jammy" and "noble" for this example:
 
 sudo pbuilder create --basetgz /var/cache/pbuilder/jammy.tgz \
   --distribution jammy

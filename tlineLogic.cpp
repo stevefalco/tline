@@ -209,7 +209,7 @@ void tlineLogic::loadFile( wxString path )
 			continue;
 		}
 
-		if(line.starts_with( wxT( "#" ) )) {
+		if(line.StartsWith( wxT( "#" ) )) {
 			continue;
 		}
 
@@ -872,12 +872,21 @@ void tlineLogic::doPlot( int type, int mode )
 	// Build and execute the plot command.  The shell script will unlink
 	// the temp files when gnuplot exits.
 	shellFP.Close();
-	system(wxString::Format(wxT("xterm -e %s &"), shellName).mb_str());
+	if(system(wxString::Format(wxT("xterm -e %s &"), shellName).mb_str())) {
+		wxLogError("Cannot execute xterm");
+		goto DELETE_SHELL;
+	}
 #elif defined _WIN32
 	// Build and execute the plot command.  We will unlink the
 	// temp files after gnuplot returns.
-	system(wxString::Format(wxT("gnuplot %s %s"), controlName, (mode == PLOT) ? "-" : "").mb_str());
-	system(wxString::Format(wxT("del %s %s"), controlName, dataName).mb_str());
+	if(system(wxString::Format(wxT("gnuplot %s %s"), controlName, (mode == PLOT) ? "-" : "").mb_str())) {
+		wxLogError("Cannot execute gnuplot");
+		goto DELETE_SHELL;
+	}
+	if(system(wxString::Format(wxT("del %s %s"), controlName, dataName).mb_str())) {
+		wxLogError("Cannot clean up control files");
+		goto DELETE_SHELL;
+	}
 #endif // __linux, _WIN32
 	return;
 
