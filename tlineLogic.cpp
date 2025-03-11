@@ -124,6 +124,21 @@ tlineLogic::tlineLogic( wxWindow* parent, wxString fileName ) : tlineUI( parent 
 	m_tunerInit = FALSE;
 
 	// Set our defaults.
+	m_cableTypeStr = wxT("Andrew Braided CNT-100");
+	m_cableTypePrevStr = wxT("Andrew Braided CNT-100");
+	m_loadInputStr = wxT("Load");
+	m_unitsStr = wxT("Feet");
+	m_widthStr = wxT("800");
+	m_heightStr = wxT("700");
+
+	m_userLineAttenuationStr = wxT("0.0");
+	m_userLineCableImpedanceStr = wxT("0.0");
+	m_userLineCableReactanceStr = wxT("0.0");
+	m_userLineCableResistanceStr = wxT("0.0");
+	m_userLineCableVoltageLimitStr = wxT("0.0");
+	m_userLineVelocityFactorStr = wxT("0.0");
+	m_userLineLastMethodStr = wxT("1");
+
 	m_powerStr = wxT("1500.0");
 	ui_power->ChangeValue(m_powerStr);
 
@@ -900,7 +915,7 @@ void tlineLogic::saveData()
 
 	generateGraphableData( &f );
 
-	if(f.Flush()) {
+	if(!f.Flush()) {
 		wxLogError("Cannot flush file '%s'", saveFileDialog.GetPath());
 		return;
 	}

@@ -92,14 +92,12 @@ class tlineLogic : public tlineUI
 		bool			m_userLineInit;
 		bool			m_userSpecifiedZ;
 
-		// The cable type strings here must match the first member
-		// of the cableProperties table.
-		wxString		m_cableTypeStr = _("Andrew Braided CNT-100");
-		wxString		m_cableTypePrevStr = _("Andrew Braided CNT-100");
-		wxString		m_loadInputStr = _("Load");
-		wxString		m_unitsStr = _("Feet");
-		wxString		m_widthStr = _("800");
-		wxString		m_heightStr = _("700");
+		wxString		m_cableTypeStr;
+		wxString		m_cableTypePrevStr;
+		wxString		m_loadInputStr;
+		wxString		m_unitsStr;
+		wxString		m_widthStr;
+		wxString		m_heightStr;
 
 		double			m_attenDBPerUnitLength;
 		double			m_attenNepersPerUnitLength;
@@ -141,13 +139,13 @@ class tlineLogic : public tlineUI
 		wxString		m_tunerSourceResistanceStr;
 		wxString		m_tunerTopologyStr;
 
-		wxString		m_userLineAttenuationStr = _("0.0");
-		wxString		m_userLineCableImpedanceStr = _("0.0");
-		wxString		m_userLineCableReactanceStr = _("0.0");
-		wxString		m_userLineCableResistanceStr = _("0.0");
-		wxString		m_userLineCableVoltageLimitStr = _("0.0");
-		wxString		m_userLineVelocityFactorStr = _("0.0");
-		wxString		m_userLineLastMethodStr = _("1");
+		wxString		m_userLineAttenuationStr;
+		wxString		m_userLineCableImpedanceStr;
+		wxString		m_userLineCableReactanceStr;
+		wxString		m_userLineCableResistanceStr;
+		wxString		m_userLineCableVoltageLimitStr;
+		wxString		m_userLineVelocityFactorStr;
+		wxString		m_userLineLastMethodStr;
 
 		complex<double>		m_lossCoef;
 		complex<double>		m_rhoLoad;
