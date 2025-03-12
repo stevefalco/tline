@@ -1,5 +1,5 @@
 Name:           tline
-Version:        1.0.2
+Version:        1.0.3
 Release:        1%{?dist}
 Epoch:          1
 Summary:        Transmission Line calculator
