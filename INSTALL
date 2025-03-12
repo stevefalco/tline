@@ -1,16 +1,37 @@
-0) General Information:
-=======================
+0) General Information for users:
+=================================
 
-Development of Tline is done under Fedora Linux.
+tline is reasonably self-contained, but it does use gnuplot (and xterm on
+Linux) for graphing.
+
+The tline Windows installer includes the needed graphing components, and will
+offer to install them when you install tline.
+
+The Linux packages have gnuplot and xterm as dependencies, so your package
+manager (dnf or apt) will install those pieces automatically as part of the
+tline installation.
+
+ONE VERY IMPORTANT DETAIL FOR WINDOWS USERS: Whether you let tline install
+gnuplot, or whether you install gnuplot separately, it is important to add
+it to your %PATH% variable.  gnuplot can do this for you; its installer will
+display a dialog titled "Select Additional Tasks" and that dialog will have a
+check-box called "Add application directory to your PATH environment variable".
+You need to select that check-box so tline can find your copy of gnuplot.
+
+One more detail for Windows users: Neither tline nor gnuplot are signed, which
+means that Windows will display a security warning stating "Windows protected
+your PC".  You will have to click "More info" followed by "Run anyway" if you
+wish to install tline and gnuplot.
+
+0) General Information for developers:
+======================================
+
+Development of tline is done under Fedora Linux.
 
 This program uses wxFormBuilder to generate its user interface, so if you
 want to make any UI changes, install wxFormBuilder and open tline.fbp.
 After making your changes, type F8 in wxFormBuilder to regenerate the
 tlineUI.h and tlineUI.cpp files.
-
-tline is reasonably self-contained, but it does use gnuplot (and xterm on
-Linux) for graphing.  The Tline windows installer includes the needed
-graphing components, and will install them on request.
 
 1) Regarding destinations:
 ==========================
@@ -29,9 +50,9 @@ There is a flag, TLINE_DEBUG, which defaults to OFF.  If it is OFF,
 a -O2 flag is added to the CFLAGS.  If it is ON, a -g flag is added to
 the CFLAGS.
 
-To turn the flag on, the syntax is cmake -DTLINE_DEBUG=ON
+To turn the flag on, the syntax is "cmake -DTLINE_DEBUG=ON"
 
-To turn the flag off, the syntax is cmake -DTLINE_DEBUG=OFF
+To turn the flag off, the syntax is "cmake -DTLINE_DEBUG=OFF"
 
 3) Regarding stripping:
 =======================
@@ -40,9 +61,9 @@ There is a flag, TLINE_STRIP, which defaults to ON.  If it is ON,
 a -s flag is added to the CFLAGS.  If it is OFF, no flag will be added
 to the CFLAGS.
 
-To turn the flag off, the syntax is cmake -DTLINE_STRIP=OFF
+To turn the flag off, the syntax is "cmake -DTLINE_STRIP=OFF"
 
-To turn the flag on, the syntax is cmake -DTLINE_STRIP=ON
+To turn the flag on, the syntax is "cmake -DTLINE_STRIP=ON"
 
 4) Summary:
 ===========
@@ -52,7 +73,7 @@ If you don't specify anything extra to cmake, files will land in
 and built with -O2.
 
 Note that setting -DTLINE_DEBUG=ON will override -DTLINE_STRIP=ON, because
-it makes no sense to use CFLAGS with both -g and -s.
+it makes no sense to strip a debug build.
 
 5) BUILDING FOR FEDORA LINUX
 ============================
@@ -62,8 +83,6 @@ it makes no sense to use CFLAGS with both -g and -s.
 
 The following packages are required in order to build and run tline manually
 on a Fedora system:
-
-For building, you will need:
 
   cmake
   gcc-c++
@@ -83,24 +102,26 @@ All of the above packages can be installed via:
 dnf install cmake gcc-c++ wxGTK-devel vim-common ImageMagick \
   desktop-file-utils libappstream-glib gnuplot-wx xterm
 
-Once the above requirements are installed, compilation for Fedora
-can then be done by the following steps:
+Once the above requirements are installed, compilation for Fedora can then
+be done by the following steps:
 
 mkdir build-fedora
 cd build-fedora
 cmake ..
 make
 
-If you have a multi-core CPU, you can speed up the compilation by replacing
-step 4 above with "make -jN" where N is number of CPU cores available.
+This will result in the tline binary being created as "build-fedora/tline".
 
-If you need to see the full text of the commands being executed by "make", add
-VERBOSE=1 to the command.  For example, to produce a verbose build with 12
-CPU cores available, use:
+Note: If you have a multi-core CPU, you can speed up the compilation by adding
+the -jN flag to the "make" command, where N is number of CPU cores available.
+
+If you want to see the full text of the commands being executed by "make", add
+VERBOSE=1 to the command.
+
+For example, to produce a verbose build on a machine with 12 CPU cores
+available, use:
 
 make -j12 VERBOSE=1
-
-This will result in the tline binary being created as "build-fedora/tline".
 
 5b) RPM builds
 ==============
@@ -116,7 +137,6 @@ rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
 cp spec/tline.spec ~/rpmbuild/SPECS
 mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
-
 cd ~/rpmbuild
 rpmbuild -ba SPECS/tline.spec
 
@@ -125,8 +145,8 @@ rpmbuild -ba SPECS/tline.spec
 
 If you are set up for mock on Fedora, you can use it to do a build, again
 adjusting the version string and target Fedora version as necessary.  In
-this case, you first generate the source RPM in your local rpmbuild
-directory, then pass that to mock.  I like to use two windows for this.
+this case, you first generate the source RPM in your local rpmbuild directory,
+then pass that to mock.  I like to use two windows for this.
 
 In window 1, in the source directory, do:
 
@@ -151,13 +171,13 @@ mock -r fedora-41-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc41.src.rpm
 =================
 
 The following packages are required in order to build and run tline manually
-on Ubuntu systems (jammy and older):
+on jammy (and older) Ubuntu systems:
 
 apt install build-essential cmake imagemagick librsvg2-bin vim-common \
   libwxbase3.0-dev libwxgtk-webview3.0-gtk3-dev libwxgtk3.0-gtk3-dev \
   gnuplot xterm gsfonts xxd
 
-Newer Ubuntu systems (noble and newer) instead use:
+Newer Ubuntu systems (starting with noble) instead should use:
 
 apt install build-essential cmake imagemagick librsvg2-bin vim-common \
   libwxgtk-webview3.2-dev libwxgtk3.2-dev gnuplot xterm gsfonts xxd
@@ -170,16 +190,18 @@ cd build-ubuntu
 cmake ..
 make
 
-If you have a multi-core CPU, you can speed up the compilation by replacing
-step 4 above with "make -jN" where N is number of CPU cores available.
+This will result in the tline binary being created as "build-ubuntu/tline".
 
-If you need to see the full text of the commands being executed by "make", add
-VERBOSE=1 to the command.  For example, to produce a verbose build with 12
-CPU cores available, use:
+Note: If you have a multi-core CPU, you can speed up the compilation by adding
+the -jN flag to the "make" command, where N is number of CPU cores available.
+
+If you want to see the full text of the commands being executed by "make", add
+VERBOSE=1 to the command.
+
+For example, to produce a verbose build on a machine with 12 CPU cores
+available, use:
 
 make -j12 VERBOSE=1
-
-This will result in the tline binary being created as "build-ubuntu/tline".
 
 6b) PDEBUILD builds
 ===================
@@ -190,54 +212,57 @@ systems), then here are the recommended steps.
 First, create the base distributions for whichever variants of Ubuntu you wish
 to use.  We'll choose "jammy" and "noble" for this example:
 
-sudo pbuilder create --basetgz /var/cache/pbuilder/jammy.tgz \
-  --distribution jammy
-sudo pbuilder create --basetgz /var/cache/pbuilder/noble.tgz \
-  --distribution noble
+sudo pbuilder create --basetgz /var/cache/pbuilder/jammy.tgz --distribution jammy
+sudo pbuilder create --basetgz /var/cache/pbuilder/noble.tgz --distribution noble
 
 Then run the builds:
 
 TAG=1.0.2
 mkdir ~/build
 git archive --format=tar.gz --prefix=tline/ -o ~/build/tline_${TAG}.orig.tar.gz tags/${TAG}
-
 cd ~/build
 mkdir jammy noble
 tar xvf tline_${TAG}.orig.tar.gz
 cd tline
-pdebuild --buildresult ~/build/jammy \
-  -- --basetgz /var/cache/pbuilder/jammy.tgz
-pdebuild --buildresult ~/build/noble \
-  -- --basetgz /var/cache/pbuilder/noble.tgz
+pdebuild --buildresult ~/build/jammy -- --basetgz /var/cache/pbuilder/jammy.tgz
+pdebuild --buildresult ~/build/noble -- --basetgz /var/cache/pbuilder/noble.tgz
 
 The results will be in ~/build/jammy and ~/build/noble.
 
 7) BUILDING FOR WINDOWS
 =======================
 
-The windows version of TLine is built using the MinGW cross-compilers running
-on a Fedora Linux machine.  Also, the NSIS installer is used.  Therefore,
-you will want to install mingw64-wxWidgets3.noarch, mingw64-nsis,
+The Windows version of tline is built using the MinGW cross-compilers running
+on a Fedora Linux machine.  Also, the NSIS installer is used to package the
+build.
+
+Therefore, you will want to install mingw64-wxWidgets3.noarch, mingw64-nsis,
 mingw64-gcc-c++.x86_64, etc.
 
-Also, Tline for windows uses a number of dlls from various projects.  The dll
-files are stored in the windows-installer subdirectory.
+Also, tline for Windows uses a number of dlls from various projects.  The dll
+files are stored in the windows-installer subdirectory.  You will need to copy
+the versions provided by your cross-compiler in place of the ones provided in
+the tline source package..
 
-Build the Tline.exe file, copy it into the windows-installer directory, and
+Build the tline.exe file, copy it into the windows-installer directory, and
 generate the package:
 
 TAG=1.0.2
 mkdir build-windows
 cd build-windows
 mingw64-cmake -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF ..
-make -j48 && cp tline.exe ../windows-installer
+make
+cp tline.exe ../windows-installer
 cd ../windows-installer
 makensis tline.nsi
 mv tline-installer.exe tline-installer-${TAG}.exe
 cd -
 
 You will wind up with build-windows/tline-installer-${TAG}.exe, which contains
-all the components needed to install and run Tline.
+all the components needed to install and run tline.
+
+You should similarly be able to build a 32-bit version of tline, but that has
+not been tested.
 
 8) Version Changes
 ==================
