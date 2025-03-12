@@ -14,7 +14,7 @@ Unicode true
 !define BITS 64
 
 !searchparse /file ..\version.h `#define VERSION "` VER_MAJOR `.` VER_MINOR `.` VER_BUILD `"`
-!define INSTALLSIZE 91133484
+!define INSTALLSIZE 91133530
 
 !define MUI_WELCOMEPAGE_TITLE "${DESCRIPTION}"
 !define MUI_WELCOMEPAGE_TEXT "Version ${VER_MAJOR}.${VER_MINOR}.${VER_BUILD}"
@@ -63,7 +63,7 @@ Section -Prerequisites
 	SetOutPath $INSTDIR\Prerequisites
 	MessageBox MB_YESNO "Tline uses Gnuplot to make its graphs.$\r$\n$\r$\nIf you already have gnuplot installed, you don't have to install it again here.  Click 'NO' to skip installing gnuplot.$\r$\n$\r$\nIf you don't already have gnuplot installed, then click 'YES' to install it.  When installing gnuplot, you generally want to accept all the default settings BUT BE SURE TO ALLOW GNUPLOT TO ADD ITSELF TO YOUR PATH VARIABLE!  See the INSTALL document for more information.$\r$\n$\r$\nInstall Gnuplot?" /SD IDYES IDNO endGnuplot
 	File "Prerequisites\gp602-win64-mingw.exe"
-	ExecWait "$INSTDIR\Prerequisites\gp602-win64-mingw.exe"
+	ExecWait "$INSTDIR\Prerequisites\gp602-win64-mingw.exe /MERGETASKS=modifypath"
 	endGnuplot:
 SectionEnd
 
@@ -73,7 +73,7 @@ OutFile "tline-installer.exe"
 Section "Tline"
 	SetOutPath $INSTDIR
 
-	# These land in C:\Program Files (x86)\Tline unless the user overrides the INSTDIR.
+	# These land in C:\Program Files\Tline unless the user overrides the INSTDIR.
 	File "tline.exe"
 	File "${ICON}"
 	File "${LICENSE}"
