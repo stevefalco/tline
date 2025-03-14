@@ -877,16 +877,12 @@ void tlineLogic::doPlot( int type, int mode )
 		goto DELETE_SHELL;
 	}
 #elif defined _WIN32
-	// Build and execute the plot command.  We will unlink the
-	// temp files after gnuplot returns.
-	if(system(wxString::Format(wxT("gnuplot %s %s"), controlName, (mode == PLOT) ? "-" : "").mb_str())) {
-		wxLogError("Cannot execute gnuplot");
-		goto DELETE_SHELL;
-	}
-	if(system(wxString::Format(wxT("del %s %s"), controlName, dataName).mb_str())) {
-		wxLogError("Cannot clean up control files");
-		goto DELETE_SHELL;
-	}
+	// Build and execute the plot command.  We will unlink the temp files
+	// after gnuplot returns.
+	system(wxString::Format(wxT("gnuplot %s %s"), controlName, (mode == PLOT) ? "-" : "").mb_str());
+	wxSleep(1);
+	wxRemoveFile(controlName);
+	wxRemoveFile(dataName);
 #endif // __linux, _WIN32
 	return;
 

@@ -131,7 +131,7 @@ Fedora users can use the spec/tline.spec file to generate an RPM as follows:
 Note that the "TAG=x.x.x" must be changed to match the version in the
 spec file, and that has to match a tag in git.
 
-TAG=1.0.3
+TAG=1.0.4
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -150,7 +150,7 @@ then pass that to mock.  I like to use two windows for this.
 
 In window 1, in the source directory, do:
 
-TAG=1.0.3
+TAG=1.0.4
 git archive --format=tar.gz --prefix=tline-${TAG}/ -o ~/tline-${TAG}.tar.gz tags/${TAG}
 rm -fr ~/rpmbuild
 mkdir -p ~/rpmbuild/{SPECS,SOURCES}
@@ -159,7 +159,7 @@ mv ~/tline-${TAG}.tar.gz ~/rpmbuild/SOURCES
 
 In window 2 do:
 
-TAG=1.0.3
+TAG=1.0.4
 cd ~/rpmbuild
 rpmbuild -bs SPECS/tline.spec
 mock -r fedora-41-x86_64 --rebuild ~/rpmbuild/SRPMS/tline-${TAG}-1.fc41.src.rpm
@@ -217,7 +217,7 @@ sudo pbuilder create --basetgz /var/cache/pbuilder/noble.tgz --distribution nobl
 
 Then run the builds:
 
-TAG=1.0.3
+TAG=1.0.4
 mkdir ~/build
 git archive --format=tar.gz --prefix=tline/ -o ~/build/tline_${TAG}.orig.tar.gz tags/${TAG}
 cd ~/build
@@ -247,7 +247,7 @@ the tline source package..
 Build the tline.exe file, copy it into the windows-installer directory, and
 generate the package:
 
-TAG=1.0.3
+TAG=1.0.4
 mkdir build-windows
 cd build-windows
 mingw64-cmake -DDEFAULT_PREFIX_PATH=/usr -DTLINE_STRIP=OFF ..
